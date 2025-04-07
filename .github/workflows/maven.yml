@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 permissions:
-  contents: write  # 🔥 여기 변경됨
+  contents: write
   id-token: write
   security-events: write
 
@@ -16,7 +16,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Set up JDK 21
         uses: actions/setup-java@v4
@@ -27,6 +28,22 @@ jobs:
 
       - name: Build with Maven
         run: mvn -B package --file pom.xml
+
+      - name: Run tests
+        run: mvn test
+
+      - name: Upload test report
+        if: always()  # 테스트 실패해도 업로드
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit-report
+          path: target/surefire-reports
+
+      - name: Upload build artifact (.jar)
+        uses: actions/upload-artifact@v4
+        with:
+          name: spring-boot-app
+          path: target/*.jar
 
       - name: Update dependency graph
         if: github.repository_owner == 'nhnacademy-aiot2-lucky7'

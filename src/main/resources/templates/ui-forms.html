@@ -10,13 +10,13 @@
 	<meta name="keywords" content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
 
 	<link rel="preconnect" href="https://fonts.gstatic.com">
-	<link rel="shortcut icon" href="img/icons/icon-48x48.png" />
+	<link rel="shortcut icon" href="../static/img/icons/icon-48x48.png" />
 
-	<link rel="canonical" href="https://demo-basic.adminkit.io/maps-google.html" />
+	<link rel="canonical" href="https://demo-basic.adminkit.io/ui-forms.html" />
 
-	<title>Google Maps | AdminKit Demo</title>
+	<title>Forms | AdminKit Demo</title>
 
-	<link href="css/app.css" rel="stylesheet">
+	<link href="../static/css/app.css" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 
@@ -73,7 +73,7 @@
             </a>
 					</li>
 
-					<li class="sidebar-item">
+					<li class="sidebar-item active">
 						<a class="sidebar-link" href="ui-forms.html">
               <i class="align-middle" data-feather="check-square"></i> <span class="align-middle">Forms</span>
             </a>
@@ -107,7 +107,7 @@
             </a>
 					</li>
 
-					<li class="sidebar-item active">
+					<li class="sidebar-item">
 						<a class="sidebar-link" href="maps-google.html">
               <i class="align-middle" data-feather="map"></i> <span class="align-middle">Maps</span>
             </a>
@@ -217,7 +217,7 @@
 									<a href="#" class="list-group-item">
 										<div class="row g-0 align-items-center">
 											<div class="col-2">
-												<img src="img/avatars/avatar-5.jpg" class="avatar img-fluid rounded-circle" alt="Vanessa Tucker">
+												<img src="../static/img/avatars/avatar-5.jpg" class="avatar img-fluid rounded-circle" alt="Vanessa Tucker">
 											</div>
 											<div class="col-10 ps-2">
 												<div class="text-dark">Vanessa Tucker</div>
@@ -229,7 +229,7 @@
 									<a href="#" class="list-group-item">
 										<div class="row g-0 align-items-center">
 											<div class="col-2">
-												<img src="img/avatars/avatar-2.jpg" class="avatar img-fluid rounded-circle" alt="William Harris">
+												<img src="../static/img/avatars/avatar-2.jpg" class="avatar img-fluid rounded-circle" alt="William Harris">
 											</div>
 											<div class="col-10 ps-2">
 												<div class="text-dark">William Harris</div>
@@ -241,7 +241,7 @@
 									<a href="#" class="list-group-item">
 										<div class="row g-0 align-items-center">
 											<div class="col-2">
-												<img src="img/avatars/avatar-4.jpg" class="avatar img-fluid rounded-circle" alt="Christina Mason">
+												<img src="../static/img/avatars/avatar-4.jpg" class="avatar img-fluid rounded-circle" alt="Christina Mason">
 											</div>
 											<div class="col-10 ps-2">
 												<div class="text-dark">Christina Mason</div>
@@ -253,7 +253,7 @@
 									<a href="#" class="list-group-item">
 										<div class="row g-0 align-items-center">
 											<div class="col-2">
-												<img src="img/avatars/avatar-3.jpg" class="avatar img-fluid rounded-circle" alt="Sharon Lessman">
+												<img src="../static/img/avatars/avatar-3.jpg" class="avatar img-fluid rounded-circle" alt="Sharon Lessman">
 											</div>
 											<div class="col-10 ps-2">
 												<div class="text-dark">Sharon Lessman</div>
@@ -274,7 +274,7 @@
               </a>
 
 							<a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
-                <img src="img/avatars/avatar.jpg" class="avatar img-fluid rounded me-1" alt="Charles Hall" /> <span class="text-dark">Charles Hall</span>
+                <img src="../static/img/avatars/avatar.jpg" class="avatar img-fluid rounded me-1" alt="Charles Hall" /> <span class="text-dark">Charles Hall</span>
               </a>
 							<div class="dropdown-menu dropdown-menu-end">
 								<a class="dropdown-item" href="pages-profile.html"><i class="align-middle me-1" data-feather="user"></i> Profile</a>
@@ -294,31 +294,174 @@
 				<div class="container-fluid p-0">
 
 					<div class="mb-3">
-						<h1 class="h3 d-inline align-middle">Google Maps</h1>
+						<h1 class="h3 d-inline align-middle">Forms</h1>
 						<a class="badge bg-dark text-white ms-2" href="upgrade-to-pro.html">
-      Get more Google Maps examples
+      Get more form examples
   </a>
 					</div>
 					<div class="row">
 						<div class="col-12 col-lg-6">
 							<div class="card">
 								<div class="card-header">
-									<h5 class="card-title">Default Map</h5>
-									<h6 class="card-subtitle text-muted">Displays the default road map view.</h6>
+									<h5 class="card-title mb-0">Input</h5>
 								</div>
 								<div class="card-body">
-									<div class="content" id="default_map" style="height: 300px;"></div>
+									<input type="text" class="form-control" placeholder="Input">
+								</div>
+							</div>
+
+							<div class="card">
+								<div class="card-header">
+									<h5 class="card-title mb-0">Textarea</h5>
+								</div>
+								<div class="card-body">
+									<textarea class="form-control" rows="2" placeholder="Textarea"></textarea>
+								</div>
+							</div>
+
+							<div class="card">
+								<div class="card-header">
+									<h5 class="card-title mb-0">Checkboxes</h5>
+								</div>
+								<div class="card-body">
+									<div>
+										<label class="form-check">
+            <input class="form-check-input" type="checkbox" value="">
+            <span class="form-check-label">
+              Option one is this and that&mdash;be sure to include why it's great
+            </span>
+          </label>
+										<label class="form-check">
+            <input class="form-check-input" type="checkbox" value="" disabled>
+            <span class="form-check-label">
+              Option two is disabled
+            </span>
+          </label>
+									</div>
+									<div>
+										<label class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" value="option1">
+            <span class="form-check-label">
+              1
+            </span>
+          </label>
+										<label class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" value="option2">
+            <span class="form-check-label">
+              2
+            </span>
+          </label>
+										<label class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" value="option3" disabled>
+            <span class="form-check-label">
+              3
+            </span>
+          </label>
+									</div>
+								</div>
+							</div>
+
+							<div class="card">
+								<div class="card-header">
+									<h5 class="card-title mb-0">Read only</h5>
+								</div>
+								<div class="card-body">
+									<input class="form-control" type="text" placeholder="Readonly input" readonly>
 								</div>
 							</div>
 						</div>
+
 						<div class="col-12 col-lg-6">
 							<div class="card">
 								<div class="card-header">
-									<h5 class="card-title">Hybrid Map</h5>
-									<h6 class="card-subtitle text-muted">Displays a mixture of normal and satellite views.</h6>
+									<h5 class="card-title mb-0">Radios</h5>
 								</div>
 								<div class="card-body">
-									<div class="content" id="hybrid_map" style="height: 300px;"></div>
+									<div>
+										<label class="form-check">
+            <input class="form-check-input" type="radio" value="option1" name="radios-example" checked>
+            <span class="form-check-label">
+              Option one is this and that&mdash;be sure to include why it's great
+            </span>
+          </label>
+										<label class="form-check">
+            <input class="form-check-input" type="radio" value="option2" name="radios-example">
+            <span class="form-check-label">
+              Option two can be something else and selecting it will deselect option one
+            </span>
+          </label>
+										<label class="form-check">
+            <input class="form-check-input" type="radio" value="option3" name="radios-example" disabled>
+            <span class="form-check-label">
+              Option three is disabled
+            </span>
+          </label>
+									</div>
+									<div>
+										<label class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inline-radios-example" value="option1">
+            <span class="form-check-label">
+              1
+            </span>
+          </label>
+										<label class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inline-radios-example" value="option2">
+            <span class="form-check-label">
+              2
+            </span>
+          </label>
+										<label class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inline-radios-example" value="option3" disabled>
+            <span class="form-check-label">
+              3
+            </span>
+          </label>
+									</div>
+								</div>
+							</div>
+
+							<div class="card">
+								<div class="card-header">
+									<h5 class="card-title mb-0">Selects</h5>
+								</div>
+								<div class="card-body">
+									<select class="form-select mb-3">
+          <option selected>Open this select menu</option>
+          <option>One</option>
+          <option>Two</option>
+          <option>Three</option>
+        </select>
+
+									<select multiple class="form-control">
+          <option>One</option>
+          <option>Two</option>
+          <option>Three</option>
+          <option>Four</option>
+        </select>
+								</div>
+							</div>
+
+							<div class="card">
+								<div class="card-header">
+									<h5 class="card-title mb-0">Disabled</h5>
+								</div>
+								<div class="card-body">
+									<div class="mb-3">
+										<label class="form-label">Disabled input</label>
+										<input type="text" class="form-control" placeholder="Disabled input" disabled>
+									</div>
+									<div class="mb-3">
+										<label class="form-label">Disabled select menu</label>
+										<select class="form-control" disabled>
+            <option>Disabled select</option>
+          </select>
+									</div>
+									<label class="form-check">
+          <input class="form-check-input" type="checkbox" value="" disabled>
+          <span class="form-check-label">
+            Can't check this
+          </span>
+        </label>
 								</div>
 							</div>
 						</div>
@@ -357,32 +500,7 @@
 		</div>
 	</div>
 
-	<script src="js/app.js"></script>
-
-	<script>
-		function initMaps() {
-			var defaultMap = {
-				zoom: 14,
-				center: {
-					lat: 40.712784,
-					lng: -74.005941
-				},
-				mapTypeId: google.maps.MapTypeId.ROADMAP
-			};
-			new google.maps.Map(document.getElementById("default_map"), defaultMap);
-			var hybridMap = {
-				zoom: 14,
-				center: {
-					lat: 40.712784,
-					lng: -74.005941
-				},
-				mapTypeId: google.maps.MapTypeId.HYBRID
-			};
-			new google.maps.Map(document.getElementById("hybrid_map"), hybridMap);
-		}
-	</script>
-
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA-aWrwgr64q4b3TEZwQ0lkHI4lZK-moM4&callback=initMaps" async defer></script>
+	<script src="../static/js/app.js"></script>
 
 </body>
 

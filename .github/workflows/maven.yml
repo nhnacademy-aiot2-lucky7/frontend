@@ -45,4 +45,4 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script_stop: true
-          script: cd startup && ./frontStartup.sh
+          script: cd startup && pwd && ./frontStartup.sh

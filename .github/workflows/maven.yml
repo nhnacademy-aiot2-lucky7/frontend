@@ -38,7 +38,7 @@ jobs:
           rm: false
 
       - name: Check current directory
-        run: ls -al
+        run: ls ../-al
 
       - name: execute shell script
         uses: appleboy/ssh-action@master

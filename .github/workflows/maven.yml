@@ -49,7 +49,6 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script_stop: true
           script: |
-            pwd
-            cd startup/
-            pwd
-            ./frontStartup.sh
+            "cd startup/"
+            "pwd"
+            "./frontStartup.sh"

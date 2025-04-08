@@ -115,6 +115,7 @@ fabric.properties
 .idea/**/azureSettings.xml
 
 .idea/workspace.xml
+.idea/vcs.xml
 
 ### Java ###
 # Compiled class file

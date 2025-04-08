@@ -48,4 +48,4 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script_stop: true
-          script: "../target/frontStartup.sh"
+          script: "./home/aiot2/aiot2-team1/startup/frontStartup.sh"

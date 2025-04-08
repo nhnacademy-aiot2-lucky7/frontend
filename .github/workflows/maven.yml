@@ -49,7 +49,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script_stop: true
           script: |
-            pwt
+            pwd
             cd startup/
-            pwt
+            pwd
             ./frontStartup.sh

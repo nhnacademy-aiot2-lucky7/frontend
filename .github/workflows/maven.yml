@@ -40,9 +40,6 @@ jobs:
       - name: Check current directory
         run: ls -al
 
-      - name: Check startup folder
-        run: ls -al ./startup
-
       - name: execute shell script
         uses: appleboy/ssh-action@master
         with:

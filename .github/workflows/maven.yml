@@ -38,7 +38,7 @@ jobs:
           rm: false
 
       - name: Check current directory
-        run: pwd
+        run: cd startup/
 
       - name: execute shell script
         uses: appleboy/ssh-action@master
@@ -49,6 +49,5 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script_stop: true
           script: |
-            "cd ./startup"
             "pwd"
             "./frontStartup.sh"

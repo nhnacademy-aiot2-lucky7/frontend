@@ -1,4 +1,4 @@
-import "../scss/app.scss";
+import "../main/resources/static/scss/app.scss";
 
 // AdminKit (required)
 import "./modules/bootstrap";

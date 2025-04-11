@@ -33,7 +33,7 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/", "/login", "/favicon.ico",
+                                "/", "/sign-in", "/sign-up", "/favicon.ico",
                                 "/css/**", "/js/**", "/img/**", "/webjars/**"
                         ).permitAll()
                         .anyRequest().authenticated()

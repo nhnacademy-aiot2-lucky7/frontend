@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: lastFrontProject
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html

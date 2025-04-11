@@ -1,13 +1,11 @@
-server:
-  port: 8000
-
 spring:
   security:
     oauth2:
       client:
         registration:
           google:
-
+            client-id: ${OAUTH_CLIENT_ID}
+            client-secret: ${OAUTH_CLIENT_SECRET}
 
 #            redirect-uri:
             scope:
@@ -19,3 +17,5 @@ spring:
             token-uri: https://oauth2.googleapis.com/token
             user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
             user-name-attribute: sub
+server:
+  port: 8000

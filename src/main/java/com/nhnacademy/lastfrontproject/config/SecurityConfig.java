@@ -59,7 +59,6 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/pages-sign-in", "/pages-sign-up",
-                                "/loginSuccess",
                                 "/css/**", "/js/**", "/img/**", "/webjars/**").permitAll()
                         .anyRequest().authenticated() // 🔥 여기가 핵심
                 )

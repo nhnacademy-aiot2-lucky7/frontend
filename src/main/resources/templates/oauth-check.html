@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <p>로그인 성공</p>
+<!--    <table border="1">-->
+<!--        <thead>-->
+<!--            <tr>로그인 사용자 정보</tr>-->
+<!--        </thead>-->
+<!--        <tbody>-->
+<!--            <tr>-->
+<!--                <td>sub</td>-->
+<!--                <td th:text="${sub}"></td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td>name</td>-->
+<!--                <td th:text="${name}"></td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td>given</td>-->
+<!--                <td th:text="${given_name}"></td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td>family_name</td>-->
+<!--                <td th:text="${family_name}"></td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td>picture</td>-->
+<!--                <td th:text="${picture}"></td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td>email</td>-->
+<!--                <td th:text="${email}"></td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td>email_verified</td>-->
+<!--                <td th:text="${email_verified}"></td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td>locale</td>-->
+<!--                <td th:text="${locale}"></td>-->
+<!--            </tr>-->
+<!--        </tbody>-->
+<!--    </table>-->
+
+    <img th:src="${userAttributes['picture']}" alt="Profile Picture" style="width:100px; height:100px; border-radius: 50%;">
+
+    <p>사용자 정보 </p>
+
+    <ul>
+        <li th:each="entry : ${userAttributes.entrySet()}">
+            <strong th:text="${entry.key}">key</strong> :
+            <span th:text="${entry.value}">value</span>
+        </li>
+<!--        <li><strong>Picture:</strong><br>-->
+<!--            <img th:src="${userAttributes['picture']}" alt="Profile Picture">-->
+<!--        </li>-->
+    </ul>
+
+
+
+</body>
+</html>

@@ -54,6 +54,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // 버튼 생성 - 원형 버튼으로 수정
     const buttonTexts = ['로그인', '회원가입', '대시보드'];
+    const buttonUrls = ['pages-sign-in.html', 'pages-sign-up.html', 'index.html'];
+
     for (let i = 0; i < 3; i++) {
         const button = document.createElement('div');
         button.style.width = '150px';
@@ -61,13 +63,18 @@ document.addEventListener('DOMContentLoaded', function() {
         button.style.borderRadius = '50%';
         button.style.border = '2px solid #ffffff';
         button.style.cursor = 'pointer';
-        button.style.display = 'flex';           // Flexbox 레이아웃 사용
-        button.style.justifyContent = 'center';  // 가로 중앙 정렬
-        button.style.alignItems = 'center';      // 세로 중앙 정렬
-        button.style.color = '#ffffff';          // 텍스트 색상
-        button.style.fontWeight = 'bold';        // 텍스트 굵기
-        button.style.fontSize = '18px';          // 텍스트 크기
-        button.textContent = buttonTexts[i];     // 버튼 텍스트 설정
+        button.style.display = 'flex';
+        button.style.justifyContent = 'center';
+        button.style.alignItems = 'center';
+        button.style.color = '#ffffff';
+        button.style.fontWeight = 'bold';
+        button.style.fontSize = '18px';
+        button.textContent = buttonTexts[i];
+
+        // 클릭 이벤트 리스너 추가
+        button.addEventListener('click', function() {
+            window.location.href = buttonUrls[i]; // 해당 URL로 페이지 이동
+        });
 
         buttonContainer.appendChild(button);
     }

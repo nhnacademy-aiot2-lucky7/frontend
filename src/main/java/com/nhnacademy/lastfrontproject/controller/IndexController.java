@@ -1,6 +1,7 @@
 package com.nhnacademy.lastfrontproject.controller;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +17,8 @@ public class IndexController {
     public String googleCallBack(@AuthenticationPrincipal OAuth2User oAuth2User, Model model){
 
         model.addAttribute("userAttributes", oAuth2User.getAttributes());
+
+//        OAuth2LoginAuthenticationFilter
 
         return "oauth-check";
     }

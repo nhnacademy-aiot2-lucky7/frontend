@@ -6,60 +6,25 @@
 </head>
 <body>
     <p>로그인 성공</p>
-<!--    <table border="1">-->
-<!--        <thead>-->
-<!--            <tr>로그인 사용자 정보</tr>-->
-<!--        </thead>-->
-<!--        <tbody>-->
-<!--            <tr>-->
-<!--                <td>sub</td>-->
-<!--                <td th:text="${sub}"></td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--                <td>name</td>-->
-<!--                <td th:text="${name}"></td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--                <td>given</td>-->
-<!--                <td th:text="${given_name}"></td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--                <td>family_name</td>-->
-<!--                <td th:text="${family_name}"></td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--                <td>picture</td>-->
-<!--                <td th:text="${picture}"></td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--                <td>email</td>-->
-<!--                <td th:text="${email}"></td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--                <td>email_verified</td>-->
-<!--                <td th:text="${email_verified}"></td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--                <td>locale</td>-->
-<!--                <td th:text="${locale}"></td>-->
-<!--            </tr>-->
-<!--        </tbody>-->
-<!--    </table>-->
 
-    <img th:src="${userAttributes['picture']}" alt="Profile Picture" style="width:100px; height:100px; border-radius: 50%;">
+    <div id="userInfo"></div>
 
-    <p>사용자 정보 </p>
+    <script>
+        fetch('http://localhost:3000/api/user', {
+            method: 'GET',
+            credentials: 'include' // 세션 유지하려면 이거 필수!
+        })
+            .then(result => result.json())
+            .then(data => {
+                document.getElementById('userInfo').innerHTML =
+                    `<img src="${data.picture}" alt="User Picture"/>
+                    <p>이름: ${data.name}</p><p>이메일: ${data.email}</p>`;
+            })
+            .catch(error => {
+                console.error('사용자 정보 불러오기 실패:', error);
+            });
 
-    <ul>
-        <li th:each="entry : ${userAttributes.entrySet()}">
-            <strong th:text="${entry.key}">key</strong> :
-            <span th:text="${entry.value}">value</span>
-        </li>
-<!--        <li><strong>Picture:</strong><br>-->
-<!--            <img th:src="${userAttributes['picture']}" alt="Profile Picture">-->
-<!--        </li>-->
-    </ul>
-
+    </script>
 
 
 </body>

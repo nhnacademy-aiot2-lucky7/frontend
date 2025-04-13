@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // 전체 화면에 전환 효과 추가 - 부드럽게 스르륵 올라가도록 수정
         welcomeContainer.style.transition = 'transform 2s ease-in-out';
         welcomeContainer.style.transform = 'translateY(-20%)'; // -100%에서 -20%로 수정
-    }, 2500);
+    }, 1500);
 
     // 버튼 3개 표시 구현
     const buttonContainer = document.createElement('div');
@@ -71,6 +71,19 @@ document.addEventListener('DOMContentLoaded', function() {
         button.style.fontSize = '18px';
         button.textContent = buttonTexts[i];
 
+        // 호버 효과 추가
+        button.addEventListener('mouseover', function() {
+            this.style.boxShadow = '0 0 15px #ffffff';
+            this.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
+            this.style.transition = 'all 0.3s ease';
+        });
+
+        button.addEventListener('mouseout', function() {
+            this.style.boxShadow = 'none';
+            this.style.backgroundColor = 'transparent';
+            this.style.transition = 'all 0.3s ease';
+        });
+
         // 클릭 이벤트 리스너 추가
         button.addEventListener('click', function() {
             window.location.href = buttonUrls[i]; // 해당 URL로 페이지 이동
@@ -84,5 +97,5 @@ document.addEventListener('DOMContentLoaded', function() {
     // 화면 전환 후 버튼 표시
     setTimeout(() => {
         buttonContainer.style.opacity = '1';
-    }, 3500); // 화면 전환 시작 후 1초 뒤에 버튼 표시
+    }, 2000); // 화면 전환 시작 후 1초 뒤에 버튼 표시
 });

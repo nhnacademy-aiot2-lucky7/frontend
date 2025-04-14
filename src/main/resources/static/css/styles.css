@@ -1,0 +1,94 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #000000;
+    color: #ffffff;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.welcome-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    background: #000000;
+    overflow: hidden;
+    transition: transform 2s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* 로고 컨테이너 */
+.logo-container {
+    position: absolute;
+    right: 10%;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: left;
+    font-weight: bold;
+}
+
+/* LUCKY SEVEN 텍스트 - 효과 없음 */
+.lucky-text {
+    font-family: 'Limelight', sans-serif;
+    font-size: 100px;
+    letter-spacing: 1px; /* 자간 */
+    color: #ffffff;
+    margin-bottom: 10px;
+    font-weight: 800;
+}
+
+/* MAIN PAGE 텍스트 - 네온사인 효과 */
+.page-text {
+    font-family: "Rakkas", serif;
+    font-size: 150px;
+    font-weight: bold;
+    letter-spacing: 5px;
+    color: #ffffff;
+    text-shadow: 0 0 10px #afafaf, 0 0 20px #cccccc, 0 0 30px #d0d0d0;
+}
+
+/* 한글 텍스트 - 효과 없음 */
+.korean-text {
+    font-family: "Do Hyeon", sans-serif;
+    font-size: 80px;
+    margin-top: 5px;
+    color: #ffffff;
+    font-weight: 800;
+}
+
+/* 광선검 효과 */
+.lightsaber {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40%;
+    height: 5px;
+    background: #ffffff;
+    box-shadow: 0 0 10px 3px #ffffff, 0 0 20px 6px rgba(255, 255, 255, 0.7);
+    animation: lightsaberGlow 3s infinite;
+    max-width: calc(68% - 400px); /* 로고 영역을 침범하지 않도록 최대 너비 제한 */
+}
+
+.circle-button:hover {
+    box-shadow: 0 0 15px #ffffff;
+}
+
+/* 광선검 빛남 애니메이션 */
+@keyframes lightsaberGlow {
+    0% {
+        box-shadow: 0 0 10px 3px #ffffff, 0 0 20px 6px rgba(255, 255, 255, 0.7);
+    }
+    50% {
+        box-shadow: 0 0 15px 5px #ffffff, 0 0 30px 10px rgba(255, 255, 255, 0.9);
+    }
+    100% {
+        box-shadow: 0 0 10px 3px #ffffff, 0 0 20px 6px rgba(255, 255, 255, 0.7);
+    }
+}

@@ -1,7 +1,7 @@
 package com.nhnacademy.lastfrontproject.service;
 
-import com.nhnacademy.lastfrontproject.dto.OAuthUserRequest;
+import com.nhnacademy.lastfrontproject.dto.auth.RegisterRequest;
 
 public interface OAuthUserService {
-    String sendOAuthUserInfo(OAuthUserRequest oAuthUserRequest);
+    String sendOAuthUserInfo(RegisterRequest registerRequest);
 }

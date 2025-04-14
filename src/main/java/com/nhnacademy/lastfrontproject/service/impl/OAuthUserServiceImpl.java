@@ -1,7 +1,7 @@
 package com.nhnacademy.lastfrontproject.service.impl;
 
-import com.nhnacademy.lastfrontproject.adaptor.OAuthUserAdaptor;
-import com.nhnacademy.lastfrontproject.dto.OAuthUserRequest;
+import com.nhnacademy.lastfrontproject.adaptor.AuthAdaptor;
+import com.nhnacademy.lastfrontproject.dto.auth.RegisterRequest;
 import com.nhnacademy.lastfrontproject.exception.GatewayCommunicationException;
 import com.nhnacademy.lastfrontproject.exception.GatewayUserForwardingException;
 import com.nhnacademy.lastfrontproject.service.OAuthUserService;
@@ -11,19 +11,20 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class OAuthUserServiceImpl implements OAuthUserService {
-    private final OAuthUserAdaptor oAuthUserAdaptor;
+    private final AuthAdaptor authAdaptor;
 
-    public OAuthUserServiceImpl(OAuthUserAdaptor oAuthUserAdaptor) {
-        this.oAuthUserAdaptor = oAuthUserAdaptor;
+    public OAuthUserServiceImpl(AuthAdaptor authAdaptor) {
+        this.authAdaptor = authAdaptor;
     }
 
     @Override
-    public String sendOAuthUserInfo(OAuthUserRequest oAuthUserRequest) {
+    public String sendOAuthUserInfo(RegisterRequest registerRequest) {
         try {
-            ResponseEntity<String> response = oAuthUserAdaptor.sendOAuthUserInfo(oAuthUserRequest);
+            ResponseEntity<String> response = authAdaptor.register(registerRequest);
             if (!response.getStatusCode().is2xxSuccessful()) {
-                throw new GatewayUserForwardingException(oAuthUserRequest.getOAuthUserName());
+                throw new GatewayUserForwardingException(registerRequest.getUserName());
             }
+
             return response.getBody();
         } catch (FeignException e) {
             throw new GatewayCommunicationException(e);

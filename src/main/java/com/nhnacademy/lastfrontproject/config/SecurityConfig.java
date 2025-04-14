@@ -40,6 +40,7 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth -> oauth
+                        .loginPage("/sign-in")
                         .defaultSuccessUrl("/loginSuccess", true)
                 )
                 .logout(logout -> logout

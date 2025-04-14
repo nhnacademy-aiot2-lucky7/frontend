@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // 버튼 생성 - 원형 버튼으로 수정
     const buttonTexts = ['로그인', '회원가입', '대시보드'];
-    const buttonUrls = ['pages-sign-in.html', 'pages-sign-up.html', 'index.html'];
+    const buttonUrls = ['pages-sign-in', 'pages-sign-up', 'index'];
 
     for (let i = 0; i < 3; i++) {
         const button = document.createElement('div');

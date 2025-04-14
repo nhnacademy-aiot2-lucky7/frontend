@@ -7,25 +7,7 @@
 <body>
     <p>로그인 성공</p>
 
-    <div id="userInfo"></div>
-
-    <script>
-        fetch('http://localhost:3000/api/user', {
-            method: 'GET',
-            credentials: 'include' // 세션 유지하려면 이거 필수!
-        })
-            .then(result => result.json())
-            .then(data => {
-                document.getElementById('userInfo').innerHTML =
-                    `<img src="${data.picture}" alt="User Picture"/>
-                    <p>이름: ${data.name}</p><p>이메일: ${data.email}</p>`;
-            })
-            .catch(error => {
-                console.error('사용자 정보 불러오기 실패:', error);
-            });
-
-    </script>
-
+    <a href="/">메인으로 돌아가기</a>
 
 </body>
 </html>

@@ -19,6 +19,9 @@ public class SecurityConfig {
                                 "/css/**", "/js/**", "/img/**", "/webjars/**").permitAll()
                         .anyRequest().authenticated() // 🔥 여기가 핵심
                 )
+                .oauth2Login(oauth -> oauth
+                        .defaultSuccessUrl("/loginSuccess", true)
+                )
                 .logout(logout -> logout
                         .logoutSuccessUrl("/") // 로그아웃 후 이동할 페이지
                         .invalidateHttpSession(true) // 세션 무효화

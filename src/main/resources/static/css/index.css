@@ -1,0 +1,365 @@
+/* =========== 사이드바 =========== */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 260px;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: #222e3c;
+  color: #fff;
+  z-index: 100;
+  transition: margin-left 0.35s ease-in-out;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.sidebar-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.sidebar-brand {
+  padding: 1.15rem 1.5rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  display: block;
+  color: #f8f9fa;
+  text-decoration: none;
+}
+
+.sidebar-nav {
+  padding: 0;
+  list-style: none;
+  margin: 0;
+}
+
+.sidebar-header {
+  padding: 1.5rem 1.5rem 0.5rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: #ced4da;
+}
+
+.sidebar-item {
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-link {
+  padding: 0.625rem 1.625rem;
+  color: #adb5bd;
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: background 0.1s ease-in-out;
+  font-family: 'Noto Sans KR', sans-serif; /* 한글 폰트 지원 추가 */
+}
+
+.sidebar-link i,
+.sidebar-link svg {
+  margin-right: 0.75rem;
+}
+
+.sidebar-link:hover,
+.sidebar-item.active .sidebar-link {
+  color: #e9ecef;
+  background: rgba(255, 255, 255, 0.075);
+}
+
+/* 서브메뉴 스타일 */
+.sidebar-dropdown {
+  list-style: none;
+  padding-left: 1.5rem;
+  margin-top: 0.5rem;
+  display: block;
+}
+
+.sidebar-dropdown .sidebar-link {
+  padding: 0.4rem 1.625rem;
+  font-size: 0.85rem;
+}
+
+/* 서브메뉴 항목 스타일 */
+.sidebar-dropdown .sidebar-item {
+  margin-bottom: 0.2rem;
+}
+
+.sidebar-cta {
+  margin: 1.5rem;
+  padding: 1.5rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 0.3rem;
+}
+
+/* =========== 메인 콘텐츠 =========== */
+.main {
+  margin-left: 260px;
+  min-height: 100vh;
+  background-color: #f5f7fb;
+  width: calc(100% - 260px);
+  box-sizing: border-box;
+  transition: margin-left 0.35s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow-y: auto; /* 메인 콘텐츠 영역에 세로 스크롤 허용 */
+}
+
+.content {
+  padding: 1.5rem;
+  margin-top: 60px; /* 네비게이션 바 높이만큼 여백 추가 */
+  flex: 1;
+}
+
+/* =========== 네비게이션 바 =========== */
+.navbar {
+  height: 60px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  padding: 0 1rem;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 260px; /* 사이드바 너비만큼 왼쪽에서 띄움 */
+  z-index: 99;
+  display: flex;
+  align-items: center;
+}
+
+.navbar-content,
+.navbar-collapse {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  width: 100%;
+}
+
+.navbar-nav {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  height: 100%;
+}
+
+.nav-item {
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.nav-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  color: #495057;
+  border-radius: 50%;
+  margin: 0 0.5rem;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.nav-icon:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  color: #495057;
+  text-decoration: none;
+  height: 100%;
+}
+
+.nav-link.dropdown-toggle {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  margin-left: 1rem;
+}
+
+.navbar-bg {
+  background-color: #fff;
+}
+
+.indicator {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 18px;
+  height: 18px;
+  background-color: #3b7ddd;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 0.675rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hamburger {
+  display: inline-block;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  position: relative;
+  margin-right: 1rem;
+}
+
+.hamburger.align-self-center {
+  align-self: center;
+}
+
+/* 드롭다운 애니메이션 - 인덱스 페이지 전용 */
+.dropdown.show .dropdown-menu {
+  display: block !important;
+  -webkit-animation-duration: .25s;
+  animation-duration: .25s;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+  -webkit-animation-iteration-count: 1;
+  animation-iteration-count: 1;
+  -webkit-animation-name: dropdownAnimation;
+  animation-name: dropdownAnimation;
+  -webkit-animation-timing-function: ease;
+  animation-timing-function: ease;
+}
+
+@-webkit-keyframes dropdownAnimation {
+  0% {
+    opacity: 0;
+    transform: translateY(-8px)
+  }
+  to {
+    opacity: 1;
+    transform: translate(0)
+  }
+}
+
+@keyframes dropdownAnimation {
+  0% {
+    opacity: 0;
+    transform: translateY(-8px)
+  }
+  to {
+    opacity: 1;
+    transform: translate(0)
+  }
+}
+
+.dropdown-item-message {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.dropdown-item-message:last-child {
+  border-bottom: none;
+}
+
+/* =========== 인덱스 페이지 전용 통계 컴포넌트 =========== */
+.stat {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: rgba(13, 110, 253, 0.1);
+  color: #0d6efd;
+}
+
+/* =========== 차트 영역 - 인덱스 페이지 전용 =========== */
+.chart {
+  position: relative;
+  height: 100%;
+}
+
+.chart-sm {
+  height: 200px;
+}
+
+.chart-lg {
+  height: 300px;
+}
+
+.chart-xs {
+  height: 150px;
+}
+
+/* =========== 아바타 이미지 - 인덱스 페이지 전용 =========== */
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 0.5rem;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* =========== SimpleBars 스타일 - 인덱스 페이지 전용 =========== */
+.simplebar-scrollbar::before {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.simplebar-track.simplebar-vertical {
+  width: 10px;
+}
+
+.js-simplebar {
+  height: 100%;
+}
+
+/* =========== 인덱스 페이지 전용 반응형 디자인 =========== */
+@media (max-width: 991.98px) {
+  .sidebar {
+    margin-left: -260px;
+  }
+
+  .sidebar.toggled {
+    margin-left: 0;
+  }
+
+  .main {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .main.toggled {
+    margin-left: 260px;
+    width: calc(100% - 260px);
+  }
+
+  .navbar {
+    left: 0;
+  }
+
+  .navbar.toggled {
+    left: 260px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .navbar-expand .navbar-nav {
+    flex-direction: row;
+  }
+}

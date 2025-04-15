@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
 	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta name="description" content="회원가입 페이지">
-	<meta name="author" content="AdminKit">
-	<link rel="shortcut icon" href="../static/img/icons/icon-48x48.png" />
+
 	<title>회원가입 | Lucky Seven</title>
+
+	<link href="/css/auth.css" rel="stylesheet">
+	<link href="/css/common.css" rel="stylesheet">
+
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-	<link href="../static/css/sign-up.css" rel="stylesheet">
 </head>
 
 <body>
@@ -17,7 +19,7 @@
 	<div class="auth-card">
 		<div class="auth-header">
 			<div class="auth-logo">
-				<img src="../static/img/avatars/logo.png" alt="Lucky Seven" />
+				<img src="/img/avatars/logo.png" alt="Lucky Seven" />
 			</div>
 			<h1 class="auth-title">Lucky Seven</h1>
 			<p class="auth-subtitle">회원가입</p>
@@ -39,10 +41,10 @@
 				<input type="password" class="form-control" id="password" name="password" placeholder="비밀번호를 입력하세요" required>
 			</div>
 
-			<div class="form-check">
-				<input type="checkbox" class="form-check-input" id="agree" name="agree" required>
-				<label class="form-check-label" for="agree">이용약관에 동의합니다</label>
-			</div>
+<!--			<div class="form-check">-->
+<!--				<input type="checkbox" class="form-check-input" id="agree" name="agree" required>-->
+<!--				<label class="form-check-label" for="agree">이용약관에 동의합니다</label>-->
+<!--			</div>-->
 
 			<button type="submit" class="auth-btn">회원가입</button>
 
@@ -53,7 +55,6 @@
 	</div>
 </div>
 
-<script src="../static/js/app.js"></script>
-<script src="../static/js/signUp.js"></script>
+<script src="/js/signUp.js"></script>
 </body>
 </html>

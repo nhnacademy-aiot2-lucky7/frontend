@@ -1,4 +1,4 @@
-/* 인증 페이지 공통 스타일 */
+/* ========== 인증 페이지 전체 래퍼 ========== */
 .auth-wrapper {
     display: flex;
     justify-content: center;
@@ -7,16 +7,16 @@
     width: 100%;
     padding: 20px;
     box-sizing: border-box;
-    /* 배경색과 그라데이션을 통일 */
     background: linear-gradient(135deg, #f5f7fb 0%, #d3e0f7 100%);
     position: absolute;
     top: 0;
     left: 0;
 }
 
+/* ========== 인증 카드 ========== */
 .auth-card {
     width: 100%;
-    max-width: 600px; /* 두 페이지 모두 동일하게 */
+    max-width: 400px;
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 0.1rem 0.5rem rgba(0, 0, 0, 0.1);
@@ -24,47 +24,43 @@
     margin: 0 auto;
 }
 
+/* ========== 헤더 ========== */
 .auth-header {
     text-align: center;
     margin-bottom: 30px;
 }
-
 .auth-logo {
     display: flex;
     justify-content: center;
     margin-bottom: 20px;
 }
-
 .auth-logo img {
-    max-height: 150px;
+    max-height: 100px;
     max-width: 100%;
     height: auto;
 }
-
 .auth-title {
     font-size: 28px;
     font-weight: 600;
     margin-bottom: 8px;
     color: #212529;
 }
-
 .auth-subtitle {
     font-size: 18px;
     color: #6c757d;
     margin-bottom: 25px;
 }
 
+/* ========== 폼 ========== */
 .auth-form .form-group {
     margin-bottom: 24px;
 }
-
 .auth-form label {
     font-weight: 500;
     margin-bottom: 8px;
     display: block;
     color: #495057;
 }
-
 .auth-form .form-control {
     width: 100%;
     height: 48px;
@@ -75,31 +71,30 @@
     box-sizing: border-box;
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
-
 .auth-form .form-control:focus {
     border-color: #80bdff;
     box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
     outline: 0;
 }
 
+/* ========== 체크박스 ========== */
 .form-check {
     display: flex;
     align-items: center;
     margin-bottom: 24px;
 }
-
 .form-check-input {
     margin-right: 10px;
     width: 18px;
     height: 18px;
 }
-
 .form-check-label {
     margin-bottom: 0;
     line-height: 1.4;
     font-size: 0.95rem;
 }
 
+/* ========== 버튼 ========== */
 .auth-btn {
     display: block;
     width: 100%;
@@ -112,38 +107,29 @@
     transition: background-color 0.2s;
     margin-bottom: 16px;
 }
-
 .auth-btn:hover {
     background-color: #2e67b5;
 }
 
+/* ========== 푸터 ========== */
 .auth-footer {
     text-align: center;
     margin-top: 20px;
     font-size: 14px;
     color: #6c757d;
 }
-
 .auth-footer a {
     color: #3b7ddd;
     font-weight: 500;
 }
-
 .auth-footer a:hover {
     text-decoration: underline;
 }
 
+/* ========== 반응형 ========== */
 @media (max-width: 576px) {
-    .auth-card {
-        padding: 25px 10px;
-    }
-    .auth-logo img {
-        max-height: 80px;
-    }
-    .auth-title {
-        font-size: 24px;
-    }
-    .auth-subtitle {
-        font-size: 16px;
-    }
+    .auth-card { padding: 25px 10px; }
+    .auth-logo img { max-height: 80px; }
+    .auth-title { font-size: 24px; }
+    .auth-subtitle { font-size: 16px; }
 }

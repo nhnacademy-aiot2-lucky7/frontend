@@ -1,10 +1,11 @@
-/* 기본 HTML 요소 리셋 */
+/* ========== 기본 리셋 및 폰트 ========== */
 html, body {
     margin: 0;
     padding: 0;
     height: 100%;
     width: 100%;
-    overflow: hidden; /* 스크롤 비활성화 */
+    /*overflow-x: hidden;*/
+    /*overflow-y: auto;*/
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     color: #495057;
     background-color: #f5f7fb;
@@ -17,20 +18,14 @@ body {
     line-height: 1.5;
 }
 
-/* 기본 레이아웃 */
-.wrapper {
-    padding: 0;
-    display: flex;
-    width: 100%;
-    height: 100%;
-    align-items: stretch;
+/* ========== 기본 요소 ========== */
+a {
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
 }
 
-.align-middle {
-    vertical-align: middle;
-}
-
-/* 기본 버튼 스타일 */
 button {
     cursor: pointer;
     border: none;
@@ -38,58 +33,20 @@ button {
     transition: all 0.2s;
 }
 
-/* 기본 링크 스타일 */
-a {
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-/* 기본 폼 요소 스타일 */
 input, select, textarea {
     box-sizing: border-box;
     font-family: inherit;
     font-size: 1rem;
 }
-
 input:focus, select:focus, textarea:focus {
     outline: 0;
 }
 
-/* 텍스트 색상 */
-.text-primary {
-    color: #0d6efd !important;
+.align-middle {
+    vertical-align: middle;
 }
 
-.text-success {
-    color: #198754 !important;
-}
-
-.text-danger {
-    color: #dc3545 !important;
-}
-
-.text-warning {
-    color: #ffc107 !important;
-}
-
-/* 배경 색상 */
-.bg-success {
-    background-color: #198754 !important;
-}
-
-.bg-danger {
-    background-color: #dc3545 !important;
-}
-
-.bg-warning {
-    background-color: #ffc107 !important;
-    color: #000 !important;
-}
-
-/* 배지 스타일 */
+/* ========== 배지, 텍스트, 배경 색상 ========== */
 .badge {
     display: inline-block;
     padding: 0.35em 0.65em;
@@ -103,7 +60,16 @@ input:focus, select:focus, textarea:focus {
     border-radius: 0.25rem;
 }
 
-/* 카드 공통 스타일 */
+.text-primary { color: #0d6efd !important; }
+.text-success { color: #198754 !important; }
+.text-danger  { color: #dc3545 !important; }
+.text-warning { color: #ffc107 !important; }
+
+.bg-success { background-color: #198754 !important; }
+.bg-danger  { background-color: #dc3545 !important; }
+.bg-warning { background-color: #ffc107 !important; color: #000 !important; }
+
+/* ========== 카드 ========== */
 .card {
     margin-bottom: 1.5rem;
     box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.05);
@@ -111,25 +77,22 @@ input:focus, select:focus, textarea:focus {
     background-color: #fff;
     border-radius: 0.25rem;
 }
-
 .card-header {
     padding: 1rem 1.35rem;
     background-color: #fff;
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
-
 .card-title {
     margin-bottom: 0;
     color: #495057;
     font-weight: 600;
 }
-
 .card-body {
     padding: 1.25rem 1.35rem;
     flex: 1 1 auto;
 }
 
-/* 테이블 공통 스타일 */
+/* ========== 테이블 ========== */
 .table {
     width: 100%;
     margin-bottom: 1rem;
@@ -137,27 +100,23 @@ input:focus, select:focus, textarea:focus {
     vertical-align: middle;
     border-collapse: collapse;
 }
-
-.table th,
-.table td {
+.table th, .table td {
     padding: 0.75rem;
     vertical-align: middle;
     border-top: 1px solid #e9ecef;
 }
-
 .table thead th {
     vertical-align: bottom;
     border-bottom: 2px solid #e9ecef;
     font-weight: 600;
 }
-
 .table-hover tbody tr:hover {
     background-color: rgba(0, 0, 0, 0.025);
 }
 
-/* 푸터 공통 스타일 */
+/* ========== 푸터 ========== */
 .footer {
-    padding: 2rem 1.5rem;
+    padding: 0.75rem 1.5rem;
     background-color: #fff;
     border-top: 1px solid #e9ecef;
     margin-top: auto;
@@ -169,36 +128,30 @@ input:focus, select:focus, textarea:focus {
     max-width: 100%;
     overflow: hidden;
 }
-
 .footer-text {
     color: #6c757d;
     font-size: 0.875rem;
 }
-
 .footer-links {
     display: flex;
     gap: 1.5rem;
 }
-
 .footer-links a {
     color: #6c757d;
     text-decoration: none;
     font-size: 0.875rem;
 }
-
 .footer-links a:hover {
     text-decoration: underline;
 }
 
-/* 드롭다운 공통 스타일 */
+/* ========== 드롭다운 ========== */
 .dropdown {
     position: relative;
 }
-
 .dropdown-toggle {
     cursor: pointer;
 }
-
 .dropdown-menu {
     display: none;
     position: absolute;
@@ -211,12 +164,10 @@ input:focus, select:focus, textarea:focus {
     border: 1px solid rgba(0,0,0,.15);
     border-radius: 0.25rem;
 }
-
 .dropdown-menu-end {
     right: 0;
     left: auto;
 }
-
 .dropdown-item {
     display: block;
     width: 100%;
@@ -230,14 +181,12 @@ input:focus, select:focus, textarea:focus {
     border: 0;
     cursor: pointer;
 }
-
 .dropdown-item:hover,
 .dropdown-item:focus {
     color: #16181b;
     text-decoration: none;
     background-color: #f8f9fa;
 }
-
 .dropdown-header {
     display: block;
     padding: 0.5rem 1.5rem;
@@ -246,7 +195,6 @@ input:focus, select:focus, textarea:focus {
     color: #6c757d;
     white-space: nowrap;
 }
-
 .dropdown-toggle::after {
     display: inline-block;
     margin-left: 0.255em;
@@ -257,14 +205,11 @@ input:focus, select:focus, textarea:focus {
     border-bottom: 0;
     border-left: 0.3em solid transparent;
 }
-
 .dropdown-toggle:empty::after {
     margin-left: 0;
 }
 
-/* 반응형 미디어 쿼리 공통 부분 */
+/* ========== 반응형 ========== */
 @media (max-width: 767.98px) {
-    .d-md-table-cell {
-        display: none !important;
-    }
+    .d-md-table-cell { display: none !important; }
 }

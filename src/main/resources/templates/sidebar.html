@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sidebar</title>
+    <link href="/css/index.css" rel="stylesheet">
+</head>
+<body>
+  <script src="/js/sidebar.js"></script>
+  <script src="/js/common.js"></script>
+  <script src="/js/feather.min.js"></script>
+
+  <nav id="sidebar" class="sidebar">
+    <div class="sidebar-content js-simplebar">
+      <a class="sidebar-brand" href="/dashboard">
+        <span class="align-middle">Lucky Seven</span>
+      </a>
+
+      <ul class="sidebar-nav">
+        <li class="sidebar-item active">
+          <a class="sidebar-link" href="/dashboard">
+            <i class="align-middle" data-feather="sliders"></i>
+            <span class="align-middle">Dashboard</span>
+          </a>
+        </li>
+
+        <!-- 로그인 버튼 (비로그인 시에만 표시) -->
+        <li class="sidebar-item login-btn">
+          <a class="sidebar-link" href="/sign-in">
+            <i class="align-middle" data-feather="log-in"></i>
+            <span class="align-middle">로그인</span>
+          </a>
+        </li>
+
+        <!-- 마이페이지 버튼 (로그인 시에만 표시) -->
+        <li class="sidebar-item mypage-btn" style="display: none;">
+          <a class="sidebar-link" href="/profile">
+            <i class="align-middle" data-feather="user"></i>
+            <span class="align-middle">마이페이지</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item" id="management-parent">
+          <div class="sidebar-link">
+            <i class="align-middle" data-feather="file-text"></i>
+            <span class="align-middle">관리</span>
+          </div>
+          <ul class="sidebar-dropdown">
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="pages-server-room.html">
+                <span class="align-middle">서버룸</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="pages-power-usage.html">
+                <span class="align-middle">전력사용량</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="pages-access-control.html">
+                <span class="align-middle">출입제어</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="pages-equipment.html">
+                <span class="align-middle">장비</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="pages-alert.html">
+                <span class="align-middle">화재/침수</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="sidebar-item">
+          <a class="sidebar-link" href="pages-events.html">
+            <i class="align-middle" data-feather="bell"></i>
+            <span class="align-middle">이벤트 알림</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item">
+          <a class="sidebar-link" href="pages-events.html">
+            <i class="align-middle" data-feather="hard-drive"></i>
+            <span class="align-middle">센서 추가</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item">
+          <a class="sidebar-link" href="pages-events.html">
+            <i class="align-middle" data-feather="trending-up"></i>
+            <span class="align-middle">대시보드 추가</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item">
+          <a class="sidebar-link" href="pages-settings.html">
+            <i class="align-middle" data-feather="settings"></i>
+            <span class="align-middle">Settings</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        feather.replace();
+      });
+    </script>
+</body>
+</html>

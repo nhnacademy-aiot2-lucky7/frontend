@@ -178,21 +178,18 @@
                     <!-- 사용자 프로필 드롭다운 -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
-                            <img src="img/avatars/avatar.jpg" class="avatar img-fluid rounded me-1" alt="Charles Hall" />
+                            <img src="{{ user.profile_image_url }}" alt="프로필 사진" class="navbar-profile-photo" id="navbar-profile-photo" />
                             <span class="text-dark">Charles Hall</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end">
-                            <a class="dropdown-item" href="pages-profile.html">
+                            <a class="dropdown-item" href="/profile">
                                 <i class="align-middle me-1" data-feather="user"></i> Profile
                             </a>
-                            <a class="dropdown-item" href="#">
-                                <i class="align-middle me-1" data-feather="pie-chart"></i> Analytics
-                            </a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="index.html">
+                            <a class="dropdown-item" href="/dashboard">
                                 <i class="align-middle me-1" data-feather="settings"></i> Settings & Privacy
                             </a>
-                            <a class="dropdown-item" href="#">
+                            <a class="dropdown-item" href="/helpdesk">
                                 <i class="align-middle me-1" data-feather="help-circle"></i> Help Center
                             </a>
                             <div class="dropdown-divider"></div>
@@ -480,8 +477,8 @@
                 Lucky Seven ©
             </div>
             <div class="footer-links">
-                <a href="#">Support</a>
-                <a href="#">Help Center</a>
+                <a href="/helpdesk">Support</a>
+                <a href="/helpdesk">Help Center</a>
                 <a href="#">Privacy</a>
                 <a href="#">Terms</a>
             </div>

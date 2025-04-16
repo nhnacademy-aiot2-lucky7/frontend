@@ -203,6 +203,16 @@
 .navbar-bg {
   background-color: #F1EFEC;
 }
+/* 네비게이션(우측 상단) 프로필 사진 */
+.navbar-profile-photo {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid #D4C9BE;
+  background: #F1EFEC;
+  vertical-align: middle;
+}
 .indicator {
   position: absolute;
   top: 0;

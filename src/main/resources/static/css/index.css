@@ -72,6 +72,17 @@
 .sidebar-item.active .sidebar-link svg {
   color: #123458;
 }
+
+/* 사이드바 링크에서 밑줄 제거 */
+.sidebar-link:hover,
+.sidebar-link:active,
+.sidebar-link:focus,
+.sidebar-dropdown .sidebar-link:hover,
+.sidebar-dropdown .sidebar-link:active,
+.sidebar-dropdown .sidebar-link:focus {
+  text-decoration: none;
+}
+
 /* 서브메뉴 스타일 */
 .sidebar-dropdown {
   list-style: none;

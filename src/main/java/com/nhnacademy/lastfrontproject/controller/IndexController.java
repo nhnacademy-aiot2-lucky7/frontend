@@ -21,7 +21,7 @@ public class IndexController {
     }
 
     @GetMapping("/profile")
-    public String empty(){
+    public String profile(){
         return "pages-profile";
     }
 
@@ -30,9 +30,54 @@ public class IndexController {
         return "pages-helpdesk";
     }
 
-    @GetMapping("/edit_profile")
-    public String editprofile(){
+    @GetMapping("/edit-profile")
+    public String editProfile(){
         return "pages-profile-edit";
+    }
+
+    @GetMapping("/server-room")
+    public String serverRoom(){
+        return "pages-server-room";
+    }
+
+    @GetMapping("/power-usage")
+    public String powerUsage(){
+        return "pages-power-usage";
+    }
+
+    @GetMapping("/access-control")
+    public String accessControl(){
+        return "pages-access-control";
+    }
+
+    @GetMapping("/equipment")
+    public String equipment(){
+        return "pages-equipment";
+    }
+
+    @GetMapping("/calamity")
+    public String calamity(){
+        return "pages-calamity";
+    }
+
+    @GetMapping("/alert")
+    public String alert(){
+        return "pages-alert";
+    }
+
+    @GetMapping("/add-sensor")
+    public String addSensor(){
+        return "pages-add-sensor";
+    }
+
+    @GetMapping("/add-dashboard")
+    public String addDashboard(){
+        return "pages-add-dashboard";
+    }
+
+    @GetMapping("/settings")
+    public String settings(){
+        return "pages-settings";
     }
 
 }

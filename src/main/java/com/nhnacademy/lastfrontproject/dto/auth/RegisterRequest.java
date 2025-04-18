@@ -13,4 +13,10 @@ public class RegisterRequest {
     private String userEmail;
     @JsonProperty("userPassword")
     private String userPassword;
+
+    private RegisterRequest(String userEmail, String userName, String userPassword){};
+
+    public static RegisterRequest ofNewRegisterRequest(String userEmail, String userName, String userPassword){
+        return new RegisterRequest(userName, userEmail, userPassword);
+    }
 }

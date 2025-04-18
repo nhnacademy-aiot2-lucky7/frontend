@@ -1,0 +1,426 @@
+/* ========== 사이드바 ========== */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 260px;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: #123458;
+  color: #F1EFEC;
+  z-index: 100;
+  transition: margin-left 0.35s ease-in-out;
+  height: 100vh;
+  overflow: hidden;
+}
+.sidebar-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.sidebar-brand {
+  padding: 1.15rem 1.5rem;
+  font-size: 17pt;
+  font-weight: 600;
+  display: block;
+  color: #F1EFEC;
+  text-decoration: none;
+}
+.sidebar-nav {
+  padding: 0;
+  list-style: none;
+  margin: 0;
+}
+.sidebar-header {
+  padding: 1.5rem 1.5rem 0.5rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: #F1EFEC;
+}
+.sidebar-item {
+  padding: 0;
+  margin: 0;
+}
+.sidebar-link {
+  padding: 0.625rem 1.625rem;
+  color: #F1EFEC;
+  display: flex;
+  align-items: center;
+  font-size: 13pt;
+  text-decoration: none;
+  transition: background 0.1s ease-in-out;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+.sidebar-link i,
+.sidebar-link svg {
+  margin-right: 0.75rem;
+}
+.sidebar-link:hover {
+  color: #123458;
+  background-color: #F1EFEC;
+}
+.sidebar-item.active .sidebar-link {
+  color: #123458;
+  background-color: #F1EFEC;
+  padding-left: calc(1.625rem - 4px);
+  font-weight: 600;
+}
+.sidebar-item.active .sidebar-link i,
+.sidebar-item.active .sidebar-link svg {
+  color: #123458;
+}
+
+/* 사이드바 링크에서 밑줄 제거 */
+.sidebar-link:hover,
+.sidebar-link:active,
+.sidebar-link:focus,
+.sidebar-dropdown .sidebar-link:hover,
+.sidebar-dropdown .sidebar-link:active,
+.sidebar-dropdown .sidebar-link:focus {
+  text-decoration: none;
+}
+
+/* 서브메뉴 스타일 */
+.sidebar-dropdown {
+  list-style: none;
+  padding-left: 1.5rem;
+  margin-top: 0.5rem;
+  display: block;
+}
+.sidebar-dropdown .sidebar-link {
+  padding: 0.4rem 1.625rem;
+  font-size: 11pt;
+}
+.sidebar-dropdown .sidebar-item {
+  margin-bottom: 0.2rem;
+}
+.sidebar-cta {
+  margin: 1.5rem;
+  padding: 1.5rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 0.3rem;
+}
+
+/* 서브메뉴 항목에 대한 스타일 재정의 */
+.sidebar-dropdown .sidebar-item .sidebar-link {
+  background-color: transparent;
+  color: #F1EFEC;
+  padding-left: 1.625rem;
+  font-weight: normal;
+}
+
+/* 관리 메뉴의 자식 항목이 선택되었을 때 스타일 */
+.sidebar-dropdown .sidebar-item .sidebar-link.selected {
+  font-weight: bold !important;
+  background-color: transparent !important;
+  color: #F1EFEC !important;
+  border-left: none !important;
+}
+
+/* 관리 메뉴 스타일 (클릭 가능한 모양 유지) */
+#management-parent .sidebar-link {
+  cursor: pointer;
+}
+
+/* ========== 메인 콘텐츠 ========== */
+.main {
+  margin-left: 260px;
+  min-height: 100vh;
+  background-color: #f5f7fb;
+  width: calc(100% - 260px);
+  box-sizing: border-box;
+  transition: margin-left 0.35s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow-y: auto;
+}
+.content {
+  padding: 1.5rem;
+  margin-top: 60px;
+  flex: 1;
+}
+
+/* ========== 네비게이션 바 ========== */
+.navbar {
+  height: 60px;
+  border-bottom: 1px solid #D4C9BE;
+  background-color: #F1EFEC;;
+  padding: 0 1rem;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 260px;
+  z-index: 99;
+  display: flex;
+  align-items: center;
+}
+.navbar-content,
+.navbar-collapse {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  width: 100%;
+}
+.navbar-nav {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  height: 100%;
+}
+.nav-item {
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.nav-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  color: #030303;
+  border-radius: 50%;
+  margin: 0 0.5rem;
+  cursor: pointer;
+  z-index: 1;
+}
+.nav-icon:hover {
+  background-color: #D4C9BE;
+}
+.nav-link {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  color: #030303;
+  text-decoration: none;
+  height: 100%;
+}
+.nav-link.dropdown-toggle {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  margin-left: 1rem;
+}
+.navbar-bg {
+  background-color: #F1EFEC;
+}
+/* 네비게이션(우측 상단) 프로필 사진 */
+.navbar-profile-photo {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid #D4C9BE;
+  background: #F1EFEC;
+  vertical-align: middle;
+}
+.indicator {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 18px;
+  height: 18px;
+  background-color: #123458;
+  border-radius: 50%;
+  color: #F1EFEC;
+  font-size: 0.675rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hamburger {
+  display: inline-block;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  position: relative;
+  margin-right: 1rem;
+}
+.hamburger.align-self-center {
+  align-self: center;
+}
+
+/* 드롭다운 애니메이션 */
+.dropdown, .dropend, .dropstart, .dropup {
+  position: relative;
+}
+
+.dropdown-menu {
+  background-clip: padding-box;
+  background-color: #F1EFEC;
+  border: 1px solid #D4C9BE;
+  border-radius: .2rem;
+  color: #030303;
+  display: none;
+  font-size: .95rem;
+  list-style: none;
+  margin: 0;
+  min-width: 18rem; /* 넉넉하게 */
+  padding: .5rem 0;
+  position: absolute;
+  text-align: left;
+  z-index: 1050;
+  box-shadow: 0 0.5rem 1rem rgba(3, 3, 3, 0.15);
+  right: 0; /* 우측 정렬 */
+  left: auto;
+}
+
+.dropdown-menu.show {
+  display: block;
+}
+
+.dropdown-header {
+  display: block;
+  padding: 0.5rem 1.5rem;
+  margin-bottom: 0;
+  font-size: 1rem;
+  color: #123458;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  color: #030303;
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+  text-align: left;
+  white-space: normal;
+  border-bottom: 1px solid #D4C9BE;
+  gap: 0.5rem; /* 아이콘과 텍스트 간격 */
+}
+
+.dropdown-item:last-child {
+  border-bottom: none;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+  color: #123458;
+  background-color: #D4C9BE;
+  text-decoration: none;
+}
+
+/* 알림 항목 스타일 */
+.notification-item {
+  display: flex;
+  align-items: center;
+}
+
+.notification-icon {
+  flex: 0 0 40px;
+  margin-right: 10px;
+}
+
+.notification-content {
+  flex: 1;
+}
+
+.notification-title {
+  font-weight: 500;
+  color: #030303;
+}
+
+.notification-description, .notification-time {
+  font-size: 0.85rem;
+  color: #123458;
+  margin-top: 0.25rem;
+}
+
+/* 메시지 항목 스타일 */
+.message-item {
+  display: flex;
+  align-items: center;
+}
+
+.message-avatar {
+  flex: 0 0 40px;
+  margin-right: 10px;
+}
+
+.message-content {
+  flex: 1;
+}
+
+.message-sender {
+  font-weight: 500;
+  color: #030303;
+}
+
+.message-text, .message-time {
+  font-size: 0.85rem;
+  color: #123458;
+  margin-top: 0.25rem;
+}
+
+/* ========== 통계 컴포넌트 ========== */
+.stat {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: rgba(18, 52, 88, 0.1);
+  color: #123458;
+}
+
+/* ========== 차트 영역 ========== */
+.chart { position: relative; height: 100%; }
+.chart-sm { height: 200px; }
+.chart-lg { height: 300px; }
+.chart-xs { height: 150px; }
+
+/* ========== 아바타 이미지 ========== */
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 0.5rem;
+}
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ========== SimpleBars 스타일 ========== */
+.simplebar-scrollbar::before {
+  background-color: rgba(18, 52, 88, 0.5);
+}
+.simplebar-track.simplebar-vertical {
+  width: 10px;
+}
+.js-simplebar {
+  height: 100%;
+}
+
+/* ========== 반응형 ========== */
+@media (max-width: 991.98px) {
+  .sidebar { margin-left: -260px; }
+  .sidebar.toggled { margin-left: 0; }
+  .main { margin-left: 0; width: 100%; }
+  .main.toggled { margin-left: 260px; width: calc(100% - 260px); }
+  .navbar { left: 0; }
+  .navbar.toggled { left: 260px; }
+}
+@media (max-width: 767.98px) {
+  .navbar-expand .navbar-nav { flex-direction: row; }
+}

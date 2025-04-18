@@ -7,7 +7,7 @@
 
 	<link rel="shortcut icon" href="/img/icons/777_64x64.png" />
 
-	<title>Profile | Lucky Seven</title>
+	<title>Profile Edit | Lucky Seven</title>
 
 	<link href="/css/index.css" rel="stylesheet">
 	<link href="/css/common.css" rel="stylesheet">
@@ -204,42 +204,55 @@
 
 		<!-- 본문내용 -->
 		<div class="profile-wrapper">
-			<div class="profile-card">
+			<form class="profile-card" method="post" enctype="multipart/form-data">
 				<!-- 프로필 사진 및 사진 변경 -->
 				<div class="profile-photo-area">
 					<div class="profile-photo-container">
 						<img src="{{ user.profile_image_url }}" alt="프로필 사진" class="profile-photo" id="main-profile-photo" />
+						<label class="photo-upload-btn" title="사진 변경">
+							<input type="file" name="profile_photo" accept="image/*" style="display:none;">
+							<i data-feather="camera"></i>
+						</label>
 					</div>
 					<div class="profile-photo-label">프로필 사진</div>
 				</div>
 				<div class="profile-section">
 					<div class="profile-row">
 						<div class="profile-label">이름</div>
-						<div class="profile-value-group">
-							<span class="profile-value">홍길동</span>
-						</div>
+						<input type="text" class="profile-input" name="name" value="{{ user.name }}" required>
 					</div>
 					<hr>
 					<div class="profile-row">
 						<div class="profile-label">이메일</div>
-						<div class="profile-value">honggildong@example.com</div>
+						<input type="email" class="profile-input" name="email" value="{{ user.email }}" required>
 					</div>
 					<hr>
 					<div class="profile-row">
 						<div class="profile-label">부서</div>
-						<div class="profile-value">개발팀</div>
+						<input type="text" class="profile-input" name="department" value="{{ user.department }}">
 					</div>
 					<hr>
 					<div class="profile-row">
 						<div class="profile-label">휴대전화번호</div>
-						<div class="profile-value">010-1234-5678</div>
+						<input type="tel" class="profile-input" name="phone" value="{{ user.phone }}">
 					</div>
 					<hr>
-<!--					<button class="btn-block btn-password" type="button">회원정보 수정</button>-->
-					<a class="btn-block btn-password" href="/edit-profile">회원정보 수정</a>
+					<div class="profile-row">
+						<div class="profile-label">비밀번호</div>
+						<input type="password" class="profile-input" name="password" placeholder="새 비밀번호 (변경 시)">
+					</div>
+					<hr>
+					<div class="profile-row">
+						<div class="profile-label">비밀번호 확인</div>
+						<input type="password" class="profile-input" name="password_confirm" placeholder="비밀번호 확인">
+					</div>
+					<hr>
+					<button class="btn-block btn-save" type="submit">저장</button>
+					<a href="/profile" class="btn-block btn-cancel">취소</a>
 				</div>
-			</div>
+			</form>
 		</div>
+
 
 		<footer class="footer">
 			<div class="footer-text">

@@ -204,11 +204,13 @@
 
 		<!-- 본문내용 -->
 		<div class="profile-wrapper">
-			<form class="profile-card" method="post" enctype="multipart/form-data">
+			<form class="profile-card" method="post" enctype="multipart/form-data" action="/update-profile">
+				<input type="hidden" name="csrfmiddlewaretoken" id="csrf_token_input">
 				<!-- 프로필 사진 및 사진 변경 -->
 				<div class="profile-photo-area">
 					<div class="profile-photo-container">
-						<img src="{{ user.profile_image_url }}" alt="프로필 사진" class="profile-photo" id="main-profile-photo" />
+						<img src="{{ user.profile_image_url|default:'/static/img/avatars/default-avatar.jpg' }}"
+							 alt="프로필 사진" class="profile-photo" id="main-profile-photo" />
 						<label class="photo-upload-btn" title="사진 변경">
 							<input type="file" name="profile_photo" accept="image/*" style="display:none;">
 							<i data-feather="camera"></i>
@@ -217,14 +219,15 @@
 					<div class="profile-photo-label">프로필 사진</div>
 				</div>
 				<div class="profile-section">
+					<!-- 기존 필드들 유지 -->
 					<div class="profile-row">
 						<div class="profile-label">이름</div>
-						<input type="text" class="profile-input" name="name" value="{{ user.name }}" required>
+						<input type="text" class="profile-input" name="name" value="{{ user.name }}" readonly>
 					</div>
 					<hr>
 					<div class="profile-row">
 						<div class="profile-label">이메일</div>
-						<input type="email" class="profile-input" name="email" value="{{ user.email }}" required>
+						<input type="email" class="profile-input" name="email" value="{{ user.email }}" readonly>
 					</div>
 					<hr>
 					<div class="profile-row">
@@ -234,11 +237,20 @@
 					<hr>
 					<div class="profile-row">
 						<div class="profile-label">휴대전화번호</div>
-						<input type="tel" class="profile-input" name="phone" value="{{ user.phone }}">
+						<input type="tel" class="profile-input" name="phone" value="{{ user.phone }}" readonly>
 					</div>
 					<hr>
+
+					<!-- 현재 비밀번호 확인 필드 추가 -->
 					<div class="profile-row">
-						<div class="profile-label">비밀번호</div>
+						<div class="profile-label">현재 비밀번호</div>
+						<input type="password" class="profile-input" name="current_password" placeholder="현재 비밀번호를 입력하세요" required>
+					</div>
+					<hr>
+
+					<!-- 새 비밀번호 필드 (선택적) -->
+					<div class="profile-row">
+						<div class="profile-label">새 비밀번호</div>
 						<input type="password" class="profile-input" name="password" placeholder="새 비밀번호 (변경 시)">
 					</div>
 					<hr>
@@ -251,8 +263,34 @@
 					<a href="/profile" class="btn-block btn-cancel">취소</a>
 				</div>
 			</form>
-		</div>
 
+			<script>
+				// 페이지 로드 시 CSRF 토큰 설정
+				document.addEventListener('DOMContentLoaded', function() {
+					const csrfToken = getCsrfToken();
+					document.getElementById('csrf_token_input').value = csrfToken;
+				});
+
+				// CSRF 토큰을 쿠키에서 가져오는 함수
+				function getCsrfToken() {
+					const name = 'csrftoken';
+					let cookieValue = null;
+
+					if (document.cookie && document.cookie !== '') {
+						const cookies = document.cookie.split(';');
+						for (let i = 0; i < cookies.length; i++) {
+							const cookie = cookies[i].trim();
+							if (cookie.substring(0, name.length + 1) === (name + '=')) {
+								cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+								break;
+							}
+						}
+					}
+					return cookieValue;
+				}
+			</script>
+
+		</div>
 
 		<footer class="footer">
 			<div class="footer-text">
@@ -261,7 +299,7 @@
 			<div class="footer-links">
 				<a href="/helpdesk">Support</a>
 				<a href="/helpdesk">Help Center</a>
-				<a href="#">Privacy</a>
+				<a href="/privacy">Privacy</a>
 				<a href="#">Terms</a>
 			</div>
 		</footer>

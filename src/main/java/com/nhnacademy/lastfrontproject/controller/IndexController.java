@@ -80,4 +80,9 @@ public class IndexController {
         return "pages-settings";
     }
 
+    @GetMapping("/privacy")
+    public String privacy(){
+        return "pages-privacy";
+    }
+
 }

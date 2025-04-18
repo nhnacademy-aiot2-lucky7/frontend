@@ -208,7 +208,8 @@
 				<!-- 프로필 사진 및 사진 변경 -->
 				<div class="profile-photo-area">
 					<div class="profile-photo-container">
-						<img src="{{ user.profile_image_url }}" alt="프로필 사진" class="profile-photo" id="main-profile-photo" />
+						<img src="{{ user.profile_image_url|default:'/static/img/avatars/default-avatar.jpg' }}"
+							 alt="프로필 사진" class="profile-photo" id="main-profile-photo" />
 					</div>
 					<div class="profile-photo-label">프로필 사진</div>
 				</div>
@@ -216,26 +217,25 @@
 					<div class="profile-row">
 						<div class="profile-label">이름</div>
 						<div class="profile-value-group">
-							<span class="profile-value">홍길동</span>
+							<span class="profile-value">{{ user.name }}</span>
 						</div>
 					</div>
 					<hr>
 					<div class="profile-row">
 						<div class="profile-label">이메일</div>
-						<div class="profile-value">honggildong@example.com</div>
+						<div class="profile-value">{{ user.email }}</div>
 					</div>
 					<hr>
 					<div class="profile-row">
 						<div class="profile-label">부서</div>
-						<div class="profile-value">개발팀</div>
+						<div class="profile-value">{{ user.department }}</div>
 					</div>
 					<hr>
 					<div class="profile-row">
 						<div class="profile-label">휴대전화번호</div>
-						<div class="profile-value">010-1234-5678</div>
+						<div class="profile-value">{{ user.phone }}</div>
 					</div>
 					<hr>
-<!--					<button class="btn-block btn-password" type="button">회원정보 수정</button>-->
 					<a class="btn-block btn-password" href="/edit-profile">회원정보 수정</a>
 				</div>
 			</div>
@@ -248,7 +248,7 @@
 			<div class="footer-links">
 				<a href="/helpdesk">Support</a>
 				<a href="/helpdesk">Help Center</a>
-				<a href="#">Privacy</a>
+				<a href="/privacy">Privacy</a>
 				<a href="#">Terms</a>
 			</div>
 		</footer>

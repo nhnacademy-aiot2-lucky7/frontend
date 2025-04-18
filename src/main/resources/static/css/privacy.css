@@ -1,0 +1,50 @@
+body {
+    font-family: 'Noto Sans KR', Arial, sans-serif;
+    background: #f9f9f9;
+    color: #222;
+    margin: 0;
+    padding: 0;
+}
+.privacy-policy-container {
+    max-width: 800px;
+    margin: 40px auto;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 40px 32px;
+}
+h1 {
+    text-align: center;
+    font-size: 2.2em;
+    margin-bottom: 32px;
+}
+h2 {
+    margin-top: 36px;
+    font-size: 1.35em;
+    color: #1a5dab;
+}
+ul, ol {
+    margin: 12px 0 12px 24px;
+}
+li {
+    margin-bottom: 6px;
+}
+.sub {
+    margin-left: 18px;
+}
+.contact-list {
+    margin-top: 10px;
+}
+.contact-list li {
+    margin-bottom: 2px;
+}
+.article {
+    margin-bottom: 36px;
+}
+.note {
+    color: #666;
+    font-size: 0.96em;
+}
+hr {
+    margin: 36px 0;
+}

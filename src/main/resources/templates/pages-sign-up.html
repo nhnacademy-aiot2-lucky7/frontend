@@ -27,28 +27,49 @@
 
 		<form class="auth-form">
 			<div class="form-group">
-				<label for="email">이메일</label>
-				<input type="email" class="form-control" id="email" name="email" placeholder="이메일을 입력하세요 (이메일은 아이디로 사용됩니다)" required>
+				<label for="userEmail">이메일</label>
+				<input type="email" class="form-control" id="userEmail" name="userEmail" placeholder="이메일을 입력하세요 (이메일은 아이디로 사용됩니다)" required>
 			</div>
 
 			<div class="form-group">
-				<label for="password">비밀번호</label>
-				<input type="password" class="form-control" id="password" name="password" placeholder="비밀번호를 입력하세요" required>
+				<label for="userPassword">비밀번호</label>
+				<input type="password" class="form-control" id="userPassword" name="userPassword" placeholder="비밀번호를 입력하세요" required>
+				<span class="password-eye-container" style="position:absolute; right:16px; top:38px; cursor:pointer;"></span>
 			</div>
 
 			<div class="form-group">
-				<label for="name">이름</label>
-				<input type="text" class="form-control" id="name" name="name" placeholder="이름을 입력하세요" required>
+				<label for="userName">이름</label>
+				<input type="text" class="form-control" id="userName" name="userName" placeholder="이름을 입력하세요" required>
 			</div>
 
 			<div class="form-group">
-				<label for="department">부서</label>
-				<input type="text" class="form-control" id="department" name="department" placeholder="부서를 입력하세요" required>
+				<label for="userDepartment">부서</label>
+				<select class="form-control" id="userDepartment" name="userDepartment" required>
+				<option value="" disabled selected hidden>부서를 선택하세요</option>
+					<script>
+						document.addEventListener('DOMContentLoaded', function () {
+							fetch('/api/departments') // 임의 (수정필요)
+								.then(response => response.json())
+								.then(data => {
+									const departmentSelect = document.createElement('option');
+									data.forEach(dept => {
+										const option = document.createElement('option');
+										option.value = dept.name; // 임의 (수정필요)
+										option.textContent = dept.name;
+										departmentSelect.appendChild(option);
+									})
+								})
+								.catch(error => {
+									console.error('부서 목록을 불러오지 못했습니다: ', error);
+								});
+						});
+					</script>
+				</select>
 			</div>
 
 			<div class="form-group">
-				<label for="phone">휴대전화 번호</label>
-				<input type="tel" class="form-control" id="phone" name="phone" placeholder="휴대전화 번호를 입력하세요" required>
+				<label for="userPhone">휴대전화 번호</label>
+				<input type="tel" class="form-control" id="userPhone" name="userPhone" placeholder="휴대전화 번호를 입력하세요" required>
 			</div>
 
 			<!--			<div class="form-check">-->
@@ -65,6 +86,9 @@
 	</div>
 </div>
 
+<script src="/js/feather.min.js"></script>
 <script src="/js/signUp.js"></script>
+<script src="/js/auth_eye.js"></script>
+
 </body>
 </html>

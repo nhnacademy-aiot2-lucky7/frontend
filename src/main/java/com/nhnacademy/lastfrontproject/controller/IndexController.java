@@ -57,7 +57,7 @@ public class IndexController {
 
     @GetMapping("/add-sensor")
     public String addSensor(){
-        return "pages/pages-add-sensor";
+        return "pages-add-gateway";
     }
 
     @GetMapping("/add-dashboard")

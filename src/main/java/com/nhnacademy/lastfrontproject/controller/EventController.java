@@ -11,7 +11,7 @@ import java.util.List;
 @Controller
 public class EventController {
     @GetMapping("/event")
-    public String event(Model model){
+    public String showEvent(Model model){
         List<EventResponse> events = List.of(
                 new EventResponse(1, "센서-A1", "온도 경고 발생", LocalDateTime.now().minusHours(1)),
                 new EventResponse(2, "센서-B2", "습도 초과 감지", LocalDateTime.now().minusHours(2)),

@@ -1,0 +1,65 @@
+<nav class="navbar navbar-expand navbar-light navbar-bg" th:fragment="navbar">
+    <a class="sidebar-toggle js-sidebar-toggle">
+        <i class="hamburger align-self-center"></i>
+    </a>
+    <div class="navbar-collapse collapse">
+        <ul class="navbar-nav navbar-align">
+            <!-- 알림 드롭다운 -->
+            <li class="nav-item dropdown">
+                <a class="nav-icon dropdown-toggle" data-bs-toggle="dropdown" href="#" id="alertsDropdown">
+                    <div class="position-relative">
+                        <i class="align-middle" data-feather="bell"></i>
+                        <span class="indicator">4</span>
+                    </div>
+                </a>
+                <div aria-labelledby="alertsDropdown" class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0">
+                    <div class="dropdown-menu-header">4 New Notifications</div>
+                    <div class="list-group">
+                        <!-- 알림 항목들... (필요시 th:each로 대체 가능) -->
+                    </div>
+                    <div class="dropdown-menu-footer">
+                        <a class="text-muted" href="#">Show all notifications</a>
+                    </div>
+                </div>
+            </li>
+            <!-- 메시지 드롭다운 -->
+            <li class="nav-item dropdown">
+                <a class="nav-icon dropdown-toggle" data-bs-toggle="dropdown" href="#" id="messagesDropdown">
+                    <div class="position-relative">
+                        <i class="align-middle" data-feather="message-square"></i>
+                    </div>
+                </a>
+                <div aria-labelledby="messagesDropdown" class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0">
+                    <div class="dropdown-menu-header">4 New Messages</div>
+                    <div class="list-group">
+                        <!-- 메시지 항목들... (필요시 th:each로 대체 가능) -->
+                    </div>
+                    <div class="dropdown-menu-footer">
+                        <a class="text-muted" href="#">Show all messages</a>
+                    </div>
+                </div>
+            </li>
+            <!-- 사용자 드롭다운 -->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle d-none d-sm-inline-block" data-bs-toggle="dropdown" href="#">
+                    <img alt="프로필 사진" class="navbar-profile-photo" src="{{ user.profile_image_url }}"/>
+                    <span class="text-dark">Charles Hall</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-end">
+                    <a class="dropdown-item" href="/profile">
+                        <i class="align-middle me-1" data-feather="user"></i> Profile
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/dashboard">
+                        <i class="align-middle me-1" data-feather="settings"></i> Settings &amp; Privacy
+                    </a>
+                    <a class="dropdown-item" href="/helpdesk">
+                        <i class="align-middle me-1" data-feather="help-circle"></i> Help Center
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Log out</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>

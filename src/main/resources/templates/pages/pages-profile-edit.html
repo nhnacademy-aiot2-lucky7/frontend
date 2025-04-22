@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+<link href="/img/icons/777_64x64.png" rel="shortcut icon"/>
+<title>Profile Edit | Lucky Seven</title>
+<link href="/css/index.css" rel="stylesheet"/>
+<link href="/css/common.css" rel="stylesheet"/>
+<link href="/css/profile.css" rel="stylesheet"/>
+<link href="https:///css2?family=Inter:wght@300;400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https:///css2?family=:wght@300;400;500;700&amp;display=swap" rel="stylesheet"/>
+</head>
+<body>
+<div class="wrapper">
+<div th:replace="fragments/sidebar :: sidebar"></div>
+<div class="main">
+<script src="/js/common.js"></script>
+<script src="/js/feather.min.js"></script>
+<script src="/js/bootstrap.bundle.min.js"></script>
+<nav class="navbar navbar-expand navbar-light navbar-bg">
+<a class="sidebar-toggle js-sidebar-toggle">
+<i class="hamburger align-self-center"></i>
+</a>
+<div class="navbar-collapse collapse">
+<ul class="navbar-nav navbar-align">
+<!-- 알림 드롭다운 -->
+<li class="nav-item dropdown">
+<a class="nav-icon dropdown-toggle" data-bs-toggle="dropdown" href="#" id="alertsDropdown">
+<div class="position-relative">
+<i class="align-middle" data-feather="bell"></i>
+<span class="indicator">4</span>
+</div>
+</a>
+<div aria-labelledby="alertsDropdown" class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0">
+<div class="dropdown-menu-header">
+								4 New Notifications
+							</div>
+<div class="list-group">
+<!-- 알림 항목 1 -->
+<a class="list-group-item" href="#">
+<div class="notification-item">
+<div class="notification-icon">
+<i class="text-danger" data-feather="alert-circle"></i>
+</div>
+<div class="notification-content">
+<div class="notification-title">Update completed</div>
+<div class="notification-description">Restart server 12 to complete the update.</div>
+<div class="notification-time">30m ago</div>
+</div>
+</div>
+</a>
+<!-- 알림 항목 2 -->
+<a class="list-group-item" href="#">
+<div class="notification-item">
+<div class="notification-icon">
+<i class="text-warning" data-feather="bell"></i>
+</div>
+<div class="notification-content">
+<div class="notification-title">Lorem ipsum</div>
+<div class="notification-description">Aliquam ex eros, imperdiet vulputate hendrerit et.</div>
+<div class="notification-time">2h ago</div>
+</div>
+</div>
+</a>
+<!-- 알림 항목 3 -->
+<a class="list-group-item" href="#">
+<div class="notification-item">
+<div class="notification-icon">
+<i class="text-primary" data-feather="home"></i>
+</div>
+<div class="notification-content">
+<div class="notification-title">Login from 192.186.1.8</div>
+<div class="notification-time">5h ago</div>
+</div>
+</div>
+</a>
+<!-- 알림 항목 4 -->
+<a class="list-group-item" href="#">
+<div class="notification-item">
+<div class="notification-icon">
+<i class="text-success" data-feather="user-plus"></i>
+</div>
+<div class="notification-content">
+<div class="notification-title">New connection</div>
+<div class="notification-description">Christina accepted your request.</div>
+<div class="notification-time">14h ago</div>
+</div>
+</div>
+</a>
+</div>
+<div class="dropdown-menu-footer">
+<a class="text-muted" href="#">Show all notifications</a>
+</div>
+</div>
+</li>
+<!-- 메시지 드롭다운 -->
+<li class="nav-item dropdown">
+<a class="nav-icon dropdown-toggle" data-bs-toggle="dropdown" href="#" id="messagesDropdown">
+<div class="position-relative">
+<i class="align-middle" data-feather="message-square"></i>
+</div>
+</a>
+<div aria-labelledby="messagesDropdown" class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0">
+<div class="dropdown-menu-header">
+<div class="position-relative">
+									4 New Messages
+								</div>
+</div>
+<div class="list-group">
+<!-- 메시지 항목 1 -->
+<a class="list-group-item" href="#">
+<div class="message-item">
+<div class="message-avatar">
+<img alt="Vanessa Tucker" class="avatar img-fluid rounded-circle" src="img/avatars/avatar-5.jpg"/>
+</div>
+<div class="message-content">
+<div class="message-sender">Vanessa Tucker</div>
+<div class="message-text">Nam pretium turpis et arcu. Duis arcu tortor.</div>
+<div class="message-time">15m ago</div>
+</div>
+</div>
+</a>
+<!-- 메시지 항목 2 -->
+<a class="list-group-item" href="#">
+<div class="message-item">
+<div class="message-avatar">
+<img alt="William Harris" class="avatar img-fluid rounded-circle" src="img/avatars/avatar-2.jpg"/>
+</div>
+<div class="message-content">
+<div class="message-sender">William Harris</div>
+<div class="message-text">Curabitur ligula sapien euismod vitae.</div>
+<div class="message-time">2h ago</div>
+</div>
+</div>
+</a>
+<!-- 메시지 항목 3 -->
+<a class="list-group-item" href="#">
+<div class="message-item">
+<div class="message-avatar">
+<img alt="Christina Mason" class="avatar img-fluid rounded-circle" src="img/avatars/avatar-4.jpg"/>
+</div>
+<div class="message-content">
+<div class="message-sender">Christina Mason</div>
+<div class="message-text">Pellentesque auctor neque nec urna.</div>
+<div class="message-time">4h ago</div>
+</div>
+</div>
+</a>
+<!-- 메시지 항목 4 -->
+<a class="list-group-item" href="#">
+<div class="message-item">
+<div class="message-avatar">
+<img alt="Sharon Lessman" class="avatar img-fluid rounded-circle" src="img/avatars/avatar-3.jpg"/>
+</div>
+<div class="message-content">
+<div class="message-sender">Sharon Lessman</div>
+<div class="message-text">Aenean tellus metus, bibendum sed, posuere ac, mattis non.</div>
+<div class="message-time">5h ago</div>
+</div>
+</div>
+</a>
+</div>
+<div class="dropdown-menu-footer">
+<a class="text-muted" href="#">Show all messages</a>
+</div>
+</div>
+</li>
+<!-- 사용자 프로필 드롭다운 -->
+<li class="nav-item dropdown">
+<a class="nav-link dropdown-toggle d-none d-sm-inline-block" data-bs-toggle="dropdown" href="#">
+<img alt="Charles Hall" class="avatar img-fluid rounded me-1" src="img/avatars/avatar.jpg"/>
+<span class="text-dark">Charles Hall</span>
+</a>
+<div class="dropdown-menu dropdown-menu-end">
+<a class="dropdown-item" href="/profile">
+<i class="align-middle me-1" data-feather="user"></i> Profile
+							</a>
+<div class="dropdown-divider"></div>
+<a class="dropdown-item" href="/dashboard">
+<i class="align-middle me-1" data-feather="settings"></i> Settings &amp; Privacy
+							</a>
+<a class="dropdown-item" href="/helpdesk">
+<i class="align-middle me-1" data-feather="help-circle"></i> Help Center
+							</a>
+<div class="dropdown-divider"></div>
+<a class="dropdown-item" href="#">Log out</a>
+</div>
+</li>
+</ul>
+</div>
+</nav>
+<!-- 본문내용 -->
+<div class="profile-wrapper">
+<form class="profile-card" enctype="multipart/form-data" method="post">
+<!-- 프로필 사진 및 사진 변경 -->
+<div class="profile-photo-area">
+<div class="profile-photo-container">
+<img alt="프로필 사진" class="profile-photo" id="main-profile-photo" src="{{ user.profile_image_url }}"/>
+<label class="photo-upload-btn" title="사진 변경">
+<input accept="image/*" name="profile_photo" style="display:none;" type="file"/>
+<i data-feather="camera"></i>
+</label>
+</div>
+<div class="profile-photo-label">프로필 사진</div>
+</div>
+<div class="profile-section">
+<div class="profile-row">
+<div class="profile-label">이름</div>
+<input class="profile-input" name="name" required="" type="text" value="{{ user.name }}"/>
+</div>
+<hr/>
+<div class="profile-row">
+<div class="profile-label">이메일</div>
+<input class="profile-input" name="email" required="" type="email" value="{{ user.email }}"/>
+</div>
+<hr/>
+<div class="profile-row">
+<div class="profile-label">부서</div>
+<input class="profile-input" name="department" type="text" value="{{ user.department }}"/>
+</div>
+<hr/>
+<div class="profile-row">
+<div class="profile-label">휴대전화번호</div>
+<input class="profile-input" name="phone" type="tel" value="{{ user.phone }}"/>
+</div>
+<hr/>
+<div class="profile-row">
+<div class="profile-label">비밀번호</div>
+<input class="profile-input" name="password" placeholder="새 비밀번호 (변경 시)" type="password"/>
+</div>
+<hr/>
+<div class="profile-row">
+<div class="profile-label">비밀번호 확인</div>
+<input class="profile-input" name="password_confirm" placeholder="비밀번호 확인" type="password"/>
+</div>
+<hr/>
+<button class="btn-block btn-save" type="submit">저장</button>
+<a class="btn-block btn-cancel" href="/profile">취소</a>
+</div>
+</form>
+</div>
+<footer class="footer">
+<div class="footer-text">
+				Lucky Seven ©
+			</div>
+<div class="footer-links">
+<a href="/helpdesk">Support</a>
+<a href="/helpdesk">Help Center</a>
+<a href="#">Privacy</a>
+<a href="#">Terms</a>
+</div>
+</footer>
+</div>
+</div>
+<script src="https://unpkg.com/feather-icons"></script>
+
+<script src="/js/extracted/pages-profile-edit.extracted.js"></script></body>
+</html>

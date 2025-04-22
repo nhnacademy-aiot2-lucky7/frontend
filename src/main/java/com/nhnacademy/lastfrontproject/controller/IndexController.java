@@ -15,69 +15,64 @@ public class IndexController {
         return "index";
     }
 
-    @GetMapping("/sidebar")
-    public String sidebar(){
-        return "sidebar";
-    }
-
     @GetMapping("/profile")
     public String profile(){
-        return "pages-profile";
+        return "pages/pages-profile";
     }
 
     @GetMapping("/helpdesk")
     public String helpdesk(){
-        return "pages-helpdesk";
+        return "pages/pages-helpdesk";
     }
 
     @GetMapping("/edit-profile")
     public String editProfile(){
-        return "pages-profile-edit";
+        return "pages/pages-profile-edit";
     }
 
     @GetMapping("/server-room")
     public String serverRoom(){
-        return "pages-server-room";
+        return "pages/pages-server-room";
     }
 
     @GetMapping("/power-usage")
     public String powerUsage(){
-        return "pages-power-usage";
+        return "pages/pages-power-usage";
     }
 
     @GetMapping("/access-control")
     public String accessControl(){
-        return "pages-access-control";
+        return "pages/pages-access-control";
     }
 
     @GetMapping("/equipment")
     public String equipment(){
-        return "pages-equipment";
+        return "pages/pages-equipment";
     }
 
     @GetMapping("/calamity")
     public String calamity(){
-        return "pages-calamity";
+        return "pages/pages-calamity";
     }
 
-    @GetMapping("/alert")
+    @GetMapping("/event")
     public String alert(){
-        return "pages-alert";
+        return "pages/pages-event";
     }
 
     @GetMapping("/add-sensor")
     public String addSensor(){
-        return "pages-add-sensor";
+        return "pages/pages-add-sensor";
     }
 
     @GetMapping("/add-dashboard")
     public String addDashboard(){
-        return "pages-add-dashboard";
+        return "pages/pages-add-dashboard";
     }
 
     @GetMapping("/settings")
     public String settings(){
-        return "pages-settings";
+        return "pages/pages-settings";
     }
 
     @GetMapping("/privacy")

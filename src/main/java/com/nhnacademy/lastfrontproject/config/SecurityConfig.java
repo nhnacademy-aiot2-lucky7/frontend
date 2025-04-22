@@ -1,5 +1,6 @@
 package com.nhnacademy.lastfrontproject.config;
 
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -8,12 +9,12 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf((AbstractHttpConfigurer::disable))
                 .headers(headers -> headers
@@ -27,16 +28,15 @@ public class SecurityConfig {
                         )
 
                         // 콘텐츠 보안 정책 설정 (XSS, 외부 스크립트 방지 등)
-                        .contentSecurityPolicy(csp -> csp
-                                .policyDirectives("default-src 'self'; script-src 'self'; object-src 'none';")
-                        )
+//                        .contentSecurityPolicy(csp -> csp
+//                                .policyDirectives("default-src 'self'; script-src 'self' https://unpkg.com; object-src 'none';")
+//                        )
                 )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/", "/sign-in", "/sign-up", "/favicon.ico", "/dashboard",
                                 "/css/**", "/js/**", "/img/**", "/webjars/**",
-                                "/sidebar", "/profile", "/helpdesk","/edit-profile", "/server-room", "/power-usage", "/access-control",
-                                "/equipment", "/calamity", "/alert", "/add-sensor", "/add-dashboard", "/settings", "/privacy"
+                                "/sidebar", "**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

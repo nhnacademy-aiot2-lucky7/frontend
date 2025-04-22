@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+    <link href="/img/icons/777_64x64.png" rel="shortcut icon"/>
+    <title>Lucky Seven</title>
+    <link href="/css/common.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="wrapper">
+    <div th:replace="fragments/sidebar :: sidebar"></div>
+    <div class="main">
+        <div th:replace="fragments/navbar :: navbar"></div>
+        <!-- 본문이 들어올 자리 -->
+        <div layout:fragment="content"></div>
+        <div th:replace="fragments/footer :: footer"></div>
+    </div>
+</div>
+<script src="/js/feather.min.js"></script>
+<script src="/js/feather-replace.js"></script>
+</body>
+</html>

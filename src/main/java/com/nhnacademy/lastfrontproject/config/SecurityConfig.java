@@ -28,16 +28,15 @@ public class SecurityConfig {
                         )
 
                         // 콘텐츠 보안 정책 설정 (XSS, 외부 스크립트 방지 등)
-                        .contentSecurityPolicy(csp -> csp
-                                .policyDirectives("default-src 'self'; script-src 'self'; object-src 'none';")
-                        )
+//                        .contentSecurityPolicy(csp -> csp
+//                                .policyDirectives("default-src 'self'; script-src 'self' https://unpkg.com; object-src 'none';")
+//                        )
                 )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/", "/sign-in", "/sign-up", "/favicon.ico", "/dashboard",
                                 "/css/**", "/js/**", "/img/**", "/webjars/**",
-                                "/sidebar", "/profile", "/helpdesk","/edit-profile", "/server-room", "/power-usage", "/access-control",
-                                "/equipment", "/calamity", "/alert", "/add-sensor", "/add-dashboard", "/settings"
+                                "/sidebar", "**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

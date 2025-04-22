@@ -1,102 +1,69 @@
 <!DOCTYPE html>
-<html lang="ko"
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  layout:decorate="@{/layouts/layout.html}">
+	  layout:decorate="~{layouts/layout}">
 
 <head>
-	<title>마이 페이지 수정</title>
+	<title>회원정보 수정 | Lucky Seven</title>
 	<link href="/css/profile.css" rel="stylesheet"/>
 </head>
 
 <body>
 <div layout:fragment="content">
-	<!-- 본문내용 -->
 	<div class="profile-wrapper">
-		<form class="profile-card" method="post" enctype="multipart/form-data" action="/update-profile">
-			<input type="hidden" name="csrfmiddlewaretoken" id="csrf_token_input">
-			<!-- 프로필 사진 및 사진 변경 -->
-			<div class="profile-photo-area">
-				<div class="profile-photo-container">
-					<img src="{{ user.profile_image_url|default:'/static/img/avatars/default-avatar.jpg' }}"
-						 alt="프로필 사진" class="profile-photo" id="main-profile-photo" />
-					<label class="photo-upload-btn" title="사진 변경">
-						<input type="file" name="profile_photo" accept="image/*" style="display:none;">
-						<i data-feather="camera"></i>
-					</label>
-				</div>
-			</div>
-			<div class="profile-section">
-				<!-- 기존 필드들 유지 -->
+		<div class="profile-card">
+			<form class="profile-section" method="post" action="/edit-profile">
 				<div class="profile-row">
 					<div class="profile-label">이름</div>
-					<input type="text" class="profile-input" name="userName" value="{{ user.userName }}" readonly>
+					<input type="text" class="profile-input" name="userName" th:value="${user.userName}" readonly>
 				</div>
 				<hr>
 				<div class="profile-row">
 					<div class="profile-label">이메일</div>
-					<input type="email" class="profile-input" name="userEmail" value="{{ user.userEmail }}" readonly>
+					<input type="email" class="profile-input" name="userEmail" th:value="${user.userEmail}" readonly>
 				</div>
 				<hr>
 				<div class="profile-row">
 					<div class="profile-label">부서</div>
-					<input type="text" class="profile-input" name="userDepartment" value="{{ user.userDepartment }}" readonly>
+					<input type="text" class="profile-input" name="userDepartment" th:value="${user.userDepartment}">
 				</div>
 				<hr>
 				<div class="profile-row">
 					<div class="profile-label">휴대전화번호</div>
-					<input type="tel" class="profile-input" name="userPhone" value="{{ user.userPhone }}" readonly>
+					<input type="tel" class="profile-input" name="userPhone" th:value="${user.userPhone}" readonly>
 				</div>
 				<hr>
-
-				<!-- 현재 비밀번호 확인 필드 추가 -->
 				<div class="profile-row">
 					<div class="profile-label">현재 비밀번호</div>
-					<input type="password" class="profile-input" name="current_password" placeholder="현재 비밀번호를 입력하세요" required>
+					<div class="input-wrapper">
+						<input type="password" class="profile-input" name="currentPassword" placeholder="현재 비밀번호를 입력하세요" required>
+						<span class="password-eye-container"></span>
+					</div>
 				</div>
 				<hr>
-
-				<!-- 새 비밀번호 필드 (선택적) -->
 				<div class="profile-row">
 					<div class="profile-label">새 비밀번호</div>
-					<input type="password" class="profile-input" name="password" placeholder="새 비밀번호 (변경 시)">
+					<div class="input-wrapper">
+						<input type="password" class="profile-input" name="newPassword" placeholder="새 비밀번호 (변경 시)">
+						<span class="password-eye-container"></span>
+					</div>
 				</div>
 				<hr>
 				<div class="profile-row">
 					<div class="profile-label">비밀번호 확인</div>
-					<input type="password" class="profile-input" name="password_confirm" placeholder="비밀번호 확인">
+					<div class="input-wrapper">
+						<input type="password" class="profile-input" name="confirmPassword" placeholder="비밀번호 확인">
+						<span class="password-eye-container"></span>
+					</div>
 				</div>
 				<hr>
-				<button class="btn-block btn-save" type="submit">저장</button>
+				<button type="submit" class="btn-block btn-save">저장</button>
 				<a href="/profile" class="btn-block btn-cancel">취소</a>
-			</div>
-		</form>
-
-		<script>
-			// 페이지 로드 시 CSRF 토큰 설정
-			document.addEventListener('DOMContentLoaded', function() {
-				const csrfToken = getCsrfToken();
-				document.getElementById('csrf_token_input').value = csrfToken;
-			});
-
-			// CSRF 토큰을 쿠키에서 가져오는 함수
-			function getCsrfToken() {
-				const name = 'csrftoken';
-				let cookieValue = null;
-
-				if (document.cookie && document.cookie !== '') {
-					const cookies = document.cookie.split(';');
-					for (let i = 0; i < cookies.length; i++) {
-						const cookie = cookies[i].trim();
-						if (cookie.substring(0, name.length + 1) === (name + '=')) {
-							cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-							break;
-						}
-					}
-				}
-				return cookieValue;
-			}
-		</script>
+			</form>
+		</div>
 	</div>
 </div>
+
+<script src="/js/auth_eye.js"></script>
 </body>
 </html>

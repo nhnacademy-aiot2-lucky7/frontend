@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="ko"
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="@{/layouts/layout.html}">
+      layout:decorate="~{layouts/layout}">
 
 <head>
-    <title>마이 페이지</title>
+    <title>마이 페이지 | Lucky Seven</title>
     <link href="/css/profile.css" rel="stylesheet"/>
 </head>
 
@@ -14,38 +14,36 @@
         <div class="profile-card">
             <!-- 프로필 사진 및 사진 변경 -->
             <div class="profile-photo-area">
-                <div class="profile-photo-area">
-                    <div class="profile-photo-container">
-                        <img src="{{ user.profile_image | default:'/img/avatars/default-avatar.jpg' }}"
-                             class="profile-photo" id="main-profile-photo" alt="프로필 사진"/>
-                    </div>
-                    <div class="profile-photo-label">프로필 사진</div>
+                <div class="profile-photo-container">
+                    <img src="/img/avatars/default-avatar.jpg"
+                         class="profile-photo" id="main-profile-photo" alt="프로필 사진"/>
                 </div>
             </div>
+
             <div class="profile-section">
                 <div class="profile-row">
                     <div class="profile-label">이름</div>
                     <div class="profile-value-group">
-                        <span class="profile-value">{{ user.userName }}</span>
+                        <span class="profile-value" th:text="${user.userName}"></span>
                     </div>
                 </div>
                 <hr>
                 <div class="profile-row">
                     <div class="profile-label">이메일</div>
-                    <div class="profile-value">{{ user.userEmail }}</div>
+                    <div class="profile-value" th:text="${user.userEmail}"></div>
                 </div>
                 <hr>
                 <div class="profile-row">
                     <div class="profile-label">부서</div>
-                    <div class="profile-value">{{ user.userDepartment }}</div>
+                    <div class="profile-value" th:text="${user.userDepartment}"></div>
                 </div>
                 <hr>
                 <div class="profile-row">
                     <div class="profile-label">휴대전화번호</div>
-                    <div class="profile-value">{{ user.userPhone }}</div>
+                    <div class="profile-value" th:text="${user.userPhone}"></div>
                 </div>
                 <hr>
-                <a class="btn-block btn-password" href="/edit-profile">회원정보 수정</a>
+                <a class="btn-block btn-password" th:href="@{/edit-profile}">회원정보 수정</a>
             </div>
         </div>
     </div>

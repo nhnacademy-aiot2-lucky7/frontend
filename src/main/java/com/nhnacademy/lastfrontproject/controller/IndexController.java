@@ -15,20 +15,20 @@ public class IndexController {
         return "index";
     }
 
-    @GetMapping("/profile")
-    public String profile(){
-        return "pages/pages-profile";
-    }
-
     @GetMapping("/helpdesk")
     public String helpdesk(){
         return "pages/pages-helpdesk";
     }
 
-    @GetMapping("/edit-profile")
-    public String editProfile(){
-        return "pages/pages-profile-edit";
-    }
+//    @GetMapping("/profile")
+//    public String profile(){
+//        return "pages/pages-profile";
+//    }
+//
+//    @GetMapping("/edit-profile")
+//    public String editProfile(){
+//        return "pages/pages-profile-edit";
+//    }
 
     @GetMapping("/server-room")
     public String serverRoom(){

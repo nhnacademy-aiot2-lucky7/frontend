@@ -29,16 +29,16 @@ document.addEventListener('DOMContentLoaded', function() {
     //로그인 여부 확인
     const token = localStorage.getItem('token');
     if (token) {
-        window.location.href = 'index.html'; // 이미 로그인 된 사람은 인덱스 페이지로 리다이렉트
+        window.location.href = '/dashboard'; // 이미 로그인 된 사람은 인덱스 페이지로 리다이렉트
         return;
     }
 
     form.addEventListener('submit', function (e) {
         e.preventDefault();
 
-        const name = form.querySelector('input[name = "name"]').value;
-        const email = form.querySelector('input[name = "email"]').value;
-        const password = form.querySelector('input[name = "password"]').value;
+        const name = form.querySelector('input[name = "userName"]').value;
+        const email = form.querySelector('input[name = "userEmail"]').value;
+        const password = form.querySelector('input[name = "userPassword"]').value;
 
         // 유효성 검사
         if (!name || !email || !password) {

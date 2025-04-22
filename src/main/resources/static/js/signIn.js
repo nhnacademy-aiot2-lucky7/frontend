@@ -29,15 +29,15 @@ document.addEventListener('DOMContentLoaded', function() {
     // 이미 로그인되어 있는지 확인
     const token = localStorage.getItem('token');
     if (token) {
-        window.location.href = 'index.html'; // 이미 로그인된 사용자는 메인 페이지로 리다이렉트
+        window.location.href = '/dashboard'; // 이미 로그인된 사용자는 메인 페이지로 리다이렉트
         return;
     }
 
     form.addEventListener('submit', function(e) {
         e.preventDefault();
 
-        const email = form.querySelector('input[name="email"]').value;
-        const password = form.querySelector('input[name="password"]').value;
+        const email = form.querySelector('input[name="userEmail"]').value;
+        const password = form.querySelector('input[name="userPassword"]').value;
         const rememberMe = form.querySelector('input[name="remember-me"]').checked;
 
         // 간단한 유효성 검사
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
 
                     alert('로그인 성공!');
-                    window.location.href = 'index.html';
+                    window.location.href = '/dashboard';
                 } else {
                     alert(data.message || '로그인에 실패했습니다.');
                 }

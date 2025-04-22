@@ -1,7 +1,6 @@
-/* sidebar가 fixed이기 때문에 main은 반드시 margin-left 필요 */
+/* layout 구조에 맞춰 좌측 sidebar 고려 제거 */
 .event-container {
-    margin-left: 260px;
-    width: calc(100% - 260px);
+    width: 100%;
     min-height: 100vh;
     background-color: #f5f7fb;
     padding: 2rem;
@@ -64,10 +63,49 @@
     cursor: pointer;
 }
 
+.event-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0; /* 셀 간 줄 없애기 */
+    table-layout: auto;
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+/* 헤더 셀 스타일 */
+.event-table th {
+    padding: 1rem;
+    background-color: #f1f3f5;
+    font-weight: 600;
+    text-align: left;
+    border-bottom: 1px solid #dee2e6;
+}
+
+/* 본문 셀 스타일 */
+.event-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #f1f3f5;
+    vertical-align: middle;
+}
+
+/* 첫 번째 셀은 중앙 정렬할 수도 있음 (예: 이벤트 레벨) */
+.event-table td:first-child {
+    text-align: center;
+    width: 120px;
+}
+
+/* 본문 정렬 정리 */
+.event-table td:nth-child(2),
+.event-table td:nth-child(3),
+.event-table td:nth-child(4) {
+    text-align: left;
+}
+
 /* 반응형 대응 */
 @media (max-width: 991.98px) {
     .event-container {
-        margin-left: 0;
         width: 100%;
     }
 }

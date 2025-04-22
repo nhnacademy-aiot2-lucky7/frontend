@@ -1,51 +1,93 @@
 <!DOCTYPE html>
-
 <html lang="ko">
-<head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
-<meta content="회원가입 페이지" name="description"/>
-<title>회원가입 | Lucky Seven</title>
-<link href="/css/auth.css" rel="stylesheet"/>
-<link href="/css/common.css" rel="stylesheet"/>
-<link href="https:///css2?family=Inter:wght@300;400;600&amp;display=swap" rel="stylesheet"/>
-</head>
-<body>
-<div class="auth-wrapper">
-<div class="auth-card">
-<div class="auth-header">
-<div class="auth-logo">
-<img alt="Lucky Seven" src="/img/avatars/logo.png"/>
-</div>
-<h1 class="auth-title">Lucky Seven</h1>
-<p class="auth-subtitle">회원가입</p>
-</div>
-<form class="auth-form">
-<div class="form-group">
-<label for="name">이름</label>
-<input class="form-control" id="name" name="name" placeholder="이름을 입력하세요" required="" type="text"/>
-</div>
-<div class="form-group">
-<label for="email">이메일</label>
-<input class="form-control" id="email" name="email" placeholder="이메일을 입력하세요" required="" type="email"/>
-</div>
-<div class="form-group">
-<label for="password">비밀번호</label>
-<input class="form-control" id="password" name="password" placeholder="비밀번호를 입력하세요" required="" type="password"/>
-</div>
-<!--			<div class="form-check">-->
-<!--				<input type="checkbox" class="form-check-input" id="agree" name="agree" required>-->
-<!--				<label class="form-check-label" for="agree">이용약관에 동의합니다</label>-->
-<!--			</div>-->
-<button class="auth-btn" type="submit">회원가입</button>
-<div class="auth-footer">
-<p>이미 계정이 있으신가요? <a href="sign-in">로그인</a></p>
-</div>
-</form>
-</div>
-</div>
-<script src="/js/signUp.js"></script>
-<script src="https://unpkg.com/feather-icons"></script>
 
-<script src="/js/extracted/pages-sign-up.extracted.js"></script></body>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="회원가입 페이지">
+
+    <title>회원가입 | Lucky Seven</title>
+    <link href="/css/auth.css" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="auth-wrapper">
+    <div class="auth-card">
+        <div class="auth-header">
+            <div class="auth-logo">
+                <img src="/img/avatars/logo.png" alt="Lucky Seven" />
+            </div>
+            <h1 class="auth-title">Lucky Seven</h1>
+            <p class="auth-subtitle">회원가입</p>
+        </div>
+
+        <form class="auth-form">
+            <div class="form-group">
+                <label for="userEmail">이메일</label>
+                <input type="email" class="form-control" id="userEmail" name="userEmail" placeholder="이메일을 입력하세요 (이메일은 아이디로 사용됩니다)" required>
+            </div>
+
+            <div class="form-group">
+                <label for="userPassword">비밀번호</label>
+                <div class="input-wrapper">
+                    <input type="password" class="form-control" id="userPassword" name="userPassword" placeholder="비밀번호를 입력하세요">
+                    <span class="password-eye-container"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="userName">이름</label>
+                <input type="text" class="form-control" id="userName" name="userName" placeholder="이름을 입력하세요" required>
+            </div>
+
+            <div class="form-group">
+                <label for="userDepartment">부서</label>
+                <select class="form-control" id="userDepartment" name="userDepartment" required>
+                    <option value="" disabled selected hidden>부서를 선택하세요</option>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            fetch('/api/departments') // 임의 (수정필요)
+                                .then(response => response.json())
+                                .then(data => {
+                                    const departmentSelect = document.createElement('option');
+                                    data.forEach(dept => {
+                                        const option = document.createElement('option');
+                                        option.value = dept.name; // 임의 (수정필요)
+                                        option.textContent = dept.name;
+                                        departmentSelect.appendChild(option);
+                                    })
+                                })
+                                .catch(error => {
+                                    console.error('부서 목록을 불러오지 못했습니다: ', error);
+                                });
+                        });
+                    </script>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="userPhone">휴대전화 번호</label>
+                <input type="tel" class="form-control" id="userPhone" name="userPhone" placeholder="휴대전화 번호를 입력하세요" required>
+            </div>
+
+            <!--			<div class="form-check">-->
+            <!--				<input type="checkbox" class="form-check-input" id="agree" name="agree" required>-->
+            <!--				<label class="form-check-label" for="agree">이용약관에 동의합니다</label>-->
+            <!--			</div>-->
+
+            <button type="submit" class="auth-btn">회원가입</button>
+
+            <div class="auth-footer">
+                <p>이미 계정이 있으신가요? <a href="sign-in">로그인</a></p>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="/js/feather.min.js"></script>
+<script src="/js/signUp.js"></script>
+<script src="/js/auth_eye.js"></script>
+
+</body>
 </html>

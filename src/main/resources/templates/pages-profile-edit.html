@@ -216,28 +216,27 @@
 							<i data-feather="camera"></i>
 						</label>
 					</div>
-					<div class="profile-photo-label">프로필 사진</div>
 				</div>
 				<div class="profile-section">
 					<!-- 기존 필드들 유지 -->
 					<div class="profile-row">
 						<div class="profile-label">이름</div>
-						<input type="text" class="profile-input" name="name" value="{{ user.name }}" readonly>
+						<input type="text" class="profile-input" name="userName" value="{{ user.userName }}" readonly>
 					</div>
 					<hr>
 					<div class="profile-row">
 						<div class="profile-label">이메일</div>
-						<input type="email" class="profile-input" name="email" value="{{ user.email }}" readonly>
+						<input type="email" class="profile-input" name="userEmail" value="{{ user.userEmail }}" readonly>
 					</div>
 					<hr>
 					<div class="profile-row">
 						<div class="profile-label">부서</div>
-						<input type="text" class="profile-input" name="department" value="{{ user.department }}">
+						<input type="text" class="profile-input" name="userDepartment" value="{{ user.userDepartment }}" readonly>
 					</div>
 					<hr>
 					<div class="profile-row">
 						<div class="profile-label">휴대전화번호</div>
-						<input type="tel" class="profile-input" name="phone" value="{{ user.phone }}" readonly>
+						<input type="tel" class="profile-input" name="userPhone" value="{{ user.userPhone }}" readonly>
 					</div>
 					<hr>
 

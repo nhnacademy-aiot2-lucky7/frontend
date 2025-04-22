@@ -55,11 +55,6 @@ public class IndexController {
         return "pages/pages-calamity";
     }
 
-    @GetMapping("/event")
-    public String alert(){
-        return "pages/pages-event";
-    }
-
     @GetMapping("/add-sensor")
     public String addSensor(){
         return "pages/pages-add-sensor";

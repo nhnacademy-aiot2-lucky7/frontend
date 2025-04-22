@@ -187,3 +187,10 @@ hr {
     background: #F1EFEC;
     color: #030303;
 }
+
+.profile-input[readonly] {
+    background-color: #f9f9f9;
+    border: 1px solid #d4c9be;
+    color: #666666;
+    cursor: not-allowed;
+}

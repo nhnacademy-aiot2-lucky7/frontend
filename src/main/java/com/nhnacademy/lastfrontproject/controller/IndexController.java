@@ -75,4 +75,29 @@ public class IndexController {
         return "pages/pages-privacy";
     }
 
+    @GetMapping("/server-room-info")
+    public String serverRoomInfo(){
+        return "pages/pages-server-room-info";
+    }
+
+    @GetMapping("/power-usage_info")
+    public String powerUsageInfo(){
+        return "pages/pages-power-usage-info";
+    }
+
+    @GetMapping("/access-control-info")
+    public String accessControlInfo(){
+        return "pages/pages-access-control";
+    }
+
+    @GetMapping("/equipment-info")
+    public String equipmentInfo(){
+        return "pages/pages-equipment-info";
+    }
+
+    @GetMapping("/calamity-info")
+    public String calamityInfo(){
+        return "pages/pages-calamity-info";
+    }
+
 }

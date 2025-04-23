@@ -13,8 +13,10 @@
 <section layout:fragment="content">
     <main class="event-container" style="flex: 1;">
         <section class="event-header">
-            <h1>이벤트 알림</h1>
+            <h1>이벤트 알림 (어드민)</h1>
         </section>
+
+        <!-- 기존 필터 유지 -->
         <section class="event-filter">
             <form id="event-search-form">
                 <input class="input-text" name="sensor" placeholder="센서 이름 또는 이벤트 내용" type="text"/>
@@ -35,10 +37,13 @@
                 <button class="search-btn" type="submit">검색</button>
             </form>
         </section>
+
+        <!-- 테이블에 부서명 컬럼 추가 -->
         <section class="event-table-wrapper">
             <table class="event-table">
                 <thead>
                 <tr>
+                    <th>부서</th>
                     <th>이벤트 레벨</th>
                     <th>센서 이름</th>
                     <th>이벤트 내용</th>
@@ -46,19 +51,18 @@
                 </tr>
                 </thead>
                 <tbody id="event-table-body">
-                <!-- 데이터가 없을 경우 메시지 출력 -->
                 <tr th:if="${#lists.isEmpty(events)}">
-                    <td colspan="4" style="text-align: center; padding: 2rem; color: #6c757d;">
+                    <td colspan="5" style="text-align: center; padding: 2rem; color: #6c757d;">
                         이벤트 내역이 없습니다.
                     </td>
                 </tr>
 
-                <!-- 데이터가 있을 경우 반복 출력 -->
                 <tr th:each="event : ${events}">
-                    <td th:text="${event.level}">1</td>
-                    <td th:text="${event.sensorName}">센서A</td>
-                    <td th:text="${event.message}">온도 초과 경고</td>
-                    <td th:text="${#temporals.format(event.dateTime, 'yyyy-MM-dd HH:mm')}">2025-04-22 10:30</td>
+                    <td class="department-cell" th:text="${event.department}">시설팀</td>
+                    <td class="level-cell" th:text="${event.level}">1</td>
+                    <td class="sensor-cell" th:text="${event.sensorName}">센서-A</td>
+                    <td class="message-cell" th:text="${event.message}">경고 발생</td>
+                    <td class="date-cell" th:text="${#temporals.format(event.dateTime, 'yyyy-MM-dd HH:mm')}">2025-04-22</td>
                 </tr>
                 </tbody>
             </table>

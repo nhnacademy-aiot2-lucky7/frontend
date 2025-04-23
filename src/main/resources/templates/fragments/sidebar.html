@@ -63,7 +63,8 @@
                     <span class="align-middle">이벤트 알림</span>
                 </a>
             </li>
-            <li class="sidebar-item" th:classappend="${currentPath == '/gateway'} ? 'active'">
+            <li class="sidebar-item"
+                th:classappend="${currentPath == '/gateway' or currentPath == '/add-gateway'} ? ' active'">
                 <a class="sidebar-link" href="/gateway">
                     <i class="align-middle" data-feather="hard-drive"></i>
                     <span class="align-middle">게이트웨이 추가</span>

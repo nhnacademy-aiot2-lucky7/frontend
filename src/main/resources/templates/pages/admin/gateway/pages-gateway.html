@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head>
+    <title>게이트웨이 조회</title>
+    <link href="/css/gateway/gateway.css" rel="stylesheet"/>
+</head>
+
+<section layout:fragment="content">
+    <div class="gateway-wrapper">
+        <div class="gateway-header">
+            <h2>게이트웨이 관리 (어드민)</h2>
+        </div>
+
+        <div th:each="group : ${gatewayGroups}">
+            <div class="gateway-department-header" th:text="${group.departmentName}">
+                시설팀
+            </div>
+
+            <div class="gateway-grid">
+                <a th:each="gateway : ${group.gateways}"
+                   th:href="@{'/gateway/' + ${gateway.id}}"
+                   class="gateway-card">
+
+                    <div th:class="'status ' + (${gateway.active} ? 'active' : 'inactive')"
+                         th:text="${gateway.active} ? '● 활성화' : '● 비활성화'">
+                    </div>
+
+                    <div class="gateway-name" th:text="${gateway.name}">게이트웨이 이름</div>
+                    <div class="gateway-meta" th:text="'센서: ' + ${gateway.sensorCount} + '개'">센서 수</div>
+                    <div class="gateway-meta" th:text="'부서: ' + ${gateway.department}">부서명</div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+</html>

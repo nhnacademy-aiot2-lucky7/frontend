@@ -1,0 +1,15 @@
+package com.nhnacademy.lastfrontproject.dto.gateway;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+public class GatewayResponse {
+    private Long id;
+    private String name;
+    private boolean active;
+    private int sensorCount;
+}

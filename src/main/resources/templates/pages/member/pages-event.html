@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head>
+    <meta charset="utf-8"/>
+    <title>이벤트 알림</title>
+    <link href="/css/event.css" rel="stylesheet"/>
+</head>
+
+<body>
+<section layout:fragment="content">
+    <main class="event-container" style="flex: 1;">
+        <section class="event-header">
+            <h1>이벤트 알림</h1>
+        </section>
+        <section class="event-filter">
+            <form id="event-search-form">
+                <input class="input-text" name="sensor" placeholder="센서 이름 또는 이벤트 내용" type="text"/>
+                <div class="date-picker">
+                    <label for="start-date">시작일</label>
+                    <input id="start-date" name="start-date" type="date"/>
+                </div>
+                <div class="date-picker">
+                    <label for="end-date">종료일</label>
+                    <input id="end-date" name="end-date" type="date"/>
+                </div>
+                <div class="level-checkbox-group">
+                    <span>이벤트 레벨</span>
+                    <label><input name="event-level" type="checkbox" value="1"/> 1</label>
+                    <label><input name="event-level" type="checkbox" value="2"/> 2</label>
+                    <label><input name="event-level" type="checkbox" value="3"/> 3</label>
+                </div>
+                <button class="search-btn" type="submit">검색</button>
+            </form>
+        </section>
+        <section class="event-table-wrapper">
+            <table class="event-table">
+                <thead>
+                <tr>
+                    <th>이벤트 레벨</th>
+                    <th>센서 이름</th>
+                    <th>이벤트 내용</th>
+                    <th>이벤트 날짜</th>
+                </tr>
+                </thead>
+                <tbody id="event-table-body">
+                <!-- 데이터가 없을 경우 메시지 출력 -->
+                <tr th:if="${#lists.isEmpty(events)}">
+                    <td colspan="4" style="text-align: center; padding: 2rem; color: #6c757d;">
+                        이벤트 내역이 없습니다.
+                    </td>
+                </tr>
+
+                <!-- 데이터가 있을 경우 반복 출력 -->
+                <tr th:each="event : ${events}">
+                    <td class="level-cell" th:text="${event.level}">1</td>
+                    <td class="sensor-cell" th:text="${event.sensorName}">센서-A</td>
+                    <td class="message-cell" th:text="${event.message}">경고 발생</td>
+                    <td class="date-cell" th:text="${#temporals.format(event.dateTime, 'yyyy-MM-dd HH:mm')}">2025-04-22</td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+</section>
+</body>
+
+</html>

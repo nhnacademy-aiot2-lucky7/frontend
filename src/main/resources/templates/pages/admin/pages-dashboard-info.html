@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+
+<head>
+    <meta charset="utf-8"/>
+    <title>대시보드 내역 (관리자용) | Lucky Seven</title>
+    <link href="/css/dashboard.css" rel="stylesheet"/>
+</head>
+
+<body>
+<section layout:fragment="content">
+    <!--	본문내용 추가-->
+    <main class="dashboard-info-container admin-dashboard" style="flex: 1;">
+        <section class="dashboard-info-header">
+            <h1>대시보드 내역 (관리자용)</h1>
+            <a href="/add-dashboard" class="dashboard-add-btn">+ 대시보드 추가</a>
+        </section>
+
+        <!-- 검색 및 필터 영역 -->
+        <div class="dashboard-filter-container">
+            <form th:action="@{/admin/dashboard-info}" method="get" class="dashboard-search-form">
+                <div class="filter-group">
+                    <label for="departmentSelect">부서 선택:</label>
+                    <select id="departmentSelect" name="department" class="department-select">
+                        <option value="">모든 부서</option>
+                        <option th:each="dept : ${allDepartments}"
+                                th:value="${dept}"
+                                th:text="${dept}"
+                                th:selected="${param.department != null && param.department[0] == dept}">
+                            부서명
+                        </option>
+                    </select>
+                </div>
+                <div class="search-group">
+                    <input type="text" name="keyword" placeholder="대시보드 이름 검색"
+                           th:value="${param.keyword != null ? param.keyword[0] : ''}">
+                    <button type="submit" class="search-btn">검색</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- 대시보드 콘텐츠 영역 -->
+        <div class="dashboard-content">
+            <!-- 대시보드 배너 목록 -->
+            <div class="dashboard-banners">
+                <!-- 현재 선택된 부서의 대시보드만 표시 -->
+                <div th:each="group : ${dashboardGroups}">
+                    <!-- 부서명 표시 -->
+                    <div class="department-header">
+                        <h2 th:text="${group.departmentName}">부서명</h2>
+                    </div>
+
+                    <!-- 해당 부서의 배너들 -->
+                    <div th:each="dashboard : ${group.dashboards}" class="banner-container">
+                        <a th:href="@{/server-room-info(department=${group.departmentName}, title=${dashboard.title})}"
+                           class="banner-link">
+                            <!-- 배너 이미지 선택 로직 -->
+                            <img th:src="${dashboard.title == '서버룸' ? '/img/equipment/banner_server_room.jpg' :
+                      dashboard.title == '전력사용량' ? '/img/equipment/banner_power_usage.jpg' :
+                      dashboard.title == '출입제어' ? '/img/equipment/banner_access_control.png' :
+                      dashboard.title == '장비' ? '/img/equipment/banner_equipment.jpg' :
+                      dashboard.title == '화재/침수' ? '/img/equipment/banner_calamity.jpg' :
+                      '/img/equipment/default-banner.jpg'}"
+                                 th:alt="${dashboard.title}" class="banner-image"/>
+                            <div class="banner-overlay">
+                                <span class="banner-title" th:text="${dashboard.title}">배너 제목</span>
+                                <div class="display-control">
+                                    <span class="display-text">메인페이지에 표시</span>
+                                    <button class="toggle-btn">On/Off</button>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</section>
+</body>
+</html>

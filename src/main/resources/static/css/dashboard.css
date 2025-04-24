@@ -1,0 +1,363 @@
+/* ===== 1. 공통 스타일 ===== */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+a {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+/* ===== 2. 컨테이너 스타일 ===== */
+/* 대시보드 추가 페이지 컨테이너 */
+.add-dashboard-container {
+    max-width: 1024px;
+    margin: 60px auto;
+    background-color: #fff;
+    padding: 56px 64px;
+    border-radius: 14px;
+    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.05);
+}
+
+/* 대시보드 정보 페이지 컨테이너 */
+.dashboard-info-container {
+    width: 100%;
+    min-height: 100vh;
+    background-color: #f5f7fb;
+    padding: 2rem;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* 헤더 스타일 */
+.add-dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 48px;
+}
+
+.add-dashboard-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #2d2d2d;
+}
+
+/* 버튼 컨테이너 */
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: 20px;
+}
+
+/* ===== 3. 폼 요소 스타일 ===== */
+.add-dashboard-form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px 48px;
+}
+
+.add-dashboard-form-row {
+    display: flex;
+    flex-direction: column;
+}
+
+.add-dashboard-form-row label {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #444;
+}
+
+.add-dashboard-form-row input,
+.add-dashboard-form-row select,
+.add-dashboard-form-row textarea {
+    padding: 14px 16px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    transition: border-color 0.2s ease;
+}
+
+.add-dashboard-form-row input:focus,
+.add-dashboard-form-row select:focus,
+.add-dashboard-form-row textarea:focus {
+    border-color: #a5a0f2;
+    outline: none;
+}
+
+.add-dashboard-form-row textarea {
+    resize: none;
+}
+
+.add-dashboard-description {
+    grid-column: span 2;
+}
+
+/* ===== 4. 배너 및 오버레이 스타일 ===== */
+/* 배너 컨테이너 */
+.banner-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+/* 배너 이미지 */
+.banner-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    max-width: 100%;
+}
+
+/* 배너 링크 */
+.banner-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+/* 배너 오버레이 */
+.banner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* 배너 제목 */
+.banner-title {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* 메인페이지 표시 컨트롤 */
+.display-control {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+/* 표시 텍스트 */
+.display-text {
+    font-size: 0.9rem;
+    margin-right: 10px;
+    color: #333;
+}
+
+/* ===== 5. 버튼 스타일 ===== */
+/* 저장 버튼 */
+.add-dashboard-save-btn {
+    background-color: #a5a0f2;
+    color: #fff;
+    padding: 12px 28px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.add-dashboard-save-btn:hover {
+    background-color: #8d89e8;
+}
+
+.add-dashboard-cancel-btn {
+    background-color: #FAA0A0; /* 파스텔 레드로 변경 */
+    color: #fff;
+    padding: 12px 28px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.add-dashboard-cancel-btn:hover {
+    background-color: #F88379; /* 호버 시 코랄 핑크로 변경 */
+}
+
+.dashboard-info-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* 대시보드 추가 버튼 */
+.dashboard-add-btn {
+    float: right;
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.dashboard-add-btn:hover {
+    background-color: #1d4ed8;
+}
+
+/* 토글 버튼 */
+.toggle-btn {
+    background-color: #b77;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+.toggle-btn:hover {
+    background-color: #a66;
+}
+
+/* 기존 CSS에 추가 */
+/* 부서명 헤더 스타일 */
+.department-header {
+    margin: 30px 0 15px 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.department-header h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+}
+
+/* 대시보드 콘텐츠 영역 수정 */
+.dashboard-content {
+    width: 100%;
+}
+
+.dashboard-banners {
+    width: 100%;
+}
+
+/* 필터 컨테이너 스타일 */
+.dashboard-filter-container {
+    background-color: #f5f5f5;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.dashboard-search-form {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.filter-group, .search-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.department-select {
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    min-width: 150px;
+}
+
+.search-group input {
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    min-width: 250px;
+}
+
+.search-btn {
+    padding: 8px 16px;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.search-btn:hover {
+    background-color: #1d4ed8;
+}
+
+/* 관리자용 대시보드의 배너 간격 */
+.admin-dashboard .banner-container {
+    margin-bottom: 2rem;
+}
+
+.admin-dashboard .department-header {
+    margin-top: 2rem; /* 부서 헤더 위 간격 */
+}
+
+/* 첫 번째 부서 헤더는 상단 마진 제거 */
+.admin-dashboard .department-header:first-of-type {
+    margin-top: 0;
+}
+
+/* ===== 6. 미디어 쿼리 ===== */
+@media (max-width: 768px) {
+    .add-dashboard-container {
+        padding: 30px 20px;
+        margin: 30px auto;
+    }
+
+    .add-dashboard-form {
+        grid-template-columns: 1fr;
+    }
+
+    .add-dashboard-description {
+        grid-column: span 1;
+    }
+
+    .banner-title {
+        font-size: 1.5rem;
+    }
+
+    .display-control {
+        padding: 3px 6px;
+    }
+
+    .display-text {
+        font-size: 0.8rem;
+    }
+
+    .toggle-btn {
+        padding: 3px 6px;
+        font-size: 0.7rem;
+    }
+}

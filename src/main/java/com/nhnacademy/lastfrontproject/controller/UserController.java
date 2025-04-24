@@ -15,12 +15,12 @@ public class UserController {
     @GetMapping("/profile")
     public String profile(Model model){
         model.addAttribute("user", getUserData());
-        return "pages/pages-profile";
+        return "pages/member/pages-profile";
     }
 
     @GetMapping("/edit-profile")
     public String editProfile(Model model) {
         model.addAttribute("user", getUserData());
-        return "pages/pages-profile-edit";
+        return "pages/member/pages-profile-edit";
     }
 }

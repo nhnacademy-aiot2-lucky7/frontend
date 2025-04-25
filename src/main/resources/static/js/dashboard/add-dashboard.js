@@ -62,12 +62,19 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('New dashboard object:', newDashboard);
 
         // 대시보드 이름에 따라 배너 이미지 설정
-        if (newDashboard.name.includes('')) newDashboard.bannerImage = "/img/equipment/banner_default.png";
-        else if (newDashboard.name.includes('서버')) newDashboard.bannerImage = "/img/equipment/banner_server_room.jpg";
-        else if (newDashboard.name.includes('전력') || newDashboard.name.includes('사용량')) newDashboard.bannerImage = "/img/equipment/banner_power_usage.jpg";
-        else if (newDashboard.name.includes('출입')) newDashboard.bannerImage = "/img/equipment/banner_access_control.png";
-        else if (newDashboard.name.includes('장비')) newDashboard.bannerImage = "/img/equipment/banner_equipment.jpg";
-        else if (newDashboard.name.includes('화재') || newDashboard.name.includes('침수')) newDashboard.bannerImage = "/img/equipment/banner_calamity.jpg";
+        if (newDashboard.name.includes('서버')) {
+            newDashboard.bannerImage = "/img/equipment/banner_server_room.jpg";
+        } else if (newDashboard.name.includes('전력') || newDashboard.name.includes('사용량')) {
+            newDashboard.bannerImage = "/img/equipment/banner_power_usage.jpg";
+        } else if (newDashboard.name.includes('출입')) {
+            newDashboard.bannerImage = "/img/equipment/banner_access_control.png";
+        } else if (newDashboard.name.includes('장비')) {
+            newDashboard.bannerImage = "/img/equipment/banner_equipment.jpg";
+        } else if (newDashboard.name.includes('화재') || newDashboard.name.includes('침수')) {
+            newDashboard.bannerImage = "/img/equipment/banner_calamity.jpg";
+        } else {
+            newDashboard.bannerImage = "/img/equipment/banner_default.png";
+        }
         console.log('Banner image set:', newDashboard.bannerImage);
 
         // 더미 데이터에 추가

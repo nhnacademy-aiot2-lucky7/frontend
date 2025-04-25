@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // 먼저 localStorage에서 최신 대시보드 데이터 로드
     try {
         const storedDashboards = localStorage.getItem('dashboards');
@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // 차트 제목 편집 이벤트
             const titleEdit = chartItem.querySelector('.chart-title-edit');
-            titleEdit.addEventListener('blur', function() {
+            titleEdit.addEventListener('blur', function () {
                 const chartId = parseInt(chartItem.getAttribute('data-id'));
                 const chartObj = dashboardCharts.find(c => c.id === chartId);
                 if (chartObj) {
@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // 토글 버튼 이벤트
             const toggleBtn = chartItem.querySelector('.toggle-btn');
-            toggleBtn.addEventListener('click', function() {
+            toggleBtn.addEventListener('click', function () {
                 const chartId = parseInt(chartItem.getAttribute('data-id'));
                 const chartObj = dashboardCharts.find(c => c.id === chartId);
                 if (chartObj) {
@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // 삭제 버튼 이벤트
             const removeBtn = chartItem.querySelector('.remove-chart-btn');
-            removeBtn.addEventListener('click', function() {
+            removeBtn.addEventListener('click', function () {
                 if (confirm('이 차트를 삭제하시겠습니까?')) {
                     const chartId = parseInt(chartItem.getAttribute('data-id'));
                     dashboardCharts = dashboardCharts.filter(c => c.id !== chartId);
@@ -161,13 +161,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const dashboardNameElem = document.getElementById('dashboardName');
     const dashboardDescriptionElem = document.getElementById('dashboardDescription');
 
-    // 차트 추가 버튼 클릭 이벤트
-    addChartBtn.addEventListener('click', function() {
-        addChartModal.style.display = 'block';
-    });
+    // 차트 추가 버튼 클릭 이벤트 - 비활성화
+    // addChartBtn.addEventListener('click', function () {
+    //     addChartModal.style.display = 'block';
+    // });
+
+    // 차트 추가 페이지로 리다이렉트하는 코드로 대체 예정
+    // addChartBtn.addEventListener('click', function () {
+    //     window.location.href = '/add-chart?dashboardId=' + dashboardId;
+    // });
 
     // 차트 추가 폼 제출 이벤트
-    addChartForm.addEventListener('submit', function(e) {
+    addChartForm.addEventListener('submit', function (e) {
         e.preventDefault();
 
         const chartName = document.getElementById('chartName').value;
@@ -214,7 +219,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // 차트 순서 정렬 버튼 클릭 이벤트
-    sortChartsBtn.addEventListener('click', function() {
+    sortChartsBtn.addEventListener('click', function () {
         if (dashboardCharts.length === 0) {
             alert('정렬할 차트가 없습니다. 먼저 차트를 추가해주세요.');
             return;
@@ -241,7 +246,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // 정렬 저장 버튼 클릭 이벤트
-    saveSortBtn.addEventListener('click', function() {
+    saveSortBtn.addEventListener('click', function () {
         // 정렬된 순서로 차트 ID 배열 생성
         const sortedIds = Array.from(sortableChartList.querySelectorAll('li')).map(item =>
             parseInt(item.getAttribute('data-id'))
@@ -265,7 +270,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // 수정 버튼 클릭 이벤트
-    editBtn.addEventListener('click', function() {
+    editBtn.addEventListener('click', function () {
         // 수정 가능한 요소들에 편집 가능 상태 활성화
         dashboardNameElem.setAttribute('contenteditable', 'true');
         dashboardNameElem.style.borderColor = '#ccc';
@@ -281,7 +286,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // 대시보드 저장 버튼 클릭 이벤트
-    saveBtn.addEventListener('click', function() {
+    saveBtn.addEventListener('click', function () {
         // 편집 가능 상태 비활성화
         dashboardNameElem.setAttribute('contenteditable', 'false');
         dashboardNameElem.style.borderColor = 'transparent';
@@ -321,7 +326,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // 대시보드 삭제 버튼 클릭 이벤트
-    deleteBtn.addEventListener('click', function() {
+    deleteBtn.addEventListener('click', function () {
         if (confirm('정말로 이 대시보드를 삭제하시겠습니까?')) {
             try {
                 // localStorage에서 최신 데이터 가져오기
@@ -367,20 +372,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     // 뒤로 가기 버튼 클릭 이벤트
-    backBtn.addEventListener('click', function() {
+    backBtn.addEventListener('click', function () {
         window.history.back();
     });
 
     // 모달 닫기 버튼 이벤트
     closeBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
+        btn.addEventListener('click', function () {
             addChartModal.style.display = 'none';
             sortChartsModal.style.display = 'none';
         });
     });
 
     // 모달 외부 클릭 시 닫기
-    window.addEventListener('click', function(e) {
+    window.addEventListener('click', function (e) {
         if (e.target === addChartModal) {
             addChartModal.style.display = 'none';
         }
@@ -396,7 +401,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         items.forEach(item => {
             // 드래그 시작 이벤트
-            item.addEventListener('dragstart', function() {
+            item.addEventListener('dragstart', function () {
                 draggedItem = this;
                 setTimeout(() => {
                     this.style.opacity = '0.5';
@@ -404,7 +409,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             // 드래그 종료 이벤트
-            item.addEventListener('dragend', function() {
+            item.addEventListener('dragend', function () {
                 this.style.opacity = '1';
                 draggedItem = null;
             });
@@ -413,12 +418,12 @@ document.addEventListener('DOMContentLoaded', function() {
             item.setAttribute('draggable', 'true');
 
             // 드래그 오버 이벤트
-            item.addEventListener('dragover', function(e) {
+            item.addEventListener('dragover', function (e) {
                 e.preventDefault();
             });
 
             // 드롭 이벤트
-            item.addEventListener('drop', function(e) {
+            item.addEventListener('drop', function (e) {
                 e.preventDefault();
                 if (this !== draggedItem) {
                     const allItems = Array.from(sortableChartList.querySelectorAll('li'));

@@ -102,6 +102,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (chartObj) {
                     chartObj.displayOnMain = !chartObj.displayOnMain;
                     this.textContent = chartObj.displayOnMain ? 'On' : 'Off';
+
+                    // 클래스 토글 추가
+                    if (chartObj.displayOnMain) {
+                        this.classList.remove('off');
+                    } else {
+                        this.classList.add('off');
+                    }
+
                     // localStorage 업데이트
                     localStorage.setItem('charts', JSON.stringify(charts));
                 }
@@ -123,6 +131,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (dashboardCharts.length === 0) {
                         chartsSection.style.display = 'none';
                     }
+
+                    // 차트 배열에서도 제거
+                    charts = charts.filter(c => c.id !== chartId);
+
+                    // localStorage 업데이트
+                    localStorage.setItem('charts', JSON.stringify(charts));
                 }
             });
         });
@@ -134,6 +148,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // 요소 참조
     const addChartBtn = document.getElementById('addChartBtn');
     const sortChartsBtn = document.getElementById('sortChartsBtn');
+    const editBtn = document.getElementById('editBtn');
     const saveBtn = document.getElementById('saveBtn');
     const deleteBtn = document.getElementById('deleteBtn');
     const backBtn = document.getElementById('backBtn');
@@ -249,8 +264,37 @@ document.addEventListener('DOMContentLoaded', function() {
         alert('차트 순서가 저장되었습니다.');
     });
 
+    // 수정 버튼 클릭 이벤트
+    editBtn.addEventListener('click', function() {
+        // 수정 가능한 요소들에 편집 가능 상태 활성화
+        dashboardNameElem.setAttribute('contenteditable', 'true');
+        dashboardNameElem.style.borderColor = '#ccc';
+        dashboardNameElem.style.backgroundColor = '#f9f9f9';
+
+        dashboardDescriptionElem.setAttribute('contenteditable', 'true');
+        dashboardDescriptionElem.style.borderColor = '#ccc';
+        dashboardDescriptionElem.style.backgroundColor = '#f9f9f9';
+
+        // 버튼 표시 상태 변경
+        editBtn.style.display = 'none';
+        saveBtn.style.display = 'inline-block';
+    });
+
     // 대시보드 저장 버튼 클릭 이벤트
     saveBtn.addEventListener('click', function() {
+        // 편집 가능 상태 비활성화
+        dashboardNameElem.setAttribute('contenteditable', 'false');
+        dashboardNameElem.style.borderColor = 'transparent';
+        dashboardNameElem.style.backgroundColor = '';
+
+        dashboardDescriptionElem.setAttribute('contenteditable', 'false');
+        dashboardDescriptionElem.style.borderColor = 'transparent';
+        dashboardDescriptionElem.style.backgroundColor = '';
+
+        // 버튼 표시 상태 변경
+        saveBtn.style.display = 'none';
+        editBtn.style.display = 'inline-block';
+
         // 대시보드 정보 업데이트
         dashboard.name = dashboardNameElem.textContent;
         dashboard.description = dashboardDescriptionElem.textContent;

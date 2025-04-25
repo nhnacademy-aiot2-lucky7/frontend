@@ -38,9 +38,9 @@ body {
 
 /* 버튼 스타일 */
 .btn {
-    padding: 10px 15px;
+    padding: 8px 16px;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
     font-size: 14px;
     font-weight: 500;
@@ -56,6 +56,15 @@ body {
     background-color: #45a049;
 }
 
+.edit-btn {
+    background-color: #1e3a8a;
+    color: white;
+}
+
+.edit-btn:hover {
+    background-color: #1e40af;
+}
+
 .back-btn {
     background-color: #e0e0e0;
     color: #333;
@@ -66,12 +75,12 @@ body {
 }
 
 .delete-btn {
-    background-color: #e57373;
+    background-color: #dc2626;
     color: white;
 }
 
 .delete-btn:hover {
-    background-color: #ef5350;
+    background-color: #e57373;
 }
 
 .add-chart-btn, .sort-btn {
@@ -96,11 +105,12 @@ body {
     background-color: #f44336;
     color: white;
     border: none;
-    padding: 5px 10px;
+    padding: 5px 8px;
     border-radius: 4px;
     cursor: pointer;
     font-size: 12px;
-    margin-left: 10px;
+    margin-left: 1px;
+    white-space: nowrap;
 }
 
 .remove-chart-btn:hover {
@@ -247,12 +257,17 @@ body {
 }
 
 .display-label {
-    font-size: 14px;
+    font-size: 11px;
     color: #666;
 }
 
+.display-text {
+    font-size:13px;
+    white-space: nowrap;
+}
+
 .toggle-btn {
-    background-color: #b77;
+    background-color: #4CAF50; /* On 상태일 때 초록색 */
     color: white;
     border: none;
     padding: 5px 10px;
@@ -262,7 +277,7 @@ body {
 }
 
 .toggle-btn.off {
-    background-color: #999;
+    background-color: #999; /* Off 상태일 때 회색 */
 }
 
 .chart-content {

@@ -7,89 +7,23 @@
     <meta charset="utf-8"/>
     <title>대시보드 내역 | Lucky Seven</title>
     <link href="/css/dashboard.css" rel="stylesheet"/>
+    <script src="/js/dashboard/dashboard-dummy-data.js"></script>
+    <script src="/js/dashboard/dashboard-utils.js"></script>
+    <script src="/js/dashboard/dashboard-info.js"></script>
 </head>
 
 <body>
 <section layout:fragment="content">
-    <!--	본문내용 추가-->
     <main class="dashboard-info-container" style="flex: 1;">
         <section class="dashboard-info-header">
             <h1>대시보드 내역</h1>
             <a href="/add-dashboard" class="dashboard-add-btn">+ 대시보드 추가</a>
         </section>
 
-        <!-- 서버룸 배너 -->
-        <div class="banner-container">
-            <a href="/server-room-info" class="banner-link">
-                <img src="/img/equipment/banner_server_room.jpg" alt="서버룸" class="banner-image"/>
-                <div class="banner-overlay">
-                    <span class="banner-title">서버룸</span>
-                </div>
-            </a>
-            <div class="display-control">
-                <span class="display-text">메인페이지에 표시</span>
-                <button class="toggle-btn">On/Off</button>
-            </div>
+        <div id="dashboardList">
+            <!-- 대시보드 목록이 JavaScript로 동적 생성됨 -->
         </div>
-
-        <!-- 전력사용량 배너 -->
-        <div class="banner-container">
-            <a href="/power-usage-info" class="banner-link">
-                <img src="/img/equipment/banner_power_usage.jpg" alt="전력사용량" class="banner-image"/>
-                <div class="banner-overlay">
-                    <span class="banner-title">전력사용량</span>
-                </div>
-            </a>
-            <div class="display-control">
-                <span class="display-text">메인페이지에 표시</span>
-                <button class="toggle-btn">On/Off</button>
-            </div>
-        </div>
-
-        <!-- 출입제어 배너 -->
-        <div class="banner-container">
-            <a href="/access-control-info" class="banner-link">
-                <img src="/img/equipment/banner_access_control.png" alt="출입제어" class="banner-image"/>
-                <div class="banner-overlay">
-                    <span class="banner-title">출입제어</span>
-                </div>
-            </a>
-            <div class="display-control">
-                <span class="display-text">메인페이지에 표시</span>
-                <button class="toggle-btn">On/Off</button>
-            </div>
-        </div>
-
-        <!-- 장비 배너 -->
-        <div class="banner-container">
-            <a href="/equipment-info" class="banner-link">
-                <img src="/img/equipment/banner_equipment.jpg" alt="장비" class="banner-image"/>
-                <div class="banner-overlay">
-                    <span class="banner-title">장비</span>
-                </div>
-            </a>
-            <div class="display-control">
-                <span class="display-text">메인페이지에 표시</span>
-                <button class="toggle-btn">On/Off</button>
-            </div>
-        </div>
-
-        <!-- 화재/침수 배너 -->
-        <div class="banner-container">
-            <a href="/calamity-info" class="banner-link">
-                <img src="/img/equipment/banner_calamity.jpg" alt="화재/침수" class="banner-image"/>
-                <div class="banner-overlay">
-                    <span class="banner-title">화재/침수</span>
-                </div>
-            </a>
-            <div class="display-control">
-                <span class="display-text">메인페이지에 표시</span>
-                <button class="toggle-btn">On/Off</button>
-            </div>
-        </div>
-
     </main>
 </section>
-<script src="/js/dashboard-info.js"></script>
 </body>
 </html>

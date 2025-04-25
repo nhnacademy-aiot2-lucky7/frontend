@@ -91,30 +91,10 @@ public class DashboardController {
         return "pages/member/dashboard/pages-add-dashboard";
     }
 
-    @GetMapping("/server-room-info")
+    @GetMapping("/dashboard-detail")
     public String serverRoomInfo(){
-        return "pages/pages-server-room-info";
+        return "pages/pages-dashboard-detail";
     }
 
-    @GetMapping("/power-usage-info")
-    public String powerUsageInfo(){
-        return "pages/pages-power-usage-info";
-    }
-
-    @GetMapping("/access-control-info")
-    public String accessControlInfo(){
-        return "pages/pages-access-control-info";
-    }
-
-    @GetMapping("/equipment-info")
-    public String equipmentInfo(){
-        return "pages/pages-equipment-info";
-    }
-
-    @GetMapping("/calamity-info")
-    public String calamityInfo(){
-        return "pages/pages-calamity-info";
-    }
-
-    record DashboardGroup(String departmentName, List<AdminDashboardResponse> dashboards) {}
+        record DashboardGroup(String departmentName, List<AdminDashboardResponse> dashboards) {}
 }

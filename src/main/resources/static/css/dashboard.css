@@ -109,6 +109,7 @@ a {
     position: relative;
     width: 100%;
     overflow: hidden;
+    margin-bottom: 1rem;
 }
 
 /* 배너 이미지 */

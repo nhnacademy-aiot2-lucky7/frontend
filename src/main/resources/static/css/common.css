@@ -240,13 +240,18 @@ input:focus, select:focus, textarea:focus {
     height: 100%;
 }
 .sidebar-brand {
-    padding: 1.15rem 1.5rem;
-    font-size: 17pt;
-    font-weight: 600;
-    display: block;
-    color: #F1EFEC;
-    text-decoration: none;
+    padding: 1.5rem 1.5rem 1.25rem; /* 상단 영역에 여유 주고 */
+    display: flex;
+    justify-content: center; /* ✅ 로고 가운데 정렬 */
+    align-items: center;
 }
+
+.sidebar-brand img {
+    height: 70px;  /* ✅ 확실히 눈에 띄게 키움 */
+    width: auto;
+    display: block;
+}
+
 .sidebar-nav {
     padding: 0;
     list-style: none;

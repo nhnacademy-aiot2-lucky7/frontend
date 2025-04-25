@@ -1,0 +1,11 @@
+<!-- templates/fragments/rule-modal.html -->
+<div id="rule-modal" class="modal hidden">
+    <div class="modal-content">
+        <h3>센서 룰 설정</h3>
+        <p><strong>센서:</strong> <span th:text="${sensor.type} + ' (' + ${sensor.location} + ')'"></span></p>
+        <ul>
+            <li th:each="rule : ${rules}" th:text="${rule}">룰</li>
+        </ul>
+        <button class="btn" id="close-rule-modal">닫기</button>
+    </div>
+</div>

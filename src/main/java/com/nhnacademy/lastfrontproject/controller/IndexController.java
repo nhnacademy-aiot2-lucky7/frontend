@@ -54,4 +54,10 @@ public class IndexController {
     public String calamity(){
         return "pages/pages-calamity";
     }
+
+    @GetMapping("/management")
+    public String management(){
+        return "pages/admin/pages-management";
+    }
+
 }

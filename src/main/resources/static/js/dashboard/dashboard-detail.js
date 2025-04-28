@@ -32,20 +32,20 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
     }
 
-    // 관리자 권한 확인 및 로그 버튼 표시
-    const adminLogSection = document.getElementById('adminLogSection');
-    const viewLogBtn = document.getElementById('viewLogBtn');
-
-    // currentUser 객체가 있고 role이 'ADMIN'인 경우에만 로그 버튼 표시
-    if (typeof currentUser !== 'undefined' && currentUser && currentUser.role === 'ADMIN') {
-        adminLogSection.style.display = 'flex';
-
-        // 로그 버튼 클릭 이벤트
-        viewLogBtn.addEventListener('click', function() {
-            // 로그 페이지로 이동 또는 로그 모달 표시
-            window.location.href = `/dashboard-logs?id=${dashboardId}`;
-        });
-    }
+    // // 관리자 권한 확인 및 로그 버튼 표시
+    // const adminLogSection = document.getElementById('adminLogSection');
+    // const viewLogBtn = document.getElementById('viewLogBtn');
+    //
+    // // currentUser 객체가 있고 role이 'ADMIN'인 경우에만 로그 버튼 표시
+    // if (typeof currentUser !== 'undefined' && currentUser && currentUser.role === 'ADMIN') {
+    //     adminLogSection.style.display = 'flex';
+    //
+    //     // 로그 버튼 클릭 이벤트
+    //     viewLogBtn.addEventListener('click', function() {
+    //         // 로그 페이지로 이동 또는 로그 모달 표시
+    //         window.location.href = `/dashboard-logs?id=${dashboardId}`;
+    //     });
+    // }
 
     // 대시보드 정보 표시
     document.getElementById('pageTitle').textContent = `${dashboard.name} 대시보드 상세 내역`;
@@ -385,10 +385,13 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-
     // 뒤로 가기 버튼 클릭 이벤트
     backBtn.addEventListener('click', function () {
-        window.history.back();
+        if (typeof currentUser !== 'undefined' && currentUser && currentUser.role === 'ADMIN') {
+            window.location.href = '/admin/dashboard-info';
+        } else {
+            window.location.href = '/dashboard-info';
+        }
     });
 
     // 모달 닫기 버튼 이벤트

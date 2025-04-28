@@ -1,7 +1,7 @@
 /* 로그 컨테이너 */
 .logs-container {
     width: 100%;
-    min-height: 100vh;
+    min-height: 100%;
     background-color: #f5f7fb;
     padding: 2rem;
     box-sizing: border-box;
@@ -40,16 +40,18 @@
     padding: 1.5rem;
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    display: flex;
     gap: 1rem;
     align-items: end;
+    flex-wrap: wrap;
 }
 
 .filter-group {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    min-width: 120px;
+    flex: 1 1 120px;
 }
 
 .filter-group label {
@@ -67,6 +69,11 @@
     width: 100%;
 }
 
+.search-group {
+    flex: 2 1 300px;
+    min-width: 200px;
+}
+
 .search-btn {
     background-color: #2563eb;
     color: white;
@@ -76,6 +83,10 @@
     cursor: pointer;
     border-radius: 6px;
     padding: 0.5rem 0.75rem;
+    width: 100px;
+    min-width: 80px;
+    font-size: 1rem;
+    transition: background-color 0.2s;
 }
 
 .save-btn {

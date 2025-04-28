@@ -2,7 +2,7 @@
 window.currentUser = {
     name: "홍길동",
     department: "운영팀",
-    role: "MEMBER" // 'MEMBER' 또는 'ADMIN'
+    role: "ADMIN" // 'MEMBER' 또는 'ADMIN'
 };
 
 // 부서 목록 더미 데이터

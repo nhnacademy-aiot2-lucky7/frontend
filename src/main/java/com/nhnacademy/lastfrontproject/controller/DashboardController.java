@@ -1,6 +1,7 @@
 package com.nhnacademy.lastfrontproject.controller;
 
 import com.nhnacademy.lastfrontproject.dto.dashboard.AdminDashboardResponse;
+import com.nhnacademy.lastfrontproject.dto.dashboard.DashboardLogsResponse;
 import com.nhnacademy.lastfrontproject.dto.gateway.AdminGatewayResponse;
 import com.nhnacademy.lastfrontproject.dto.user.UserResponse;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
@@ -9,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -92,8 +94,20 @@ public class DashboardController {
     }
 
     @GetMapping("/dashboard-detail")
-    public String serverRoomInfo(){
+    public String dashboardDetail(){
         return "pages/pages-dashboard-detail";
+    }
+
+    @GetMapping("/dashboard-logs")
+    public String dashboardLogs(Model model){
+        List<DashboardLogsResponse> logs = List.of(
+                new DashboardLogsResponse("운영팀", 1, "온도", "온도 경고 발생", LocalDateTime.now().minusHours(1)),
+                new DashboardLogsResponse("보안팀", 2, "서버", "서버 재부팅 발생", LocalDateTime.now().minusHours(10)),
+                new DashboardLogsResponse("시설팀", 3, "습도", "습도 경고 발생", LocalDateTime.now().minusHours(30))
+        );
+
+        model.addAttribute("logs", logs);
+        return "pages/admin/pages-dashboard-logs";
     }
 
         record DashboardGroup(String departmentName, List<AdminDashboardResponse> dashboards) {}

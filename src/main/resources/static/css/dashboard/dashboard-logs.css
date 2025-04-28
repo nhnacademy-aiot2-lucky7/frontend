@@ -1,0 +1,161 @@
+/* 로그 컨테이너 */
+.logs-container {
+    width: 100%;
+    min-height: 100vh;
+    background-color: #f5f7fb;
+    padding: 2rem;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* 헤더 */
+.logs-header h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
+}
+
+.logs-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.header-right {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-left: auto;
+}
+
+/* 필터 영역 */
+.logs-filter form {
+    background-color: #fff;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    align-items: end;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.filter-group label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #4b5563;
+}
+
+.filter-select,
+.input-text {
+    padding: 0.5rem 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    width: 100%;
+}
+
+.search-btn {
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    height: 42px;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 6px;
+    padding: 0.5rem 0.75rem;
+}
+
+.save-btn {
+    background-color: #1e3a8a;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.3s;
+}
+
+.save-btn:hover {
+    background-color: #1e40af;
+}
+
+/* 테이블 */
+.logs-table-wrapper {
+    width: 100%;
+}
+
+.logs-table {
+    width: 100%;
+    table-layout: auto;
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden;
+    border-collapse: collapse;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.logs-table th,
+.logs-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #f1f3f5;
+    vertical-align: middle;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+}
+
+/* 각 셀 스타일 */
+.logs-table td:nth-child(1) {
+    width: 100px;
+    text-align: center;
+    font-weight: 500;
+    padding-left: 1rem;
+}
+
+.logs-table td:nth-child(2) {
+    width: 100px;
+    text-align: center;
+}
+
+.logs-table td:nth-child(3) {
+    width: 140px;
+    text-align: center;
+}
+
+.logs-table td:nth-child(4) {
+    width: auto;
+    text-align: center;
+}
+
+.logs-table td:nth-child(5) {
+    width: 160px;
+    text-align: center;
+    font-family: 'Roboto Mono', monospace;
+}
+
+/* 반응형 */
+@media (max-width: 991.98px) {
+    .logs-container {
+        width: 100%;
+    }
+
+    .logs-filter form {
+        grid-template-columns: 1fr;
+    }
+}

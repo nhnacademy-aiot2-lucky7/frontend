@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8"/>
     <title>대시보드 상세 | Lucky Seven</title>
-    <link href="/css/dashboard-detail.css" rel="stylesheet"/>
+    <link href="/css/dashboard/dashboard-detail.css" rel="stylesheet"/>
     <script src="/js/dashboard/dashboard-dummy-data.js"></script>
     <script src="/js/dashboard/dashboard-detail.js"></script>
 </head>
@@ -32,7 +32,7 @@
             <div class="info-row">
                 <div class="info-group">
                     <div class="info-label">대시보드 이름</div>
-                    <div class="info-value" contenteditable="true" id="dashboardName"></div>
+                    <div class="info-value" id="dashboardName"></div>
                 </div>
 
                 <div class="info-group">
@@ -63,7 +63,12 @@
         <!-- 설명 영역 -->
         <div class="dashboard-description">
             <div class="description-label">설명</div>
-            <div class="description-content" contenteditable="true" id="dashboardDescription"></div>
+            <div class="description-content" id="dashboardDescription"></div>
+        </div>
+
+        <!-- 관리자용 로그 버튼 영역 -->
+        <div class="admin-log-section" id="adminLogSection" style="display: none;">
+            <button id="viewLogBtn" class="btn log-btn">로그 보기</button>
         </div>
 
         <!-- 차트 영역 -->

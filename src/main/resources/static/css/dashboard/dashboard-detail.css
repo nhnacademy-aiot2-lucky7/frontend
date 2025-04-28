@@ -117,6 +117,24 @@ body {
     background-color: #d32f2f;
 }
 
+/* 관리자용 로그 버튼 영역 */
+.admin-log-section {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.log-btn {
+    background-color: #1e3a8a;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.log-btn:hover {
+    background-color: #1e40af;
+}
+
 /* 대시보드 정보 영역 */
 .dashboard-info {
     background-color: #fff;

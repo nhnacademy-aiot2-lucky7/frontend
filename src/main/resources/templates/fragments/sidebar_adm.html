@@ -23,39 +23,17 @@
                     <span class="align-middle">마이페이지</span>
                 </a>
             </li>
-            <li class="sidebar-item" id="management-parent"
-                th:classappend="${currentPath.matches('/(server-room|power-usage|access-control|equipment|calamity)')} ? 'active'">
-                <div class="sidebar-link">
+            <li class="sidebar-item" th:classappend="${currentPath == '/member_management'} ? 'active'">
+                <a class="sidebar-link" href="/member_management">
+                    <i class="align-middle" data-feather="users"></i>
+                    <span class="align-middle">멤버 관리</span>
+                </a>
+            </li>
+            <li class="sidebar-item" th:classappend="${currentPath == '/management' or currentPath == '/dashboard-preview'} ? 'active'">
+                <a class="sidebar-link" href="/management">
                     <i class="align-middle" data-feather="file-text"></i>
                     <span class="align-middle">관리</span>
-                </div>
-                <ul class="sidebar-dropdown">
-                    <li class="sidebar-item" th:classappend="${currentPath == '/server-room'} ? 'active'">
-                        <a class="sidebar-link" href="/server-room">
-                            <span class="align-middle">서버룸</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item" th:classappend="${currentPath == '/power-usage'} ? 'active'">
-                        <a class="sidebar-link" href="/power-usage">
-                            <span class="align-middle">전력사용량</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item" th:classappend="${currentPath == '/access-control'} ? 'active'">
-                        <a class="sidebar-link" href="/access-control">
-                            <span class="align-middle">출입제어</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item" th:classappend="${currentPath == '/equipment'} ? 'active'">
-                        <a class="sidebar-link" href="/equipment">
-                            <span class="align-middle">장비</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item" th:classappend="${currentPath == '/calamity'} ? 'active'">
-                        <a class="sidebar-link" href="/calamity">
-                            <span class="align-middle">화재/침수</span>
-                        </a>
-                    </li>
-                </ul>
+                </a>
             </li>
             <li class="sidebar-item" th:classappend="${currentPath == '/event'} ? 'active'">
                 <a class="sidebar-link" href="/event">
@@ -75,9 +53,9 @@
                     currentPath.startsWith('/dashboard-info')
                     or currentPath.startsWith('/add-dashboard')
                     or currentPath.startsWith('/dashboard-detail')
-                    or currentPath.startsWith('/dashboard-logs')
+                    or currentPath.startsWith('/admin/dashboard-info')
                 } ? 'active'">
-                <a class="sidebar-link" href="/dashboard-info">
+                <a class="sidebar-link" href="/admin/dashboard-info">
                     <i class="align-middle" data-feather="trending-up"></i>
                     <span class="align-middle">대시보드 추가</span>
                 </a>

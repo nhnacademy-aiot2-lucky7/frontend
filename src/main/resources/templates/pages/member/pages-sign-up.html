@@ -69,6 +69,13 @@
             <div class="form-group">
                 <label for="userPhone">휴대전화 번호</label>
                 <input type="tel" class="form-control" id="userPhone" name="userPhone" placeholder="휴대전화 번호를 입력하세요" required>
+                <div class="cert-row">
+                    <button type="button" id="sendSmsBtn" class="cert-btn">인증번호 발송</button>
+                    <input type="text" id="certCode" class="cert-input" placeholder="인증번호 입력">
+                    <button type="button" id="checkCertBtn" class="cert-btn">인증번호 확인</button>
+                </div>
+                <span id="smsMsg"></span>
+                <span id="certMsg"></span>
             </div>
 
             <!--			<div class="form-check">-->
@@ -88,6 +95,7 @@
 <script src="/js/feather.min.js"></script>
 <script src="/js/signUp.js"></script>
 <script src="/js/auth_eye.js"></script>
+<script src="/js/sms-certification.js"></script>
 
 </body>
 </html>

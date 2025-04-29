@@ -137,6 +137,45 @@
     background-color: #2e67b5;
 }
 
+/* ========== 휴대폰 인증 ========== */
+.cert-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.cert-btn {
+    background-color: #3b7ddd;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 14px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.cert-btn:hover {
+    background-color: #2e67b5;
+}
+
+.cert-input {
+    flex: 1 1 120px;
+    min-width: 100px;
+    border-radius: 4px;
+    border: 1px solid #ced4da;
+    padding: 8px 10px;
+    font-size: 15px;
+    box-sizing: border-box;
+    transition: border-color 0.15s;
+}
+
+.cert-input:focus {
+    border-color: #80bdff;
+    outline: none;
+}
+
 /* ========== 구글 로그인 ========== */
 
 .social-login {

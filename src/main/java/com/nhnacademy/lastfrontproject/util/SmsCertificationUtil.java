@@ -32,9 +32,8 @@ public class SmsCertificationUtil {
         Message message = new Message(); // 새 메시지 객체 생성
         message.setFrom(fromNumber); // 발신자 번호 설정
         message.setTo(to); // 수신자 번호 설정
-        message.setText("본인확인 인증번호는 " + certificationCode + "입니다."); // 메시지 내용 설정
+        message.setText("Lucky Seven 인증번호는 " + certificationCode + "입니다."); // 메시지 내용 설정
 
         this.messageService.sendOne(new SingleMessageSendingRequest(message)); // 메시지 발송 요청
     }
 }
-

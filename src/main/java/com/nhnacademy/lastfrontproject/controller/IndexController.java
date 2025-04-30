@@ -15,49 +15,9 @@ public class IndexController {
         return "index";
     }
 
-    @GetMapping("/profile")
-    public String profile(){
-        return "pages/member/pages-profile";
-    }
-
     @GetMapping("/helpdesk")
     public String helpdesk(){
         return "pages/member/pages-helpdesk";
-    }
-
-    @GetMapping("/edit-profile")
-    public String editProfile(){
-        return "pages/member/pages-profile-edit";
-    }
-
-    @GetMapping("/server-room")
-    public String serverRoom(){
-        return "pages/member/pages-server-room";
-    }
-
-    @GetMapping("/power-usage")
-    public String powerUsage(){
-        return "pages/member/pages-power-usage";
-    }
-
-    @GetMapping("/access-control")
-    public String accessControl(){
-        return "pages/member/pages-access-control";
-    }
-
-    @GetMapping("/equipment")
-    public String equipment(){
-        return "pages/member/pages-equipment";
-    }
-
-    @GetMapping("/calamity")
-    public String calamity(){
-        return "pages/member/pages-calamity";
-    }
-
-    @GetMapping("/add-dashboard")
-    public String addDashboard(){
-        return "pages/member/pages-add-dashboard";
     }
 
     @GetMapping("/settings")
@@ -68,6 +28,36 @@ public class IndexController {
     @GetMapping("/privacy")
     public String privacy(){
         return "pages/member/pages-privacy";
+    }
+
+    @GetMapping("/server-room")
+    public String serverRoom(){
+        return "pages/pages-server-room";
+    }
+
+    @GetMapping("/power-usage")
+    public String powerUsage(){
+        return "pages/pages-power-usage";
+    }
+
+    @GetMapping("/access-control")
+    public String accessControl(){
+        return "pages/member/pages-access-control";
+    }
+
+    @GetMapping("/equipment")
+    public String equipment(){
+        return "pages/pages-equipment";
+    }
+
+    @GetMapping("/calamity")
+    public String calamity(){
+        return "pages/pages-calamity";
+    }
+
+    @GetMapping("/management")
+    public String management(){
+        return "pages/admin/pages-management";
     }
 
 }

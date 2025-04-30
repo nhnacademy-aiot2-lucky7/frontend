@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+
+<head>
+    <title>대시보드 추가 | Lucky Seven</title>
+    <link href="/css/dashboard/dashboard.css" rel="stylesheet"/>
+    <script src="/js/dashboard/dashboard-dummy-data.js"></script>
+    <script src="/js/dashboard/add-dashboard.js"></script>
+</head>
+
+<body>
+<section layout:fragment="content">
+    <div class="add-dashboard-container">
+        <div class="add-dashboard-header">
+            <h2 class="add-dashboard-title">대시보드 추가</h2>
+            <div class="button-container">
+                <a href="/dashboard-info" class="add-dashboard-cancel-btn">취소</a>
+                <button class="add-dashboard-save-btn" id="saveBtn">저장</button>
+            </div>
+        </div>
+
+        <form id="dashboardForm" class="add-dashboard-form">
+            <div class="add-dashboard-form-row">
+                <label for="name">대시보드 이름</label>
+                <input type="text" name="name" id="name" required>
+            </div>
+
+            <div class="add-dashboard-form-row add-dashboard-description">
+                <label for="description">설명</label>
+                <textarea name="description" id="description" rows="6"></textarea>
+            </div>
+        </form>
+    </div>
+</section>
+</body>
+</html>

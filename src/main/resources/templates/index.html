@@ -11,7 +11,15 @@
 </head>
 <body>
 <div class="wrapper">
-    <div th:replace="fragments/sidebar :: sidebar"></div>
+
+    <!-- 기존 -->
+<!--    <div th:replace="fragments/sidebar :: sidebar"></div>-->
+
+    <!-- 일반 유저용 사이드바 -->
+    <div th:replace="fragments/sidebar :: sidebar" th:if="${#authentication.principal.role == 'USER'}"></div>
+    <!-- 관리자용 사이드바 -->
+    <div th:replace="fragments/sidebar_adm :: sidebar" th:if="${#authentication.principal.role == 'ADMIN'}"></div>
+
     <div class="main">
         <script src="/js/common.js"></script>
         <div th:replace="fragments/navbar :: navbar"></div>

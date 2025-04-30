@@ -27,12 +27,12 @@ public class AuthController {
 
     @GetMapping("/sign-in")
     public String signInPage(){
-        return "pages/pages-sign-in";
+        return "pages/member/pages-sign-in";
     }
 
     @GetMapping("/sign-up")
     public String signUnPage(){
-        return "pages/pages-sign-up";
+        return "pages/member/pages-sign-up";
     }
 
     @PostMapping("/sign-in")

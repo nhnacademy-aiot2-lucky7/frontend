@@ -141,7 +141,8 @@
 .cert-row {
     display: flex;
     gap: 8px;
-    margin-top: 8px;
+    margin-top: 10px;
+    align-items: center;
 }
 
 .cert-btn {
@@ -149,11 +150,13 @@
     color: white;
     border: none;
     border-radius: 4px;
-    padding: 8px 14px;
+    padding: 8px 18px;
     font-size: 15px;
     font-weight: 500;
     cursor: pointer;
     transition: background-color 0.2s;
+    height: 43px;
+    box-shadow: 0 2px 8px rgba(59, 125, 221, 0.08);
 }
 
 .cert-btn:hover {
@@ -165,15 +168,38 @@
     min-width: 100px;
     border-radius: 4px;
     border: 1px solid #ced4da;
-    padding: 8px 10px;
+    padding: 8px 12px;
     font-size: 15px;
     box-sizing: border-box;
+    height: 43px;
     transition: border-color 0.15s;
 }
 
 .cert-input:focus {
     border-color: #80bdff;
     outline: none;
+}
+
+.cert-message-area {
+    margin-top: 10px;
+    min-height: 22px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.cert-message {
+    font-size: 0.98rem;
+    color: #3b7ddd;
+    font-weight: 500;
+    padding: 0 4px;
+}
+
+#certMsg {
+    color: #43a047; /* 인증 성공시 초록 */
+}
+#certMsg.error {
+    color: #dc2626; /* 인증 실패시 빨강 */
 }
 
 /* ========== 구글 로그인 ========== */

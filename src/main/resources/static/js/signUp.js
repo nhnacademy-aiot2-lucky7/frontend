@@ -53,6 +53,12 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
+        // 휴대폰 인증 여부 확인
+        if (!window.isPhoneVerified) {
+            alert('휴대폰 인증을 완료해 주세요.');
+            return;
+        }
+
         // 서버에 회원가입 요청 보내기
         fetch('api/signup', {
             method : 'POST',

@@ -39,7 +39,7 @@ public class SmsController {
         if (savedCode != null && savedCode.equals(certCode)) {
             return ResponseEntity.ok("인증 성공");
         } else {
-            return ResponseEntity.status(400).body("인증 실패");
+            return ResponseEntity.status(400).body("인증번호를 확인해 주세요");
         }
     }
 }

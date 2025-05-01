@@ -20,6 +20,18 @@
     <div class="profile-wrapper">
         <div class="profile-card">
             <form class="profile-section" method="post" action="/edit-profile">
+                <div class="profile-photo-area">
+                    <div class="profile-photo-container">
+                        <img th:src="${user.profileImageUrl != null and !#strings.isEmpty(user.profileImageUrl) ? user.profileImageUrl : '/img/avatars/default-avatar.jpg'}"
+                             class="profile-photo"
+                             id="main-profile-photo"
+                             alt="프로필 사진"/>
+                        <label class="photo-upload-btn" title="사진 변경">
+                            <input type="file" name="profile_photo" accept="image/*" style="display:none;">
+                            <i data-feather="camera"></i>
+                        </label>
+                    </div>
+                </div>
                 <div class="profile-row">
                     <div class="profile-label">이메일</div>
                     <input type="email" class="profile-input" name="userEmail" th:value="${user.userEmail}" readonly>

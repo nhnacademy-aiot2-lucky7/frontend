@@ -13,4 +13,5 @@ public class UserResponse {
     private String departmentId;
     private String userPhone;
     private String roleId;
+    private String profileImageUrl;
 }

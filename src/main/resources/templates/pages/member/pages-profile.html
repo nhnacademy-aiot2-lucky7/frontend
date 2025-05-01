@@ -15,7 +15,7 @@
             <!-- 프로필 사진 및 사진 변경 -->
             <div class="profile-photo-area">
                 <div class="profile-photo-container">
-                    <img src="/img/avatars/default-avatar.jpg"
+                    <img th:src="${user.profileImageUrl != null && !#strings.isEmpty(user.profileImageUrl) ? user.profileImageUrl : '/img/avatars/default-avatar.jpg'}"
                          class="profile-photo" id="main-profile-photo" alt="프로필 사진"/>
                 </div>
             </div>

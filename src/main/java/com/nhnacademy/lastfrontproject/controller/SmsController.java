@@ -25,14 +25,14 @@ public class SmsController {
     }
 
     @PostMapping("/send")
-    public ResponseEntity<?> SendSMS(@RequestBody @Valid SmsRequestDto smsRequestDto){
+    public ResponseEntity<String> SendSMS(@RequestBody @Valid SmsRequestDto smsRequestDto){
         String code = smsService.SendSms(smsRequestDto);
         phoneToCode.put(smsRequestDto.getPhoneNum(), code); // 인증번호 저장
         return ResponseEntity.ok("문자를 전송했습니다.");
     }
 
     @PostMapping("/verify")
-    public ResponseEntity<?> VerifySMS(@RequestBody Map<String, String> req){
+    public ResponseEntity<String> VerifySMS(@RequestBody Map<String, String> req){
         String phoneNum = req.get("phoneNum");
         String certCode = req.get("certCode");
         String savedCode = phoneToCode.get(phoneNum);

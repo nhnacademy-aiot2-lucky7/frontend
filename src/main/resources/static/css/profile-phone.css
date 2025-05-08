@@ -1,0 +1,50 @@
+/* 모달 스타일 */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0; width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.3);
+}
+.modal-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.modal-content {
+    background: #fff;
+    border-radius: 12px;
+    padding: 2rem 1.5rem;
+    max-width: 350px;
+    margin: 10% auto;
+    position: relative;
+    box-shadow: 0 6px 30px rgba(0,0,0,0.1);
+}
+.modal .close {
+    position: absolute;
+    right: 14px; top: 10px;
+    font-size: 2rem;
+    color: #888;
+    cursor: pointer;
+}
+.cert-btn, .modal .cert-btn {
+    height: 36px;
+    padding: 6px 10px;
+    font-size: 15px;
+    border-radius: 4px;
+    background: #3b7ddd;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+.cert-btn:disabled {
+    background: #b8c2cc;
+    cursor: not-allowed;
+}
+
+.cert-message {
+    display: block;
+    margin-top: 6px;
+    font-size: 0.98rem;
+}

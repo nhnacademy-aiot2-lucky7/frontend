@@ -1,29 +1,25 @@
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM loaded, feather available:', typeof feather !== 'undefined');
+document.addEventListener('DOMContentLoaded', function () {
+    console.log('DOM이 로드되었습니다. feather 사용 가능 : ', typeof feather !== 'undefined');
 
     if (typeof feather === 'undefined') {
-        console.error('Feather is not defined! Check if feather.min.js is loaded correctly');
+        console.error('feather가 정의되지 않았습니다. feather.min.js가 올바르게 로드되었는지 확인하세요.');
         return;
     }
 
-    const eyeContainer = document.querySelector('.password-eye-container');
-    const passwordInput = document.getElementById('userPassword'); // 여기 변경
+    document.querySelectorAll('.input-wrapper').forEach(function (wrapper) {
+        const passwordInput = wrapper.querySelector('input[type="password"]');
+        const eyeContainer = wrapper.querySelector('.password-eye-container');
+        if (!passwordInput || !eyeContainer) return;
 
-    if (!eyeContainer || !passwordInput) {
-        console.error('Required elements not found!');
-        return;
-    }
+        eyeContainer.innerHTML = feather.icons['eye'].toSvg();
 
-    // 초기 아이콘 설정
-    eyeContainer.innerHTML = feather.icons['eye'].toSvg();
-
-    // 클릭 이벤트
-    eyeContainer.addEventListener('click', function() {
-        const isPassword = passwordInput.type === 'password';
-        passwordInput.type = isPassword ? 'text' : 'password';
-
-        // 아이콘 직접 변경
-        const iconName = isPassword ? 'eye-off' : 'eye';
-        this.innerHTML = feather.icons[iconName].toSvg();
+        eyeContainer.addEventListener('click', function () {
+            const isPassword = passwordInput.type === 'password';
+            passwordInput.type = isPassword ? 'text' : 'password';
+            const iconName = isPassword ? 'eye-off' : 'eye';
+            this.innerHTML = feather.icons[iconName].toSvg();
+        });
     });
+
+    feather.replace();
 });

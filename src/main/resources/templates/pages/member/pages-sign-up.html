@@ -46,24 +46,6 @@
                 <label for="departmentId">부서</label>
                 <select class="form-control" id="departmentId" name="departmentId" required>
                     <option value="" disabled selected hidden>부서를 선택하세요</option>
-                    <script>
-                        document.addEventListener('DOMContentLoaded', function () {
-                            fetch('/api/departments') // 임의 (수정필요)
-                                .then(response => response.json())
-                                .then(data => {
-                                    const departmentSelect = document.createElement('option');
-                                    data.forEach(dept => {
-                                        const option = document.createElement('option');
-                                        option.value = dept.name; // 임의 (수정필요)
-                                        option.textContent = dept.name;
-                                        departmentSelect.appendChild(option);
-                                    })
-                                })
-                                .catch(error => {
-                                    console.error('부서 목록을 불러오지 못했습니다: ', error);
-                                });
-                        });
-                    </script>
                 </select>
             </div>
 

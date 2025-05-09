@@ -21,6 +21,33 @@
 // 토큰 필드명
 //     token
 
+// 부서 목록 불러오기
+fetch('/users/departments')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('부서 정보를 불러오는데 실패했습니다.');
+        }
+        return response.json();
+    })
+    .then(departments => {
+        const departmentSelect = document.getElementById('departmentId');
+
+        // 각 부서를 드롭다운 옵션으로 추가
+        departments.forEach(dept => {
+            const option = document.createElement('option');
+            option.value = dept.departmentId; // 부서 ID
+            option.textContent = dept.departmentName; // 부서 이름
+            departmentSelect.appendChild(option);
+        });
+    })
+    .catch(error => {
+        console.error('부서 목록을 불러오지 못했습니다:', error);
+        const departmentSelect = document.getElementById('departmentId');
+        const errorOption = document.createElement('option');
+        errorOption.textContent = '부서 정보를 불러올 수 없습니다';
+        errorOption.disabled = true;
+        departmentSelect.appendChild(errorOption);
+    });
 
 // 회원가입 페이지
 document.addEventListener('DOMContentLoaded', function() {
@@ -80,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 if (data.success) {
                     alert('회원가입이 완료되었습니다');
-                    window.location.href = 'pages-sign-in.html';
+                    window.location.href = '/sign-in';
                 } else {
                     alert(data.message || '회원가입에 실패했습니다');
                 }

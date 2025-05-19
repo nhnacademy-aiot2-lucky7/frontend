@@ -29,10 +29,22 @@
                     <span class="align-middle">멤버 관리</span>
                 </a>
             </li>
+            <li class="sidebar-item"
+                th:classappend="${
+                    currentPath.startsWith('/dashboard-info')
+                    or currentPath.startsWith('/add-dashboard')
+                    or currentPath.startsWith('/dashboard-detail')
+                    or currentPath.startsWith('/admin/dashboard-info')
+                } ? 'active'">
+                <a class="sidebar-link" href="/admin/dashboard-info">
+                    <i class="align-middle" data-feather="trending-up"></i>
+                    <span class="align-middle">대시보드 내역</span>
+                </a>
+            </li>
             <li class="sidebar-item" th:classappend="${currentPath == '/management' or currentPath == '/dashboard-preview'} ? 'active'">
                 <a class="sidebar-link" href="/management">
                     <i class="align-middle" data-feather="file-text"></i>
-                    <span class="align-middle">관리</span>
+                    <span class="align-middle">대시보드 관리</span>
                 </a>
             </li>
             <li class="sidebar-item" th:classappend="${currentPath == '/event'} ? 'active'">
@@ -48,18 +60,7 @@
                     <span class="align-middle">게이트웨이 추가</span>
                 </a>
             </li>
-            <li class="sidebar-item"
-                th:classappend="${
-                    currentPath.startsWith('/dashboard-info')
-                    or currentPath.startsWith('/add-dashboard')
-                    or currentPath.startsWith('/dashboard-detail')
-                    or currentPath.startsWith('/admin/dashboard-info')
-                } ? 'active'">
-                <a class="sidebar-link" href="/admin/dashboard-info">
-                    <i class="align-middle" data-feather="trending-up"></i>
-                    <span class="align-middle">대시보드 추가</span>
-                </a>
-            </li>
+
             <li class="sidebar-item" th:classappend="${currentPath == '/settings'} ? 'active'">
                 <a class="sidebar-link" href="/settings">
                     <i class="align-middle" data-feather="settings"></i>

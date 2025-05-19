@@ -22,7 +22,7 @@
 //     token
 
 // 부서 목록 불러오기
-fetch('/users/departments')
+fetch('http://localhost:10235/departments')
     .then(response => {
         if (!response.ok) {
             throw new Error('부서 정보를 불러오는데 실패했습니다.');
@@ -80,19 +80,28 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // 휴대폰 인증 여부 확인
-        if (!window.isPhoneVerified) {
-            alert('휴대폰 인증을 완료해 주세요.');
-            return;
-        }
+        // // 휴대폰 인증 여부 확인
+        // if (!window.isPhoneVerified) {
+        //     alert('휴대폰 인증을 완료해 주세요.');
+        //     return;
+        // }
 
         // 서버에 회원가입 요청 보내기
-        fetch('api/signup', {
+        fetch('http://localhost:10234/auth/signUp', {
             method : 'POST',
             headers : {
                 'Content-Type' : 'application/json'
             },
-            body : JSON.stringify({name, email, password})
+            body : JSON.stringify({
+                userName: name,
+                userEmail: email,
+                userPassword: password,
+                departmentId: form.querySelector('select[name="departmentId"]').value,
+                userDepartment : document.querySelector(`option[value="${form.querySelector('select[name="departmentId"]').value}"]`).textContent
+                // userPhone: form.querySelector('input[name="userPhone"]').value
+                ,userPhone: "010-1234-5678" // 빈 문자열이라도 포함
+            }),
+            credentials: 'include'
         })
             .then(response => {
                 // HTTP 상태 확인
@@ -102,7 +111,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                     throw new Error(`HTTP Error! : , ${response.status}`);
                 }
-                return response.json();
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.includes('application/json')) {
+                    return response.json();
+                }
+                return {success: true};
             })
             .then(data => {
                 if (data.success) {

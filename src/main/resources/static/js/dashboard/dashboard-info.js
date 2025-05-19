@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 </a>
                 <div class="display-control">
-                    <span class="display-text">메인페이지에 표시</span>
+                    <span class="display-text">관리페이지에 표시</span>
                     <button class="toggle-btn" data-id="${dashboard.id}" data-active="${dashboard.active}">
                         ${dashboard.active ? 'On' : 'Off'}
                     </button>
@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // 상태 변경 로그
                 const bannerTitle = this.closest('.banner-container').querySelector('.banner-title').textContent;
-                console.log(`${bannerTitle} 배너의 메인페이지 표시 상태가 ${isActive ? 'Off' : 'On'}로 변경되었습니다.`);
+                console.log(`${bannerTitle} 배너의 관리페이지 표시 상태가 ${isActive ? 'Off' : 'On'}로 변경되었습니다.`);
             });
         });
     }

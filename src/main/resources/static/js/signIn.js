@@ -47,12 +47,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // 서버에 로그인 요청 보내기
-        fetch('/api/login', {
+        fetch('http://localhost:10232/auth/signIn', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ email, password, rememberMe })
+            body: JSON.stringify({ userEmail: email, userPassword: password }),
+            credentials:"include"
         })
             .then(response => {
                 // HTTP 상태 코드 확인
@@ -61,23 +62,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         throw new Error('이메일 또는 비밀번호가 올바르지 않습니다.');
                     }
                     throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.success) {
-                    // JWT 토큰 저장
-                    localStorage.setItem('token', data.token);
-
-                    // 사용자 정보 저장 (선택 사항)
-                    if (data.user) {
-                        localStorage.setItem('user', JSON.stringify(data.user));
-                    }
-
+                }else {
                     alert('로그인 성공!');
                     window.location.href = '/dashboard';
-                } else {
-                    alert(data.message || '로그인에 실패했습니다.');
                 }
             })
             .catch(error => {

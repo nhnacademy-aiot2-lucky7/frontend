@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // }
 
         // 서버에 회원가입 요청 보내기
-        fetch('http://localhost:10234/auth/signUp', {
+        fetch('http://localhost:10232/auth/signUp', {
             method : 'POST',
             headers : {
                 'Content-Type' : 'application/json'

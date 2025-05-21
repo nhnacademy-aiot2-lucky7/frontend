@@ -2,6 +2,7 @@
     <a class="sidebar-toggle js-sidebar-toggle">
         <i class="hamburger align-self-center"></i>
     </a>
+
     <div class="navbar-collapse collapse">
         <ul class="navbar-nav navbar-align">
             <!-- 알림 드롭다운 -->
@@ -9,56 +10,73 @@
                 <a class="nav-icon dropdown-toggle" data-bs-toggle="dropdown" href="#" id="alertsDropdown">
                     <div class="position-relative">
                         <i class="align-middle" data-feather="bell"></i>
-                        <span class="indicator">4</span>
+                        <!-- 알림 개수가 있을 때만 표시 -->
+                        <span class="indicator" th:if="${not #lists.isEmpty(events)}" th:text="${#lists.size(events)}">0</span>
                     </div>
                 </a>
                 <div aria-labelledby="alertsDropdown" class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0">
-                    <div class="dropdown-menu-header">4 New Notifications</div>
+                    <div class="dropdown-menu-header" th:text="${#lists.isEmpty(events) ? '알림 없음' : #lists.size(events) + '개의 알림'}">알림</div>
                     <div class="list-group">
-                        <!-- 알림 항목들... (필요시 th:each로 대체 가능) -->
+                        <!-- 알림이 없을 경우 -->
+                        <div class="list-group-item" th:if="${#lists.isEmpty(events)}">
+                            <div class="row g-0 align-items-center">
+                                <div class="col-12 text-muted">
+                                    <p class="mb-0">새로운 알림이 없습니다</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 알림 항목들 (최대 5개만 표시) -->
+                        <a th:each="event, eventStat : ${events}" th:if="${eventStat.index < 5}" href="/event" class="list-group-item">
+                            <div class="row g-0 align-items-center">
+                                <div class="col-2">
+                                    <!-- 이벤트 레벨에 따른 아이콘 -->
+                                    <i class="text-danger" data-feather="alert-circle" th:if="${event.level == 3}"></i>
+                                    <i class="text-warning" data-feather="alert-triangle" th:if="${event.level == 2}"></i>
+                                    <i class="text-info" data-feather="info" th:if="${event.level == 1}"></i>
+                                </div>
+                                <div class="col-10">
+                                    <div class="text-dark" th:text="${event.sensorName}">센서 이름</div>
+                                    <div class="text-muted small mt-1" th:text="${event.message}">이벤트 내용</div>
+                                    <div class="text-muted small mt-1" th:text="${#temporals.format(event.dateTime, 'yyyy-MM-dd HH:mm')}">날짜</div>
+                                </div>
+                            </div>
+                        </a>
                     </div>
                     <div class="dropdown-menu-footer">
-                        <a class="text-muted" href="#">Show all notifications</a>
+                        <a class="text-muted" href="/event">모든 알림 보기</a>
                     </div>
                 </div>
             </li>
-            <!-- 메시지 드롭다운 -->
-            <li class="nav-item dropdown">
-                <a class="nav-icon dropdown-toggle" data-bs-toggle="dropdown" href="#" id="messagesDropdown">
-                    <div class="position-relative">
-                        <i class="align-middle" data-feather="message-square"></i>
-                    </div>
-                </a>
-                <div aria-labelledby="messagesDropdown" class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0">
-                    <div class="dropdown-menu-header">4 New Messages</div>
-                    <div class="list-group">
-                        <!-- 메시지 항목들... (필요시 th:each로 대체 가능) -->
-                    </div>
-                    <div class="dropdown-menu-footer">
-                        <a class="text-muted" href="#">Show all messages</a>
-                    </div>
-                </div>
-            </li>
+
             <!-- 사용자 드롭다운 -->
-            <li class="nav-item dropdown">
+            <li class="nav-item dropdown" id="nav-dropdown">
                 <a class="nav-link dropdown-toggle d-none d-sm-inline-block" data-bs-toggle="dropdown" href="#">
-                    <img alt="프로필 사진" class="navbar-profile-photo" src="{{ user.profile_image_url }}"/>
-                    <span class="text-dark">Charles Hall</span>
+                    <img th:src="${user != null && user.profileImageUrl != null && !#strings.isEmpty(user.profileImageUrl) ? user.profileImageUrl : '/img/avatars/default-avatar.jpg'}"
+                         alt="프로필 사진" class="navbar-profile-photo" style="width: 36px; height: 36px; object-fit: cover; border-radius: 50%;"/>
+                    <span class="text-dark" th:text="${user != null ? user.userName : '사용자'}">사용자</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end">
-                    <a class="dropdown-item" href="/profile">
-                        <i class="align-middle me-1" data-feather="user"></i> Profile
+                    <a class="dropdown-item" href="/profile" id="nav-mypage">
+                        <i class="align-middle me-1" data-feather="user"></i> 마이페이지
                     </a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="/dashboard">
-                        <i class="align-middle me-1" data-feather="settings"></i> Settings &amp; Privacy
-                    </a>
-                    <a class="dropdown-item" href="/helpdesk">
-                        <i class="align-middle me-1" data-feather="help-circle"></i> Help Center
+                    <a class="dropdown-item" href="/settings">
+                        <i class="align-middle me-1" data-feather="settings"></i> 설정
                     </a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Log out</a>
+                    <form id="logout-form" action="http://localhost:10232/auth/logout" method="post" style="margin: 0; padding: 0;">
+                        <button type="button" class="dropdown-item" onclick="handleLogout()">
+                            <i class="align-middle me-1" data-feather="log-out"></i> 로그아웃
+                        </button>
+                    </form>
                 </div>
+            </li>
+            <li class="nav-item dropdown" id="nav-login">
+                <a class="" href="/sign-in">
+                    <i class="align-middle" data-feather="log-in"></i>
+                    <span class="align-middle">로그인</span>
+                </a>
             </li>
         </ul>
     </div>

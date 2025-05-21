@@ -180,6 +180,11 @@ input:focus, select:focus, textarea:focus {
     background-color: #fff;
     border: 1px solid rgba(0,0,0,.15);
     border-radius: 0.25rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.175);
+    padding: 0.5rem 0;
+}
+.dropdown-menu.show {
+    display: block;
 }
 .dropdown-menu-end {
     right: 0;
@@ -188,12 +193,13 @@ input:focus, select:focus, textarea:focus {
 .dropdown-item {
     display: block;
     width: 100%;
-    padding: 0.4rem 1.5rem;
+    padding: 0.5rem 1rem;
     font-weight: 400;
     color: #212529;
     background-color: transparent;
     border: 0;
     cursor: pointer;
+    transition: background-color 0.15s ease-in-out;
 }
 .dropdown-item:hover,
 .dropdown-item:focus {
@@ -218,6 +224,43 @@ input:focus, select:focus, textarea:focus {
 }
 .dropdown-toggle:empty::after {
     margin-left: 0;
+}
+
+/* 추가: 드롭다운 메뉴 헤더 스타일 */
+.dropdown-menu-header {
+    background-color: #f8f9fa;
+    color: #495057;
+    font-weight: 600;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+/* 추가: 드롭다운 푸터 스타일 */
+.dropdown-menu-footer {
+    background-color: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+    padding: 0.75rem 1rem;
+    text-align: center;
+}
+
+.dropdown-menu-footer a {
+    color: #6c757d;
+    text-decoration: none;
+}
+
+.dropdown-menu-footer a:hover {
+    color: #343a40;
+    text-decoration: underline;
+}
+
+/* 추가: 알림 드롭다운 특화 스타일 */
+.dropdown-menu-lg {
+    min-width: 300px;
+}
+
+.list-group-item {
+    border-left: none;
+    border-right: none;
 }
 
 /* ========== 사이드바 ========== */
@@ -345,6 +388,23 @@ input:focus, select:focus, textarea:focus {
     display: flex;
     align-items: center;
 }
+
+.indicator {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background-color: #dc3545;
+    color: #fff;
+    font-size: 10px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 18px;
+}
+
 .navbar-content,
 .navbar-collapse {
     display: flex;
@@ -403,6 +463,7 @@ input:focus, select:focus, textarea:focus {
     object-fit: cover;
     border: 1.5px solid #D4C9BE;
     background: #F1EFEC;
+    margin-right: 8px;
 }
 
 /* ========== 반응형 ========== */

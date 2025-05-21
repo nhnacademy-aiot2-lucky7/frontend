@@ -56,18 +56,18 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // 관리 메뉴 드롭다운 토글
-    var managementParent = document.getElementById('management-parent');
-    if (managementParent) {
-        managementParent.querySelector('.sidebar-link').addEventListener('click', function(e) {
-            e.preventDefault();
-            console.log('Management menu clicked');
-            var dropdown = managementParent.querySelector('.sidebar-dropdown');
-            if (dropdown) {
-                dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-            }
-        });
-    }
+    // // 관리 메뉴 드롭다운 토글
+    // var managementParent = document.getElementById('management-parent');
+    // if (managementParent) {
+    //     managementParent.querySelector('.sidebar-link').addEventListener('click', function(e) {
+    //         e.preventDefault();
+    //         console.log('Management menu clicked');
+    //         var dropdown = managementParent.querySelector('.sidebar-dropdown');
+    //         if (dropdown) {
+    //             dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    //         }
+    //     });
+    // }
 
     // Bootstrap 5 드롭다운 수동 초기화 (필요한 경우)
     if (typeof bootstrap !== 'undefined') {

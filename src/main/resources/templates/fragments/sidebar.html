@@ -16,7 +16,7 @@
                     <span class="align-middle">로그인</span>
                 </a>
             </li>
-            <li class="sidebar-item" id="mypage-menu" style="display: none;">
+            <li class="sidebar-item" id="mypage-menu" th:classappend="${currentPath == '/profile'} ? 'active'">
                 <a class="sidebar-link" href="/profile">
                     <i class="align-middle" data-feather="user"></i>
                     <span class="align-middle">마이페이지</span>
@@ -81,12 +81,13 @@
                     <span class="align-middle">대시보드 추가</span>
                 </a>
             </li>
-            <li class="sidebar-item" th:classappend="${currentPath == '/settings'} ? 'active'">
-                <a class="sidebar-link" href="/settings">
-                    <i class="align-middle" data-feather="settings"></i>
-                    <span class="align-middle">Settings</span>
-                </a>
-            </li>
+<!--            Setting 메뉴의 역할이 명확하지 않아서 주석처리-->
+<!--            <li class="sidebar-item" th:classappend="${currentPath == '/settings'} ? 'active'">-->
+<!--                <a class="sidebar-link" href="/settings">-->
+<!--                    <i class="align-middle" data-feather="settings"></i>-->
+<!--                    <span class="align-middle">Settings</span>-->
+<!--                </a>-->
+<!--            </li>-->
         </ul>
     </div>
 </nav>

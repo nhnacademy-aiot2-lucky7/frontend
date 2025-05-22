@@ -35,7 +35,8 @@
                 <hr>
                 <div class="profile-row">
                     <div class="profile-label">부서</div>
-                    <div class="profile-value" th:text="${user.departmentId}"></div>
+                    <div class="profile-value"
+                         th:text="${user?.department?.departmentName} ?: '부서정보없음'"></div>
                 </div>
                 <hr>
                 <div class="profile-row">

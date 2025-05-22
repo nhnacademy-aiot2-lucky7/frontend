@@ -10,8 +10,11 @@ import lombok.NoArgsConstructor;
 public class UserResponse {
     private String userName;
     private String userEmail;
-    private String departmentId;
+    private Department department;
     private String userPhone;
     private String roleId;
     private String profileImageUrl;
+    private String userRole;
+    private Long userNo;
+    private EventLevelResponse eventLevelResponse;
 }

@@ -30,7 +30,7 @@ public class GlobalUserInfoAdvice {
             try {
                 return jwtUtil.fetchUser(accessToken); // 유저 서버에서 정보 조회
             } catch (Exception e) {
-                // 예외 발생 시 null 반환(비로그인 상태)
+                e.printStackTrace();
             }
         }
         return null;

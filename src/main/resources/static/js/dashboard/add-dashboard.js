@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: newId,
             name: nameInput.value,
             description: descriptionInput.value,
-            department: currentUser.department,
+            department: currentUser.department.departmentId,
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString(),
             active: true,
@@ -91,8 +91,8 @@ document.addEventListener('DOMContentLoaded', function() {
         alert('대시보드가 추가되었습니다.');
 
         // 사용자 역할에 따라 다른 페이지로 리다이렉트
-        console.log('User role:', currentUser.role);
-        if (currentUser.role === 'ADMIN') {
+        console.log('User role:', currentUser.userRole);
+        if (currentUser.userRole === 'ROLE_ADMIN') {
             console.log('Redirecting to admin dashboard');
             window.location.href = '/admin/dashboard-info';
         } else {

@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @Controller
 public class DashboardController {
     @GetMapping("/dashboard-info")
-    public String dashboardInfo(){
+    public String dashboardInfo() {
         return "pages/member/dashboard/pages-dashboard-info";
     }
 

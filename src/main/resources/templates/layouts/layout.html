@@ -9,13 +9,22 @@
     <link href="/img/icons/777_64x64.png" rel="shortcut icon"/>
     <title>Lucky Seven</title>
     <link href="/css/common.css" rel="stylesheet"/>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        window.currentUser = JSON.parse(/*[[${userJson}]]*/ "null");
+        /*]]>*/
+    </script>
 </head>
 <body>
 <div class="wrapper">
-    <!-- 로그인하지 않은 사용자 또는 일반 회원용 사이드바 -->
-    <div th:replace="~{fragments/sidebar :: sidebar}" sec:authorize="!hasRole('ADMIN')"></div>
-    <!-- 관리자용 사이드바 -->
-    <div th:replace="~{fragments/sidebar_adm :: sidebar}" sec:authorize="hasRole('ADMIN')"></div>
+    <!-- 각각 role 에 따른 사이드바 표시 -->
+    <th:block th:if="${user != null and #strings.trim(user.userRole).toUpperCase() == 'ROLE_ADMIN'}">
+        <div th:replace="~{fragments/sidebar_adm :: sidebar_admin}"></div>
+    </th:block>
+    <th:block th:unless="${user != null and #strings.trim(user.userRole).toUpperCase() == 'ROLE_ADMIN'}">
+        <div th:replace="~{fragments/sidebar :: sidebar_user}"></div>
+    </th:block>
+
     <div class="main">
         <div th:replace="fragments/navbar :: navbar"></div>
         <!-- 본문이 들어올 자리 -->
@@ -23,6 +32,7 @@
         <div th:replace="fragments/footer :: footer"></div>
     </div>
 </div>
+<script src="/js/admin-check.js"></script>
 <script src="/js/bootstrap.bundle.min.js"></script>
 <script src="/js/feather.min.js"></script>
 <script src="/js/feather-replace.js"></script>

@@ -1,4 +1,4 @@
-package com.nhnacademy.lastfrontproject.jwt;
+package com.nhnacademy.lastfrontproject.util;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;

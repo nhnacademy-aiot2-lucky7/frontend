@@ -1,7 +1,9 @@
 package com.nhnacademy.lastfrontproject.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nhnacademy.lastfrontproject.dto.user.UserResponse;
-import com.nhnacademy.lastfrontproject.jwt.JwtUtil;
+import com.nhnacademy.lastfrontproject.util.CookieUtil;
+import com.nhnacademy.lastfrontproject.util.JwtUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,20 +17,9 @@ public class UserController {
     @Autowired
     private JwtUtil jwtUtil;
 
-    private String getAccessToken(HttpServletRequest request) {
-        if (request.getCookies() != null) {
-            for (Cookie cookie : request.getCookies()) {
-                if ("accessToken".equals(cookie.getName())) {
-                    return cookie.getValue();
-                }
-            }
-        }
-        return null;
-    }
-
     @GetMapping("/profile")
     public String profile(Model model, HttpServletRequest request) {
-        String accessToken = getAccessToken(request);
+        String accessToken = CookieUtil.getAccessToken(request);
         if (accessToken == null) {
             return "redirect:/sign-in";
         }
@@ -39,7 +30,7 @@ public class UserController {
 
     @GetMapping("/edit-profile")
     public String editProfile(Model model, HttpServletRequest request) {
-        String accessToken = getAccessToken(request);
+        String accessToken = CookieUtil.getAccessToken(request);
         if (accessToken == null) {
             return "redirect:/sign-in";
         }
@@ -47,4 +38,5 @@ public class UserController {
         model.addAttribute("user", user);
         return "pages/member/pages-profile-edit";
     }
+
 }

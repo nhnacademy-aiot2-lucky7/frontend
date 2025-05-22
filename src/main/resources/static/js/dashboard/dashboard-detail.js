@@ -1,3 +1,13 @@
+function formatDate(dateString) {
+    const d = new Date(dateString);
+    let month = (d.getMonth() + 1).toString();
+    let day = d.getDate().toString();
+    const year = d.getFullYear();
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+    return [year, month, day].join('-');
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     // 먼저 localStorage에서 최신 대시보드 데이터 로드
     try {
@@ -37,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // const viewLogBtn = document.getElementById('viewLogBtn');
     //
     // // currentUser 객체가 있고 role이 'ADMIN'인 경우에만 로그 버튼 표시
-    // if (typeof currentUser !== 'undefined' && currentUser && currentUser.role === 'ADMIN') {
+    // if (typeof currentUser !== 'undefined' && currentUser && currentUser.userRole === 'ADMIN') {
     //     adminLogSection.style.display = 'flex';
     //
     //     // 로그 버튼 클릭 이벤트
@@ -387,7 +397,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 뒤로 가기 버튼 클릭 이벤트
     backBtn.addEventListener('click', function () {
-        if (typeof currentUser !== 'undefined' && currentUser && currentUser.role === 'ADMIN') {
+        if (typeof currentUser !== 'undefined' && currentUser && currentUser.userRole === 'ROLE_ADMIN') {
             window.location.href = '/admin/dashboard-info';
         } else {
             window.location.href = '/dashboard-info';

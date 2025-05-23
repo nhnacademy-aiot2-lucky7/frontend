@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
             );
         }
 
-        // 부서별로 그룹화
+        // 부서별 그룹화
         const groupedDashboards = {};
         filteredDashboards.forEach(dashboard => {
             if (!groupedDashboards[dashboard.department]) {
@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // 부서 제목
             const departmentTitle = document.createElement('h2');
             departmentTitle.className = 'department-title';
-            departmentTitle.textContent = department;
+            departmentTitle.textContent = departmentDashboards[0].departmentName;
             departmentGroup.appendChild(departmentTitle);
 
             // 대시보드 배너 컨테이너

@@ -22,12 +22,6 @@
                     <span class="align-middle">마이페이지</span>
                 </a>
             </li>
-            <li class="sidebar-item" th:classappend="${currentPath == '/member_management'} ? 'active'">
-                <a class="sidebar-link" href="/member_management">
-                    <i class="align-middle" data-feather="users"></i>
-                    <span class="align-middle">멤버 관리</span>
-                </a>
-            </li>
             <li class="sidebar-item"
                 th:classappend="${
                     currentPath.startsWith('/dashboard-info')
@@ -59,7 +53,12 @@
                     <span class="align-middle">게이트웨이 추가</span>
                 </a>
             </li>
-
+            <li class="sidebar-item" th:classappend="${currentPath == '/member_management'} ? 'active'">
+                <a class="sidebar-link" href="/member_management">
+                    <i class="align-middle" data-feather="users"></i>
+                    <span class="align-middle">멤버 관리</span>
+                </a>
+            </li>
             <li class="sidebar-item" th:classappend="${currentPath == '/settings'} ? 'active'">
                 <a class="sidebar-link" href="/settings">
                     <i class="align-middle" data-feather="settings"></i>

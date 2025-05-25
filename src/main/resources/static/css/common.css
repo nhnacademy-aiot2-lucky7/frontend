@@ -19,8 +19,10 @@ body {
 a {
     text-decoration: none;
 }
-a:hover {
-    text-decoration: underline;
+a:hover,
+a:active,
+a:visited {
+    text-decoration: none;
 }
 
 button {

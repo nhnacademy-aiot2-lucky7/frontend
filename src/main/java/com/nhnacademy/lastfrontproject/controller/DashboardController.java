@@ -95,7 +95,7 @@ public class DashboardController {
 
     @GetMapping("/dashboard-detail")
     public String dashboardDetail(){
-        return "pages/pages-dashboard-detail";
+        return "pages/member/dashboard/pages-dashboard-detail";
     }
 
 //    @GetMapping("/dashboard-logs")

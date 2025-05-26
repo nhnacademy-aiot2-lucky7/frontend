@@ -11,6 +11,15 @@
     gap: 2rem;
 }
 
+#departmentSelect {
+    padding: 0.5rem 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    margin-left: 0.5rem;
+    background: #fff;
+}
+
 /* 필터 영역 */
 .member-filter form {
     background-color: #fff;
@@ -61,10 +70,31 @@
     cursor: pointer;
 }
 
+/* 버튼 */
+.btn {
+    padding: 0.3rem 0.9rem;
+    font-size: 0.95rem;
+    border-radius: 6px;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+    margin: 0 2px;
+    transition: background 0.2s;
+}
+
+.btn-save {background: #22c55e; color: #fff; }
+.btn-cancel { background: #e5e7eb; color: #111; }
+.btn-edit { background: #2563eb; color: #fff; }
+.btn-delete { background: #ef4444; color: #fff; }
+.btn-save:hover { background: #16a34a; }
+.btn-cancel:hover { background: #cbd5e1; }
+.btn-edit:hover { background: #1d4ed8; }
+.btn-delete:hover { background: #b91c1c; }
+
 /* 테이블 */
 .member-table {
     width: 100%;
-    table-layout: auto; /* 🔁 fixed → auto */
+    table-layout: fixed;
     background-color: white;
     border-radius: 12px;
     overflow: hidden;
@@ -111,6 +141,22 @@ td.date-cell {
     font-family: 'Roboto Mono', monospace;
 }
 
+/* 수정 영역 */
+.edit-name, .edit-email {
+    width: 100%;
+    min-width: 0; /* flex/table에서 넘침 방지 */
+    font-size: 1rem;
+    padding: 0.2rem 0.5rem;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    background: #f8fafc;
+    box-sizing: border-box; /* 패딩/보더 포함 */
+}
+
+.edit-name:focus, .edit-email:focus {
+    outline: 2px solid #2563eb;
+    background: #fff;
+}
 
 /* 반응형 */
 @media (max-width: 991.98px) {

@@ -7,6 +7,7 @@
 <head>
 	<meta charset="utf-8"/>
 	<title>멤버 관리 | Lucky Seven</title>
+	<script src="/js/admin-check.js"></script>
 	<link href="/css/member-management.css" rel="stylesheet"/>
 	<script src="/js/member-management.js"></script>
 	<script th:inline="javascript">
@@ -48,11 +49,13 @@
 					<th th:classappend="${sort == 'email' ? 'sorted' : ''}" data-sort="email">이메일</th>
 					<th th:classappend="${sort == 'department' ? 'sorted' : ''}" data-sort="department">부서</th>
 					<th th:classappend="${sort == 'phone' ? 'sorted' : ''}" data-sort="phone">휴대전화</th>
+					<th th:classappend="${sort == 'createdAt' ? 'sorted' : ''}" data-sort="createdAt">가입일자</th>
+					<th>관리</th>
 				</tr>
 				</thead>
 				<tbody id="member-table-body">
 				<tr th:if="${#lists.isEmpty(members)}">
-					<td colspan="4" style="text-align: center; padding: 2rem; color: #6c757d;">
+					<td colspan="6" style="text-align: center; padding: 2rem; color: #6c757d;">
 						멤버가 없습니다.
 					</td>
 				</tr>

@@ -21,4 +21,18 @@ public class MemberService {
         System.out.println("DB에서 읽은 멤버 수: " + entities.size());
         return entities.stream().map(MemberDto::fromEntity).collect(Collectors.toList());
     }
+
+    public void deleteMember(Long id) {
+        memberRepository.deleteById(id);
+    }
+
+    public void updateMember(Long id, MemberDto dto) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 멤버가 존재하지 않습니다: " + id));
+
+        member.setName(dto.getName());
+        member.setEmail(dto.getEmail());
+
+        memberRepository.save(member);
+    }
 }

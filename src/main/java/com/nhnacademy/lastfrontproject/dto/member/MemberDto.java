@@ -17,6 +17,7 @@ public class MemberDto {
     private String phone;
     private String departmentId;
     private String departmentName;
+    private String createdAt;
 
     public static MemberDto fromEntity(Member member) {
         return MemberDto.builder()
@@ -25,9 +26,13 @@ public class MemberDto {
                 .email(member.getEmail())
                 .phone(member.getPhone())
                 .departmentId(member.getDepartmentId())
+                // departmentName이 null이면 ""로 내려줌
                 .departmentName(
-                        member.getDepartment() != null ? member.getDepartment().getDepartmentName() : null
+                        member.getDepartment() != null && member.getDepartment().getDepartmentName() != null
+                                ? member.getDepartment().getDepartmentName()
+                                : ""
                 )
+                .createdAt(member.getCreatedAt() != null ? member.getCreatedAt().toString() : null)
                 .build();
     }
 }

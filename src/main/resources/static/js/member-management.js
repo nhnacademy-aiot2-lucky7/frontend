@@ -16,10 +16,12 @@ document.addEventListener('DOMContentLoaded', function () {
             row.querySelector('.department-cell').textContent = origDeptName;
 
             row.querySelector('td:last-child').innerHTML = `
-            <button class="btn btn-save" data-id="${member.id}">저장</button>
-            <button class="btn btn-cancel" data-id="${member.id}">취소</button>
-        `;
+        <button class="btn btn-save" data-id="${member.id}">저장</button>
+        <button class="btn btn-cancel" data-id="${member.id}">취소</button>
+        <button class="btn btn-delete" data-id="${member.id}">삭제</button>
+    `;
 
+            // 저장 버튼 이벤트
             row.querySelector('.btn-save').addEventListener('click', function () {
                 const newName = row.querySelector('.edit-name').value;
                 const newEmail = row.querySelector('.edit-email').value;
@@ -38,36 +40,37 @@ document.addEventListener('DOMContentLoaded', function () {
                     });
             });
 
+            // 취소 버튼 이벤트
             row.querySelector('.btn-cancel').addEventListener('click', function () {
                 row.querySelector('.name-cell').textContent = origName;
                 row.querySelector('.email-cell').textContent = origEmail;
                 row.querySelector('.department-cell').textContent = origDeptName;
                 row.querySelector('td:last-child').innerHTML = `
-                <button class="btn btn-edit edit-btn" data-id="${member.id}">수정</button>
-                <button class="btn btn-delete delete-btn" data-id="${member.id}">삭제</button>
-            `;
+            <button class="btn btn-edit edit-btn" data-id="${member.id}">수정</button>
+        `;
                 registerEditDeleteEvents(row, member);
             });
-        });
 
-        // 삭제 버튼
-        row.querySelector('.delete-btn, .btn-delete').addEventListener('click', function () {
-            if (confirm('정말 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.')) {
-                fetch(`/admin/member/${member.id}`, {method: 'DELETE'})
-                    .then(res => {
-                        if (res.ok) {
-                            alert('삭제되었습니다.');
-                            location.reload();
-                        } else {
-                            alert('삭제 실패');
-                        }
-                    });
-            }
+            // 삭제 버튼 이벤트
+            row.querySelector('.btn-delete').addEventListener('click', function () {
+                if (confirm('정말 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.')) {
+                    fetch(`/admin/member/${member.id}`, {method: 'DELETE'})
+                        .then(res => {
+                            if (res.ok) {
+                                alert('삭제되었습니다.');
+                                location.reload();
+                            } else {
+                                alert('삭제 실패');
+                            }
+                        });
+                }
+            });
         });
     }
 
     function renderTable(data) {
         tableBody.innerHTML = '';
+        document.getElementById('member-count-badge').textContent = `총 ${data.length}명`;
         if (data.length === 0) {
             tableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 2rem; color: #6c757d;">멤버가 없습니다.</td></tr>`;
             return;
@@ -75,16 +78,15 @@ document.addEventListener('DOMContentLoaded', function () {
         data.forEach(member => {
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td class="name-cell">${member.name}</td>
-                <td class="email-cell">${member.email}</td>
-                <td class="department-cell">${member.departmentName}</td>
-                <td>${member.phone}</td>
-                <td>${member.createdAt ? member.createdAt.substring(0, 10) : ''}</td>
-                <td>
-                    <button class="btn btn-edit edit-btn" data-id="${member.id}">수정</button>
-                    <button class="btn btn-delete delete-btn" data-id="${member.id}">삭제</button>
-                </td>
-            `;
+            <td class="name-cell">${member.name}</td>
+            <td class="email-cell">${member.email}</td>
+            <td class="department-cell">${member.departmentName}</td>
+            <td>${member.phone}</td>
+            <td>${member.createdAt ? member.createdAt.substring(0, 10) : ''}</td>
+            <td>
+                <button class="btn btn-edit edit-btn" data-id="${member.id}">수정</button>
+            </td>
+        `;
             tableBody.appendChild(row);
             registerEditDeleteEvents(row, member);
         });
@@ -110,12 +112,11 @@ document.addEventListener('DOMContentLoaded', function () {
     form.addEventListener('submit', function (e) {
         e.preventDefault();
         const keyword = form.keyword.value.toLowerCase();
-        const department = form.department.value;
+        // department 관련 코드 삭제!
         let filtered = members.filter(m =>
-            (!department || m.departmentId === department) &&
-            (m.name.toLowerCase().includes(keyword) ||
-                m.email.toLowerCase().includes(keyword) ||
-                m.phone.replace(/-/g, '').includes(keyword.replace(/-/g, '')))
+            m.name.toLowerCase().includes(keyword) ||
+            m.email.toLowerCase().includes(keyword) ||
+            m.phone.replace(/-/g, '').includes(keyword.replace(/-/g, ''))
         );
         renderTable(filtered);
     });

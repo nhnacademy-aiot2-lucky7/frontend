@@ -1,8 +1,14 @@
 // auth-check.js
 document.addEventListener('DOMContentLoaded', function() {
     // localStorage에서 로그인 상태 확인
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    console.log('로그인 상태:', isLoggedIn);
+    let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+
+    // 로그인 정보가 있으면(세션 로그인)
+    if (!isLoggedIn && window.loginUser) {
+        isLoggedIn = true;
+        // 필요하다면 localStorage에도 저장
+        localStorage.setItem('isLoggedIn', 'true');
+    }
 
     // ID 선택자로 변경
     const loginMenu = document.getElementById('login-menu');

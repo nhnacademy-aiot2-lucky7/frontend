@@ -16,7 +16,8 @@
                     <span class="align-middle">로그인</span>
                 </a>
             </li>
-            <li class="sidebar-item" id="mypage-menu" th:classappend="${currentPath == '/profile'} ? 'active'">
+            <li class="sidebar-item" id="mypage-menu"
+                th:classappend="${currentPath == '/profile' or currentPath == '/edit-profile'} ? 'active'">
                 <a class="sidebar-link" href="/profile">
                     <i class="align-middle" data-feather="user"></i>
                     <span class="align-middle">마이페이지</span>

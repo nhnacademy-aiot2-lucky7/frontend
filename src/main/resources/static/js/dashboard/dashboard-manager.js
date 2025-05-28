@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (storedDashboards) {
             dashboardsData = JSON.parse(storedDashboards);
         } else {
-            // localStorage에 데이터가 없으면 더미 데이터로 초기화하고 저장
             dashboardsData = window.dashboards || [];
             localStorage.setItem('dashboards', JSON.stringify(dashboardsData));
         }
@@ -15,15 +14,23 @@ document.addEventListener('DOMContentLoaded', function() {
         dashboardsData = window.dashboards || [];
     }
 
-    console.log('localStorage에서 로드한 대시보드:', dashboardsData);
-
     // 부서 선택 드롭다운 초기화
     const departmentSelect = document.getElementById('departmentSelect');
-    const departments = window.departments || [];
+    let departments = [];
+    const deptMap = {};
+    dashboardsData.forEach(dash => {
+        if (dash.departmentId && !deptMap[dash.departmentId]) {
+            departments.push({
+                departmentId: dash.departmentId,
+                departmentName: dash.departmentName
+            });
+            deptMap[dash.departmentId] = true;
+        }
+    });
 
     // 드롭다운 옵션 생성 함수
     function setDepartmentOptions() {
-        departmentSelect.innerHTML = ""; // 옵션 초기화
+        departmentSelect.innerHTML = "";
         if (currentUser.userRole === 'ROLE_ADMIN') {
             // 관리자: 전체 부서 선택 가능
             const allOption = document.createElement('option');
@@ -63,32 +70,25 @@ document.addEventListener('DOMContentLoaded', function() {
         if (currentUser.userRole === 'ROLE_ADMIN') {
             if (selectedDepartmentId) {
                 filteredDashboards = filteredDashboards.filter(dashboard =>
-                    dashboard.department === selectedDepartmentId
+                    String(dashboard.departmentId) === selectedDepartmentId
                 );
             }
         } else {
-            // 일반 유저: 자신의 부서만
             const userDeptId = currentUser.department.departmentId;
             filteredDashboards = filteredDashboards.filter(dashboard =>
-                dashboard.department === userDeptId
+                dashboard.departmentId === userDeptId
             );
         }
 
-        // 키워드 필터
-        if (keyword) {
-            filteredDashboards = filteredDashboards.filter(dashboard =>
-                dashboard.name.toLowerCase().includes(keyword) ||
-                (dashboard.description && dashboard.description.toLowerCase().includes(keyword))
-            );
-        }
+        filteredDashboards = filteredDashboards.filter(dashboard => dashboard.active);
 
-        // 부서별 그룹화
         const groupedDashboards = {};
         filteredDashboards.forEach(dashboard => {
-            if (!groupedDashboards[dashboard.department]) {
-                groupedDashboards[dashboard.department] = [];
+            const deptId = dashboard.departmentId;
+            if (!groupedDashboards[deptId]) {
+                groupedDashboards[deptId] = [];
             }
-            groupedDashboards[dashboard.department].push(dashboard);
+            groupedDashboards[deptId].push(dashboard);
         });
 
         // 대시보드 그룹 표시

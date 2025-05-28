@@ -42,6 +42,32 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
     }
 
+    // 차트 목록 불러오기 (dashboard-preview에서 저장한 레이아웃)
+    const layoutKey = 'dashboardLayout-' + dashboardId;
+    let chartList = [];
+    const savedLayout = localStorage.getItem(layoutKey);
+    if (savedLayout) {
+        chartList = JSON.parse(savedLayout)
+            .filter(item => !item.empty); // 빈 패널 제외
+    }
+
+    // 차트 목록 표시 (예: ul#chartList에 추가)
+    const chartListElem = document.getElementById('chartList');
+    chartListElem.innerHTML = '';
+    chartList.forEach(chart => {
+        // title이 있으면 title, 없으면 field+차트
+        const chartName = chart.title || (chart.field + ' 차트');
+        const li = document.createElement('li');
+        li.textContent = chartName;
+        chartListElem.appendChild(li);
+    });
+
+    // === 차트 수 표시 ===
+    const chartCountElem = document.getElementById('chartCount');
+    if (chartCountElem) {
+        chartCountElem.textContent = String(chartList.length);
+    }
+
     // // 관리자 권한 확인 및 로그 버튼 표시
     // const adminLogSection = document.getElementById('adminLogSection');
     // const viewLogBtn = document.getElementById('viewLogBtn');
@@ -61,26 +87,26 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('pageTitle').textContent = `${dashboard.name} 대시보드 상세 내역`;
     document.getElementById('dashboardName').textContent = dashboard.name;
     document.getElementById('dashboardDescription').textContent = dashboard.description;
-    document.getElementById('chartCount').textContent = dashboard.chartCount;
     document.getElementById('dashboardStatus').textContent = dashboard.active ? '활성화' : '비활성화';
     document.getElementById('createdAt').textContent = formatDate(dashboard.createdAt);
     document.getElementById('updatedAt').textContent = formatDate(dashboard.updatedAt);
+    // document.getElementById('chartCount').textContent = dashboard.chartCount;
 
     // 요소 참조
-    const addChartBtn = document.getElementById('addChartBtn');
-    const sortChartsBtn = document.getElementById('sortChartsBtn');
     const editBtn = document.getElementById('editBtn');
     const saveBtn = document.getElementById('saveBtn');
     const deleteBtn = document.getElementById('deleteBtn');
     const backBtn = document.getElementById('backBtn');
-    const addChartModal = document.getElementById('addChartModal');
-    const sortChartsModal = document.getElementById('sortChartsModal');
-    const addChartForm = document.getElementById('addChartForm');
-    const sortableChartList = document.getElementById('sortableChartList');
-    const saveSortBtn = document.getElementById('saveSortBtn');
-    const closeBtns = document.querySelectorAll('.close');
     const dashboardNameElem = document.getElementById('dashboardName');
     const dashboardDescriptionElem = document.getElementById('dashboardDescription');
+    // const addChartBtn = document.getElementById('addChartBtn');
+    // const sortChartsBtn = document.getElementById('sortChartsBtn');
+    // const addChartModal = document.getElementById('addChartModal');
+    // const sortChartsModal = document.getElementById('sortChartsModal');
+    // const addChartForm = document.getElementById('addChartForm');
+    // const sortableChartList = document.getElementById('sortableChartList');
+    // const saveSortBtn = document.getElementById('saveSortBtn');
+    // const closeBtns = document.querySelectorAll('.close');
 
     // 차트 추가 버튼 클릭 이벤트 - 비활성화
     // addChartBtn.addEventListener('click', function () {
@@ -106,6 +132,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // 버튼 표시 상태 변경
         editBtn.style.display = 'none';
         saveBtn.style.display = 'inline-block';
+        deleteBtn.style.display = 'inline-block';
     });
 
     // 대시보드 저장 버튼 클릭 이벤트
@@ -122,6 +149,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // 버튼 표시 상태 변경
         saveBtn.style.display = 'none';
         editBtn.style.display = 'inline-block';
+        deleteBtn.style.display = 'none';
 
         // 대시보드 정보 업데이트
         dashboard.name = dashboardNameElem.textContent;
@@ -202,21 +230,21 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // 모달 닫기 버튼 이벤트
-    closeBtns.forEach(btn => {
-        btn.addEventListener('click', function () {
-            addChartModal.style.display = 'none';
-            sortChartsModal.style.display = 'none';
-        });
-    });
-
-    // 모달 외부 클릭 시 닫기
-    window.addEventListener('click', function (e) {
-        if (e.target === addChartModal) {
-            addChartModal.style.display = 'none';
-        }
-        if (e.target === sortChartsModal) {
-            sortChartsModal.style.display = 'none';
-        }
-    });
+    // // 모달 닫기 버튼 이벤트
+    // closeBtns.forEach(btn => {
+    //     btn.addEventListener('click', function () {
+    //         addChartModal.style.display = 'none';
+    //         sortChartsModal.style.display = 'none';
+    //     });
+    // });
+    //
+    // // 모달 외부 클릭 시 닫기
+    // window.addEventListener('click', function (e) {
+    //     if (e.target === addChartModal) {
+    //         addChartModal.style.display = 'none';
+    //     }
+    //     if (e.target === sortChartsModal) {
+    //         sortChartsModal.style.display = 'none';
+    //     }
+    // });
 });

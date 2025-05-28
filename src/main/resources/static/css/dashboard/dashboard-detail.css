@@ -217,7 +217,6 @@ body {
 }
 
 /* 차트 영역 */
-/* 차트 목록 카드 스타일 */
 #chartList {
     background: #fff;
     border-radius: 8px;
@@ -228,7 +227,6 @@ body {
     list-style: none;
 }
 
-/* 차트 목록 리스트 항목 스타일 */
 #chartList li {
     font-size: 16px;
     color: #333;
@@ -247,6 +245,7 @@ body {
     color: #1e3a8a;
 }
 
+/* 차트 사용안함 */
 .charts-section {
     margin-bottom: 30px;
 }

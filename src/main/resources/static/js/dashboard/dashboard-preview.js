@@ -163,6 +163,7 @@ $(document).ready(function() {
                         <option value="last1h">최근 1시간</option>
                         <option value="last3h" selected>최근 3시간</option>
                         <option value="last6h">최근 6시간</option>
+                        <option value="last12h">최근 12시간</option>
                         <option value="last24h">최근 24시간</option>
                         <option value="last7d">최근 7일</option>
                     </select>
@@ -313,6 +314,7 @@ $(document).ready(function() {
                                 <option value="last1h"${panelConfig.timeRange === 'last1h' ? ' selected' : ''}>최근 1시간</option>
                                 <option value="last3h"${panelConfig.timeRange === 'last3h' ? ' selected' : ''}>최근 3시간</option>
                                 <option value="last6h"${panelConfig.timeRange === 'last6h' ? ' selected' : ''}>최근 6시간</option>
+                                <option value="last12h"${panelConfig.timeRange === 'last12h' ? ' selected' : ''}>최근 12시간</option>
                                 <option value="last24h"${panelConfig.timeRange === 'last24h' ? ' selected' : ''}>최근 24시간</option>
                                 <option value="last7d"${panelConfig.timeRange === 'last7d' ? ' selected' : ''}>최근 7일</option>
                             </select>

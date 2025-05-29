@@ -1,10 +1,3 @@
-// 창 닫으면 로그인 상태 제거
-window.addEventListener('beforeunload', function () {
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-});
-
 // 로그아웃 처리 함수
 function handleLogout() {
     // localStorage에서 로그인 상태 제거

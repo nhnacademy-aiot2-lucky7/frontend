@@ -60,6 +60,12 @@
                     <span class="align-middle">멤버 관리</span>
                 </a>
             </li>
+            <li class="sidebar-item" th:classappend="${currentPath == '/ai'} ? 'active'">
+                <a class="sidebar-link" href="/admin/ai">
+                    <i class="align-middle" data-feather="activity"></i>
+                    <span class="align-middle">AI 분석</span>
+                </a>
+            </li>
             <li class="sidebar-item" th:classappend="${currentPath == '/settings'} ? 'active'">
                 <a class="sidebar-link" href="/settings">
                     <i class="align-middle" data-feather="settings"></i>

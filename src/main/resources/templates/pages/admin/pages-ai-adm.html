@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layouts/layout}">
+
+<head>
+	<meta charset="utf-8"/>
+	<title>AI 분석 | Lucky Seven</title>
+	<link href="/css/ai.css" rel="stylesheet"/>
+	<script src="/js/admin-check.js"></script>
+</head>
+
+<body>
+<section layout:fragment="content">
+	<!--	본문내용 추가-->
+	<main class="ai-container" style="flex: 1;">
+		<section class="ai-header">
+			<h1>AI 분석 (관리자용)</h1>
+		</section>
+		<section class="ai-filter">
+			<form id="ai-search-form">
+				<input class="input-text" name="sensor" placeholder="센서 이름 또는 분석 결과" type="text"/>
+				<div class="date-picker">
+					<label for="start-date">시작일</label>
+					<input id="start-date" name="start-date" type="date"/>
+				</div>
+				<div class="date-picker">
+					<label for="end-date">종료일</label>
+					<input id="end-date" name="end-date" type="date"/>
+				</div>
+				<button class="search-btn" type="submit">검색</button>
+			</form>
+		</section>
+		<section class="ai-table-wrapper">
+			<table class="ai-table">
+				<thead>
+				<tr>
+					<th>사용자명</th>
+					<th>분석타입</th>
+					<th>결과요약</th>
+					<th>AI 날짜</th>
+				</tr>
+				</thead>
+				<tbody id="ai-table-body">
+				<!-- 데이터가 없을 경우 메시지 출력 -->
+				<tr th:if="${#lists.isEmpty(ais)}">
+					<td colspan="4" style="text-align: center; padding: 2rem; color: #6c757d;">
+						AI 분석 내역이 없습니다.
+					</td>
+				</tr>
+
+				<!-- 데이터가 있을 경우 반복 출력 -->
+				<tr th:each="ai : ${ais}">
+					<td class="level-cell" th:text="${ai.level}">1</td>
+					<td class="sensor-cell" th:text="${ai.sensorName}">센서-A</td>
+					<td class="message-cell" th:text="${ai.message}">경고 발생</td>
+					<td class="date-cell" th:text="${#temporals.format(ai.dateTime, 'yyyy-MM-dd HH:mm')}">2025-04-22</td>
+				</tr>
+				</tbody>
+			</table>
+		</section>
+	</main>
+</section>
+</body>
+</html>

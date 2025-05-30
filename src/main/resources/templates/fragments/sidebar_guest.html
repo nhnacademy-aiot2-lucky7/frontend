@@ -1,0 +1,21 @@
+<nav class="sidebar" id="sidebar-guest" th:fragment="sidebar_guest">
+    <div class="sidebar-content js-simplebar">
+        <a class="sidebar-brand" href="/dashboard">
+            <img src="/img/logo/luckyseven_logo_fixed_bg.png" alt="Lucky Seven Logo">
+        </a>
+        <ul class="sidebar-nav">
+            <li class="sidebar-item" th:classappend="${currentPath == '/dashboard'} ? 'active'">
+                <a class="sidebar-link" href="/dashboard">
+                    <i class="align-middle" data-feather="sliders"></i>
+                    <span class="align-middle">메인페이지</span>
+                </a>
+            </li>
+            <li class="sidebar-item" id="login-menu">
+                <a class="sidebar-link" href="/sign-in">
+                    <i class="align-middle" data-feather="log-in"></i>
+                    <span class="align-middle">로그인</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>

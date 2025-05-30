@@ -107,8 +107,18 @@ body {
 .panel-content {
     position: relative;
     width: 100%;
-    height: calc(100% - 26px); /* 헤더 높이를 뺀 나머지 */
-    overflow: hidden;
+    height: 300px; /* 원하는 높이로 조정 */
+    min-height: 220px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    padding: 10px;
+}
+
+.panel-content canvas {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
 }
 
 .grafana-frame {
@@ -131,21 +141,28 @@ body {
 }
 
 /* 패널 헤더 버튼 스타일 */
-.panel-controls .refresh-btn {
+.panel-controls .refresh-btn,
+.panel-controls .download-chart-btn {
     background-color: #0e3d68;
     color: white;
     border: none;
-    padding: 2px 6px; /* 더 작게 조정 */
+    padding: 2px 6px;
     border-radius: 3px;
     cursor: pointer;
     font-size: 11px;
     font-weight: 500;
     transition: background-color 0.2s;
-    height: 20px; /* 높이 고정 */
-    line-height: 16px; /* 텍스트 중앙 정렬 */
+    height: 20px;
+    line-height: 16px;
 }
 
-.control-btn:hover, .refresh-btn:hover {
+.panel-controls .download-chart-btn {
+    margin-left: 4px;
+}
+
+.control-btn:hover,
+.panel-controls .refresh-btn:hover,
+.panel-controls .download-chart-btn:hover {
     background-color: #0a2d4d;
 }
 

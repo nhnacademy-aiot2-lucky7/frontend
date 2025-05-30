@@ -16,7 +16,8 @@
                     <span class="align-middle">로그인</span>
                 </a>
             </li>
-            <li class="sidebar-item" id="mypage-menu" th:classappend="${currentPath == '/profile'} ? 'active'">
+            <li class="sidebar-item" id="mypage-menu"
+                th:classappend="${currentPath == '/profile' or currentPath == '/edit-profile'} ? 'active'">
                 <a class="sidebar-link" href="/profile">
                     <i class="align-middle" data-feather="user"></i>
                     <span class="align-middle">마이페이지</span>
@@ -47,10 +48,16 @@
                 </a>
             </li>
             <li class="sidebar-item"
-                th:classappend="${currentPath == '/gateway' or currentPath == '/add-gateway'} ? ' active'">
+                th:classappend="${currentPath == '/gateway' or currentPath == '/add-gateway' or currentPath.startsWith('/gateway/')} ? 'active'">
                 <a class="sidebar-link" href="/gateway">
                     <i class="align-middle" data-feather="hard-drive"></i>
                     <span class="align-middle">게이트웨이 추가</span>
+                </a>
+            </li>
+            <li class="sidebar-item" th:classappend="${currentPath == '/ai-analyze'} ? 'active'">
+                <a class="sidebar-link" href="/ai-analyze">
+                    <i class="align-middle" data-feather="activity"></i>
+                    <span class="align-middle">AI 분석</span>
                 </a>
             </li>
 <!--            Setting 메뉴의 역할이 명확하지 않아서 주석처리-->

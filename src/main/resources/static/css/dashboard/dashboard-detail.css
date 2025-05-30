@@ -217,6 +217,35 @@ body {
 }
 
 /* 차트 영역 */
+#chartList {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    padding: 20px 24px;
+    margin-bottom: 30px;
+    max-width: 600px;
+    list-style: none;
+}
+
+#chartList li {
+    font-size: 16px;
+    color: #333;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background 0.2s;
+    font-weight: 500;
+}
+
+#chartList li:last-child {
+    border-bottom: none;
+}
+
+#chartList li:hover {
+    background: #f5f7fb;
+    color: #1e3a8a;
+}
+
+/* 차트 사용안함 */
 .charts-section {
     margin-bottom: 30px;
 }

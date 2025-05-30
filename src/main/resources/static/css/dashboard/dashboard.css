@@ -238,6 +238,12 @@ a {
     font-size: 0.8rem;
 }
 
+/* ON 상태(활성화)일 때 초록색 */
+.toggle-btn.on {
+    background-color: #22c55e; /* tailwind의 green-500 */
+    color: #fff;
+}
+
 .toggle-btn:hover {
     background-color: #a66;
 }

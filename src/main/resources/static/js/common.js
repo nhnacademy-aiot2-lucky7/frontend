@@ -2,6 +2,8 @@
 function handleLogout() {
     // localStorage에서 로그인 상태 제거
     localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
 
     // 폼 제출 후 리디렉션 처리
     fetch('http://localhost:10232/auth/logout', {

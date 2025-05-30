@@ -13,6 +13,8 @@
     <script src="/js/dashboard/jquery-ui.min.js"></script>
     <link href="/css/dashboard/jquery-ui.css" rel="stylesheet"/>
     <script src="/js/dashboard/dashboard-preview.js"></script>
+    <script src="/js/chart.js"></script>
+    <script src="/js/chartjs-adapter-date-fns.js"></script>
 </head>
 
 <body>
@@ -34,18 +36,20 @@
                     <h3 class="panel-title">차트 1</h3>
                     <div class="panel-controls">
                         <button class="refresh-btn">새로고침</button>
+                        <button class="download-chart-btn" data-panel="1">이미지 저장</button>
                         <select class="time-range-select">
                             <option value="last1h">최근 1시간</option>
+                            <option value="last3h" selected>최근 3시간</option>
                             <option value="last6h">최근 6시간</option>
-                            <option value="last24h" selected>최근 24시간</option>
+                            <option value="last12h">최근 12시간</option>
+                            <option value="last24h">최근 24시간</option>
                             <option value="last7d">최근 7일</option>
                         </select>
                         <button class="remove-panel">X</button>
                     </div>
                 </div>
                 <div class="panel-content">
-                    <iframe src="https://grafana.luckyseven.live/d-solo/3Ly2rMxNk/iot1?orgId=1"
-                            class="grafana-frame" allowfullscreen></iframe>
+                    <canvas id="chart-panel-1"></canvas>
                 </div>
             </div>
         </div>

@@ -275,6 +275,37 @@ input:focus, select:focus, textarea:focus {
     cursor: pointer;
 }
 
+/* ========== 사이드바 햄버거 버튼 ========== */
+.hamburger {
+    width: 28px;
+    height: 28px;
+    display: inline-block;
+    position: relative;
+}
+.hamburger span,
+.hamburger::before,
+.hamburger::after {
+    content: '';
+    display: block;
+    height: 3px;
+    width: 100%;
+    background: #222;
+    border-radius: 2px;
+    position: absolute;
+    left: 0;
+    transition: all 0.2s;
+}
+.hamburger span {
+    top: 12px;
+    position: absolute;
+}
+.hamburger::before {
+    top: 6px;
+}
+.hamburger::after {
+    top: 18px;
+}
+
 /* ========== 드롭다운 ========== */
 .dropdown {
     position: relative;

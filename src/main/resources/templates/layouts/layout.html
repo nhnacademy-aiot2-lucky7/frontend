@@ -11,17 +11,29 @@
     <script th:inline="javascript">
         /*<![CDATA[*/
         window.currentUser = JSON.parse(/*[[${userJson}]]*/ "null");
+        window.loginUser = /*[[${loginUser}]]*/ null;
         /*]]>*/
     </script>
+    <script src="/js/admin-check.js"></script>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/feather.min.js"></script>
+    <script src="/js/feather-replace.js"></script>
+    <script src="/js/common.js"></script>
+    <script src="/js/auth-check.js"></script>
 </head>
 <body>
 <div class="wrapper">
-    <!-- 각각 role 에 따른 사이드바 표시 -->
+    <!-- 관리자 사이드바 -->
     <th:block th:if="${user != null and #strings.trim(user.userRole).toUpperCase() == 'ROLE_ADMIN'}">
         <div th:replace="~{fragments/sidebar_adm :: sidebar_admin}"></div>
     </th:block>
-    <th:block th:unless="${user != null and #strings.trim(user.userRole).toUpperCase() == 'ROLE_ADMIN'}">
+    <!-- 일반 유저 사이드바 -->
+    <th:block th:if="${user != null and #strings.trim(user.userRole).toUpperCase() != 'ROLE_ADMIN'}">
         <div th:replace="~{fragments/sidebar :: sidebar_user}"></div>
+    </th:block>
+    <!-- 게스트 사이드바 -->
+    <th:block th:if="${user == null}">
+        <div th:replace="~{fragments/sidebar_guest :: sidebar_guest}"></div>
     </th:block>
 
     <div class="main">
@@ -31,11 +43,6 @@
         <div th:replace="fragments/footer :: footer"></div>
     </div>
 </div>
-<script src="/js/admin-check.js"></script>
-<script src="/js/bootstrap.bundle.min.js"></script>
-<script src="/js/feather.min.js"></script>
-<script src="/js/feather-replace.js"></script>
-<script src="/js/common.js"></script>
-<script src="/js/auth-check.js"></script>
+
 </body>
 </html>

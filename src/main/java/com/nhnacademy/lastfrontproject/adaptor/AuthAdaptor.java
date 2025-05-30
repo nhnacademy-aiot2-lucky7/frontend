@@ -4,8 +4,7 @@ import com.nhnacademy.lastfrontproject.dto.auth.LoginRequest;
 import com.nhnacademy.lastfrontproject.dto.auth.RegisterRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 @FeignClient(name = "auth", url = "${feign.client.gateway-service.url}")
 public interface AuthAdaptor {
@@ -14,4 +13,10 @@ public interface AuthAdaptor {
 
     @PostMapping("/auth/login")
     void login(@RequestBody LoginRequest loginRequest);
+
+    @GetMapping("/users/{userEmail}")
+    Boolean existsByEmail(@PathVariable String userEmail);
+
+    @PostMapping("/auth/social/signIn")
+    ResponseEntity<Void> socialSignIn(@RequestBody String email, @RequestHeader("Authorization") String accessTokenHeader);
 }

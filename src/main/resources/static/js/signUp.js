@@ -22,7 +22,7 @@
 //     token
 
 // 부서 목록 불러오기
-fetch('http://localhost:10235/departments')
+fetch('http://localhost:10232/departments')
     .then(response => {
         if (!response.ok) {
             throw new Error('부서 정보를 불러오는데 실패했습니다.');
@@ -96,10 +96,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 userName: name,
                 userEmail: email,
                 userPassword: password,
-                departmentId: form.querySelector('select[name="departmentId"]').value,
-                userDepartment : document.querySelector(`option[value="${form.querySelector('select[name="departmentId"]').value}"]`).textContent
+                userDepartment: form.querySelector('select[name="departmentId"]').value,
                 // userPhone: form.querySelector('input[name="userPhone"]').value
-                ,userPhone: "010-1234-5678" // 빈 문자열이라도 포함
+                userPhone: "010-1234-5678" // 빈 문자열이라도 포함
             }),
             credentials: 'include'
         })
@@ -120,7 +119,19 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 if (data.success) {
                     alert('회원가입이 완료되었습니다');
-                    window.location.href = '/sign-in';
+
+                    if (rememberMe) {
+                        localStorage.setItem('rememberedEmail', email);
+                    } else {
+                        localStorage.removeItem('rememberedEmail');
+                    }
+
+                    // 로그인 상태 저장 (UI 업데이트용)
+                    localStorage.setItem('isLoggedIn', 'true');
+
+                    alert('로그인 성공!');
+                    // 페이지 새로고침으로 Thymeleaf 렌더링 갱신
+                    window.location.replace('/dashboard');
                 } else {
                     alert(data.message || '회원가입에 실패했습니다');
                 }

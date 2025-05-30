@@ -1,70 +1,128 @@
 <!DOCTYPE html>
+<html lang="ko"
+      layout:decorate="~{layouts/layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/layout}">
 <head>
-    <meta charset="utf-8"/>
+    <meta charset="UTF-8"/>
     <title>이벤트 알림 | Lucky Seven</title>
-    <link href="/css/event.css" rel="stylesheet"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="event.css" rel="stylesheet"/>
 </head>
+<body class="bg-light" layout:fragment="content">
+<main class="container py-5">
+    <h1 class="text-center mb-5 fw-bold">이벤트 알림</h1>
 
-<body>
-<section layout:fragment="content">
-    <main class="event-container" style="flex: 1;">
-        <section class="event-header">
-            <h1>이벤트 알림</h1>
-        </section>
-        <section class="event-filter">
-            <form id="event-search-form">
-                <input class="input-text" name="sensor" placeholder="센서 이름 또는 이벤트 내용" type="text"/>
-                <div class="date-picker">
-                    <label for="start-date">시작일</label>
-                    <input id="start-date" name="start-date" type="date"/>
+    <form class="row g-3 align-items-end mb-4 shadow-sm p-4 bg-white rounded" id="search-form" novalidate>
+        <div class="col-12 col-md-4">
+            <label class="form-label fw-semibold" for="keyword">검색할 이벤트 내용</label>
+            <input autocomplete="off" class="form-control" id="keyword" name="keyword" placeholder="검색어를 입력하세요"
+                   type="text"/>
+        </div>
+        <div class="col-6 col-md-2">
+            <label class="form-label fw-semibold" for="startAt">시작일</label>
+            <input class="form-control" id="startAt" name="startAt" type="date"/>
+        </div>
+        <div class="col-6 col-md-2">
+            <label class="form-label fw-semibold" for="endAt">종료일</label>
+            <input class="form-control" id="endAt" name="endAt" type="date"/>
+        </div>
+        <fieldset class="col-12 col-md-3">
+            <legend class="col-form-label fw-semibold mb-2">이벤트 레벨</legend>
+            <div class="d-flex gap-3">
+                <div class="form-check">
+                    <input class="form-check-input level-checkbox" id="level-info" name="eventLevels" type="checkbox"
+                           value="INFO"/>
+                    <label class="form-check-label text-info fw-semibold" for="level-info">INFO</label>
                 </div>
-                <div class="date-picker">
-                    <label for="end-date">종료일</label>
-                    <input id="end-date" name="end-date" type="date"/>
+                <div class="form-check">
+                    <input class="form-check-input level-checkbox" id="level-warn" name="eventLevels" type="checkbox"
+                           value="WARN"/>
+                    <label class="form-check-label text-warning fw-semibold" for="level-warn">WARN</label>
                 </div>
-                <div class="level-checkbox-group">
-                    <span>이벤트 레벨</span>
-                    <label><input name="event-level" type="checkbox" value="1"/> 1</label>
-                    <label><input name="event-level" type="checkbox" value="2"/> 2</label>
-                    <label><input name="event-level" type="checkbox" value="3"/> 3</label>
+                <div class="form-check">
+                    <input class="form-check-input level-checkbox" id="level-error" name="eventLevels" type="checkbox"
+                           value="ERROR"/>
+                    <label class="form-check-label text-danger fw-semibold" for="level-error">ERROR</label>
                 </div>
-                <button class="search-btn" type="submit">검색</button>
-            </form>
-        </section>
-        <section class="event-table-wrapper">
-            <table class="event-table">
-                <thead>
-                <tr>
-                    <th>이벤트 레벨</th>
-                    <th>센서 이름</th>
-                    <th>이벤트 내용</th>
-                    <th>이벤트 날짜</th>
-                </tr>
-                </thead>
-                <tbody id="event-table-body">
-                <!-- 데이터가 없을 경우 메시지 출력 -->
-                <tr th:if="${#lists.isEmpty(events)}">
-                    <td colspan="4" style="text-align: center; padding: 2rem; color: #6c757d;">
-                        이벤트 내역이 없습니다.
-                    </td>
-                </tr>
+            </div>
+        </fieldset>
+        <div class="col-12 col-md-1 d-grid">
+            <button class="btn btn-primary fw-bold" type="submit">검색</button>
+        </div>
+    </form>
 
-                <!-- 데이터가 있을 경우 반복 출력 -->
-                <tr th:each="event : ${events}">
-                    <td class="level-cell" th:text="${event.level}">1</td>
-                    <td class="sensor-cell" th:text="${event.sensorName}">센서-A</td>
-                    <td class="message-cell" th:text="${event.message}">경고 발생</td>
-                    <td class="date-cell" th:text="${#temporals.format(event.dateTime, 'yyyy-MM-dd HH:mm')}">2025-04-22</td>
-                </tr>
-                </tbody>
-            </table>
-        </section>
-    </main>
-</section>
+    <div class="table-responsive shadow-sm rounded bg-white">
+        <table class="table table-hover mb-0">
+            <thead class="table-light text-center align-middle">
+            <tr>
+                <th style="width: 110px;">이벤트 레벨</th>
+                <th style="width: 140px;">출처 ID</th>
+                <th>이벤트 내용</th>
+                <th style="width: 170px;">이벤트 날짜</th>
+            </tr>
+            </thead>
+            <tbody class="align-middle text-center" id="table-body">
+            <tr>
+                <td class="py-5 text-muted fst-italic" colspan="4">이벤트 내역이 없습니다.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <nav aria-label="페이지네이션" class="mt-4">
+        <ul class="pagination justify-content-center" id="pagination"></ul>
+    </nav>
+
+    <div class="position-fixed top-50 start-50 translate-middle d-none" id="loading-indicator" style="z-index: 1100;">
+        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+            <span class="visually-hidden">로딩중...</span>
+        </div>
+    </div>
+
+    <div class="alert alert-danger d-none fixed-bottom m-3" id="error-message" role="alert"
+         style="z-index: 1100;"></div>
+</main>
+
+<div aria-hidden="true" aria-labelledby="detailModalLabel" aria-modal="true" class="modal fade" id="detail-modal"
+     role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content shadow">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title fw-bold" id="detailModalLabel">이벤트 상세 정보</h5>
+                <button aria-label="닫기" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        type="button"></button>
+            </div>
+            <div class="modal-body fs-6">
+                <dl class="row mb-0">
+                    <dt class="col-sm-4 fw-semibold">이벤트 번호</dt>
+                    <dd class="col-sm-8" id="detail-eventNo"></dd>
+
+                    <dt class="col-sm-4 fw-semibold">부서</dt>
+                    <dd class="col-sm-8" id="detail-departmentId"></dd>
+
+                    <dt class="col-sm-4 fw-semibold">이벤트 레벨</dt>
+                    <dd class="col-sm-8" id="detail-eventLevel"></dd>
+
+                    <dt class="col-sm-4 fw-semibold">이벤트 날짜</dt>
+                    <dd class="col-sm-8" id="detail-eventAt"></dd>
+
+                    <dt class="col-sm-4 fw-semibold">이벤트 내용</dt>
+                    <dd class="col-sm-8" id="detail-eventDetails"></dd>
+
+                    <dt class="col-sm-4 fw-semibold">출처 ID</dt>
+                    <dd class="col-sm-8" id="detail-sourceId"></dd>
+
+                    <dt class="col-sm-4 fw-semibold">출처 유형</dt>
+                    <dd class="col-sm-8" id="detail-sourceType"></dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/event.js"></script>
 </body>
-
 </html>

@@ -6,12 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter
 @AllArgsConstructor
-public class EventLevelResponse {
-    private String eventLevelName;
+@Getter
+public class DepartmentResponse {
+    private String departmentId;
 
-    private String eventLevelDetails;
-
-    private Integer priority;
+    private String departmentName;
 }

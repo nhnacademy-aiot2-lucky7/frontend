@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const form = document.querySelector('form');
     if (!form) return; // 로그인 폼이 없는 페이지에서는 실행하지 않음
 
@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
         emailInput.value = savedEmail;
     }
 
-    form.addEventListener('submit', function(e) {
+    form.addEventListener('submit', function (e) {
         e.preventDefault();
 
         const email = emailInput.value;
@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        console.log('로그인 시도:', { email, rememberMe });
+        console.log('로그인 시도:', {email, rememberMe});
 
         // 서버에 로그인 요청 보내기
         fetch('http://localhost:10232/auth/signIn', {
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 userPassword: password,
                 rememberMe: rememberMe
             }),
-            credentials: "include" // 쿠키 포함
+            credentials: 'include' // 쿠키 포함
         })
             .then(response => {
                 console.log('응답 상태:', response.status);

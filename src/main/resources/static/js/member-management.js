@@ -1,73 +1,74 @@
+function getRoleName(roleId) {
+    if (roleId === 'ROLE_ADMIN') return '관리자';
+    if (roleId === 'ROLE_MEMBER') return '일반회원';
+    return roleId;
+}
+
+const AES_KEY = '84NpGyzp3kh26lyGyr4PMSipEmrKHNvY4veZpgPUlC8=';
+
+async function encryptEmailGCM(email, base64Key) {
+    // 키 디코딩
+    const keyBytes = Uint8Array.from(atob(base64Key), c => c.charCodeAt(0));
+    const cryptoKey = await window.crypto.subtle.importKey(
+        'raw',
+        keyBytes,
+        { name: 'AES-GCM' },
+        false,
+        ['encrypt']
+    );
+
+    // IV(12바이트)
+    const iv = window.crypto.getRandomValues(new Uint8Array(12));
+
+    // 암호화
+    const enc = new TextEncoder();
+    const ciphertext = await window.crypto.subtle.encrypt(
+        { name: 'AES-GCM', iv: iv, tagLength: 128 },
+        cryptoKey,
+        enc.encode(email)
+    );
+
+    // [IV + 암호문+태그]를 합쳐서 base64 인코딩
+    const combined = new Uint8Array(iv.length + ciphertext.byteLength);
+    combined.set(iv, 0);
+    combined.set(new Uint8Array(ciphertext), iv.length);
+
+    // base64 인코딩 반환
+    return btoa(String.fromCharCode(...combined));
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('member-search-form');
     const tableBody = document.getElementById('member-table-body');
-    let members = window.members || [];
+    let members = [];
     let currentSort = {key: null, asc: true};
 
-    function registerEditDeleteEvents(row, member) {
-        // 수정 버튼
-        row.querySelector('.edit-btn').addEventListener('click', function () {
-            const origName = member.name;
-            const origEmail = member.email;
-            const origDeptName = member.departmentName;
-
-            row.querySelector('.name-cell').innerHTML = `<input type="text" value="${member.name}" class="edit-name"/>`;
-            row.querySelector('.email-cell').innerHTML = `<input type="email" value="${member.email}" class="edit-email"/>`;
-            row.querySelector('.department-cell').textContent = origDeptName;
-
-            row.querySelector('td:last-child').innerHTML = `
-        <button class="btn btn-save" data-id="${member.id}">저장</button>
-        <button class="btn btn-cancel" data-id="${member.id}">취소</button>
-        <button class="btn btn-delete" data-id="${member.id}">삭제</button>
-    `;
-
-            // 저장 버튼 이벤트
-            row.querySelector('.btn-save').addEventListener('click', function () {
-                const newName = row.querySelector('.edit-name').value;
-                const newEmail = row.querySelector('.edit-email').value;
-                fetch(`/admin/member/edit/${member.id}`, {
-                    method: 'PUT',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ name: newName, email: newEmail })
-                })
-                    .then(res => {
-                        if (res.ok) {
-                            alert('수정되었습니다.');
-                            location.reload();
-                        } else {
-                            alert('수정 실패');
-                        }
-                    });
-            });
-
-            // 취소 버튼 이벤트
-            row.querySelector('.btn-cancel').addEventListener('click', function () {
-                row.querySelector('.name-cell').textContent = origName;
-                row.querySelector('.email-cell').textContent = origEmail;
-                row.querySelector('.department-cell').textContent = origDeptName;
-                row.querySelector('td:last-child').innerHTML = `
-            <button class="btn btn-edit edit-btn" data-id="${member.id}">수정</button>
-        `;
-                registerEditDeleteEvents(row, member);
-            });
-
-            // 삭제 버튼 이벤트
-            row.querySelector('.btn-delete').addEventListener('click', function () {
-                if (confirm('정말 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.')) {
-                    fetch(`/admin/member/${member.id}`, {method: 'DELETE'})
-                        .then(res => {
-                            if (res.ok) {
-                                alert('삭제되었습니다.');
-                                location.reload();
-                            } else {
-                                alert('삭제 실패');
-                            }
-                        });
+    // 멤버 목록 API로 불러오기
+    function fetchMembers() {
+        fetch('http://localhost:10232/admin/users', {
+            headers: {
+                'Accept': 'application/json'
+            },
+            credentials: 'include'
+        })
+            .then(res => {
+                if (!res.ok) throw new Error('멤버 목록 조회 실패');
+                return res.json();
+            })
+            .then(data => {
+                if (!Array.isArray(data)) {
+                    alert('API 응답이 배열이 아닙니다: ' + JSON.stringify(data));
+                    return;
                 }
+                members = data;
+                renderTable(members);
+            })
+            .catch(err => {
+                alert(err.message);
             });
-        });
     }
 
+    // 테이블 렌더링 (user-service 응답 필드에 맞게)
     function renderTable(data) {
         tableBody.innerHTML = '';
         document.getElementById('member-count-badge').textContent = `총 ${data.length}명`;
@@ -78,19 +79,101 @@ document.addEventListener('DOMContentLoaded', function () {
         data.forEach(member => {
             const row = document.createElement('tr');
             row.innerHTML = `
-            <td class="name-cell">${member.name}</td>
-            <td class="email-cell">${member.email}</td>
-            <td class="department-cell">${member.departmentName}</td>
-            <td>${member.phone}</td>
-            <td>${member.createdAt ? member.createdAt.substring(0, 10) : ''}</td>
-            <td>
-                <button class="btn btn-edit edit-btn" data-id="${member.id}">수정</button>
-            </td>
-        `;
+                <td class="name-cell">${member.userName}</td>
+                <td class="email-cell">${member.userEmail}</td>
+                <td class="department-cell">${member.department?.departmentName || ''}</td>
+                <td>${member.userPhone}</td>
+                <td>${getRoleName(member.userRole)}</td>
+                <td>
+                    <button class="btn btn-edit edit-btn" data-id="${member.userNo}">수정</button>
+                </td>
+            `;
             tableBody.appendChild(row);
             registerEditDeleteEvents(row, member);
         });
     }
+
+    function registerEditDeleteEvents(row, member) {
+        row.querySelector('.edit-btn').addEventListener('click', function () {
+            // 권한 드롭다운
+            row.querySelector('td:nth-child(5)').innerHTML = `
+                <select class="edit-role">
+                    <option value="ROLE_MEMBER" ${member.userRole === 'ROLE_MEMBER' ? 'selected' : ''}>일반회원</option>
+                    <option value="ROLE_ADMIN" ${member.userRole === 'ROLE_ADMIN' ? 'selected' : ''}>관리자</option>
+                </select>
+            `;
+            row.querySelector('td:last-child').innerHTML = `
+            <button class="btn btn-save" data-id="${member.userNo}">저장</button>
+            <button class="btn btn-cancel" data-id="${member.userNo}">취소</button>
+            <button class="btn btn-delete delete-btn" data-id="${member.userNo}">삭제</button>
+        `;
+
+            // 저장(권한 변경)
+            const adminEmail = window.currentUser?.userEmail || localStorage.getItem('adminEmail'); // 관리자 이메일
+
+            row.querySelector('.btn-save').addEventListener('click', async function () {
+                const newRole = row.querySelector('.edit-role').value;
+                const encrypted = await encryptEmailGCM(adminEmail, AES_KEY); // 관리자 이메일 암호화!
+                fetch('http://localhost:10232/admin/users/roles', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-User-Id': encrypted
+                    },
+                    body: JSON.stringify({
+                        userId: member.userEmail, // 대상 유저
+                        roleId: newRole
+                    })
+                })
+                    .then(res => {
+                        if (res.ok) {
+                            alert('권한이 수정되었습니다.');
+                            fetchMembers();
+                        } else {
+                            alert('권한 수정 실패');
+                        }
+                    });
+            });
+
+            // 취소
+            row.querySelector('.btn-cancel').addEventListener('click', function () {
+                renderTable(members);
+            });
+
+            // 삭제
+            row.querySelector('.btn-delete').addEventListener('click', async function () {
+                if (confirm('정말 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.')) {
+                    const encrypted = await encryptEmailGCM(member.userEmail, AES_KEY);
+                    fetch(`http://localhost:10232/admin/users/${member.userEmail}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'X-User-Id': encrypted
+                        }
+                    })
+                        .then(res => {
+                            if (res.ok) {
+                                alert('삭제되었습니다.');
+                                fetchMembers();
+                            } else {
+                                alert('삭제 실패');
+                            }
+                        });
+                }
+            });
+        });
+    }
+
+    // 검색/필터
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const keyword = form.keyword.value.toLowerCase();
+        let filtered = members.filter(m =>
+            m.userName.toLowerCase().includes(keyword) ||
+            m.userEmail.toLowerCase().includes(keyword) ||
+            m.userPhone.replace(/-/g, '').includes(keyword.replace(/-/g, ''))
+        );
+        renderTable(filtered);
+    });
 
     // 정렬
     document.querySelectorAll('.member-table th').forEach(th => {
@@ -100,27 +183,21 @@ document.addEventListener('DOMContentLoaded', function () {
             currentSort.asc = currentSort.key === key ? !currentSort.asc : true;
             currentSort.key = key;
             members.sort((a, b) => {
-                if (a[key] < b[key]) return currentSort.asc ? -1 : 1;
-                if (a[key] > b[key]) return currentSort.asc ? 1 : -1;
+                let aValue, bValue;
+                if (key === "departmentName") {
+                    aValue = a.department?.departmentName || "";
+                    bValue = b.department?.departmentName || "";
+                } else {
+                    aValue = a[key] || "";
+                    bValue = b[key] || "";
+                }
+                if (aValue < bValue) return currentSort.asc ? -1 : 1;
+                if (aValue > bValue) return currentSort.asc ? 1 : -1;
                 return 0;
             });
             renderTable(members);
         });
     });
 
-    // 검색/필터
-    form.addEventListener('submit', function (e) {
-        e.preventDefault();
-        const keyword = form.keyword.value.toLowerCase();
-        // department 관련 코드 삭제!
-        let filtered = members.filter(m =>
-            m.name.toLowerCase().includes(keyword) ||
-            m.email.toLowerCase().includes(keyword) ||
-            m.phone.replace(/-/g, '').includes(keyword.replace(/-/g, ''))
-        );
-        renderTable(filtered);
-    });
-
-    // 최초 렌더링
-    renderTable(members);
+    fetchMembers();
 });

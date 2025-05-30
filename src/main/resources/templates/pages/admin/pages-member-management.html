@@ -10,6 +10,7 @@
 	<script src="/js/admin-check.js"></script>
 	<link href="/css/member-management.css" rel="stylesheet"/>
 	<script src="/js/member-management.js"></script>
+	<script src="/js/crypto-js.min.js"></script>
 	<script th:inline="javascript">
 		/*<![CDATA[*/
 		window.members = /*[[${members}]]*/ [];
@@ -39,11 +40,11 @@
 			<table class="member-table">
 				<thead>
 				<tr>
-					<th th:classappend="${sort == 'name' ? 'sorted' : ''}" data-sort="name">이름</th>
-					<th th:classappend="${sort == 'email' ? 'sorted' : ''}" data-sort="email">이메일</th>
-					<th th:classappend="${sort == 'department' ? 'sorted' : ''}" data-sort="department">부서</th>
+					<th th:classappend="${sort == 'name' ? 'sorted' : ''}" data-sort="userName">이름</th>
+					<th th:classappend="${sort == 'email' ? 'sorted' : ''}" data-sort="userEmail">이메일</th>
+					<th th:classappend="${sort == 'department' ? 'sorted' : ''}" data-sort="departmentName">부서</th>
 					<th th:classappend="${sort == 'phone' ? 'sorted' : ''}" data-sort="phone">휴대전화</th>
-					<th th:classappend="${sort == 'createdAt' ? 'sorted' : ''}" data-sort="createdAt">가입일자</th>
+					<th th:classappend="${sort == 'createdAt' ? 'sorted' : ''}" data-sort="userRole">권한 이름</th>
 					<th>관리</th>
 				</tr>
 				</thead>

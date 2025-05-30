@@ -1,4 +1,4 @@
-package com.nhnacademy.lastfrontproject.dto.dashboard;
+package com.nhnacademy.lastfrontproject.dto.grafana;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

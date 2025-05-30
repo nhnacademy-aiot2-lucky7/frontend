@@ -14,7 +14,11 @@ public class RegisterRequest {
     @JsonProperty("userPassword")
     private String userPassword;
 
-    private RegisterRequest(String userEmail, String userName, String userPassword){};
+    private RegisterRequest(String userEmail, String userName, String userPassword){
+        this.userEmail = userEmail;
+        this.userName = userName;
+        this.userPassword = userPassword;
+    }
 
     public static RegisterRequest ofNewRegisterRequest(String userEmail, String userName, String userPassword){
         return new RegisterRequest(userName, userEmail, userPassword);

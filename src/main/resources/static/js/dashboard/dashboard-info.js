@@ -12,8 +12,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     console.log('currentUser is available:', currentUser); // currentUser 객체 확인
 
-    const dashboardList = document.getElementById('dashboardList');
-
     // localStorage에서 대시보드 데이터 로드
     let dashboardsData = [];
     try {
@@ -21,34 +19,42 @@ document.addEventListener('DOMContentLoaded', function() {
         if (storedDashboards) {
             dashboardsData = JSON.parse(storedDashboards);
         } else {
-            // localStorage에 데이터가 없으면 더미 데이터로 초기화
             dashboardsData = window.dashboards || [];
             localStorage.setItem('dashboards', JSON.stringify(dashboardsData));
         }
     } catch (e) {
         console.error('localStorage 로드 중 오류 발생:', e);
         dashboardsData = window.dashboards || [];
-        // 오류 발생 시에도 localStorage에 저장
         localStorage.setItem('dashboards', JSON.stringify(dashboardsData));
     }
 
     console.log('localStorage에서 로드한 대시보드:', dashboardsData);
-    console.log('현재 사용자 부서:', currentUser.department); // 여기서 department 접근
+    console.log('현재 사용자 부서:', currentUser.department);
 
-    // 현재 사용자의 부서에 해당하는 대시보드만 필터링
-    const userDashboards = dashboardsData.filter(dashboard => dashboard.department === currentUser.department);
+// **여기서 부서 ID로 필터링하도록 수정**
+    const userDepartmentId = currentUser.department.departmentId;
+    let userDashboards;
 
-    console.log('필터링된 대시보드:', userDashboards); // 필터링 결과 확인
+// 관리자면 전체 대시보드, 아니면 부서별 대시보드만
+    if (currentUser.userRole === 'ADMIN' || currentUser.userRole === 'ROLE_ADMIN') {
+        userDashboards = dashboardsData;
+    } else {
+        userDashboards = dashboardsData.filter(
+            dashboard => dashboard.department === userDepartmentId
+        );
+    }
 
+    console.log('필터링된 대시보드:', userDashboards);
+
+    const dashboardList = document.getElementById('dashboardList');
     if (userDashboards.length === 0) {
         dashboardList.innerHTML = `
-            <div class="empty-dashboard-message">
-                <p>등록된 대시보드가 없습니다. 새 대시보드를 추가해보세요.</p>
-            </div>
-        `;
+        <div class="empty-dashboard-message">
+            <p>등록된 대시보드가 없습니다. 새 대시보드를 추가해보세요.</p>
+        </div>
+    `;
     } else {
-        dashboardList.innerHTML = ''; // 기존 내용 초기화
-
+        dashboardList.innerHTML = '';
         userDashboards.forEach(dashboard => {
             const dashboardElement = document.createElement('div');
             dashboardElement.className = 'banner-container';
@@ -60,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 </a>
                 <div class="display-control">
-                    <span class="display-text">메인페이지에 표시</span>
+                    <span class="display-text">관리페이지에 표시</span>
                     <button class="toggle-btn" data-id="${dashboard.id}" data-active="${dashboard.active}">
                         ${dashboard.active ? 'On' : 'Off'}
                     </button>
@@ -95,7 +101,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // 상태 변경 로그
                 const bannerTitle = this.closest('.banner-container').querySelector('.banner-title').textContent;
-                console.log(`${bannerTitle} 배너의 메인페이지 표시 상태가 ${isActive ? 'Off' : 'On'}로 변경되었습니다.`);
+                console.log(`${bannerTitle} 배너의 관리페이지 표시 상태가 ${isActive ? 'Off' : 'On'}로 변경되었습니다.`);
             });
         });
     }

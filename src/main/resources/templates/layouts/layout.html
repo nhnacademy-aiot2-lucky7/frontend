@@ -1,20 +1,29 @@
 <!DOCTYPE html>
 <html lang="ko"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      xmlns="http://www.w3.org/1999/html"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
     <link href="/img/icons/777_64x64.png" rel="shortcut icon"/>
     <title>Lucky Seven</title>
     <link href="/css/common.css" rel="stylesheet"/>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        window.currentUser = JSON.parse(/*[[${userJson}]]*/ "null");
+        /*]]>*/
+    </script>
 </head>
 <body>
 <div class="wrapper">
-    <!-- 일반 유저용 사이드바 -->
-    <div th:replace="fragments/sidebar :: sidebar" th:if="${#authentication.principal.role == 'USER'}"></div>
-    <!-- 관리자용 사이드바 -->
-    <div th:replace="fragments/sidebar_adm :: sidebar" th:if="${#authentication.principal.role == 'ADMIN'}"></div>
+    <!-- 각각 role 에 따른 사이드바 표시 -->
+    <th:block th:if="${user != null and #strings.trim(user.userRole).toUpperCase() == 'ROLE_ADMIN'}">
+        <div th:replace="~{fragments/sidebar_adm :: sidebar_admin}"></div>
+    </th:block>
+    <th:block th:unless="${user != null and #strings.trim(user.userRole).toUpperCase() == 'ROLE_ADMIN'}">
+        <div th:replace="~{fragments/sidebar :: sidebar_user}"></div>
+    </th:block>
+
     <div class="main">
         <div th:replace="fragments/navbar :: navbar"></div>
         <!-- 본문이 들어올 자리 -->
@@ -22,7 +31,11 @@
         <div th:replace="fragments/footer :: footer"></div>
     </div>
 </div>
+<script src="/js/admin-check.js"></script>
+<script src="/js/bootstrap.bundle.min.js"></script>
 <script src="/js/feather.min.js"></script>
 <script src="/js/feather-replace.js"></script>
+<script src="/js/common.js"></script>
+<script src="/js/auth-check.js"></script>
 </body>
 </html>

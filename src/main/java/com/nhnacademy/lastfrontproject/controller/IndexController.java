@@ -34,7 +34,6 @@ public class IndexController {
     public String serverRoom(){
         return "pages/pages-server-room";
     }
-
     @GetMapping("/power-usage")
     public String powerUsage(){
         return "pages/pages-power-usage";
@@ -57,7 +56,6 @@ public class IndexController {
 
     @GetMapping("/management")
     public String management(){
-        return "pages/admin/pages-management";
+        return "pages/member/dashboard/pages-management";
     }
-
 }

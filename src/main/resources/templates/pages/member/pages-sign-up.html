@@ -46,42 +46,24 @@
                 <label for="departmentId">부서</label>
                 <select class="form-control" id="departmentId" name="departmentId" required>
                     <option value="" disabled selected hidden>부서를 선택하세요</option>
-                    <script>
-                        document.addEventListener('DOMContentLoaded', function () {
-                            fetch('/api/departments') // 임의 (수정필요)
-                                .then(response => response.json())
-                                .then(data => {
-                                    const departmentSelect = document.createElement('option');
-                                    data.forEach(dept => {
-                                        const option = document.createElement('option');
-                                        option.value = dept.name; // 임의 (수정필요)
-                                        option.textContent = dept.name;
-                                        departmentSelect.appendChild(option);
-                                    })
-                                })
-                                .catch(error => {
-                                    console.error('부서 목록을 불러오지 못했습니다: ', error);
-                                });
-                        });
-                    </script>
                 </select>
             </div>
 
-            <div class="form-group">
-                <label for="userPhone">휴대전화 번호</label>
-                <input type="tel" class="form-control" id="userPhone" name="userPhone" placeholder="휴대전화 번호를 입력하세요" required>
+<!--            <div class="form-group">-->
+<!--                <label for="userPhone">휴대전화 번호</label>-->
+<!--                <input type="tel" class="form-control" id="userPhone" name="userPhone" placeholder="휴대전화 번호를 입력하세요" required>-->
 
-                <div class="cert-row">
-                    <button type="button" id="sendSmsBtn" class="cert-btn">인증번호 발송</button>
-                    <input type="text" id="certCode" class="cert-input" placeholder="인증번호 입력">
-                    <button type="button" id="checkCertBtn" class="cert-btn">인증번호 확인</button>
-                </div>
+<!--                <div class="cert-row">-->
+<!--                    <button type="button" id="sendSmsBtn" class="cert-btn">인증번호 발송</button>-->
+<!--                    <input type="text" id="certCode" class="cert-input" placeholder="인증번호 입력">-->
+<!--                    <button type="button" id="checkCertBtn" class="cert-btn">인증번호 확인</button>-->
+<!--                </div>-->
 
-                <div class="cert-message-area">
-                    <span id="smsMsg" class="cert-message"></span>
-                    <span id="certMsg" class="cert-message"></span>
-                </div>
-            </div>
+<!--                <div class="cert-message-area">-->
+<!--                    <span id="smsMsg" class="cert-message"></span>-->
+<!--                    <span id="certMsg" class="cert-message"></span>-->
+<!--                </div>-->
+<!--            </div>-->
 
             <!--			<div class="form-check">-->
             <!--				<input type="checkbox" class="form-check-input" id="agree" name="agree" required>-->
@@ -98,7 +80,7 @@
 </div>
 
 <script src="/js/feather.min.js"></script>
-<script src="/js/sms-certification.js"></script>
+<!--<script src="/js/sms-certification.js"></script>-->
 <script src="/js/signUp.js"></script>
 <script src="/js/auth_eye.js"></script>
 

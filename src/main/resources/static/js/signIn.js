@@ -1,44 +1,23 @@
-// 추후 변경 필요
-//
-// API 엔드포인트 URL:
-//     /api/signup
-//     /api/login
-//
-// 요청 본문(body)의 필드명:
-//     회원가입: name, email, password
-//     로그인: email, password, rememberMe
-//
-// 응답 데이터의 필드명:
-//     success: 요청 성공 여부
-//     token: JWT 토큰 (로그인 성공 시)
-//     message: 오류 메시지 등
-//     user: 사용자 정보 (선택적)
-//
-// HTTP 상태 코드:
-//     409: 이미 존재하는 이메일 (회원가입 시)
-//     401: 인증 실패 (로그인 실패 또는 토큰 만료)
-//
-// 토큰 필드명
-//     token
-
-
-// 로그인 페이지
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const form = document.querySelector('form');
+    if (!form) return; // 로그인 폼이 없는 페이지에서는 실행하지 않음
 
-    // 이미 로그인되어 있는지 확인
-    const token = localStorage.getItem('token');
-    if (token) {
-        window.location.href = '/dashboard'; // 이미 로그인된 사용자는 메인 페이지로 리다이렉트
-        return;
+    const emailInput = form.querySelector('input[name="userEmail"]');
+    const passwordInput = form.querySelector('input[name="userPassword"]');
+    const rememberCheckbox = form.querySelector('input[name="remember-me"]');
+
+    // 저장된 이메일 불러오기
+    const savedEmail = localStorage.getItem('rememberedEmail');
+    if (savedEmail) {
+        emailInput.value = savedEmail;
     }
 
-    form.addEventListener('submit', function(e) {
+    form.addEventListener('submit', function (e) {
         e.preventDefault();
 
-        const email = form.querySelector('input[name="userEmail"]').value;
-        const password = form.querySelector('input[name="userPassword"]').value;
-        const rememberMe = form.querySelector('input[name="remember-me"]').checked;
+        const email = emailInput.value;
+        const password = passwordInput.value;
+        const rememberMe = rememberCheckbox.checked;
 
         // 간단한 유효성 검사
         if (!email || !password) {
@@ -46,38 +25,51 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
+        console.log('로그인 시도:', {email, rememberMe});
+
         // 서버에 로그인 요청 보내기
-        fetch('/api/login', {
+        fetch('http://localhost:10232/auth/signIn', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ email, password, rememberMe })
+            body: JSON.stringify({
+                userEmail: email,
+                userPassword: password,
+                rememberMe: rememberMe
+            }),
+            credentials: 'include' // 쿠키 포함
         })
             .then(response => {
-                // HTTP 상태 코드 확인
+                console.log('응답 상태:', response.status);
+
                 if (!response.ok) {
                     if (response.status === 401) {
                         throw new Error('이메일 또는 비밀번호가 올바르지 않습니다.');
                     }
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
-                return response.json();
-            })
-            .then(data => {
-                if (data.success) {
-                    // JWT 토큰 저장
-                    localStorage.setItem('token', data.token);
 
-                    // 사용자 정보 저장 (선택 사항)
-                    if (data.user) {
-                        localStorage.setItem('user', JSON.stringify(data.user));
+                // 응답이 성공(200)이면 로그인 성공으로 간주
+                return true;
+            })
+            .then(success => {
+                if (success) {
+                    console.log('로그인 성공');
+
+                    // 이메일 기억하기
+                    if (rememberMe) {
+                        localStorage.setItem('rememberedEmail', email);
+                    } else {
+                        localStorage.removeItem('rememberedEmail');
                     }
 
+                    // 로그인 상태 저장 (UI 업데이트용)
+                    localStorage.setItem('isLoggedIn', 'true');
+
                     alert('로그인 성공!');
-                    window.location.href = '/dashboard';
-                } else {
-                    alert(data.message || '로그인에 실패했습니다.');
+                    // 페이지 새로고침으로 Thymeleaf 렌더링 갱신
+                    window.location.replace('/dashboard');
                 }
             })
             .catch(error => {

@@ -1,6 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Admin Dashboard info page loaded');
-
     // localStorage에서 대시보드 데이터 로드
     let dashboardsData = [];
     try {
@@ -23,33 +21,60 @@ document.addEventListener('DOMContentLoaded', function() {
     const departmentSelect = document.getElementById('departmentSelect');
     const departments = window.departments || [];
 
-    // 부서 옵션 추가
-    departments.forEach(dept => {
-        const option = document.createElement('option');
-        option.value = dept;
-        option.textContent = dept;
-        departmentSelect.appendChild(option);
-    });
+    // 드롭다운 옵션 생성 함수
+    function setDepartmentOptions() {
+        departmentSelect.innerHTML = ""; // 옵션 초기화
+        if (currentUser.userRole === 'ROLE_ADMIN') {
+            // 관리자: 전체 부서 선택 가능
+            const allOption = document.createElement('option');
+            allOption.value = "";
+            allOption.textContent = "모든 부서";
+            departmentSelect.appendChild(allOption);
 
-    // 대시보드 그룹 컨테이너
-    const dashboardGroups = document.getElementById('dashboardGroups');
+            departments.forEach(dept => {
+                const option = document.createElement('option');
+                option.value = dept.departmentId;
+                option.textContent = dept.departmentName;
+                departmentSelect.appendChild(option);
+            });
+            departmentSelect.disabled = false;
+        } else {
+            // 일반 유저: 자신의 부서만
+            const userDept = currentUser.department;
+            const option = document.createElement('option');
+            option.value = userDept.departmentId;
+            option.textContent = userDept.departmentName;
+            departmentSelect.appendChild(option);
+            departmentSelect.value = userDept.departmentId;
+            departmentSelect.disabled = true;
+        }
+    }
+
+    setDepartmentOptions();
 
     // 대시보드 필터링 및 표시 함수
     function filterAndDisplayDashboards() {
-        const selectedDepartment = departmentSelect.value;
+        const selectedDepartmentId = departmentSelect.value;
         const keyword = document.getElementById('keywordInput').value.toLowerCase();
 
-        // 필터링된 대시보드
         let filteredDashboards = dashboardsData;
 
-        // 부서 필터 적용
-        if (selectedDepartment) {
+        // 부서 필터
+        if (currentUser.userRole === 'ROLE_ADMIN') {
+            if (selectedDepartmentId) {
+                filteredDashboards = filteredDashboards.filter(dashboard =>
+                    dashboard.department === selectedDepartmentId
+                );
+            }
+        } else {
+            // 일반 유저: 자신의 부서만
+            const userDeptId = currentUser.department.departmentId;
             filteredDashboards = filteredDashboards.filter(dashboard =>
-                dashboard.department === selectedDepartment
+                dashboard.department === userDeptId
             );
         }
 
-        // 키워드 필터 적용
+        // 키워드 필터
         if (keyword) {
             filteredDashboards = filteredDashboards.filter(dashboard =>
                 dashboard.name.toLowerCase().includes(keyword) ||
@@ -57,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
             );
         }
 
-        // 부서별로 그룹화
+        // 부서별 그룹화
         const groupedDashboards = {};
         filteredDashboards.forEach(dashboard => {
             if (!groupedDashboards[dashboard.department]) {
@@ -67,26 +92,26 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         // 대시보드 그룹 표시
+        const dashboardGroups = document.getElementById('dashboardGroups');
         dashboardGroups.innerHTML = '';
 
-        Object.keys(groupedDashboards).forEach(department => {
-            const departmentDashboards = groupedDashboards[department];
+        Object.keys(groupedDashboards).forEach(departmentId => {
+            const departmentDashboards = groupedDashboards[departmentId];
 
             // 부서 그룹 생성
             const departmentGroup = document.createElement('div');
             departmentGroup.className = 'department-group';
 
-            // 부서 제목
+            // 부서 제목 (departmentId → departmentName)
             const departmentTitle = document.createElement('h2');
             departmentTitle.className = 'department-title';
-            departmentTitle.textContent = department;
+            departmentTitle.textContent = departmentDashboards[0].departmentName;
             departmentGroup.appendChild(departmentTitle);
 
             // 대시보드 배너 컨테이너
             const bannersContainer = document.createElement('div');
             bannersContainer.className = 'banners-container';
 
-            // 대시보드 배너 생성
             departmentDashboards.forEach(dashboard => {
                 const dashboardElement = document.createElement('div');
                 dashboardElement.className = 'banner-container';

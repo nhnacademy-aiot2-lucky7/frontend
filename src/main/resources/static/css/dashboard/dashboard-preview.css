@@ -1,0 +1,206 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.dashboard-container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 0;
+    margin-bottom: 0;
+    background-color: #f5f5f5;
+}
+
+.dashboard-header {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #0e3d68;
+    z-index: 20;
+    background-color: #f5f5f5;
+}
+
+.dashboard-title {
+    color: #0e3d68;
+    font-size: 24px;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, minmax(350px, auto));
+    gap: 20px;
+    padding: 20px 20px 0 20px;
+    width: 100%;
+    margin-bottom: 0;
+}
+
+.dashboard-panel {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3px 10px;
+    background-color: #0e3d68;
+    color: white;
+    flex-wrap: nowrap;
+    height: 26px;
+}
+
+.panel-title {
+    font-size: 14px;
+    max-width: 40%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.panel-title:hover {
+    text-decoration: underline;
+}
+
+.panel-title-edit {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #fff;
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    width: 40%; /* 입력칸 크기 조절 */
+    padding: 2px 0;
+    outline: none;
+}
+
+.panel-title-edit:focus {
+    border-bottom: 2px solid #fff;
+}
+
+.panel-controls {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.panel-content {
+    position: relative;
+    width: 100%;
+    height: calc(100% - 26px); /* 헤더 높이를 뺀 나머지 */
+    overflow: hidden;
+}
+
+.grafana-frame {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* 대시보드 헤더 버튼 스타일 분리 */
+.dashboard-controls .control-btn {
+    background-color: #0e3d68;
+    color: white;
+    border: none;
+    padding: 8px 16px; /* 원래 크기 유지 */
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px; /* 적절한 크기로 조정 */
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+/* 패널 헤더 버튼 스타일 */
+.panel-controls .refresh-btn {
+    background-color: #0e3d68;
+    color: white;
+    border: none;
+    padding: 2px 6px; /* 더 작게 조정 */
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 500;
+    transition: background-color 0.2s;
+    height: 20px; /* 높이 고정 */
+    line-height: 16px; /* 텍스트 중앙 정렬 */
+}
+
+.control-btn:hover, .refresh-btn:hover {
+    background-color: #0a2d4d;
+}
+
+/* 삭제 버튼 크기 조정 */
+.remove-panel {
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    width: 18px; /* 크기 줄임 */
+    height: 18px; /* 크기 줄임 */
+    border-radius: 50%;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 10px; /* X 글자 크기 조정 */
+    line-height: 16px; /* X 글자 위치 조정 */
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 시간 범위 선택 드롭다운 조정 */
+.time-range-select {
+    padding: 1px 2px;
+    border-radius: 3px;
+    border: 1px solid #ddd;
+    background-color: white;
+    font-size: 11px;
+    height: 20px; /* 높이 고정 */
+}
+
+.empty-panel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.empty-panel:hover {
+    background-color: rgba(255, 255, 255, 1);
+}
+
+.empty-panel-text {
+    color: #666;
+    font-size: 16px;
+}
+
+/* 반응형 레이아웃 */
+@media (max-width: 992px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,5 +1,7 @@
 package com.nhnacademy.lastfrontproject.controller;
 
+import com.nhnacademy.lastfrontproject.dto.user.DepartmentResponse;
+import com.nhnacademy.lastfrontproject.dto.user.EventLevelResponse;
 import com.nhnacademy.lastfrontproject.dto.user.UserResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,11 +11,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class UserController {
     // 공통 데이터를 생성하는 메서드
     private UserResponse getUserData() {
-        return new UserResponse("테스트", "test@test.co.kr", "개발팀", "01012345678", "사원", "");
+        return new UserResponse("테스트", 1L, "test@test.co.kr", "개발팀", "01012345678", new DepartmentResponse("", ""), new EventLevelResponse("", "", 1));
     }
 
     @GetMapping("/profile")
-    public String profile(Model model){
+    public String profile(Model model) {
         model.addAttribute("user", getUserData());
         return "pages/member/pages-profile";
     }

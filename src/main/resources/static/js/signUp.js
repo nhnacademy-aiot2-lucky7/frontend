@@ -21,6 +21,33 @@
 // 토큰 필드명
 //     token
 
+// 부서 목록 불러오기
+fetch('http://localhost:10232/departments')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('부서 정보를 불러오는데 실패했습니다.');
+        }
+        return response.json();
+    })
+    .then(departments => {
+        const departmentSelect = document.getElementById('departmentId');
+
+        // 각 부서를 드롭다운 옵션으로 추가
+        departments.forEach(dept => {
+            const option = document.createElement('option');
+            option.value = dept.departmentId; // 부서 ID
+            option.textContent = dept.departmentName; // 부서 이름
+            departmentSelect.appendChild(option);
+        });
+    })
+    .catch(error => {
+        console.error('부서 목록을 불러오지 못했습니다:', error);
+        const departmentSelect = document.getElementById('departmentId');
+        const errorOption = document.createElement('option');
+        errorOption.textContent = '부서 정보를 불러올 수 없습니다';
+        errorOption.disabled = true;
+        departmentSelect.appendChild(errorOption);
+    });
 
 // 회원가입 페이지
 document.addEventListener('DOMContentLoaded', function() {
@@ -53,19 +80,27 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // 휴대폰 인증 여부 확인
-        if (!window.isPhoneVerified) {
-            alert('휴대폰 인증을 완료해 주세요.');
-            return;
-        }
+        // // 휴대폰 인증 여부 확인
+        // if (!window.isPhoneVerified) {
+        //     alert('휴대폰 인증을 완료해 주세요.');
+        //     return;
+        // }
 
         // 서버에 회원가입 요청 보내기
-        fetch('api/signup', {
+        fetch('http://localhost:10232/auth/signUp', {
             method : 'POST',
             headers : {
                 'Content-Type' : 'application/json'
             },
-            body : JSON.stringify({name, email, password})
+            body : JSON.stringify({
+                userName: name,
+                userEmail: email,
+                userPassword: password,
+                userDepartment: form.querySelector('select[name="departmentId"]').value,
+                // userPhone: form.querySelector('input[name="userPhone"]').value
+                userPhone: "010-1234-5678" // 빈 문자열이라도 포함
+            }),
+            credentials: 'include'
         })
             .then(response => {
                 // HTTP 상태 확인
@@ -75,12 +110,28 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                     throw new Error(`HTTP Error! : , ${response.status}`);
                 }
-                return response.json();
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.includes('application/json')) {
+                    return response.json();
+                }
+                return {success: true};
             })
             .then(data => {
                 if (data.success) {
                     alert('회원가입이 완료되었습니다');
-                    window.location.href = 'pages-sign-in.html';
+
+                    if (rememberMe) {
+                        localStorage.setItem('rememberedEmail', email);
+                    } else {
+                        localStorage.removeItem('rememberedEmail');
+                    }
+
+                    // 로그인 상태 저장 (UI 업데이트용)
+                    localStorage.setItem('isLoggedIn', 'true');
+
+                    alert('로그인 성공!');
+                    // 페이지 새로고침으로 Thymeleaf 렌더링 갱신
+                    window.location.replace('/dashboard');
                 } else {
                     alert(data.message || '회원가입에 실패했습니다');
                 }

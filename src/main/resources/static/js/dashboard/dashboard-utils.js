@@ -21,7 +21,7 @@ function addToggleButtonListeners() {
 
             // 상태 변경 로그
             const bannerTitle = this.closest('.banner-container').querySelector('.banner-title').textContent;
-            console.log(`${bannerTitle} 배너의 메인페이지 표시 상태가 ${isActive ? 'Off' : 'On'}로 변경되었습니다.`);
+            console.log(`${bannerTitle} 배너의 관리페이지 표시 상태가 ${isActive ? 'Off' : 'On'}로 변경되었습니다.`);
         });
     });
 }

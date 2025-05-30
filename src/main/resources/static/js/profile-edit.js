@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const confirmPasswordInput = document.querySelector('input[name="confirmPassword"]');
     const currentPasswordInput = document.querySelector('input[name="currentPassword"]');
     const userPhoneInput = document.querySelector('input[name="userPhone"]');
+    const userNameInput = document.querySelector('input[name="userName"]');
+    const profilePhotoInput = document.querySelector('input[name="profile_photo"]');
 
     function checkPasswordMatch() {
         if (!newPasswordInput || !confirmPasswordInput) return;
@@ -31,11 +33,38 @@ document.addEventListener('DOMContentLoaded', function () {
         confirmPasswordInput.addEventListener('input', checkPasswordMatch);
     }
 
+    // 프로필 이미지 업로드
+    if (profilePhotoInput) {
+        profilePhotoInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (!file) return;
+            const formData = new FormData();
+            formData.append('userEmail', currentUser.userEmail);
+            formData.append('imagePath', file);
+
+            fetch('http://localhost:10232/images', {
+                method: 'POST',
+                body: formData
+            })
+                .then(res => {
+                    if (!res.ok) throw new Error('프로필 이미지 업로드 실패');
+                    return res.text();
+                })
+                .then(() => {
+                    alert('프로필 이미지가 변경되었습니다.');
+                    window.location.reload();
+                })
+                .catch(err => {
+                    alert(err.message);
+                });
+        });
+    }
+
     editForm.addEventListener('submit', function(e) {
         e.preventDefault();
 
-        // 비밀번호 입력이 모두 비어 있으면 휴대전화만 수정
-        if (!currentPasswordInput.value && !newPasswordInput.value && !confirmPasswordInput.value) {
+        // 이름/휴대전화만 수정
+        if (currentPasswordInput.value && !newPasswordInput.value && !confirmPasswordInput.value) {
             fetch('http://localhost:10232/users/me', {
                 method: 'PUT',
                 headers: {
@@ -43,15 +72,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 },
                 credentials: 'include',
                 body: JSON.stringify({
-                    userPhone: userPhoneInput.value
+                    userName: userNameInput.value,
+                    userPhone: userPhoneInput.value,
+                    userDepartmentId: currentUser.department.departmentId,
+                    eventLevel: currentUser.eventLevelResponse.eventLevelName,
+                    currentPassword: currentPasswordInput.value
                 })
             })
                 .then(res => {
-                    if (!res.ok) throw new Error('휴대전화번호 수정 실패');
+                    if (!res.ok) throw new Error('회원정보 수정 실패');
                     return res.text();
                 })
                 .then(() => {
-                    alert('휴대전화번호가 수정되었습니다.');
+                    alert('회원정보가 수정되었습니다.');
                     window.location.href = '/profile';
                 })
                 .catch(err => {
@@ -60,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        // 비밀번호 입력란이 모두 채워져 있으면 비밀번호 변경
+        // 비밀번호 변경
         if (currentPasswordInput.value && newPasswordInput.value && confirmPasswordInput.value) {
             if (newPasswordInput.value !== confirmPasswordInput.value) {
                 alert('새 비밀번호와 비밀번호 확인이 일치하지 않습니다.');
@@ -90,6 +123,39 @@ document.addEventListener('DOMContentLoaded', function () {
                 .catch(err => {
                     alert(err.message);
                 });
+            return;
         }
+
+        // 아무것도 입력 안 했을 때
+        if (!currentPasswordInput.value && !newPasswordInput.value && !confirmPasswordInput.value) {
+            fetch('http://localhost:10232/users/me', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify({
+                    userName: userNameInput.value,
+                    userPhone: userPhoneInput.value,
+                    userDepartmentId: currentUser.department.departmentId,
+                    eventLevel: currentUser.eventLevelResponse.eventLevelName
+                })
+            })
+                .then(res => {
+                    if (!res.ok) throw new Error('회원정보 수정 실패');
+                    return res.text();
+                })
+                .then(() => {
+                    alert('회원정보가 수정되었습니다.');
+                    window.location.href = '/profile';
+                })
+                .catch(err => {
+                    alert(err.message);
+                });
+            return;
+        }
+
+        // 그 외 (입력 조합이 이상할 때)
+        alert('입력값을 다시 확인해주세요.');
     });
 });

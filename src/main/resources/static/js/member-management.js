@@ -75,17 +75,13 @@ document.addEventListener('DOMContentLoaded', function () {
             <button class="btn btn-delete delete-btn" data-id="${member.userNo}">삭제</button>
         `;
 
-            // 저장(권한 변경)
-            const adminEmail = window.currentUser?.userEmail || localStorage.getItem('adminEmail'); // 관리자 이메일
-
             row.querySelector('.btn-save').addEventListener('click', async function () {
                 const newRole = row.querySelector('.edit-role').value;
-                const encrypted = await encryptEmailGCM(adminEmail, AES_KEY); // 관리자 이메일 암호화!
                 fetch('http://localhost:10232/admin/users/roles', {
+                    credentials:'include',
                     method: 'PUT',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'X-User-Id': encrypted
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
                         userId: member.userEmail, // 대상 유저
@@ -110,12 +106,9 @@ document.addEventListener('DOMContentLoaded', function () {
             // 삭제
             row.querySelector('.btn-delete').addEventListener('click', async function () {
                 if (confirm('정말 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.')) {
-                    const encrypted = await encryptEmailGCM(member.userEmail, AES_KEY);
                     fetch(`http://localhost:10232/admin/users/${member.userEmail}`, {
                         method: 'DELETE',
-                        headers: {
-                            'X-User-Id': encrypted
-                        }
+                        credentials:'include',
                     })
                         .then(res => {
                             if (res.ok) {

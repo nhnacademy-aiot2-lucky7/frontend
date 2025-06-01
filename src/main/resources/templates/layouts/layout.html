@@ -1,28 +1,31 @@
 <!DOCTYPE html>
-<html lang="ko"
-      xmlns="http://www.w3.org/1999/html"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
     <link href="/img/icons/777_64x64.png" rel="shortcut icon"/>
     <title>Lucky Seven</title>
+
     <link href="/css/common.css" rel="stylesheet"/>
+
     <script th:inline="javascript">
         /*<![CDATA[*/
-        window.currentUser = JSON.parse(/*[[${userJson}]]*/ "null");
+        window.currentUser = JSON.parse(/*[[${userJson}]]*/ 'null');
         window.loginUser = /*[[${loginUser}]]*/ null;
         /*]]>*/
     </script>
-    <script src="/js/admin-check.js"></script>
-    <script src="/js/bootstrap.bundle.min.js"></script>
-    <script src="/js/feather.min.js"></script>
-    <script src="/js/feather-replace.js"></script>
-    <script src="/js/common.js"></script>
-    <script src="/js/auth-check.js"></script>
+
+    <script defer src="/js/bootstrap.bundle.min.js"></script>
+    <script defer src="/js/feather.min.js"></script>
+    <script defer src="/js/feather-replace.js"></script>
+    <script defer src="/js/admin-check.js"></script>
+    <script defer src="/js/common.js"></script>
+    <script defer src="/js/auth-check.js"></script>
 </head>
 <body>
-<div class="wrapper">
+<div class="wrapper d-flex">
     <!-- 관리자 사이드바 -->
     <th:block th:if="${user != null and #strings.trim(user.userRole).toUpperCase() == 'ROLE_ADMIN'}">
         <div th:replace="~{fragments/sidebar_adm :: sidebar_admin}"></div>
@@ -36,13 +39,11 @@
         <div th:replace="~{fragments/sidebar_guest :: sidebar_guest}"></div>
     </th:block>
 
-    <div class="main">
-        <div th:replace="fragments/navbar :: navbar"></div>
-        <!-- 본문이 들어올 자리 -->
-        <div layout:fragment="content"></div>
-        <div th:replace="fragments/footer :: footer"></div>
-    </div>
+    <main class="main flex-grow-1">
+        <header th:replace="fragments/navbar :: navbar"></header>
+        <section class="content" layout:fragment="content"></section>
+        <footer th:replace="fragments/footer :: footer"></footer>
+    </main>
 </div>
-
 </body>
 </html>

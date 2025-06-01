@@ -15,35 +15,35 @@ public interface DashboardService {
     List<FolderInfoResponse> getFolders();
 
     // 모든 대시보드명 조회
-    List<String> getDashboardName(String encryptedUserId);
+    List<String> getDashboardName();
 
     // 모든 대시보드 정보 조회
-    List<InfoDashboardResponse> getAllDashboard(String encryptedUserId);
+    List<InfoDashboardResponse> getAllDashboard();
 
     // 대시보드내의 모든 패널 정보 조회
     List<IframePanelResponse> getPanel(ReadPanelRequest readPanelRequest);
 
     // 대시보드 생성
-    void createDashboard(String encryptedUserId, CreateDashboardRequest createDashboardRequest);
+    void createDashboard(CreateDashboardRequest createDashboardRequest);
 
     // on인 패널만 조회
     List<IframePanelResponse> getFilterPanel(ReadPanelRequest readPanelRequest, List<Integer> offPanelId);
 
     // 패널 생성
-    void createPanel(String encryptedUserId, CreatePanelRequest createPanelRequest);
+    void createPanel(CreatePanelRequest createPanelRequest);
 
     // 대시보드 수정
-    void updateDashboard(String encryptedUserId, UpdateDashboardNameRequest updateDashboardNameRequest);
+    void updateDashboard(UpdateDashboardNameRequest updateDashboardNameRequest);
 
     // 패널 수정
-    void updatePanel(String encryptedUserId, UpdatePanelRequest updatePanelRequest);
+    void updatePanel(UpdatePanelRequest updatePanelRequest);
 
     // 패널 우선순위 수정
-    void updatePriority(String encryptedUserId, UpdatePanelPriorityRequest updatePanelPriorityRequest);
+    void updatePriority(UpdatePanelPriorityRequest updatePanelPriorityRequest);
 
     // 대시보드 삭제
-    void deleteDashboard(String encryptedUserId, DeleteDashboardRequest deleteDashboardRequest);
+    void deleteDashboard(DeleteDashboardRequest deleteDashboardRequest);
 
     // 패널 삭제
-    void deletePanel(String encryptedUserId, DeletePanelRequest deletePanelRequest);
+    void deletePanel(DeletePanelRequest deletePanelRequest);
 }

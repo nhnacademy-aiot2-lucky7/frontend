@@ -29,14 +29,14 @@ public class DashboardServiceImpl implements DashboardService {
     }
 
     @Override
-    public List<String> getDashboardName(String encryptedUserId) {
-        ResponseEntity<List<String>> dashboardNames = dashboardAdapter.getDashboardName(encryptedUserId);
+    public List<String> getDashboardName() {
+        ResponseEntity<List<String>> dashboardNames = dashboardAdapter.getDashboardName();
         return dashboardNames.getBody();
     }
 
     @Override
-    public List<InfoDashboardResponse> getAllDashboard(String encryptedUserId) {
-        ResponseEntity<List<InfoDashboardResponse>> allDashboard = dashboardAdapter.getAllDashboard(encryptedUserId);
+    public List<InfoDashboardResponse> getAllDashboard() {
+        ResponseEntity<List<InfoDashboardResponse>> allDashboard = dashboardAdapter.getAllDashboard();
         return allDashboard.getBody();
     }
 
@@ -47,8 +47,8 @@ public class DashboardServiceImpl implements DashboardService {
     }
 
     @Override
-    public void createDashboard(String encryptedUserId, CreateDashboardRequest createDashboardRequest) {
-        dashboardAdapter.createDashboard(encryptedUserId, createDashboardRequest);
+    public void createDashboard(CreateDashboardRequest createDashboardRequest) {
+        dashboardAdapter.createDashboard(createDashboardRequest);
     }
 
     @Override
@@ -58,32 +58,32 @@ public class DashboardServiceImpl implements DashboardService {
     }
 
     @Override
-    public void createPanel(String encryptedUserId, CreatePanelRequest createPanelRequest) {
-        dashboardAdapter.createPanel(encryptedUserId, createPanelRequest);
+    public void createPanel(CreatePanelRequest createPanelRequest) {
+        dashboardAdapter.createPanel(createPanelRequest);
     }
 
     @Override
-    public void updateDashboard(String encryptedUserId, UpdateDashboardNameRequest updateDashboardNameRequest) {
-        dashboardAdapter.updateDashboard(encryptedUserId, updateDashboardNameRequest);
+    public void updateDashboard(UpdateDashboardNameRequest updateDashboardNameRequest) {
+        dashboardAdapter.updateDashboard(updateDashboardNameRequest);
     }
 
     @Override
-    public void updatePanel(String encryptedUserId, UpdatePanelRequest updatePanelRequest) {
-        dashboardAdapter.updatePanel(encryptedUserId, updatePanelRequest);
+    public void updatePanel(UpdatePanelRequest updatePanelRequest) {
+        dashboardAdapter.updatePanel(updatePanelRequest);
     }
 
     @Override
-    public void updatePriority(String encryptedUserId, UpdatePanelPriorityRequest updatePanelPriorityRequest) {
-        dashboardAdapter.updatePriority(encryptedUserId, updatePanelPriorityRequest);
+    public void updatePriority(UpdatePanelPriorityRequest updatePanelPriorityRequest) {
+        dashboardAdapter.updatePriority(updatePanelPriorityRequest);
     }
 
     @Override
-    public void deleteDashboard(String encryptedUserId, DeleteDashboardRequest deleteDashboardRequest) {
-        dashboardAdapter.deleteDashboard(encryptedUserId, deleteDashboardRequest);
+    public void deleteDashboard(DeleteDashboardRequest deleteDashboardRequest) {
+        dashboardAdapter.deleteDashboard(deleteDashboardRequest);
     }
 
     @Override
-    public void deletePanel(String encryptedUserId, DeletePanelRequest deletePanelRequest) {
-        dashboardAdapter.deletePanel(encryptedUserId, deletePanelRequest);
+    public void deletePanel(DeletePanelRequest deletePanelRequest) {
+        dashboardAdapter.deletePanel(deletePanelRequest);
     }
 }

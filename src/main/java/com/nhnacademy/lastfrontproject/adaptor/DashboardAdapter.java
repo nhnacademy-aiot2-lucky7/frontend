@@ -20,10 +20,10 @@ public interface DashboardAdapter {
     ResponseEntity<List<FolderInfoResponse>> getFolders();
 
     @GetMapping("/dashboards")
-    ResponseEntity<List<String>> getDashboardName(@RequestHeader("X-User-Id") String userId);
+    ResponseEntity<List<String>> getDashboardName();
 
     @GetMapping("/dashboards")
-    ResponseEntity<List<InfoDashboardResponse>> getAllDashboard(@RequestHeader("X-User-Id") String userId);
+    ResponseEntity<List<InfoDashboardResponse>> getAllDashboard();
 
     @GetMapping("/panels")
     ResponseEntity<List<IframePanelResponse>> getPanel(
@@ -31,7 +31,6 @@ public interface DashboardAdapter {
 
     @PostMapping("/dashboards")
     ResponseEntity<Void> createDashboard(
-            @RequestHeader("X-User-Id") String userId,
             @RequestBody CreateDashboardRequest createDashboardRequest
     );
 
@@ -43,36 +42,30 @@ public interface DashboardAdapter {
 
     @PostMapping("/panels")
     ResponseEntity<Void> createPanel(
-            @RequestHeader("X-User-Id") String userId,
             @RequestBody @Valid CreatePanelRequest createPanelRequest
     );
 
     @PutMapping("/dashboards")
     ResponseEntity<Void> updateDashboard(
-            @RequestHeader("X-User-Id") String userId,
             @RequestBody UpdateDashboardNameRequest updateDashboardNameRequest
     );
 
     @PutMapping("/panels")
     ResponseEntity<Void> updatePanel(
-            @RequestHeader("X-User-Id") String userId,
             @RequestBody UpdatePanelRequest updateRequest
     );
 
     @PutMapping("/panels/priority")
     ResponseEntity<Void> updatePriority(
-            @RequestHeader("X-User-Id") String userId,
             @RequestBody UpdatePanelPriorityRequest updatePriority
     );
 
     @DeleteMapping("/dashboards")
     ResponseEntity<Void> deleteDashboard(
-            @RequestHeader("X-User-Id") String userId,
             @RequestBody DeleteDashboardRequest deleteDashboardRequest);
 
     @DeleteMapping("/panels")
     ResponseEntity<Void> deletePanel(
-            @RequestHeader("X-User-Id") String userId,
             @RequestBody DeletePanelRequest deletePanelRequest);
 
 }

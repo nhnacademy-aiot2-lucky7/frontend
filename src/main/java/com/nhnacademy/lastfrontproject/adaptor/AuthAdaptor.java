@@ -2,6 +2,7 @@ package com.nhnacademy.lastfrontproject.adaptor;
 
 import com.nhnacademy.lastfrontproject.dto.auth.LoginRequest;
 import com.nhnacademy.lastfrontproject.dto.auth.RegisterRequest;
+import com.nhnacademy.lastfrontproject.dto.user.UserResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,4 +20,7 @@ public interface AuthAdaptor {
 
     @PostMapping("/auth/social/signIn")
     ResponseEntity<Void> socialSignIn(@RequestBody String email, @RequestHeader("Authorization") String accessTokenHeader);
+
+    @GetMapping("/users/me")
+    ResponseEntity<UserResponse> getMyInfo();
 }

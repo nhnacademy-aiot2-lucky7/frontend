@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // 삭제 버튼 이벤트
             row.querySelector('.btn-delete').addEventListener('click', function () {
-                if (confirm('정말 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.')) {
+                if (confirm('정말 삭제 하시겠습니까? 이 작업은 되돌릴 수 없습니다.')) {
                     fetch(`/admin/member/${member.id}`, {method: 'DELETE'})
                         .then(res => {
                             if (res.ok) {

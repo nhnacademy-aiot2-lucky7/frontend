@@ -100,8 +100,17 @@ document.addEventListener('DOMContentLoaded', function () {
             currentSort.asc = currentSort.key === key ? !currentSort.asc : true;
             currentSort.key = key;
             members.sort((a, b) => {
-                if (a[key] < b[key]) return currentSort.asc ? -1 : 1;
-                if (a[key] > b[key]) return currentSort.asc ? 1 : -1;
+                let aValue, bValue;
+                if (key === "department") {
+                    // 실제 데이터 구조에 맞게 필드명 선택
+                    aValue = a.departmentName || (a.department?.departmentName) || "";
+                    bValue = b.departmentName || (b.department?.departmentName) || "";
+                } else {
+                    aValue = a[key] || "";
+                    bValue = b[key] || "";
+                }
+                if (aValue < bValue) return currentSort.asc ? -1 : 1;
+                if (aValue > bValue) return currentSort.asc ? 1 : -1;
                 return 0;
             });
             renderTable(members);

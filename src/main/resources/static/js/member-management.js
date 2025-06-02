@@ -102,10 +102,19 @@ document.addEventListener('DOMContentLoaded', function () {
                     aValue = a.department?.departmentName || "";
                     bValue = b.department?.departmentName || "";
                 } else if (key === "userRole") {
-                    // 권한 한글 정렬을 위해 변환
+                    // 권한 한글 정렬
                     const roleMap = { "ROLE_ADMIN": "관리자", "ROLE_MEMBER": "일반회원" };
                     aValue = roleMap[a.userRole] || "";
                     bValue = roleMap[b.userRole] || "";
+                } else if (key === "name") {
+                    aValue = a.userName || "";
+                    bValue = b.userName || "";
+                } else if (key === "email") {
+                    aValue = a.userEmail || "";
+                    bValue = b.userEmail || "";
+                } else if (key === "phone") {
+                    aValue = a.userPhone || "";
+                    bValue = b.userPhone || "";
                 } else {
                     aValue = a[key] || "";
                     bValue = b[key] || "";

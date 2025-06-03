@@ -1,19 +1,18 @@
 package com.nhnacademy.lastfrontproject.controller;
 
-import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.CreateDashboardRequest;
 import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.DeleteDashboardRequest;
-import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.InfoDashboardResponse;
 import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.UpdateDashboardNameRequest;
 import com.nhnacademy.lastfrontproject.dto.grafana.folder.FolderInfoResponse;
 import com.nhnacademy.lastfrontproject.dto.grafana.panel.*;
 import com.nhnacademy.lastfrontproject.service.DashboardService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Controller
-@RequestMapping("/api")
+@RequestMapping
 public class DashboardController {
     private final DashboardService dashboardService;
 
@@ -21,10 +20,18 @@ public class DashboardController {
         this.dashboardService = dashboardService;
     }
 
-    // 1. 폴더 조회
-    @GetMapping("/folders")
+    // 폴더 조회
+    @GetMapping("admin/folders")
     public List<FolderInfoResponse> getFolders() {
         return dashboardService.getFolders();
+    }
+
+    // 대시보드 추가
+    @GetMapping({"/user/dashboards", "/admin/dashboards"})
+    public String showDashboardPage(Model model,
+                                    @RequestParam(name = "departmentId", required = false) String departmentId) {
+        model.addAttribute("departmentId", departmentId);
+        return "pages/member/dashboard/pages-add-dashboard";
     }
 
     // 2. 대시보드 이름 조회
@@ -33,16 +40,23 @@ public class DashboardController {
         return dashboardService.getDashboardName();
     }
 
-    // 3. 전체 대시보드 정보 조회
-    @GetMapping("/dashboards")
-    public List<InfoDashboardResponse> getDashboards(){
-        return dashboardService.getAllDashboard();
+    // 사용자 대시보드 정보 조회
+    @GetMapping("/user/dashboard-info")
+    public String getUserDashboards(){
+        return "pages/member/dashboard/pages-dashboard-info";
     }
 
-    // 4. 패널 조회
-    @GetMapping("/panels")
-    public List<IframePanelResponse> getPanels(ReadPanelRequest request) {
-        return dashboardService.getPanel(request);
+    // admin 대시보드 정보 조회
+    @GetMapping("/admin/dashboard-info")
+    public String getAdminDashboards(){
+        return "pages/admin/dashboard/pages-dashboard-info";
+    }
+
+    // 패널 조회
+    @GetMapping({"/user/panels", "/admin/panels"})
+    public String getPanels(ReadPanelRequest request) {
+        dashboardService.getPanel(request);
+        return "pages/member/dashboard/pages-panel-list";
     }
 
     // 5. 필터링된 패널 조회
@@ -53,16 +67,11 @@ public class DashboardController {
         return dashboardService.getFilterPanel(readPanelRequest, offPanelId);
     }
 
-    // 6. 대시보드 생성
-    @PostMapping("/dashboards")
-    public void createDashboard(@RequestBody CreateDashboardRequest request) {
-        dashboardService.createDashboard(request);
-    }
-
-    // 7. 패널 생성
-    @PostMapping("/panels")
-    public void createPanel(@RequestBody CreatePanelRequest request) {
+    // 패널 생성
+    @PostMapping({"/user/panels", "/admin/panels"})
+    public String createPanel(@RequestBody CreatePanelRequest request) {
         dashboardService.createPanel(request);
+        return "pages/member/dashboard/pages-add-panel";
     }
 
     // 8. 대시보드 이름 수정

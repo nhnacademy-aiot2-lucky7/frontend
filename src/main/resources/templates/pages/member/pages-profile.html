@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+<html lang="ko" layout:decorate="~{layouts/layout}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/layout}">
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <title>마이 페이지 | Lucky Seven</title>
@@ -13,10 +13,12 @@
     <div class="profile-wrapper">
         <div class="profile-card">
             <!-- 프로필 사진 및 사진 변경 -->
-            <div class="profile-photo-area" >
+            <div class="profile-photo-area">
+                <!--                user.profileImageUrl != null && !#strings.isEmpty(user.profileImageUrl) ? user.profileImageUrl :-->
                 <div class="profile-photo-container">
-                    <img th:src="${user.profileImageUrl != null && !#strings.isEmpty(user.profileImageUrl) ? user.profileImageUrl : '/img/avatars/default-avatar.jpg'}"
-                         class="profile-photo" id="main-profile-photo" alt="프로필 사진"/>
+                    <img alt="프로필 사진"
+                         class="profile-photo" id="main-profile-photo"
+                         th:src="${'/img/avatars/default-avatar.jpg'}"/>
                 </div>
             </div>
 

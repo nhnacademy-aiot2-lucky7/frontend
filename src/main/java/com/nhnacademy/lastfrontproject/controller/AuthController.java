@@ -3,7 +3,6 @@ package com.nhnacademy.lastfrontproject.controller;
 import com.nhnacademy.lastfrontproject.adaptor.AuthAdaptor;
 import com.nhnacademy.lastfrontproject.dto.auth.LoginRequest;
 import com.nhnacademy.lastfrontproject.dto.auth.RegisterRequest;
-import com.nhnacademy.lastfrontproject.service.OAuthUserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,12 +19,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class AuthController {
     private final AuthAdaptor authAdaptor;
-    private final OAuthUserService oAuthUserService;
     private final OAuth2AuthorizedClientService authorizedClientService;
 
-    public AuthController(AuthAdaptor authAdaptor, OAuthUserService oAuthUserService, OAuth2AuthorizedClientService authorizedClientService) {
+    public AuthController(AuthAdaptor authAdaptor, OAuth2AuthorizedClientService authorizedClientService) {
         this.authAdaptor = authAdaptor;
-        this.oAuthUserService = oAuthUserService;
         this.authorizedClientService = authorizedClientService;
     }
 
@@ -81,13 +78,8 @@ public class AuthController {
         String email = oauth2User.getAttribute("email");
 
         Boolean existsByEmail = authAdaptor.existsByEmail(email);
-        if (Boolean.TRUE.equals(existsByEmail)) {
-            authAdaptor.socialSignIn(email, accessToken);
-            httpSession.setAttribute("isLoggedIn", true);
 
-            return "redirect:/dashboard";
-        }
-
+        model.addAttribute("login", existsByEmail);
         model.addAttribute("userEmail", email);
         model.addAttribute("accessToken", accessToken);
 

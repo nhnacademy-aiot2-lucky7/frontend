@@ -22,7 +22,7 @@
 //     token
 
 // 부서 목록 불러오기
-fetch('http://localhost:10232/departments')
+fetch('http://team1-eureka-gateway:10232/departments')
     .then(response => {
         if (!response.ok) {
             throw new Error('부서 정보를 불러오는데 실패했습니다.');
@@ -50,7 +50,7 @@ fetch('http://localhost:10232/departments')
     });
 
 // 회원가입 페이지
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const form = document.querySelector('form');
 
     //로그인 여부 확인
@@ -87,12 +87,12 @@ document.addEventListener('DOMContentLoaded', function() {
         // }
 
         // 서버에 회원가입 요청 보내기
-        fetch('http://localhost:10232/auth/signUp', {
-            method : 'POST',
-            headers : {
-                'Content-Type' : 'application/json'
+        fetch('http://team1-eureka-gateway:10232/auth/signUp', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
             },
-            body : JSON.stringify({
+            body: JSON.stringify({
                 userName: name,
                 userEmail: email,
                 userPassword: password,

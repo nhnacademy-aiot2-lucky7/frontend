@@ -2,10 +2,38 @@ document.addEventListener('DOMContentLoaded', function () {
     const form = document.querySelector('form');
     const departmentSelect = document.getElementById('departmentId');
 
+    const login = document.querySelector('meta[name="login"]')?.content;
     const accessToken = document.querySelector('meta[name="access-token"]')?.content;
     const userEmail = document.querySelector('meta[name="user-email"]')?.content;
 
-    fetch('http://localhost:10232/departments')
+    if (login === 'true') {
+
+        fetch('http://team1-eureka-gateway:10232/auth/social/signIn', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                ...(accessToken ? {'Authorization': `${accessToken}`} : {})
+            },
+            body: userEmail,
+            credentials: 'include'
+        })
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 401) throw new Error('인증 실패');
+                    throw new Error('로그인 요청 실패');
+                }
+
+                // 바디가 비어 있으므로 json() 호출 안 함
+                localStorage.setItem('isLoggedIn', 'true');
+                window.location.replace('/dashboard');
+            })
+            .catch(error => {
+                console.warn('자동 로그인 실패 (회원가입 계속 가능):', error);
+            });
+    }
+
+    // 부서 목록 불러오기
+    fetch('http://team1-eureka-gateway:10232/departments')
         .then(response => {
             if (!response.ok) throw new Error('부서 정보를 불러오는데 실패했습니다.');
             return response.json();
@@ -26,6 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
             departmentSelect.appendChild(errorOption);
         });
 
+    // 회원가입 처리
     form.addEventListener('submit', function (e) {
         e.preventDefault();
 
@@ -39,11 +68,11 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        fetch('http://localhost:10232/auth/social/signUp', {
+        fetch('http://team1-eureka-gateway:10232/auth/social/signUp', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                ...(accessToken ? {'Authorization': `Bearer ${accessToken}`} : {})
+                ...(accessToken ? {'Authorization': `${accessToken}`} : {})
             },
             body: JSON.stringify({
                 userName: name,

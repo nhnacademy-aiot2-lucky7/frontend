@@ -21,16 +21,16 @@
         <div class="profile-card">
             <form action="/edit-profile" class="profile-section" method="post">
                 <div class="profile-photo-area">
-                    <!--                    <div class="profile-photo-container">-->
-                    <!--                        <img th:src="${user.profileImageUrl != null and !#strings.isEmpty(user.profileImageUrl) ? user.profileImageUrl : '/img/avatars/default-avatar.jpg'}"-->
-                    <!--                             class="profile-photo"-->
-                    <!--                             id="main-profile-photo"-->
-                    <!--                             alt="프로필 사진"/>-->
-                    <!--                        <label class="photo-upload-btn" title="사진 변경">-->
-                    <!--                            <input type="file" name="profile_photo" accept="image/*" style="display:none;">-->
-                    <!--                            <i data-feather="camera"></i>-->
-                    <!--                        </label>-->
-                    <!--                    </div>-->
+                    <div class="profile-photo-container">
+                        <img alt="프로필 사진"
+                             class="profile-photo"
+                             id="main-profile-photo"
+                             th:src="${'/img/avatars/default-avatar.jpg'}"/>
+                        <label class="photo-upload-btn" title="사진 변경">
+                            <input accept="image/*" name="profile_photo" style="display:none;" type="file">
+                            <i data-feather="camera"></i>
+                        </label>
+                    </div>
                 </div>
                 <div class="profile-row">
                     <div class="profile-label">이메일</div>
@@ -70,7 +70,8 @@
                 <div class="profile-row">
                     <div class="profile-label">새 비밀번호</div>
                     <div class="input-wrapper">
-                        <input autocomplete="new-password" class="profile-input" name="newPassword" placeholder="새 비밀번호 (변경 시)"
+                        <input autocomplete="new-password" class="profile-input" name="newPassword"
+                               placeholder="새 비밀번호 (변경 시)"
                                type="password">
                         <span class="password-eye-container"></span>
                     </div>
@@ -82,7 +83,8 @@
                 <div class="profile-row">
                     <div class="profile-label">비밀번호 확인</div>
                     <div class="input-wrapper">
-                        <input autocomplete="new-password" class="profile-input" name="confirmPassword" placeholder="비밀번호 확인"
+                        <input autocomplete="new-password" class="profile-input" name="confirmPassword"
+                               placeholder="비밀번호 확인"
                                type="password">
                         <span class="password-eye-container"></span>
                     </div>

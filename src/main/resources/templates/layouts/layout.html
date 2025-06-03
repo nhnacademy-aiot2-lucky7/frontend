@@ -12,7 +12,7 @@
 
     <script th:inline="javascript">
         /*<![CDATA[*/
-        window.currentUser = JSON.parse(/*[[${userJson}]]*/ 'null');
+        window.currentUser = /*[[${user}]]*/ null;
         window.loginUser = /*[[${loginUser}]]*/ null;
         /*]]>*/
     </script>

@@ -6,7 +6,7 @@ function handleLogout() {
     localStorage.removeItem('refreshToken');
 
     // 폼 제출 후 리디렉션 처리
-    fetch('http://team1-eureka-gateway:10232/auth/logout', {
+    fetch('http://localhost:10232/auth/logout', {
         method: 'POST',
         credentials: 'include'
     })

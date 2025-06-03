@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
             method: 'POST',
             credentials: 'include',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({name: nameInput.value})
+            body: JSON.stringify({dashboardTitle: nameInput.value})
         });
 
         if (!response.ok) {

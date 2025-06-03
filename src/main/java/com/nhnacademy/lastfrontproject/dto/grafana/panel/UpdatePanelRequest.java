@@ -1,8 +1,8 @@
 package com.nhnacademy.lastfrontproject.dto.grafana.panel;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.nhnacademy.dashboard.dto.dashboard.json.GridPos;
-import com.nhnacademy.dashboard.dto.grafana.SensorFieldRequestDto;
+
+import com.nhnacademy.lastfrontproject.dto.grafana.GridPos;
 import lombok.*;
 
 import java.util.List;

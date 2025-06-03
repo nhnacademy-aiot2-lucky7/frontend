@@ -1,29 +1,38 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function () {
     console.log('Admin Dashboard info page loaded');
 
-    // localStorage에서 대시보드 데이터 로드
-    let dashboardsData = [];
-    try {
-        const storedDashboards = localStorage.getItem('dashboards');
-        if (storedDashboards) {
-            dashboardsData = JSON.parse(storedDashboards);
-        } else {
-            // localStorage에 데이터가 없으면 더미 데이터로 초기화하고 저장
-            dashboardsData = window.dashboards || [];
-            localStorage.setItem('dashboards', JSON.stringify(dashboardsData));
-        }
-    } catch (e) {
-        console.error('localStorage 로드 중 오류 발생:', e);
-        dashboardsData = window.dashboards || [];
-    }
-
-    console.log('localStorage에서 로드한 대시보드:', dashboardsData);
-
-    // 부서 선택 드롭다운 초기화
     const departmentSelect = document.getElementById('departmentSelect');
+    const dashboardGroups = document.getElementById('dashboardGroups');
     const departments = window.departments || [];
 
-    // 부서 옵션 추가
+    //  1. folderUid → folderTitle 매핑 테이블 로딩
+    const folderMap = {}; // { folderUid: folderTitle }
+    try {
+        const folderResponse = await fetch('/api/folders', {
+            method: 'GET',
+            credentials: 'include',
+        });
+
+        if (folderResponse.ok) {
+            const folders = await folderResponse.json();
+            folders.forEach(f => {
+                folderMap[f.uid] = f.title;
+            });
+        } else {
+            console.warn('📁 폴더(부서) 이름 데이터를 불러오지 못했습니다.');
+        }
+    } catch (err) {
+        console.error('폴더 이름 로딩 오류:', err);
+    }
+
+    // 2. 부서 드롭다운 옵션 생성 (폴더 정보 기준)
+    Object.entries(folderMap).forEach(([uid, title]) => {
+        const option = document.createElement('option');
+        option.value = uid;
+        option.textContent = String(title);
+        departmentSelect.appendChild(option);
+    });
+
     departments.forEach(dept => {
         const option = document.createElement('option');
         option.value = dept;
@@ -31,66 +40,83 @@ document.addEventListener('DOMContentLoaded', function() {
         departmentSelect.appendChild(option);
     });
 
-    // 대시보드 그룹 컨테이너
-    const dashboardGroups = document.getElementById('dashboardGroups');
+    // 3. 대시보드 데이터 불러오기 및 매핑
+    let dashboardsData = [];
+    try {
+        const response = await fetch('/api/dashboards', {
+            method: 'GET',
+            credentials: 'include',
+        });
 
-    // 대시보드 필터링 및 표시 함수
+        if (!response.ok) new Error('대시보드 데이터를 불러오지 못했습니다.');
+        const result = await response.json();
+
+        dashboardsData = result.map(d => ({
+            id: d.id,
+            name: d.title,
+            department: d.folderUid,
+            departmentName: folderMap[d.folderUid] || d.folderUid, // ✅ uid 기준 이름 매핑
+            description: '',
+            bannerImage: getBannerImage(d.title),
+            active: false
+        }));
+    } catch (error) {
+        console.error('서버 데이터 로딩 실패:', error);
+        alert('대시보드 데이터를 불러오는 데 실패했습니다.');
+        return;
+    }
+
+    // 필터링 및 표시 함수
     function filterAndDisplayDashboards() {
         const selectedDepartment = departmentSelect.value;
         const keyword = document.getElementById('keywordInput').value.toLowerCase();
 
-        // 필터링된 대시보드
         let filteredDashboards = dashboardsData;
 
-        // 부서 필터 적용
+        // 부서 필터
         if (selectedDepartment) {
-            filteredDashboards = filteredDashboards.filter(dashboard =>
-                dashboard.department === selectedDepartment
+            filteredDashboards = filteredDashboards.filter(d =>
+                d.department === selectedDepartment
             );
         }
 
-        // 키워드 필터 적용
+        // 키워드 필터
         if (keyword) {
-            filteredDashboards = filteredDashboards.filter(dashboard =>
-                dashboard.name.toLowerCase().includes(keyword) ||
-                (dashboard.description && dashboard.description.toLowerCase().includes(keyword))
+            filteredDashboards = filteredDashboards.filter(d =>
+                d.name.toLowerCase().includes(keyword) ||
+                (d.description && d.description.toLowerCase().includes(keyword))
             );
         }
 
         // 부서별 그룹화
         const groupedDashboards = {};
-        filteredDashboards.forEach(dashboard => {
-            if (!groupedDashboards[dashboard.department]) {
-                groupedDashboards[dashboard.department] = [];
+        filteredDashboards.forEach(d => {
+            if (!groupedDashboards[d.department]) {
+                groupedDashboards[d.department] = [];
             }
-            groupedDashboards[dashboard.department].push(dashboard);
+            groupedDashboards[d.department].push(d);
         });
 
-        // 대시보드 그룹 표시
+        // 렌더링
         dashboardGroups.innerHTML = '';
-
         Object.keys(groupedDashboards).forEach(department => {
-            const departmentDashboards = groupedDashboards[department];
+            const group = groupedDashboards[department];
 
-            // 부서 그룹 생성
-            const departmentGroup = document.createElement('div');
-            departmentGroup.className = 'department-group';
+            const groupDiv = document.createElement('div');
+            groupDiv.className = 'department-group';
 
-            // 부서 제목
-            const departmentTitle = document.createElement('h2');
-            departmentTitle.className = 'department-title';
-            departmentTitle.textContent = departmentDashboards[0].departmentName;
-            departmentGroup.appendChild(departmentTitle);
+            const title = document.createElement('h2');
+            title.className = 'department-title';
+            title.textContent = group[0].departmentName || department;
+            groupDiv.appendChild(title);
 
-            // 대시보드 배너 컨테이너
-            const bannersContainer = document.createElement('div');
-            bannersContainer.className = 'banners-container';
+            const container = document.createElement('div');
+            container.className = 'banners-container';
 
-            // 대시보드 배너 생성
-            departmentDashboards.forEach(dashboard => {
-                const dashboardElement = document.createElement('div');
-                dashboardElement.className = 'banner-container';
-                dashboardElement.innerHTML = `
+            group.forEach(dashboard => {
+                const banner = document.createElement('div');
+                banner.className = 'banner-container';
+                banner.innerHTML = `
                     <a href="/dashboard-detail?id=${dashboard.id}" class="banner-link">
                         <img src="${dashboard.bannerImage}" alt="${dashboard.name}" class="banner-image"/>
                         <div class="banner-overlay">
@@ -104,53 +130,41 @@ document.addEventListener('DOMContentLoaded', function() {
                         </button>
                     </div>
                 `;
-                bannersContainer.appendChild(dashboardElement);
+                container.appendChild(banner);
             });
 
-            departmentGroup.appendChild(bannersContainer);
-            dashboardGroups.appendChild(departmentGroup);
+            groupDiv.appendChild(container);
+            dashboardGroups.appendChild(groupDiv);
         });
 
-        // 토글 버튼 이벤트 리스너 추가
-        const toggleButtons = document.querySelectorAll('.toggle-btn');
-        toggleButtons.forEach(button => {
-            button.addEventListener('click', function(e) {
+        // 토글 버튼 로직 (localStorage는 제거 또는 옵션)
+        document.querySelectorAll('.toggle-btn').forEach(button => {
+            button.addEventListener('click', function (e) {
                 e.preventDefault();
                 e.stopPropagation();
 
                 const dashboardId = parseInt(this.getAttribute('data-id'));
                 const isActive = this.getAttribute('data-active') === 'true';
-
-                // 토글 상태 변경
                 this.textContent = isActive ? 'Off' : 'On';
                 this.setAttribute('data-active', !isActive);
 
-                // 대시보드 데이터 업데이트
                 const dashboard = dashboardsData.find(d => d.id === dashboardId);
                 if (dashboard) {
                     dashboard.active = !isActive;
-
-                    // 로컬 스토리지 업데이트
-                    localStorage.setItem('dashboards', JSON.stringify(dashboardsData));
-                    console.log('Updated localStorage with new active state');
+                    console.log(`${dashboard.name}의 active 상태가 ${dashboard.active}로 변경됨`);
                 }
-
-                // 상태 변경 로그
-                const bannerTitle = this.closest('.banner-container').querySelector('.banner-title').textContent;
-                console.log(`${bannerTitle} 배너의 메인페이지 표시 상태가 ${isActive ? 'Off' : 'On'}로 변경되었습니다.`);
             });
         });
     }
 
-    // 초기 대시보드 표시
-    filterAndDisplayDashboards();
-
-    // 필터 폼 제출 이벤트
-    document.getElementById('filterForm').addEventListener('submit', function(e) {
+    // 이벤트 핸들러
+    document.getElementById('filterForm').addEventListener('submit', function (e) {
         e.preventDefault();
         filterAndDisplayDashboards();
     });
 
-    // 부서 선택 변경 이벤트
     departmentSelect.addEventListener('change', filterAndDisplayDashboards);
+
+    // 초기 표시
+    filterAndDisplayDashboards();
 });

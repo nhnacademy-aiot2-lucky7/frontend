@@ -7,11 +7,12 @@ import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.UpdateDashboardName
 import com.nhnacademy.lastfrontproject.dto.grafana.folder.FolderInfoResponse;
 import com.nhnacademy.lastfrontproject.dto.grafana.panel.*;
 import com.nhnacademy.lastfrontproject.service.DashboardService;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/api")
 public class DashboardController {
     private final DashboardService dashboardService;
@@ -39,8 +40,8 @@ public class DashboardController {
     }
 
     // 4. 패널 조회
-    @PostMapping("/panels")
-    public List<IframePanelResponse> getPanels(@RequestBody ReadPanelRequest request) {
+    @GetMapping("/panels")
+    public List<IframePanelResponse> getPanels(ReadPanelRequest request) {
         return dashboardService.getPanel(request);
     }
 

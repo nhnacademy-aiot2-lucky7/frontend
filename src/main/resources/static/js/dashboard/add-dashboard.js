@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const saveBtn = document.getElementById('saveBtn');
     const dashboardForm = document.getElementById('dashboardForm');
 
-    saveBtn.addEventListener('click', function() {
+    saveBtn.addEventListener('click', async function () {
         if (!dashboardForm.checkValidity()) {
             dashboardForm.reportValidity();
             return;
@@ -33,9 +33,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const nameInput = document.getElementById('name');
         const descriptionInput = document.getElementById('description');
-
-        // 고유 id와 departmentId 추가
         const now = new Date().toISOString();
+
+        // 1. 서버에 대시보드 이름만 전송
+        const response = await fetch('/api/dashboards', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({dashboardTitle: nameInput.value})
+        });
+
+        if (!response.ok) {
+            alert('대시보드 생성 실패');
+            return;
+        }
+
+        // 2. 로컬에 프론트 전용 데이터 저장
         const dashboardData = {
             id: Date.now(),
             name: nameInput.value,

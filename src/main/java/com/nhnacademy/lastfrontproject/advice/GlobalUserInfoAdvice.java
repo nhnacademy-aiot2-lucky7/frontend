@@ -5,12 +5,13 @@ import com.nhnacademy.lastfrontproject.dto.user.UserResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Slf4j
 @ControllerAdvice
 public class GlobalUserInfoAdvice {
     private final AuthAdaptor authAdaptor;
-
+  
     public GlobalUserInfoAdvice(AuthAdaptor authAdaptor) {
         this.authAdaptor = authAdaptor;
     }

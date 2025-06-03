@@ -31,12 +31,12 @@ document.addEventListener('DOMContentLoaded', function () {
         confirmPasswordInput.addEventListener('input', checkPasswordMatch);
     }
 
-    editForm.addEventListener('submit', function(e) {
+    editForm.addEventListener('submit', function (e) {
         e.preventDefault();
 
         // 비밀번호 입력이 모두 비어 있으면 휴대전화만 수정
         if (!currentPasswordInput.value && !newPasswordInput.value && !confirmPasswordInput.value) {
-            fetch('http://localhost:10232/users/me', {
+            fetch('http://team1-eureka-gateway:10232/users/me', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
 
-            fetch('http://localhost:10232/users/me/password', {
+            fetch('http://team1-eureka-gateway:10232/users/me/password', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'

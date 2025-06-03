@@ -6,7 +6,7 @@ function handleLogout() {
     localStorage.removeItem('refreshToken');
 
     // 폼 제출 후 리디렉션 처리
-    fetch('http://localhost:10232/auth/logout', {
+    fetch('http://team1-eureka-gateway:10232/auth/logout', {
         method: 'POST',
         credentials: 'include'
     })
@@ -27,12 +27,12 @@ function handleLogout() {
         });
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // 모든 드롭다운 요소 찾기
     var dropdownElements = document.querySelectorAll('[data-bs-toggle="dropdown"]');
 
     // 각 요소에 대해 드롭다운 인스턴스 생성
-    dropdownElements.forEach(function(element) {
+    dropdownElements.forEach(function (element) {
         try {
             new bootstrap.Dropdown(element);
             console.log('드롭다운 초기화 성공:', element);
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // 사이드바 토글 기능
     var sidebarToggle = document.querySelector('.sidebar-toggle');
     if (sidebarToggle) {
-        sidebarToggle.addEventListener('click', function() {
+        sidebarToggle.addEventListener('click', function () {
             console.log('Sidebar toggle clicked');
             document.querySelector('.sidebar').classList.toggle('toggled');
             document.querySelector('.main').classList.toggle('toggled');
@@ -74,15 +74,15 @@ document.addEventListener('DOMContentLoaded', function() {
     // Bootstrap 5 드롭다운 수동 초기화 (필요한 경우)
     if (typeof bootstrap !== 'undefined') {
         var dropdownElementList = [].slice.call(document.querySelectorAll('[data-bs-toggle="dropdown"]'));
-        var dropdownList = dropdownElementList.map(function(element) {
+        var dropdownList = dropdownElementList.map(function (element) {
             return new bootstrap.Dropdown(element);
         });
         console.log('Bootstrap dropdowns initialized');
     }
 
     // 커스텀 드롭다운 처리 (Bootstrap이 없는 경우)
-    document.querySelectorAll('.dropdown-toggle:not([data-bs-toggle])').forEach(function(element) {
-        element.addEventListener('click', function(e) {
+    document.querySelectorAll('.dropdown-toggle:not([data-bs-toggle])').forEach(function (element) {
+        element.addEventListener('click', function (e) {
             e.preventDefault();
             e.stopPropagation();
             console.log('Custom dropdown clicked');
@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function() {
             var isOpen = parent.classList.contains('show');
 
             // 모든 드롭다운 닫기
-            document.querySelectorAll('.dropdown.show').forEach(function(dropdown) {
+            document.querySelectorAll('.dropdown.show').forEach(function (dropdown) {
                 dropdown.classList.remove('show');
                 var dropdownMenu = dropdown.querySelector('.dropdown-menu');
                 if (dropdownMenu) {
@@ -111,8 +111,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // 드롭다운 외부 클릭 시 닫기
-    document.addEventListener('click', function(e) {
-        document.querySelectorAll('.dropdown.show').forEach(function(dropdown) {
+    document.addEventListener('click', function (e) {
+        document.querySelectorAll('.dropdown.show').forEach(function (dropdown) {
             if (!dropdown.contains(e.target)) {
                 dropdown.classList.remove('show');
                 var dropdownMenu = dropdown.querySelector('.dropdown-menu');

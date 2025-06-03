@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="~{layouts/layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>회원정보 수정 | Lucky Seven</title>
+    <link href="/css/profile.css" rel="stylesheet"/>
+    <link href="/css/profile-phone.css" rel="stylesheet"/>
+
+    <script src="/js/feather.min.js"></script>
+    <script src="/js/auth_eye.js"></script>
+    <script src="/js/profile-phone-modal.js"></script>
+    <script src="/js/sms-certification.js"></script>
+    <script src="/js/profile-edit.js"></script>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="profile-wrapper">
+        <div class="profile-card">
+            <form action="/edit-profile" class="profile-section" method="post">
+                <div class="profile-photo-area">
+                    <div class="profile-photo-container">
+                        <img alt="프로필 사진"
+                             class="profile-photo"
+                             id="main-profile-photo"
+                             th:src="${'/img/avatars/default-avatar.jpg'}"/>
+                        <label class="photo-upload-btn" title="사진 변경">
+                            <input accept="image/*" name="profile_photo" style="display:none;" type="file">
+                            <i data-feather="camera"></i>
+                        </label>
+                    </div>
+                </div>
+                <div class="profile-row">
+                    <div class="profile-label">이메일</div>
+                    <input class="profile-input" name="userEmail" readonly th:value="${user.userEmail}" type="email">
+                </div>
+                <hr>
+                <div class="profile-row">
+                    <div class="profile-label">이름</div>
+                    <input class="profile-input" name="userName" readonly th:value="${user.userName}" type="text">
+                </div>
+                <hr>
+                <div class="profile-row">
+                    <div class="profile-label">부서</div>
+                    <input class="profile-input" name="departmentId" readonly
+                           th:value="${user.department.departmentName}"
+                           type="text">
+                </div>
+                <hr>
+                <div class="profile-row">
+                    <div class="profile-label">휴대전화번호</div>
+                    <div class="phone-row">
+                        <input class="profile-input" id="userPhone" name="userPhone" readonly
+                               th:value="${user.userPhone}" type="tel">
+                        <button class="cert-btn" id="openPhoneModal" type="button">휴대전화번호 변경</button>
+                    </div>
+                </div>
+                <hr>
+                <div class="profile-row">
+                    <div class="profile-label">현재 비밀번호</div>
+                    <div class="input-wrapper">
+                        <input autocomplete="current-password" class="profile-input" name="currentPassword"
+                               placeholder="현재 비밀번호를 입력하세요" required type="password">
+                        <span class="password-eye-container"></span>
+                    </div>
+                </div>
+                <hr>
+                <div class="profile-row">
+                    <div class="profile-label">새 비밀번호</div>
+                    <div class="input-wrapper">
+                        <input autocomplete="new-password" class="profile-input" name="newPassword"
+                               placeholder="새 비밀번호 (변경 시)"
+                               type="password">
+                        <span class="password-eye-container"></span>
+                    </div>
+                </div>
+                <div class="pw-rule-msg">
+                    비밀번호는 최소 8자 이상, 영문, 숫자, 특수문자를 포함해야 합니다.
+                </div>
+                <hr>
+                <div class="profile-row">
+                    <div class="profile-label">비밀번호 확인</div>
+                    <div class="input-wrapper">
+                        <input autocomplete="new-password" class="profile-input" name="confirmPassword"
+                               placeholder="비밀번호 확인"
+                               type="password">
+                        <span class="password-eye-container"></span>
+                    </div>
+                </div>
+                <div class="profile-alert">※ 수정이 불가능한 사항은 <b>관리자</b>에게 문의하세요.</div>
+                <hr>
+                <button class="btn-block btn-save" type="submit">저장</button>
+                <a class="btn-block btn-cancel" href="/profile">취소</a>
+            </form>
+
+            <!-- 휴대전화번호 수정 모달-->
+            <div class="modal" id="phoneModal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <label style="margin-bottom:8px;">새 휴대전화번호</label>
+                    <div class="modal-row">
+                        <input class="profile-input" id="modalNewPhone" placeholder="새 번호 입력" type="tel">
+                        <button class="cert-btn" id="modalSendSmsBtn" type="button">인증번호 발송</button>
+                    </div>
+                    <div class="modal-row">
+                        <input class="cert-input" id="modalCertCode" placeholder="인증번호 입력" type="text">
+                        <button class="cert-btn" id="modalCheckCertBtn" type="button">인증번호 확인</button>
+                    </div>
+                    <span class="cert-message" id="modalSmsMsg"></span>
+                    <span class="cert-message" id="modalCertMsg"></span>
+                    <button class="btn-block btn-save" disabled id="modalSavePhone" type="button">변경</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

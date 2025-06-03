@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head>
+    <title>게이트웨이 추가 | Lucky Seven</title>
+    <link href="/css/gateway/add-gateway.css" rel="stylesheet"/>
+</head>
+
+<section layout:fragment="content">
+    <div class="add-gateway-container">
+        <div class="add-gateway-header">
+            <h2 class="add-gateway-title">게이트웨이 추가</h2>
+            <button class="add-gateway-save-btn" type="submit" form="gatewayForm">저장</button>
+        </div>
+
+        <form th:action="@{/gateway/save}" method="post" class="add-gateway-form" id="gatewayForm">
+            <div class="add-gateway-form-row">
+                <label for="name">게이트웨이 이름</label>
+                <input type="text" name="name" id="name" required>
+            </div>
+
+            <div class="add-gateway-form-row">
+                <label for="gatewayId">게이트웨이 ID</label>
+                <input type="text" name="gatewayId" id="gatewayId" required>
+            </div>
+
+            <div class="add-gateway-form-row">
+                <label for="protocol">통신 방식</label>
+                <select name="protocol" id="protocol" required>
+                    <option value="MQTT">MQTT</option>
+                    <option value="HTTP">HTTP</option>
+                    <option value="CoAP">CoAP</option>
+                </select>
+            </div>
+
+            <div class="add-gateway-form-row">
+                <label for="brokerIp">브로커 IP</label>
+                <input type="text" name="brokerIp" id="brokerIp" required>
+            </div>
+
+            <div class="add-gateway-form-row">
+                <label for="port">포트</label>
+                <input type="number" name="port" id="port" required>
+            </div>
+
+            <div class="add-gateway-form-row">
+                <label for="clientId">Client ID</label>
+                <input type="text" name="clientId" id="clientId" required>
+            </div>
+
+            <div class="add-gateway-form-row add-gateway-description">
+                <label for="description">설명</label>
+                <textarea name="description" id="description" rows="6"></textarea>
+            </div>
+        </form>
+    </div>
+</section>
+</html>

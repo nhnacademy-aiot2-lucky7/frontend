@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="~{layouts/layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>마이 페이지 | Lucky Seven</title>
+    <link href="/css/profile.css" rel="stylesheet"/>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="profile-wrapper">
+        <div class="profile-card">
+            <!-- 프로필 사진 및 사진 변경 -->
+            <div class="profile-photo-area">
+                <!--                user.profileImageUrl != null && !#strings.isEmpty(user.profileImageUrl) ? user.profileImageUrl :-->
+                <div class="profile-photo-container">
+                    <img alt="프로필 사진"
+                         class="profile-photo" id="main-profile-photo"
+                         th:src="${'/img/avatars/default-avatar.jpg'}"/>
+                </div>
+            </div>
+
+            <div class="profile-section">
+                <div class="profile-row">
+                    <div class="profile-label">이름</div>
+                    <div class="profile-value-group">
+                        <span class="profile-value" th:text="${user.userName}"></span>
+                    </div>
+                </div>
+                <hr>
+                <div class="profile-row">
+                    <div class="profile-label">이메일</div>
+                    <div class="profile-value" th:text="${user.userEmail}"></div>
+                </div>
+                <hr>
+                <div class="profile-row">
+                    <div class="profile-label">부서</div>
+                    <div class="profile-value"
+                         th:text="${user?.department?.departmentName} ?: '부서정보없음'"></div>
+                </div>
+                <hr>
+                <div class="profile-row">
+                    <div class="profile-label">휴대전화번호</div>
+                    <div class="profile-value" th:text="${user.userPhone}"></div>
+                </div>
+                <hr>
+                <a class="btn-block btn-password" th:href="@{/edit-profile}">회원정보 수정</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

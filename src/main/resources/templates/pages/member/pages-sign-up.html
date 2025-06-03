@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="회원가입 페이지">
+
+    <title>회원가입 | Lucky Seven</title>
+    <link href="/css/auth.css" rel="stylesheet">
+    <link href="/img/icons/777_64x64.png" rel="shortcut icon"/>
+</head>
+
+<body>
+
+<div class="auth-wrapper">
+    <div class="auth-card">
+        <div class="auth-header">
+            <div class="auth-logo">
+                <img src="/img/logo/logo.png" alt="Lucky Seven" />
+            </div>
+            <h1 class="auth-title">Lucky Seven</h1>
+            <p class="auth-subtitle">회원가입</p>
+        </div>
+
+        <form class="auth-form">
+            <div class="form-group">
+                <label for="userEmail">이메일</label>
+                <input type="email" class="form-control" id="userEmail" name="userEmail" placeholder="이메일을 입력하세요 (이메일은 아이디로 사용됩니다)" required>
+            </div>
+
+            <div class="form-group">
+                <label for="userPassword">비밀번호</label>
+                <div class="input-wrapper">
+                    <input type="password" class="form-control" id="userPassword" name="userPassword" placeholder="비밀번호를 입력하세요">
+                    <span class="password-eye-container"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="userName">이름</label>
+                <input type="text" class="form-control" id="userName" name="userName" placeholder="이름을 입력하세요" required>
+            </div>
+
+            <div class="form-group">
+                <label for="departmentId">부서</label>
+                <select class="form-control" id="departmentId" name="departmentId" required>
+                    <option value="" disabled selected hidden>부서를 선택하세요</option>
+                </select>
+            </div>
+
+<!--            <div class="form-group">-->
+<!--                <label for="userPhone">휴대전화 번호</label>-->
+<!--                <input type="tel" class="form-control" id="userPhone" name="userPhone" placeholder="휴대전화 번호를 입력하세요" required>-->
+
+<!--                <div class="cert-row">-->
+<!--                    <button type="button" id="sendSmsBtn" class="cert-btn">인증번호 발송</button>-->
+<!--                    <input type="text" id="certCode" class="cert-input" placeholder="인증번호 입력">-->
+<!--                    <button type="button" id="checkCertBtn" class="cert-btn">인증번호 확인</button>-->
+<!--                </div>-->
+
+<!--                <div class="cert-message-area">-->
+<!--                    <span id="smsMsg" class="cert-message"></span>-->
+<!--                    <span id="certMsg" class="cert-message"></span>-->
+<!--                </div>-->
+<!--            </div>-->
+
+            <!--			<div class="form-check">-->
+            <!--				<input type="checkbox" class="form-check-input" id="agree" name="agree" required>-->
+            <!--				<label class="form-check-label" for="agree">이용약관에 동의합니다</label>-->
+            <!--			</div>-->
+
+            <button type="submit" class="auth-btn">회원가입</button>
+
+            <div class="auth-footer">
+                <p>이미 계정이 있으신가요? <a href="sign-in">로그인</a></p>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="/js/feather.min.js"></script>
+<!--<script src="/js/sms-certification.js"></script>-->
+<script src="/js/signUp.js"></script>
+<script src="/js/auth_eye.js"></script>
+
+</body>
+</html>

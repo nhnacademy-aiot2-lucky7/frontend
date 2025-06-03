@@ -1,0 +1,48 @@
+/* 이벤트 레벨별 색상 강조 */
+table tbody tr td:first-child {
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+table tbody tr:hover {
+    background-color: #f8f9fa;
+    cursor: pointer;
+}
+
+table tbody tr td:first-child.text-info {
+    color: #0dcaf0 !important;
+}
+
+table tbody tr td:first-child.text-warning {
+    color: #ffc107 !important;
+}
+
+table tbody tr td:first-child.text-danger {
+    color: #dc3545 !important;
+}
+
+/* 페이징 버튼 활성화/비활성화 스타일 */
+.pagination .page-item.active .page-link {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    color: white;
+    font-weight: 600;
+}
+
+.pagination .page-link {
+    user-select: none;
+}
+
+/* 에러 메시지 애니메이션 */
+#error-message {
+    animation: slideDown 0.5s ease forwards;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}

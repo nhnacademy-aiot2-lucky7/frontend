@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+
+<head>
+    <meta charset="utf-8"/>
+    <title>대시보드 미리보기 | Lucky Seven</title>
+    <link href="/css/dashboard/dashboard-preview.css" rel="stylesheet"/>
+    <script src="/js/admin-check.js"></script>
+    <script src="/js/dashboard/jquery-3.6.0.min.js"></script>
+    <script src="/js/dashboard/jquery-ui.min.js"></script>
+    <link href="/css/dashboard/jquery-ui.css" rel="stylesheet"/>
+    <script src="/js/dashboard/dashboard-preview.js"></script>
+    <script src="/js/chart.js"></script>
+    <script src="/js/chartjs-adapter-date-fns.js"></script>
+</head>
+
+<body>
+<section layout:fragment="content">
+    <!--	본문내용 추가-->
+    <!--    관리자 관리 페이지의 대시보드 미리보기 페이지를 구현중입니다.-->
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title"></h1>
+            <div class="dashboard-controls">
+                <button id="save-layout" class="control-btn">레이아웃 저장</button>
+            </div>
+        </div>
+
+        <div class="dashboard-grid" id="dashboard-grid">
+            <!-- 대시보드 패널들이 여기에 추가됩니다 -->
+            <div class="dashboard-panel" data-panel-id="1">
+                <div class="panel-header">
+                    <h3 class="panel-title">차트 1</h3>
+                    <div class="panel-controls">
+                        <button class="refresh-btn">새로고침</button>
+                        <button class="download-chart-btn" data-panel="1">이미지 저장</button>
+                        <select class="time-range-select">
+                            <option value="last1h">최근 1시간</option>
+                            <option value="last3h" selected>최근 3시간</option>
+                            <option value="last6h">최근 6시간</option>
+                            <option value="last12h">최근 12시간</option>
+                            <option value="last24h">최근 24시간</option>
+                            <option value="last7d">최근 7일</option>
+                        </select>
+                        <button class="remove-panel">X</button>
+                    </div>
+                </div>
+                <div class="panel-content">
+                    <canvas id="chart-panel-1"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

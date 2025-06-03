@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+
+<head>
+    <meta charset="utf-8"/>
+    <title>대시보드 관리 | Lucky Seven</title>
+    <link href="/css/dashboard/dashboard.css" rel="stylesheet"/>
+<!--    <script src="/js/dashboard/dashboard-dummy-data.js"></script>-->
+    <script src="/js/dashboard/dashboard-manager.js"></script>
+    <script src="/js/admin-check.js"></script>
+</head>
+
+<body>
+<section layout:fragment="content">
+    <!--	본문내용 추가-->
+    <main class="dashboard-info-container admin-dashboard" style="flex: 1;">
+        <section class="dashboard-info-header">
+            <h1>대시보드 관리</h1>
+        </section>
+
+        <!-- 검색 및 필터 영역 -->
+        <div class="dashboard-filter-container">
+            <form id="filterForm" class="dashboard-search-form">
+                <div class="filter-group">
+                    <label for="departmentSelect">부서 선택:</label>
+                    <select id="departmentSelect" name="department" class="department-select">
+                        <option value="">모든 부서</option>
+                        <!-- 부서 옵션은 JavaScript로 동적 생성됨 -->
+                    </select>
+                </div>
+                <div class="search-group">
+                    <input type="text" id="keywordInput" name="keyword" placeholder="대시보드 이름 검색">
+                    <button type="submit" class="search-btn">검색</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- 대시보드 콘텐츠 영역 -->
+        <div class="dashboard-content">
+            <div id="dashboardGroups" class="dashboard-banners">
+                <!-- 대시보드 그룹이 JavaScript로 동적 생성됨 -->
+            </div>
+        </div>
+    </main>
+
+</section>
+</body>
+</html>

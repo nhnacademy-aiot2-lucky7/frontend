@@ -1,0 +1,77 @@
+<nav class="sidebar sidebar-admin" id="sidebar-admin" th:fragment="sidebar_admin">
+    <div class="sidebar-content js-simplebar">
+        <a class="sidebar-brand" href="/dashboard">
+            <img src="/img/logo/luckyseven_logo_fixed_bg.png" alt="Lucky Seven Logo">
+        </a>
+        <ul class="sidebar-nav">
+            <li class="sidebar-item" th:classappend="${currentPath == '/dashboard'} ? 'active'">
+                <a class="sidebar-link" href="/dashboard">
+                    <i class="align-middle" data-feather="sliders"></i>
+                    <span class="align-middle">메인페이지</span>
+                </a>
+            </li>
+            <li class="sidebar-item" id="login-menu">
+                <a class="sidebar-link" href="/sign-in">
+                    <i class="align-middle" data-feather="log-in"></i>
+                    <span class="align-middle">로그인</span>
+                </a>
+            </li>
+            <li class="sidebar-item" id="mypage-menu"
+                th:classappend="${currentPath == '/profile' or currentPath == '/edit-profile'} ? 'active'">
+                <a class="sidebar-link" href="/profile">
+                    <i class="align-middle" data-feather="user"></i>
+                    <span class="align-middle">마이페이지</span>
+                </a>
+            </li>
+            <li class="sidebar-item"
+                th:classappend="${
+                    currentPath.startsWith('/dashboard-info')
+                    or currentPath.startsWith('/add-dashboard')
+                    or currentPath.startsWith('/dashboard-detail')
+                    or currentPath.startsWith('/admin/dashboard-info')
+                } ? 'active'">
+                <a class="sidebar-link" href="/admin/dashboard-info">
+                    <i class="align-middle" data-feather="trending-up"></i>
+                    <span class="align-middle">대시보드 내역</span>
+                </a>
+            </li>
+            <li class="sidebar-item" th:classappend="${currentPath == '/management' or currentPath == '/dashboard-preview'} ? 'active'">
+                <a class="sidebar-link" href="/management">
+                    <i class="align-middle" data-feather="file-text"></i>
+                    <span class="align-middle">대시보드 관리</span>
+                </a>
+            </li>
+            <li class="sidebar-item" th:classappend="${currentPath == '/event'} ? 'active'">
+                <a class="sidebar-link" href="/event">
+                    <i class="align-middle" data-feather="bell"></i>
+                    <span class="align-middle">이벤트 알림</span>
+                </a>
+            </li>
+            <li class="sidebar-item"
+                th:classappend="${currentPath == '/gateway' or currentPath == '/add-gateway' or currentPath.startsWith('/gateway/')} ? 'active'">
+                <a class="sidebar-link" href="/gateway">
+                    <i class="align-middle" data-feather="hard-drive"></i>
+                    <span class="align-middle">게이트웨이 추가</span>
+                </a>
+            </li>
+            <li class="sidebar-item" th:classappend="${currentPath == '/admin/member_management'} ? 'active'">
+                <a class="sidebar-link" href="/admin/member_management">
+                    <i class="align-middle" data-feather="users"></i>
+                    <span class="align-middle">멤버 관리</span>
+                </a>
+            </li>
+            <li class="sidebar-item" th:classappend="${currentPath == '/admin/ai-analyze'} ? 'active'">
+                <a class="sidebar-link" href="/admin/ai-analyze">
+                    <i class="align-middle" data-feather="activity"></i>
+                    <span class="align-middle">AI 분석</span>
+                </a>
+            </li>
+            <li class="sidebar-item" th:classappend="${currentPath == '/settings'} ? 'active'">
+                <a class="sidebar-link" href="/settings">
+                    <i class="align-middle" data-feather="settings"></i>
+                    <span class="align-middle">Settings</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>

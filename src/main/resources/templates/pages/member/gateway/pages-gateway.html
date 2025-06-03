@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head>
+    <title>게이트웨이 조회 | Lucky Seven</title>
+    <link href="/css/gateway/gateway.css" rel="stylesheet"/>
+</head>
+
+<section layout:fragment="content">
+    <div class="gateway-wrapper">
+
+        <!-- 상단 필터 및 추가 버튼 -->
+        <div class="gateway-header">
+            <div class="gateway-header-left">
+                <input class="gateway-search" type="text" placeholder="게이트웨이 이름 검색" />
+                <select class="gateway-sort">
+                    <option value="name">이름순</option>
+                    <option value="recent">최신 등록순</option>
+                </select>
+            </div>
+            <a href="/add-gateway" class="gateway-add-btn">+ 게이트웨이 추가</a>
+        </div>
+
+        <!-- 카드 목록 -->
+        <div class="gateway-grid">
+            <a th:each="gateway : ${gateways}"
+               th:href="@{'/gateway/' + ${gateway.id}}"
+               class="gateway-card">
+
+                <div th:class="'status ' + (${gateway.active} ? 'active' : 'inactive')"
+                     th:text="${gateway.active} ? '● 활성화' : '● 비활성화'">
+                </div>
+
+                <div class="gateway-name" th:text="${gateway.name}">게이트웨이 이름</div>
+
+                <div class="gateway-meta" th:text="'센서: ' + ${gateway.sensorCount} + '개'">센서 수</div>
+            </a>
+        </div>
+    </div>
+</section>
+</html>

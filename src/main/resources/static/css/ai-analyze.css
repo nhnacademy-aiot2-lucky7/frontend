@@ -1,0 +1,120 @@
+.ai-container {
+    width: 100%;
+    min-height: 100vh;
+    background-color: #f5f7fb;
+    padding: 2rem;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* 필터 영역 */
+.ai-filter form {
+    background-color: #fff;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    align-items: end;
+}
+
+.input-text,
+.date-picker input,
+.search-btn {
+    padding: 0.5rem 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    width: 100%;
+}
+
+.date-picker,
+.level-checkbox-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.level-checkbox-group span {
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+}
+
+.level-checkbox-group label {
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.search-btn {
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    height: 42px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+/* 테이블 */
+.ai-table {
+    width: 100%;
+    table-layout: auto; /* 🔁 fixed → auto */
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden;
+    border-collapse: collapse;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.ai-table th,
+.ai-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #f1f3f5;
+    vertical-align: middle;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+}
+
+td.department-cell {
+    width: 100px;
+    text-align: center;
+    font-weight: 500;
+    padding-left: 1rem;
+}
+
+td.level-cell {
+    width: 100px;
+    text-align: center;
+}
+
+td.sensor-cell {
+    width: 140px; /* 조금 좁힘 */
+    text-align: center;
+}
+
+td.message-cell {
+    width: auto; /* 남는 공간 자연 분배 */
+    text-align: center;
+}
+
+td.date-cell {
+    width: 160px; /* 조금 줄임 */
+    text-align: center;
+    font-family: 'Roboto Mono', monospace;
+}
+
+
+/* 반응형 */
+@media (max-width: 991.98px) {
+    .ai-container {
+        width: 100%;
+    }
+}

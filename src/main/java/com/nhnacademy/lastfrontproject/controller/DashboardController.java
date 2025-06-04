@@ -2,7 +2,6 @@ package com.nhnacademy.lastfrontproject.controller;
 
 import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.DeleteDashboardRequest;
 import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.UpdateDashboardNameRequest;
-import com.nhnacademy.lastfrontproject.dto.grafana.folder.FolderInfoResponse;
 import com.nhnacademy.lastfrontproject.dto.grafana.panel.*;
 import com.nhnacademy.lastfrontproject.service.DashboardService;
 import org.springframework.stereotype.Controller;
@@ -11,8 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@RequestMapping
+@Controller
 public class DashboardController {
     private final DashboardService dashboardService;
 
@@ -20,24 +18,12 @@ public class DashboardController {
         this.dashboardService = dashboardService;
     }
 
-    // 폴더 조회
-    @GetMapping("/admin/folders")
-    public List<FolderInfoResponse> getFolders() {
-        return dashboardService.getFolders();
-    }
-
     // 대시보드 추가
-    @GetMapping({"/user/dashboards", "/admin/dashboards"})
+    @GetMapping({"/add-dashboard"})
     public String showDashboardPage(Model model,
                                     @RequestParam(name = "departmentId", required = false) String departmentId) {
         model.addAttribute("departmentId", departmentId);
         return "pages/member/dashboard/pages-add-dashboard";
-    }
-
-    // 2. 대시보드 이름 조회
-    @GetMapping("/dashboards/names")
-    public List<String> getDashboardNames() {
-        return dashboardService.getDashboardName();
     }
 
     // 사용자 대시보드 정보 조회
@@ -53,9 +39,18 @@ public class DashboardController {
     }
 
     // 패널 조회
-    @GetMapping({"/user/panels", "/admin/panels"})
-    public String getPanels(ReadPanelRequest request) {
-        dashboardService.getPanel(request);
+    @GetMapping("/panels")
+    public String showPanelsPage(Model model,
+                             @RequestParam(name = "dashboardUid", required = true) String dashboardUid) {
+        model.addAttribute("departmentId", dashboardUid);
+        return "pages/member/dashboard/pages-add-panel";
+    }
+
+    // 패널 조회
+    @GetMapping("/panels/{dashboardUid}")
+    public String getPanels(Model model,
+                            @PathVariable String dashboardUid) {
+        dashboardService.getPanel(dashboardUid);
         return "pages/member/dashboard/pages-panel-list";
     }
 
@@ -68,11 +63,12 @@ public class DashboardController {
     }
 
     // 패널 생성
-    @PostMapping({"/user/panels", "/admin/panels"})
+    @PostMapping({"/panels"})
     public String createPanel(@RequestBody CreatePanelRequest request) {
         dashboardService.createPanel(request);
         return "pages/member/dashboard/pages-add-panel";
     }
+
 
     // 8. 대시보드 이름 수정
     @PutMapping("/dashboards")

@@ -25,12 +25,12 @@
             </li>
             <li class="sidebar-item"
                 th:classappend="${
-                    currentPath.startsWith('/dashboard-info')
+                    currentPath.startsWith('/dashboard-list')
                     or currentPath.startsWith('/add-dashboard')
                     or currentPath.startsWith('/dashboard-detail')
                     or currentPath.startsWith('/dashboard-logs')
                 } ? 'active'">
-                <a class="sidebar-link" href="/dashboard-info">
+                <a class="sidebar-link" href="/dashboard-list">
                     <i class="align-middle" data-feather="trending-up"></i>
                     <span class="align-middle">대시보드 내역</span>
                 </a>

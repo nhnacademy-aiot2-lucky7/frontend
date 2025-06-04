@@ -1,5 +1,6 @@
 package com.nhnacademy.lastfrontproject.controller;
 
+import com.nhnacademy.lastfrontproject.dto.UserWithImageResponse;
 import com.nhnacademy.lastfrontproject.dto.user.UserResponse;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -61,7 +62,7 @@ public class IndexController {
     }
 
     @GetMapping("/management")
-    public String management(@ModelAttribute("user") UserResponse user) {
+    public String management(@ModelAttribute("user") UserWithImageResponse user) {
         if (user == null) {
             return "redirect:/sign-in";
         }

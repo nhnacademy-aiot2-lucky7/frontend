@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log('로그인 시도:', {email, rememberMe});
 
         // 서버에 로그인 요청 보내기
-        fetch('http://luckyseven.live:10232/auth/signIn', {
+        fetch('https://luckyseven.live:10232/auth/signIn', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

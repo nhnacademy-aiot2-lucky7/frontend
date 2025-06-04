@@ -90,7 +90,7 @@
         indicator.textContent = data.content.length;
         header.textContent = `${data.content.length}개의 알림`;
 
-        const itemsHtml = data.content.map(event => {
+        const itemsHtml = data.content.slice(0,5).map(event => {
             console.log("알림 확인:", event)
             let icon = '';
             if (event.eventLevel === 'ERROR') icon = `<i class="text-danger" data-feather="alert-circle"></i>`;

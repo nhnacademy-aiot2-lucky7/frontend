@@ -14,4 +14,9 @@ public class EventController {
     public String showEvent() {
         return "pages/member/pages-event";
     }
+
+    @GetMapping("/notification")
+    public String showNotification() {
+        return "pages/member/pages-notification";
+    }
 }

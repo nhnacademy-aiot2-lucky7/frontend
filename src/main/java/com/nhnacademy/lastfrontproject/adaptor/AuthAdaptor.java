@@ -3,7 +3,6 @@ package com.nhnacademy.lastfrontproject.adaptor;
 import com.nhnacademy.lastfrontproject.dto.ImageResponse;
 import com.nhnacademy.lastfrontproject.dto.auth.LoginRequest;
 import com.nhnacademy.lastfrontproject.dto.auth.RegisterRequest;
-import com.nhnacademy.lastfrontproject.dto.member.MemberDto;
 import com.nhnacademy.lastfrontproject.dto.user.UserResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;

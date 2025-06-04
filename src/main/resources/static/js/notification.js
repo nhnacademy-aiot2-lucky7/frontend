@@ -8,7 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let isRead = false;
 
     async function fetchNotifications() {
-        const response = await fetch(`https://luckyseven.live/notifications?isRead=${isRead}&size=10`, {
+        const endpoint = isRead ? 'read' : 'unread';
+        const response = await fetch(`http://localhost:10232/notifications/${endpoint}?size=10`, {
             method: 'GET',
             credentials: 'include'
         });
@@ -17,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function fetchUnreadCount() {
-        const response = await fetch(`https://luckyseven.live/notifications/unread-count`, {
+        const response = await fetch(`http://localhost:10232/notifications/unread-count`, {
             method: 'GET',
             credentials: 'include'
         });
@@ -26,15 +27,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function markAsRead(notificationNo) {
-        await fetch(`https://luckyseven.live/notifications/${notificationNo}`, {
+        await fetch(`http://localhost:10232/notifications/${notificationNo}`, {
             method: 'GET',
             credentials: 'include'
-        }); // GET 호출로 읽음 처리
+        });
         renderList();
     }
 
     async function deleteReadNotifications() {
-        await fetch(`https://luckyseven.live/notifications/read`, {
+        await fetch(`http://localhost:10232/notifications/read`, {
             method: 'DELETE',
             credentials: 'include'
         });

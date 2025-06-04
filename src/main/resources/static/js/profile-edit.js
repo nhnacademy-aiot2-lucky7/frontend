@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
 
-            fetch('http://localhost/users/me/password', {
+            fetch('https://luckyseven.live/users/me/password', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'

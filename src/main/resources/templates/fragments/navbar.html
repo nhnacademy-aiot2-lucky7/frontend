@@ -1,55 +1,23 @@
+<!-- navbar.html -->
 <nav class="navbar navbar-expand navbar-light navbar-bg" th:fragment="navbar">
     <a aria-label="사이드바 열기" class="sidebar-toggle js-sidebar-toggle" href="#">
-        <i class="hamburger align-self-center">
-            <span></span>
-        </i>
+        <i class="hamburger align-self-center"><span></span></i>
     </a>
 
     <div class="navbar-collapse collapse">
         <ul class="navbar-nav navbar-align">
             <!-- 알림 드롭다운 -->
             <li class="nav-item dropdown">
-                <a class="nav-icon dropdown-toggle" data-bs-auto-close="outside" data-bs-toggle="dropdown" href="#"
-                   id="alertsDropdown">
+                <a aria-expanded="false" aria-haspopup="true" class="nav-icon dropdown-toggle"
+                   data-bs-auto-close="outside" data-bs-toggle="dropdown" href="#" id="alertsDropdown" role="button">
                     <i class="align-middle" data-feather="bell"></i>
-                    <span class="indicator" th:if="${not #lists.isEmpty(events)}"
-                          th:text="${#lists.size(events)}">0</span>
+                    <span class="indicator">0</span>
                 </a>
                 <div aria-labelledby="alertsDropdown"
                      class="dropdown-menu dropdown-menu-lg dropdown-menu-end dropdown-menu-bottom py-0">
-                    <div class="dropdown-menu-header"
-                         th:text="${#lists.isEmpty(events) ? '알림 없음' : #lists.size(events) + '개의 알림'}">알림
-                    </div>
+                    <div class="dropdown-menu-header">알림</div>
                     <div class="list-group">
-                        <!-- 알림이 없을 경우 -->
-                        <div class="list-group-item" th:if="${#lists.isEmpty(events)}">
-                            <div class="row g-0 align-items-center">
-                                <div class="col-12 text-muted">
-                                    <p class="mb-0">새로운 알림이 없습니다</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 알림 항목들 (최대 5개만 표시) -->
-                        <a class="list-group-item" href="/event" th:each="event, eventStat : ${events}"
-                           th:if="${eventStat.index < 5}">
-                            <div class="row g-0 align-items-center">
-                                <div class="col-2">
-                                    <!-- 이벤트 레벨에 따른 아이콘 -->
-                                    <i class="text-danger" data-feather="alert-circle" th:if="${event.level == 3}"></i>
-                                    <i class="text-warning" data-feather="alert-triangle"
-                                       th:if="${event.level == 2}"></i>
-                                    <i class="text-info" data-feather="info" th:if="${event.level == 1}"></i>
-                                </div>
-                                <div class="col-10">
-                                    <div class="text-dark" th:text="${event.sensorName}">센서 이름</div>
-                                    <div class="text-muted small mt-1" th:text="${event.message}">이벤트 내용</div>
-                                    <div class="text-muted small mt-1"
-                                         th:text="${#temporals.format(event.dateTime, 'yyyy-MM-dd HH:mm')}">날짜
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
+                        <!-- JS가 여기 알림 항목을 동적으로 생성 -->
                     </div>
                     <div class="dropdown-menu-footer">
                         <a class="text-muted" href="/event">모든 알림 보기</a>
@@ -82,7 +50,7 @@
             </li>
 
             <!-- 로그인 버튼 -->
-            <li class="nav-item" id="nav-login">
+            <li class="nav-item" th:if="${user == null}">
                 <a class="nav-link" href="/sign-in">
                     <span class="icon-wrapper">
                         <i class="align-middle me-1" data-feather="log-in"></i>

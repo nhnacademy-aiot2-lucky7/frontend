@@ -1,36 +1,54 @@
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.querySelector('form');
     const departmentSelect = document.getElementById('departmentId');
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    const authCard = document.getElementById('authCard');
 
     const login = document.querySelector('meta[name="login"]')?.content;
     const accessToken = document.querySelector('meta[name="access-token"]')?.content;
     const userEmail = document.querySelector('meta[name="user-email"]')?.content;
 
-    if (login === 'true') {
+    // 로딩 표시 보이기, 폼 숨기기
+    loadingOverlay.style.display = 'flex';
+    authCard.style.display = 'none';
 
-        fetch('http://localhost:10232/auth/social/signIn', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                ...(accessToken ? {'Authorization': `${accessToken}`} : {})
-            },
-            body: userEmail,
-            credentials: 'include'
+    // 1. 회원가입 여부 확인
+    fetch(`http://localhost:10232/auth/social/signIn`, {
+        method: 'POST',
+        headers: {
+            'Authorization': accessToken ? `${accessToken}` : ''
+        },
+        credentials: 'include',
+        body: userEmail
+    })
+        .then(response => {
+            if (!response.ok) throw new Error('회원정보 확인 실패');
+            return response.json();
         })
-            .then(response => {
-                if (!response.ok) {
-                    if (response.status === 401) throw new Error('인증 실패');
-                    throw new Error('로그인 요청 실패');
-                }
-
-                // 바디가 비어 있으므로 json() 호출 안 함
+        .then(data => {
+            loadingOverlay.style.display = 'none';
+            if (data.isSignedUp) {
+                // 이미 회원가입된 경우
                 localStorage.setItem('isLoggedIn', 'true');
                 window.location.replace('/dashboard');
-            })
-            .catch(error => {
-                console.warn('자동 로그인 실패 (회원가입 계속 가능):', error);
-            });
-    }
+            } else {
+                // 회원가입 안 된 경우 폼 보이기
+                authCard.style.display = 'block';
+            }
+        })
+        .catch(error => {
+            loadingOverlay.style.display = 'none';
+            // 만약 엔드포인트가 없다면, login 메타값으로 처리
+            if (login === 'true') {
+                // 이미 로그인된 경우(회원가입 완료 상태로 간주)
+                localStorage.setItem('isLoggedIn', 'true');
+                window.location.replace('/dashboard');
+            } else {
+                // 그 외에는 폼 보이기
+                authCard.style.display = 'block';
+            }
+            console.error('회원정보 확인 실패:', error);
+        });
 
     // 부서 목록 불러오기
     fetch('http://localhost:10232/departments')

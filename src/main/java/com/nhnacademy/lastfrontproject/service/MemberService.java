@@ -1,38 +1,33 @@
 package com.nhnacademy.lastfrontproject.service;
 
-import com.nhnacademy.lastfrontproject.dto.member.MemberDto;
-import com.nhnacademy.lastfrontproject.entity.Member;
-import com.nhnacademy.lastfrontproject.repository.MemberRepository;
+import com.nhnacademy.lastfrontproject.adaptor.AuthAdaptor;
+import com.nhnacademy.lastfrontproject.dto.user.UserResponse;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 @Service
 public class MemberService {
-    private final MemberRepository memberRepository;
+    private final AuthAdaptor authAdaptor;
 
-    public MemberService(MemberRepository memberRepository) {
-        this.memberRepository = memberRepository;
+    public MemberService(AuthAdaptor authAdaptor) {
+        this.authAdaptor = authAdaptor;
     }
 
-    public List<MemberDto> getAllMembers() {
-        List<Member> entities = memberRepository.findAll();
-        System.out.println("DB에서 읽은 멤버 수: " + entities.size());
-        return entities.stream().map(MemberDto::fromEntity).collect(Collectors.toList());
+    public List<UserResponse> getAllMembers() {
+        return authAdaptor.getAllMembers();
     }
 
-    public void deleteMember(Long id) {
-        memberRepository.deleteById(id);
+    public void updateMemberRole(String userId, String roleId) {
+        Map<String, String> request = new HashMap<>();
+        request.put("userId", userId);
+        request.put("roleId", roleId);
+        authAdaptor.updateMemberRole(request);
     }
 
-    public void updateMember(Long id, MemberDto dto) {
-        Member member = memberRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 멤버가 존재하지 않습니다: " + id));
-
-        member.setName(dto.getName());
-        member.setEmail(dto.getEmail());
-
-        memberRepository.save(member);
+    public void deleteMember(String userEmail) {
+        authAdaptor.deleteMember(userEmail);
     }
 }

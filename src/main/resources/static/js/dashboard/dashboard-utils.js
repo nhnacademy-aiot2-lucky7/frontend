@@ -12,7 +12,6 @@ function addToggleButtonListeners() {
             // 토글 상태 변경
             this.textContent = isActive ? 'Off' : 'On';
             this.setAttribute('data-active', !isActive);
-
             // 더미 데이터 업데이트
             const dashboard = dashboards.find(d => d.id === dashboardId);
             if (dashboard) {

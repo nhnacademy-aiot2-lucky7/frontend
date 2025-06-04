@@ -17,15 +17,23 @@ function getBannerImage(title) {
     return '/img/equipment/banner_default.png';
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    // 부서명 입력란에 currentUser의 departmentName 자동 입력
+document.addEventListener('DOMContentLoaded', async function () {
     const departmentInput = document.getElementById('departmentName');
-    departmentInput.value = currentUser.department && currentUser.department.departmentName ? currentUser.department.departmentName : '';
 
+    // localStorage에서 현재 부서 정보 읽기
+    const storedDept = JSON.parse(localStorage.getItem('currentDepartment'));
+    if (storedDept && storedDept.departmentName) {
+        departmentInput.value = storedDept.departmentName;
+        window.currentUser.department = storedDept; // currentUser 객체에 세팅
+    } else {
+        departmentInput.value = '';
+    }
+
+    // 저장 버튼 이벤트 리스너는 아래와 같이 유지
     const saveBtn = document.getElementById('saveBtn');
     const dashboardForm = document.getElementById('dashboardForm');
 
-    saveBtn.addEventListener('click', function() {
+    saveBtn.addEventListener('click', async function () {
         if (!dashboardForm.checkValidity()) {
             dashboardForm.reportValidity();
             return;
@@ -33,32 +41,34 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const nameInput = document.getElementById('name');
         const descriptionInput = document.getElementById('description');
-
-        // 고유 id와 departmentId 추가
         const now = new Date().toISOString();
-        const dashboardData = {
-            id: Date.now(),
-            name: nameInput.value,
-            description: descriptionInput.value,
-            departmentName: departmentInput.value,
-            departmentId: currentUser.department.departmentId,
-            active: false,
-            bannerImage: getBannerImage(nameInput.value),
-            createdAt: now,
-            updatedAt: now,
-            chartCount: 0
+
+        // API 경로
+        const apiPath = window.currentUser.userRole === 'ROLE_ADMIN' ? '/admin/dashboard' : '/users/dashboard';
+
+        // 실제 요청 보낼 body (필요하다면 부서ID도 포함)
+        const requestBody = {
+            dashboardTitle: nameInput.value,
+            // 필요하다면: departmentId: currentUser.department.departmentId
         };
 
-        // 기존 localStorage에서 대시보드 목록 불러오기 (없으면 빈 배열)
-        let dashboards = JSON.parse(localStorage.getItem('dashboards') || '[]');
-        dashboards.push(dashboardData);
-        localStorage.setItem('dashboards', JSON.stringify(dashboards));
+        try {
+            const response = await fetch(apiPath, {
+                method: 'POST',
+                credentials: 'include',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(requestBody),
+            });
 
-        alert('대시보드가 로컬에 저장되었습니다.');
-        if (currentUser.userRole === 'ROLE_ADMIN') {
-            window.location.href = '/admin/dashboard-info';
-        } else {
-            window.location.href = '/dashboard-info';
+            alert('🎉 대시보드 생성 성공');
+
+            await fetchAndStoreDashboards();
+            // 생성 후 이동 처리
+            window.location.href = window.currentUser.userRole === 'ROLE_ADMIN' ? '/admin/dashboard-info' : '/dashboard-info';
+
+        } catch (error) {
+            console.error('⚠️ 대시보드 생성 오류:', error);
+            alert('⚠️ 대시보드 생성 실패');
         }
     });
 });

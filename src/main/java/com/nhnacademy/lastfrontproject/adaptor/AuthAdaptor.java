@@ -3,10 +3,14 @@ package com.nhnacademy.lastfrontproject.adaptor;
 import com.nhnacademy.lastfrontproject.dto.ImageResponse;
 import com.nhnacademy.lastfrontproject.dto.auth.LoginRequest;
 import com.nhnacademy.lastfrontproject.dto.auth.RegisterRequest;
+import com.nhnacademy.lastfrontproject.dto.member.MemberDto;
 import com.nhnacademy.lastfrontproject.dto.user.UserResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 @FeignClient(name = "auth", url = "${feign.client.gateway-service.url}")
 public interface AuthAdaptor {
@@ -25,7 +29,15 @@ public interface AuthAdaptor {
     @GetMapping("/users/me")
     ResponseEntity<UserResponse> getMyInfo();
 
+    @GetMapping("/admin/users")
+    List<UserResponse> getAllMembers();
+
+    @PutMapping("/admin/users/roles")
+    void updateMemberRole(@RequestBody Map<String, String> request);
+
+    @DeleteMapping("/admin/users/{userEmail}")
+    void deleteMember(@PathVariable("userEmail") String userEmail);
+
     @GetMapping("/images/{userEmail}")
     ResponseEntity<ImageResponse> getImage(@PathVariable String userEmail);
-
 }

@@ -1,6 +1,7 @@
 package com.nhnacademy.lastfrontproject.controller;
 
 import com.nhnacademy.lastfrontproject.dto.member.MemberDto;
+import com.nhnacademy.lastfrontproject.dto.user.UserResponse;
 import com.nhnacademy.lastfrontproject.service.MemberService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -8,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class MemberController {
@@ -19,22 +21,22 @@ public class MemberController {
 
     @GetMapping("/admin/member_management")
     public String memberManagement(Model model) {
-        List<MemberDto> members = memberService.getAllMembers();
+        List<UserResponse> members = memberService.getAllMembers();
         model.addAttribute("members", members);
         return "pages/admin/pages-member-management";
     }
 
-    @PutMapping("/admin/member/edit/{id}")
+    @PutMapping("/admin/users/roles")
     @ResponseBody
-    public ResponseEntity<Void> updateMember(@PathVariable Long id, @RequestBody MemberDto dto) {
-        memberService.updateMember(id, dto);
+    public ResponseEntity<Void> updateMemberRole(@RequestBody Map<String, String> request) {
+        memberService.updateMemberRole(request.get("userId"), request.get("roleId"));
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/admin/member/{id}")
+    @DeleteMapping("/admin/users/{userEmail}")
     @ResponseBody
-    public ResponseEntity<Void> deleteMember(@PathVariable Long id) {
-        memberService.deleteMember(id);
+    public ResponseEntity<Void> deleteMember(@PathVariable String userEmail) {
+        memberService.deleteMember(userEmail);
         return ResponseEntity.ok().build();
     }
 }

@@ -1,5 +1,6 @@
 package com.nhnacademy.lastfrontproject.adaptor;
 
+import com.nhnacademy.lastfrontproject.dto.ImageResponse;
 import com.nhnacademy.lastfrontproject.dto.auth.LoginRequest;
 import com.nhnacademy.lastfrontproject.dto.auth.RegisterRequest;
 import com.nhnacademy.lastfrontproject.dto.user.UserResponse;
@@ -23,4 +24,8 @@ public interface AuthAdaptor {
 
     @GetMapping("/users/me")
     ResponseEntity<UserResponse> getMyInfo();
+
+    @GetMapping("/images/{userEmail}")
+    ResponseEntity<ImageResponse> getImage(@PathVariable String userEmail);
+
 }

@@ -19,6 +19,7 @@ body {
 a {
     text-decoration: none;
 }
+
 a:hover,
 a:active,
 a:visited {
@@ -37,6 +38,7 @@ input, select, textarea {
     font-family: inherit;
     font-size: 1rem;
 }
+
 input:focus, select:focus, textarea:focus {
     outline: 0;
 }
@@ -79,19 +81,23 @@ input:focus, select:focus, textarea:focus {
     max-width: 100%;
     overflow: hidden;
 }
+
 .footer-text {
     color: #6c757d;
     font-size: 0.875rem;
 }
+
 .footer-links {
     display: flex;
     gap: 1.5rem;
 }
+
 .footer-links a {
     color: #6c757d;
     text-decoration: none;
     font-size: 0.875rem;
 }
+
 .footer-links a:hover {
     text-decoration: underline;
 }
@@ -104,16 +110,19 @@ input:focus, select:focus, textarea:focus {
     background-color: #fff;
     border-radius: 0.25rem;
 }
+
 .card-header {
     padding: 1rem 1.35rem;
     background-color: #fff;
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
+
 .card-title {
     margin-bottom: 0;
     color: #495057;
     font-weight: 600;
 }
+
 .card-body {
     padding: 1.25rem 1.35rem;
     flex: 1 1 auto;
@@ -127,16 +136,19 @@ input:focus, select:focus, textarea:focus {
     vertical-align: middle;
     border-collapse: collapse;
 }
+
 .table th, .table td {
     padding: 0.75rem;
     vertical-align: middle;
     border-top: 1px solid #e9ecef;
 }
+
 .table thead th {
     vertical-align: bottom;
     border-bottom: 2px solid #e9ecef;
     font-weight: 600;
 }
+
 .table-hover tbody tr:hover {
     background-color: rgba(0, 0, 0, 0.025);
 }
@@ -155,14 +167,34 @@ input:focus, select:focus, textarea:focus {
     border-radius: 0.25rem;
 }
 
-.text-primary { color: #0d6efd !important; }
-.text-success { color: #198754 !important; }
-.text-danger  { color: #dc3545 !important; }
-.text-warning { color: #ffc107 !important; }
+.text-primary {
+    color: #0d6efd !important;
+}
 
-.bg-success { background-color: #198754 !important; }
-.bg-danger  { background-color: #dc3545 !important; }
-.bg-warning { background-color: #ffc107 !important; color: #000 !important; }
+.text-success {
+    color: #198754 !important;
+}
+
+.text-danger {
+    color: #dc3545 !important;
+}
+
+.text-warning {
+    color: #ffc107 !important;
+}
+
+.bg-success {
+    background-color: #198754 !important;
+}
+
+.bg-danger {
+    background-color: #dc3545 !important;
+}
+
+.bg-warning {
+    background-color: #ffc107 !important;
+    color: #000 !important;
+}
 
 /* ========== 사이드바 ========== */
 .sidebar {
@@ -178,11 +210,13 @@ input:focus, select:focus, textarea:focus {
     height: 100vh;
     overflow: hidden;
 }
+
 .sidebar-content {
     display: flex;
     flex-direction: column;
     height: 100%;
 }
+
 .sidebar-brand {
     padding: 1.5rem 1.5rem 1.25rem; /* 상단 영역에 여유 주고 */
     display: flex;
@@ -191,7 +225,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 .sidebar-brand img {
-    height: 70px;  /* ✅ 확실히 눈에 띄게 키움 */
+    height: 70px; /* ✅ 확실히 눈에 띄게 키움 */
     width: auto;
     display: block;
 }
@@ -201,6 +235,7 @@ input:focus, select:focus, textarea:focus {
     list-style: none;
     margin: 0;
 }
+
 .sidebar-header {
     padding: 1.5rem 1.5rem 0.5rem;
     font-size: 0.75rem;
@@ -208,10 +243,12 @@ input:focus, select:focus, textarea:focus {
     font-weight: 600;
     color: #F1EFEC;
 }
+
 .sidebar-item {
     padding: 0;
     margin: 0;
 }
+
 .sidebar-link {
     padding: 0.625rem 1.625rem;
     color: #F1EFEC;
@@ -222,55 +259,66 @@ input:focus, select:focus, textarea:focus {
     transition: background 0.1s ease-in-out;
     font-family: 'Noto Sans KR', sans-serif;
 }
+
 .sidebar-link i,
 .sidebar-link svg {
     margin-right: 0.75rem;
 }
+
 .sidebar-link:hover {
     color: #123458;
     background-color: #F1EFEC;
 }
+
 .sidebar-item.active .sidebar-link {
     color: #123458;
     background-color: #F1EFEC;
     padding-left: calc(1.625rem - 4px);
     font-weight: 600;
 }
+
 .sidebar-item.active .sidebar-link i,
 .sidebar-item.active .sidebar-link svg {
     color: #123458;
 }
+
 .sidebar-dropdown {
     list-style: none;
     padding-left: 1.5rem;
     margin-top: 0.5rem;
     display: block;
 }
+
 .sidebar-dropdown .sidebar-link {
     padding: 0.4rem 1.625rem;
     font-size: 11pt;
 }
+
 .sidebar-dropdown .sidebar-item {
     margin-bottom: 0.2rem;
 }
+
 .sidebar-cta {
     margin: 1.5rem;
     padding: 1.5rem;
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 0.3rem;
 }
+
 .sidebar-dropdown .sidebar-item .sidebar-link {
     background-color: transparent;
     color: #F1EFEC;
     padding-left: 1.625rem;
     font-weight: normal;
 }
+
 .sidebar-dropdown .sidebar-item .sidebar-link.selected {
     font-weight: bold !important;
     background-color: transparent !important;
     color: #F1EFEC !important;
     border-left: none !important;
 }
+
 #management-parent .sidebar-link {
     cursor: pointer;
 }
@@ -282,6 +330,7 @@ input:focus, select:focus, textarea:focus {
     display: inline-block;
     position: relative;
 }
+
 .hamburger span,
 .hamburger::before,
 .hamburger::after {
@@ -295,13 +344,16 @@ input:focus, select:focus, textarea:focus {
     left: 0;
     transition: all 0.2s;
 }
+
 .hamburger span {
     top: 12px;
     position: absolute;
 }
+
 .hamburger::before {
     top: 6px;
 }
+
 .hamburger::after {
     top: 18px;
 }
@@ -426,6 +478,11 @@ input:focus, select:focus, textarea:focus {
     font-weight: 400 !important;
     display: flex !important;
     align-items: center !important;
+}
+
+.dropdown-menu.dropdown-menu-lg {
+    max-height: 300px;
+    overflow-y: auto;
 }
 
 /* 알림 목록 스타일 */
@@ -588,7 +645,7 @@ input:focus, select:focus, textarea:focus {
     margin-top: 0;
     min-width: 180px;
     border-radius: 8px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
     border: 1px solid #eee;
     padding: 0.5rem 0;
 }
@@ -615,14 +672,40 @@ input:focus, select:focus, textarea:focus {
 
 /* 반응형 */
 @media (max-width: 991.98px) {
-    .sidebar { margin-left: -260px; }
-    .sidebar.toggled { margin-left: 0; }
-    .main { margin-left: 0; width: 100%; margin-top: 60px; }
-    .main.toggled { margin-left: 260px; width: calc(100% - 260px); }
-    .navbar { left: 0; }
-    .navbar.toggled { left: 260px; }
+    .sidebar {
+        margin-left: -260px;
+    }
+
+    .sidebar.toggled {
+        margin-left: 0;
+    }
+
+    .main {
+        margin-left: 0;
+        width: 100%;
+        margin-top: 60px;
+    }
+
+    .main.toggled {
+        margin-left: 260px;
+        width: calc(100% - 260px);
+    }
+
+    .navbar {
+        left: 0;
+    }
+
+    .navbar.toggled {
+        left: 260px;
+    }
 }
+
 @media (max-width: 767.98px) {
-    .navbar-expand .navbar-nav { flex-direction: row; }
-    .d-md-table-cell { display: none !important; }
+    .navbar-expand .navbar-nav {
+        flex-direction: row;
+    }
+
+    .d-md-table-cell {
+        display: none !important;
+    }
 }

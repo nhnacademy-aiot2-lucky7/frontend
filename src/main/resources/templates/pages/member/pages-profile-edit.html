@@ -25,13 +25,16 @@
                         <img alt="프로필 사진"
                              class="profile-photo"
                              id="main-profile-photo"
-                             th:src="${'/img/avatars/default-avatar.jpg'}"/>
+                             th:src="${(user != null and user.image != null and user.image.imagePath != null)
+                      ? user.image.imagePath
+                      : '/img/avatars/default-avatar.jpg'}"/>
                         <label class="photo-upload-btn" title="사진 변경">
                             <input accept="image/*" name="profile_photo" style="display:none;" type="file">
                             <i data-feather="camera"></i>
                         </label>
                     </div>
                 </div>
+
                 <div class="profile-row">
                     <div class="profile-label">이메일</div>
                     <input class="profile-input" name="userEmail" readonly th:value="${user.userEmail}" type="email">

@@ -14,11 +14,11 @@
         <div class="profile-card">
             <!-- 프로필 사진 및 사진 변경 -->
             <div class="profile-photo-area">
-                <!--                user.profileImageUrl != null && !#strings.isEmpty(user.profileImageUrl) ? user.profileImageUrl :-->
                 <div class="profile-photo-container">
                     <img alt="프로필 사진"
-                         class="profile-photo" id="main-profile-photo"
-                         th:src="${'/img/avatars/default-avatar.jpg'}"/>
+                         class="profile-photo"
+                         id="main-profile-photo"
+                         th:src="${(user != null and user.image != null and user.image.imagePath != null) ? user.image.imagePath : '/img/avatars/default-avatar.jpg'}"/>
                 </div>
             </div>
 

@@ -1,5 +1,6 @@
 package com.nhnacademy.lastfrontproject.adaptor;
 
+import com.nhnacademy.lastfrontproject.dto.ImageResponse;
 import com.nhnacademy.lastfrontproject.dto.auth.LoginRequest;
 import com.nhnacademy.lastfrontproject.dto.auth.RegisterRequest;
 import com.nhnacademy.lastfrontproject.dto.member.MemberDto;
@@ -36,4 +37,7 @@ public interface AuthAdaptor {
 
     @DeleteMapping("/admin/users/{userEmail}")
     void deleteMember(@PathVariable("userEmail") String userEmail);
+
+    @GetMapping("/images/{userEmail}")
+    ResponseEntity<ImageResponse> getImage(@PathVariable String userEmail);
 }

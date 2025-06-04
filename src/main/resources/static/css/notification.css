@@ -1,0 +1,96 @@
+body {
+    font-family: sans-serif;
+    margin: 40px;
+    background: #f7f9fa;
+}
+
+.tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.tab {
+    padding: 10px 20px;
+    background: #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.tab.active {
+    background: #007bff;
+    color: white;
+}
+
+.badge {
+    background: red;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 8px;
+    font-size: 12px;
+    margin-left: 4px;
+}
+
+.notification-list {
+    list-style: none;
+    padding: 0;
+    max-width: 100%; /* 필요 시 조절 가능 */
+}
+
+.notification {
+    background: white;
+    border-left: 6px solid transparent;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    box-sizing: border-box;
+    max-width: 80%;
+    word-break: break-word; /* 긴 텍스트 줄바꿈 처리 */
+}
+
+.notification:hover {
+    background: #f1f1f1;
+}
+
+.notification.unread {
+    border-left-color: #007bff;
+    font-weight: bold;
+}
+
+.notification .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    /* 가로 공간 제한 없이 줄바꿈 허용 */
+}
+
+.notification .header > div:first-child {
+    flex: 1 1 auto;
+    max-width: 70%;
+    white-space: normal; /* 줄바꿈 허용 */
+    overflow-wrap: break-word; /* 긴 단어도 줄바꿈 */
+    word-break: break-word;
+    text-overflow: unset; /* 말줄임 제거 */
+}
+
+.notification .header > div:last-child {
+    flex-shrink: 0;
+    white-space: nowrap; /* 오른쪽 정보는 한 줄 유지 */
+}
+
+.notification .meta {
+    font-size: 12px;
+    color: #666;
+}
+
+#deleteReadBtn {
+    background: #6c757d;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    float: right;
+    margin-bottom: 20px;
+}

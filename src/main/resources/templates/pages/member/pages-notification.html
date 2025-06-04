@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="~{layouts/layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>알림 페이지 | Lucky Seven</title>
+    <link rel="stylesheet" href="/css/notification.css"/>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="tabs">
+        <div class="tab active" id="tab-unread">
+            안 읽은 알림 <span class="badge" id="unread-count">0</span>
+        </div>
+        <div class="tab" id="tab-read">읽은 알림</div>
+        <button id="deleteReadBtn">읽은 알림 삭제</button>
+    </div>
+
+    <ul class="notification-list" id="notification-list"></ul>
+    <script src="/js/notification.js"></script>
+</div>
+
+</body>
+</html>

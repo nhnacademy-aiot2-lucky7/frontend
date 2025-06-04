@@ -57,19 +57,22 @@
                 </div>
             </li>
 
-            <!-- 사용자 드롭다운 -->
-            <li class="nav-item dropdown" id="nav-dropdown">
+            <!-- 사용자 정보 드롭다운 -->
+            <li class="nav-item dropdown" id="nav-dropdown" th:if="${user != null}">
                 <a class="nav-link dropdown-toggle d-none d-sm-inline-block" data-bs-toggle="dropdown" href="#">
                     <img alt="프로필 사진"
-                         class="navbar-profile-photo" th:src="${user != null ? '/img/avatars/default-avatar.jpg'}"/>
-                    <span class="text-dark" th:text="${user != null ? user.userName : '사용자'}">사용자</span>
+                         class="navbar-profile-photo"
+                         th:src="${user.image != null and user.image.imagePath != null
+                                  ? user.image.imagePath
+                                  : '/img/avatars/default-avatar.jpg'}"/>
+                    <span class="text-dark" th:text="${user.userName}">사용자</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end">
                     <a class="dropdown-item user-menu-item" href="/profile" id="nav-mypage">
                         <i class="align-middle me-1" data-feather="user"></i> 마이페이지
                     </a>
                     <div class="dropdown-divider"></div>
-                    <form action="http://team1-eureka-gateway:10232/auth/logout" id="logout-form" method="post"
+                    <form action="http://localhost:10232/auth/logout" id="logout-form" method="post"
                           style="margin: 0; padding: 0;">
                         <button class="dropdown-item user-menu-item" onclick="handleLogout()" type="button">
                             <i class="align-middle me-1" data-feather="log-out"></i> 로그아웃

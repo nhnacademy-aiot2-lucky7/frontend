@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (login === 'true') {
 
-        fetch('http://team1-eureka-gateway:10232/auth/social/signIn', {
+        fetch('http://localhost:10232/auth/social/signIn', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // 부서 목록 불러오기
-    fetch('http://team1-eureka-gateway:10232/departments')
+    fetch('http://localhost:10232/departments')
         .then(response => {
             if (!response.ok) throw new Error('부서 정보를 불러오는데 실패했습니다.');
             return response.json();
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        fetch('http://team1-eureka-gateway:10232/auth/social/signUp', {
+        fetch('http://localhost:10232/auth/social/signUp', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

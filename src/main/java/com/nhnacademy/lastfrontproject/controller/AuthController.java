@@ -36,15 +36,15 @@ public class AuthController {
         return "pages/member/pages-sign-up";
     }
 
-    @PostMapping("/sign-in")
-    public String signIn(@ModelAttribute LoginRequest loginRequest) {
-        try {
-            authAdaptor.login(loginRequest);
-            return "redirect:/dashboard";
-        } catch (Exception e) {
-            return "pages-sign-in";
-        }
-    }
+//    @PostMapping("/sign-in")
+//    public String signIn(@ModelAttribute LoginRequest loginRequest) {
+//        try {
+//            authAdaptor.login(loginRequest);
+//            return "redirect:/dashboard";
+//        } catch (Exception e) {
+//            return "pages-sign-in";
+//        }
+//    }
 
     @PostMapping("/sign-up")
     public String signUp(@ModelAttribute RegisterRequest registerRequest) {

@@ -12,8 +12,7 @@
 
     <script th:inline="javascript">
         /*<![CDATA[*/
-        window.currentUser = /*[[${user}]]*/ null;
-        window.loginUser = /*[[${loginUser}]]*/ null;
+        window.currentUser = /*[[${user} != null ? ${user} : null]]*/ null;
         /*]]>*/
     </script>
 
@@ -22,6 +21,8 @@
     <script defer src="/js/feather-replace.js"></script>
     <script defer src="/js/admin-check.js"></script>
     <script defer src="/js/common.js"></script>
+    <script defer src="/js/dashboard/dashboard-manager.js"></script>
+    <script defer src="/js/dashboard/dashboard-list.js"></script>
     <script defer src="/js/auth-check.js"></script>
 </head>
 <body>

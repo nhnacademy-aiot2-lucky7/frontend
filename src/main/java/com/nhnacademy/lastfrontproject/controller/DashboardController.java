@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping
 public class DashboardController {
     private final DashboardService dashboardService;
@@ -21,7 +21,7 @@ public class DashboardController {
     }
 
     // 폴더 조회
-    @GetMapping("admin/folders")
+    @GetMapping("/admin/folders")
     public List<FolderInfoResponse> getFolders() {
         return dashboardService.getFolders();
     }

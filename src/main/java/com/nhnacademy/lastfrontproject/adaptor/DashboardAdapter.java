@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@FeignClient(name = "dashboard", url = "${feign.client.dashboard-service.url}", path = "/api")
+@FeignClient(name = "dashboard", url = "${feign.client.gateway-service.url}")
 public interface DashboardAdapter {
 
     @GetMapping("/folders")

@@ -1,7 +1,13 @@
 package com.nhnacademy.lastfrontproject.controller;
 
+import com.nhnacademy.lastfrontproject.dto.user.UserResponse;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 @Controller
 public class IndexController {
@@ -55,7 +61,17 @@ public class IndexController {
     }
 
     @GetMapping("/management")
-    public String management(){
-        return "pages/member/dashboard/pages-management";
+    public String management(@ModelAttribute("user") UserResponse user) {
+        if (user == null) {
+            return "redirect:/sign-in";
+        }
+
+        boolean isAdmin = "ROLE_ADMIN".equalsIgnoreCase(user.getUserRole());
+
+        if (isAdmin) {
+            return "pages/admin/dashboard/pages-management";
+        } else {
+            return "pages/member/dashboard/pages-dashboard-info";
+        }
     }
 }

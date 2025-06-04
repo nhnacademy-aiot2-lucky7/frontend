@@ -12,13 +12,14 @@ document.addEventListener('DOMContentLoaded', function () {
     loadingOverlay.style.display = 'flex';
     authCard.style.display = 'none';
 
-    // 1. 회원가입 여부 확인 (서버 엔드포인트 구현 필요)
-    fetch(`http://localhost:10232/auth/checkSignUp?email=${encodeURIComponent(userEmail)}`, {
-        method: 'GET',
+    // 1. 회원가입 여부 확인
+    fetch(`http://localhost:10232/auth/social/signIn`, {
+        method: 'POST',
         headers: {
             'Authorization': accessToken ? `${accessToken}` : ''
         },
-        credentials: 'include'
+        credentials: 'include',
+        body: userEmail
     })
         .then(response => {
             if (!response.ok) throw new Error('회원정보 확인 실패');

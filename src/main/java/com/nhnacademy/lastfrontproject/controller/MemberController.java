@@ -1,6 +1,5 @@
 package com.nhnacademy.lastfrontproject.controller;
 
-import com.nhnacademy.lastfrontproject.dto.member.MemberDto;
 import com.nhnacademy.lastfrontproject.dto.user.UserResponse;
 import com.nhnacademy.lastfrontproject.service.MemberService;
 import org.springframework.http.ResponseEntity;

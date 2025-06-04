@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>패널 추가 | Lucky Seven</title>
+    <link href="/css/dashboard/dashboard.css" rel="stylesheet"/>
+    <script src="/js/dashboard/add-panel.js"></script>
+</head>
+
+<body>
+<section layout:fragment="content">
+    <div class="add-dashboard-container">
+        <div class="add-dashboard-header">
+            <h2 class="add-dashboard-title">패널 추가</h2>
+            <div class="button-container">
+                <!--                <a href="/dashboard-info" class="add-dashboard-cancel-btn">취소</a>-->
+                <button class="add-dashboard-save-btn" id="saveBtn">저장</button>
+            </div>
+        </div>
+
+        <form id="filterForm" class="dashboard-search-form">
+            <div class="add-dashboard-form-row">
+                <label for="name">패널 이름</label>
+                <input type="text" name="name" id="name" required>
+            </div>
+
+            <div class="filter-group">
+                <label for="gatewaySelect">gatewayId</label>
+                <select id="gatewaySelect" name="gatewayId" class="gateway-select">
+                    <option value="">모든 게이트웨이 아이디</option>
+                    <!-- 옵션은 JavaScript로 동적 생성됨 -->
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="sensorSelect">sensorId:</label>
+                <select id="sensorSelect" name="sensorId" class="sensor-select">
+                    <option value="">모든 센서 아이디</option>
+                    <!-- 옵션은 JavaScript로 동적 생성됨 -->
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="fieldSelect">field</label>
+                <select id="fieldSelect" name="field" class="field-select">
+                    <option value="">모든 센서 타입</option>
+                    <!-- 옵션은 JavaScript로 동적 생성됨 -->
+                </select>
+            </div>
+
+            <div class="add-dashboard-form-row">
+                <label for="width">그래프 넓이</label>
+                <input type="text" name="width" id="width" required>
+                <input type="number" placeholder="예: 12" class="weight" disabled>
+            </div>
+
+            <div class="add-dashboard-form-row">
+                <label for="heigh">그래프 높이</label>
+                <input type="text" name="heigh" id="heigh" required>
+                <input type="number" placeholder="예: 8" class="heigh" disabled>
+            </div>
+
+            <div class="filter-group">
+                <label for="typeSelect">그래프 타입</label>
+                <select id="typeSelect" name="type" class="type-select">
+                    <option value="">모든 그래프 타입</option>
+                    <!-- 옵션은 JavaScript로 동적 생성됨 -->
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="aggregationSelect">집계 방식</label>
+                <select id="aggregationSelect" name="aggregation" class="aggregation-select">
+                    <option value="">모든 집계 방식</option>
+                    <!-- 대시보드 옵션은 JS에서 동적으로 추가됨 -->
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="timeSelect">시간</label>
+                <select id="timeSelect" name="time" class="time-select">
+                    <option value="">모든 가능 시간</option>
+                    <!-- 대시보드 옵션은 JS에서 동적으로 추가됨 -->
+                </select>
+            </div>
+
+            <div class="threshold-radio-group">
+                <p>임계치 설정</p>
+
+                <div class="threshold-option">
+                    <input type="radio" id="threshold-min" name="threshold" value="min">
+                    <label for="threshold-min">최소값 설정</label>
+                    <input type="number" id="minValue" name="min" placeholder="예: 10" class="threshold-input" disabled>
+                </div>
+
+                <div class="threshold-option">
+                    <input type="radio" id="threshold-max" name="threshold" value="max">
+                    <label for="threshold-max">최대값 설정</label>
+                    <input type="number" id="maxValue" name="max" placeholder="예: 100" class="threshold-input" disabled>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</section>
+</body>
+</html>

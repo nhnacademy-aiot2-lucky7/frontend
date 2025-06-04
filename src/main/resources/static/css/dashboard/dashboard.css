@@ -367,4 +367,67 @@ a {
         padding: 3px 6px;
         font-size: 0.7rem;
     }
+
+    /* 부서 리스트 스타일 */
+    .department-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .department-btn {
+        padding: 6px 12px;
+        border: 1px solid #ccc;
+        background: white;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+    }
+
+    .department-btn:hover {
+        background-color: #eee;
+    }
+
+    /* 대시보드 패널 4분할 */
+    .panel-grid-scrollable {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 16px;
+        max-height: 80vh;
+        overflow-y: auto;
+        padding: 1rem;
+    }
+
+    /* 개별 카드 스타일 예시 */
+    .panel-card {
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        padding: 8px;
+        box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .panel-title {
+        margin: 0 0 8px 0;
+        font-size: 1.1rem;
+        color: #333;
+        text-align: center;
+        font-weight: 600;
+    }
+
+    /* 반응형 설정 */
+
+    /* 화면 너비 1024px 이하: 2열 */
+    @media (max-width: 1024px) {
+        .panel-grid-scrollable {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    /* 화면 너비 600px 이하: 1열 */
+    @media (max-width: 600px) {
+        .panel-grid-scrollable {
+            grid-template-columns: 1fr;
+        }
+    }
 }

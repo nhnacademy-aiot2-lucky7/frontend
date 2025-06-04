@@ -9,7 +9,7 @@
     <link href="/css/dashboard/dashboard.css" rel="stylesheet"/>
 <!--    <script src="/js/dashboard/dashboard-dummy-data.js"></script>-->
     <script src="/js/dashboard/dashboard-utils.js"></script>
-    <script src="/js/dashboard/admin-dashboard-info.js"></script>
+    <script src="/js/dashboard/admin-dashboard-list.js"></script>
     <script src="/js/admin-check.js"></script>
 </head>
 
@@ -31,16 +31,25 @@
                         <!-- 부서 옵션은 JavaScript로 동적 생성됨 -->
                     </select>
                 </div>
-                <div class="search-group">
-                    <input type="text" id="keywordInput" name="keyword" placeholder="대시보드 이름 검색">
-                    <button type="submit" class="search-btn">검색</button>
+
+                <div class="filter-group">
+                    <label for="dashboardSelect">대시보드 선택:</label>
+                    <select id="dashboardSelect" name="dashboard" class="dashboard-select">
+                        <option value="">모든 대시보드</option>
+                        <!-- 대시보드 옵션은 JS에서 동적으로 추가됨 -->
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="keywordInput">검색어:</label>
+                    <input type="text" id="keywordInput" name="keyword" placeholder="대시보드 이름 검색"/>
                 </div>
             </form>
         </div>
 
         <!-- 대시보드 콘텐츠 영역 -->
         <div class="dashboard-content">
-            <div id="dashboardGroups" class="dashboard-banners">
+            <div id="dashboardList" class="dashboard-banners">
                 <!-- 대시보드 그룹이 JavaScript로 동적 생성됨 -->
             </div>
         </div>

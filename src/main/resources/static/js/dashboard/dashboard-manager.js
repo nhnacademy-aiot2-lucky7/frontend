@@ -1,6 +1,10 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // localStorage에서 대시보드 데이터 로드
+document.addEventListener('DOMContentLoaded', async function () {
     let dashboardsData = [];
+    let departments = [];
+    const CACHE_KEY = 'departmentsCache';
+    const CACHE_TTL = 1000 * 60 * 60 * 24; // 24시간
+
+    // 1. 대시보드 데이터 로딩 (localStorage)
     try {
         const storedDashboards = localStorage.getItem('dashboards');
         if (storedDashboards) {
@@ -14,28 +18,53 @@ document.addEventListener('DOMContentLoaded', function() {
         dashboardsData = window.dashboards || [];
     }
 
-    // 부서 선택 드롭다운 초기화
-    const departmentSelect = document.getElementById('departmentSelect');
-    let departments = [];
-    const deptMap = {};
-    dashboardsData.forEach(dash => {
-        if (dash.departmentId && !deptMap[dash.departmentId]) {
-            departments.push({
-                departmentId: dash.departmentId,
-                departmentName: dash.departmentName
-            });
-            deptMap[dash.departmentId] = true;
+    // 2. 부서 정보 로딩 함수 (localStorage 캐시 활용)
+    async function loadDepartments() {
+        const cached = localStorage.getItem(CACHE_KEY);
+        if (cached) {
+            const parsed = JSON.parse(cached);
+            const now = Date.now();
+            if (now - parsed.timestamp < CACHE_TTL) {
+                departments = parsed.departments;
+                console.log('📦 부서 목록 캐시에서 로드됨');
+                return;
+            }
         }
-    });
 
-    // 드롭다운 옵션 생성 함수
+        try {
+            const res = await fetch('/admin/folders', {
+                method: 'GET',
+                credentials: 'include',
+            });
+
+            if (!res.ok) throw new Error('부서 API 응답 실패');
+
+            const data = await res.json();
+            departments = data.map(folder => ({
+                departmentId: folder.id,
+                departmentName: folder.title,
+            }));
+
+            localStorage.setItem(CACHE_KEY, JSON.stringify({
+                timestamp: Date.now(),
+                departments,
+            }));
+
+            console.log('📡 부서 목록 API에서 로드됨');
+        } catch (err) {
+            console.error('부서 목록을 불러오지 못했습니다:', err);
+        }
+    }
+
+    // 3. 드롭다운 옵션 렌더링
     function setDepartmentOptions() {
-        departmentSelect.innerHTML = "";
+        const departmentSelect = document.getElementById('departmentSelect');
+        departmentSelect.innerHTML = '';
+
         if (currentUser.userRole === 'ROLE_ADMIN') {
-            // 관리자: 전체 부서 선택 가능
             const allOption = document.createElement('option');
-            allOption.value = "";
-            allOption.textContent = "모든 부서";
+            allOption.value = '';
+            allOption.textContent = '모든 부서';
             departmentSelect.appendChild(allOption);
 
             departments.forEach(dept => {
@@ -44,9 +73,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 option.textContent = dept.departmentName;
                 departmentSelect.appendChild(option);
             });
+
             departmentSelect.disabled = false;
         } else {
-            // 일반 유저: 자신의 부서만
             const userDept = currentUser.department;
             const option = document.createElement('option');
             option.value = userDept.departmentId;
@@ -57,11 +86,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    setDepartmentOptions();
-
-    // 대시보드 필터링 및 표시 함수
+    // 4. 대시보드 필터링 및 표시
     function filterAndDisplayDashboards() {
-        const selectedDepartmentId = departmentSelect.value;
+        const selectedDepartmentId = document.getElementById('departmentSelect').value;
         const keyword = document.getElementById('keywordInput').value.toLowerCase();
 
         let filteredDashboards = dashboardsData;
@@ -69,19 +96,26 @@ document.addEventListener('DOMContentLoaded', function() {
         // 부서 필터
         if (currentUser.userRole === 'ROLE_ADMIN') {
             if (selectedDepartmentId) {
-                filteredDashboards = filteredDashboards.filter(dashboard =>
-                    String(dashboard.departmentId) === selectedDepartmentId
+                filteredDashboards = filteredDashboards.filter(d =>
+                    String(d.departmentId) === selectedDepartmentId
                 );
             }
         } else {
             const userDeptId = currentUser.department.departmentId;
-            filteredDashboards = filteredDashboards.filter(dashboard =>
-                dashboard.departmentId === userDeptId
+            filteredDashboards = filteredDashboards.filter(d =>
+                d.departmentId === userDeptId
             );
         }
 
-        filteredDashboards = filteredDashboards.filter(dashboard => dashboard.active);
+        // 검색어 필터
+        filteredDashboards = filteredDashboards.filter(d =>
+            d.name.toLowerCase().includes(keyword)
+        );
 
+        // 활성화된 대시보드만
+        filteredDashboards = filteredDashboards.filter(d => d.active);
+
+        // 부서별 그룹화
         const groupedDashboards = {};
         filteredDashboards.forEach(dashboard => {
             const deptId = dashboard.departmentId;
@@ -91,24 +125,21 @@ document.addEventListener('DOMContentLoaded', function() {
             groupedDashboards[deptId].push(dashboard);
         });
 
-        // 대시보드 그룹 표시
-        const dashboardGroups = document.getElementById('dashboardGroups');
+        // 대시보드 출력
+        const dashboardGroups = document.getElementById('dashboardList');
         dashboardGroups.innerHTML = '';
 
         Object.keys(groupedDashboards).forEach(departmentId => {
             const departmentDashboards = groupedDashboards[departmentId];
 
-            // 부서 그룹 생성
             const departmentGroup = document.createElement('div');
             departmentGroup.className = 'department-group';
 
-            // 부서 제목 (departmentId → departmentName)
             const departmentTitle = document.createElement('h2');
             departmentTitle.className = 'department-title';
-            departmentTitle.textContent = departmentDashboards[0].departmentName;
+            departmentTitle.textContent = departmentDashboards[0]?.departmentName || '알 수 없는 부서';
             departmentGroup.appendChild(departmentTitle);
 
-            // 대시보드 배너 컨테이너
             const bannersContainer = document.createElement('div');
             bannersContainer.className = 'banners-container';
 
@@ -131,15 +162,42 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // 초기 대시보드 표시
+    // 5. 초기 실행
+    await loadDepartments();
+    setDepartmentOptions();
     filterAndDisplayDashboards();
 
-    // 필터 폼 제출 이벤트
-    document.getElementById('filterForm').addEventListener('submit', function(e) {
+    // 6. 이벤트 핸들링
+    document.getElementById('filterForm').addEventListener('submit', function (e) {
         e.preventDefault();
         filterAndDisplayDashboards();
+        renderDepartmentList();
     });
 
-    // 부서 선택 변경 이벤트
-    departmentSelect.addEventListener('change', filterAndDisplayDashboards);
+    function renderDepartmentList() {
+        const container = document.getElementById('departmentList');
+        container.innerHTML = ''; // 초기화
+
+        departments.forEach(dept => {
+            const btn = document.createElement('button');
+            btn.textContent = dept.departmentName;
+            btn.className = 'department-btn';
+            btn.style.cursor = 'pointer';
+
+            // 클릭 시 해당 부서 대시보드 페이지로 이동
+            btn.addEventListener('click', () => {
+                /**
+                 * currentDepartment:
+                 * {
+                 *   departmentId: "부서의 고유 ID",
+                 *   departmentName: "부서 이름"
+                 * }
+                 */
+                localStorage.setItem('currentDepartment', JSON.stringify(dept));
+                window.location.href = `/dashboard/add?departmentId=${encodeURIComponent(dept.departmentId)}`;
+            });
+
+            container.appendChild(btn);
+        });
+    }
 });

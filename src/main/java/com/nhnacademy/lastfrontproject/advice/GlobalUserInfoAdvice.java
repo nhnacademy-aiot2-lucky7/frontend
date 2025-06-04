@@ -7,7 +7,6 @@ import com.nhnacademy.lastfrontproject.dto.user.UserResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import jakarta.servlet.http.HttpServletRequest;
 
 @Slf4j
 @ControllerAdvice
@@ -22,7 +21,13 @@ public class GlobalUserInfoAdvice {
     public UserWithImageResponse addUserToModel() {
         try {
             UserResponse userResponse = authAdaptor.getMyInfo().getBody();
-            ImageResponse imageResponse = authAdaptor.getImage(userResponse.getUserEmail()).getBody();
+            ImageResponse imageResponse;
+            try {
+                 imageResponse = authAdaptor.getImage(userResponse.getUserEmail()).getBody();
+            } catch (Exception e) {
+                imageResponse = null;
+            }
+
 
             return new UserWithImageResponse(userResponse.getUserRole(),
                     userResponse.getUserNo(),

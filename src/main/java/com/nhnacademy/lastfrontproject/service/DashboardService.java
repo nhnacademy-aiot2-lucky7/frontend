@@ -21,7 +21,7 @@ public interface DashboardService {
     List<InfoDashboardResponse> getAllDashboard();
 
     // 대시보드내의 모든 패널 정보 조회
-    List<IframePanelResponse> getPanel(ReadPanelRequest readPanelRequest);
+    List<IframePanelResponse> getPanel(String dashboardUid);
 
     // 대시보드 생성
     void createDashboard(CreateDashboardRequest createDashboardRequest);

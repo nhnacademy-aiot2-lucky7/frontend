@@ -1,55 +1,31 @@
-function getBannerImage(title) {
-    if (title.includes('서버')) {
-        return '/img/equipment/banner_server_room.jpg';
-    }
-    if (title.includes('출입')) {
-        return '/img/equipment/banner_access_control.png';
-    }
-    if (title.includes('재난') || title.includes('재해')) {
-        return '/img/equipment/banner_calamity.jpg';
-    }
-    if (title.includes('장비')) {
-        return '/img/equipment/banner_equipment.jpg';
-    }
-    if (title.includes('전력')) {
-        return '/img/equipment/banner_power_usage.jpg';
-    }
-    return '/img/equipment/banner_default.png';
-}
-
 document.addEventListener('DOMContentLoaded', async function () {
-    const departmentInput = document.getElementById('departmentName');
-
-    // localStorage에서 현재 부서 정보 읽기
-    const storedDept = JSON.parse(localStorage.getItem('currentDepartment'));
-    if (storedDept && storedDept.departmentName) {
-        departmentInput.value = storedDept.departmentName;
-        window.currentUser.department = storedDept; // currentUser 객체에 세팅
-    } else {
-        departmentInput.value = '';
-    }
 
     // 저장 버튼 이벤트 리스너는 아래와 같이 유지
     const saveBtn = document.getElementById('saveBtn');
     const dashboardForm = document.getElementById('dashboardForm');
 
-    saveBtn.addEventListener('click', async function () {
+    saveBtn.addEventListener('click', async function (e) {
+        e.preventDefault();
+
+        const nameInput = document.getElementById('name').value;
+        const descriptionInput = document.getElementById('description').value;
+
+        console.log('대시보드 이름:', nameInput);
         if (!dashboardForm.checkValidity()) {
             dashboardForm.reportValidity();
             return;
         }
 
-        const nameInput = document.getElementById('name');
-        const descriptionInput = document.getElementById('description');
-        const now = new Date().toISOString();
+        if (!nameInput.trim()) {
+            alert('대시보드 이름을 입력해주세요.');
+            return;
+        }
 
         // API 경로
-        const apiPath = window.currentUser.userRole === 'ROLE_ADMIN' ? '/admin/dashboard' : '/users/dashboard';
+        const apiPath = '/dashboard';
 
-        // 실제 요청 보낼 body (필요하다면 부서ID도 포함)
         const requestBody = {
-            dashboardTitle: nameInput.value,
-            // 필요하다면: departmentId: currentUser.department.departmentId
+            dashboardTitle: nameInput,
         };
 
         try {
@@ -60,15 +36,34 @@ document.addEventListener('DOMContentLoaded', async function () {
                 body: JSON.stringify(requestBody),
             });
 
+            if (!response.ok) {
+                let message = `서버 에러: ${response.status}`;
+
+                try {
+                    const errorText = await response.text();
+                    const parsed = JSON.parse(errorText);
+                    const match = parsed.trace?.match(/"message":"(.*?)"/);
+                    if (match) {
+                        message = match[1];
+                    } else if (parsed.message) {
+                        message = parsed.message;
+                    }
+                } catch (e) {
+                    console.warn("응답 파싱 실패:", e);
+                }
+
+                alert(`⚠️ 대시보드 생성 실패: ${message}`);
+                return;
+            }
+
             alert('🎉 대시보드 생성 성공');
 
-            await fetchAndStoreDashboards();
             // 생성 후 이동 처리
-            window.location.href = window.currentUser.userRole === 'ROLE_ADMIN' ? '/admin/dashboard-info' : '/dashboard-info';
+            window.location.href = window.currentUser.role === 'ROLE_ADMIN' ? '/admin/dashboard-info' : '/user/dashboard-info';
 
         } catch (error) {
             console.error('⚠️ 대시보드 생성 오류:', error);
-            alert('⚠️ 대시보드 생성 실패');
+            alert(`⚠️ 대시보드 생성 실패: ${error.message}`);
         }
     });
 });

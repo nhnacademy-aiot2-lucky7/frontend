@@ -6,14 +6,16 @@ import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.InfoDashboardRespon
 import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.UpdateDashboardNameRequest;
 import com.nhnacademy.lastfrontproject.dto.grafana.folder.FolderInfoResponse;
 import com.nhnacademy.lastfrontproject.dto.grafana.panel.*;
+import com.nhnacademy.lastfrontproject.dto.sensor.SensorDataMappingIndexResponse;
 import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
-@FeignClient(name = "dashboard", url = "${feign.client.dashboard-service.url}", path = "/api")
+@FeignClient(name = "dashboard", url = "${feign.client.gateway-service.url}")
 public interface DashboardAdapter {
 
     @GetMapping("/folders")
@@ -68,4 +70,6 @@ public interface DashboardAdapter {
     ResponseEntity<Void> deletePanel(
             @RequestBody DeletePanelRequest deletePanelRequest);
 
+    @GetMapping("/sensor-data-mappings")
+    ResponseEntity<Set<SensorDataMappingIndexResponse>> getSensorData();
 }

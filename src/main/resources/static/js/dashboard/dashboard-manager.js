@@ -164,7 +164,6 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     // 5. 초기 실행
     await loadDepartments();
-    setDepartmentOptions();
     filterAndDisplayDashboards();
 
     // 6. 이벤트 핸들링

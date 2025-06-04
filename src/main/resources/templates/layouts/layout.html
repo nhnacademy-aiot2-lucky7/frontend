@@ -13,8 +13,7 @@
 
     <script th:inline="javascript">
         /*<![CDATA[*/
-        window.currentUser = /*[[${user}]]*/ null;
-        window.loginUser = /*[[${loginUser}]]*/ null;
+        window.currentUser = /*[[${user} != null ? ${user} : null]]*/ null;
         /*]]>*/
     </script>
 
@@ -23,6 +22,7 @@
     <script defer src="/js/feather-replace.js"></script>
     <script defer src="/js/admin-check.js"></script>
     <script defer src="/js/common.js"></script>
+    <script defer src="/js/dashboard/dashboard-manager.js"></script>
     <script defer src="/js/auth-check.js"></script>
 </head>
 <body>
@@ -41,9 +41,9 @@
     </th:block>
 
     <main class="main flex-grow-1">
-        <header th:replace="fragments/navbar :: navbar"></header>
+        <header th:replace="~{fragments/navbar :: navbar}"></header>
         <section class="content" layout:fragment="content"></section>
-        <footer th:replace="fragments/footer :: footer"></footer>
+        <footer th:replace="~{fragments/footer :: footer}"></footer>
     </main>
 </div>
 

@@ -1,4 +1,4 @@
-async function fetchAndStoreDashboards() {
+export async function fetchAndStoreDashboards() {
     try {
         const response = await fetch('/dashboard', {
             method: 'GET',
@@ -7,9 +7,10 @@ async function fetchAndStoreDashboards() {
         });
 
         if (!response.ok) {
-            new Error('대시보드 조회 실패');
+            throw new Error('대시보드 조회 실패');
         }
 
+        console.log("응답: ",response);
         const dashboards = await response.json();
 
         localStorage.setItem('dashboards', JSON.stringify(dashboards));

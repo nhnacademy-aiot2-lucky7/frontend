@@ -1,37 +1,36 @@
 package com.nhnacademy.lastfrontproject.service.impl;
 
 import com.nhnacademy.lastfrontproject.adaptor.DashboardAdapter;
+import com.nhnacademy.lastfrontproject.adaptor.SensorAdapter;
 import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.CreateDashboardRequest;
 import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.DeleteDashboardRequest;
 import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.InfoDashboardResponse;
 import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.UpdateDashboardNameRequest;
 import com.nhnacademy.lastfrontproject.dto.grafana.folder.FolderInfoResponse;
 import com.nhnacademy.lastfrontproject.dto.grafana.panel.*;
+import com.nhnacademy.lastfrontproject.dto.sensor.SensorDataMappingIndexResponse;
 import com.nhnacademy.lastfrontproject.service.DashboardService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class DashboardServiceImpl implements DashboardService {
 
     private final DashboardAdapter dashboardAdapter;
+    private final SensorAdapter sensorAdapter;
 
-    public DashboardServiceImpl(DashboardAdapter dashboardAdapter){
+    public DashboardServiceImpl(DashboardAdapter dashboardAdapter, SensorAdapter sensorAdapter){
         this.dashboardAdapter = dashboardAdapter;
+        this.sensorAdapter = sensorAdapter;
     }
 
     @Override
     public List<FolderInfoResponse> getFolders() {
         ResponseEntity<List<FolderInfoResponse>> folders = dashboardAdapter.getFolders();
         return folders.getBody();
-    }
-
-    @Override
-    public List<String> getDashboardName() {
-        ResponseEntity<List<String>> dashboardNames = dashboardAdapter.getDashboardName();
-        return dashboardNames.getBody();
     }
 
     @Override
@@ -86,5 +85,10 @@ public class DashboardServiceImpl implements DashboardService {
     @Override
     public void deletePanel(DeletePanelRequest deletePanelRequest) {
         dashboardAdapter.deletePanel(deletePanelRequest);
+    }
+
+    @Override
+    public Set<SensorDataMappingIndexResponse> getSensor() {
+        return sensorAdapter.getSensorData().getBody();
     }
 }

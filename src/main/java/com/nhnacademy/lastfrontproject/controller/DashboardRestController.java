@@ -40,15 +40,8 @@ public class DashboardRestController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    // 2. 대시보드 이름 조회
-    @GetMapping("/dashboards/names")
-    public List<String> getDashboardNames() {
-        return dashboardService.getDashboardName();
-    }
-
     @GetMapping("/sensor")
-    public ResponseEntity<Set<SensorDataMappingIndexResponse>> getSensorData(){
-
-        return null;
+    public Set<SensorDataMappingIndexResponse> getSensorData(){
+        return dashboardService.getSensor();
     }
 }

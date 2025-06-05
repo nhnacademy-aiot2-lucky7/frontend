@@ -6,16 +6,15 @@ import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.InfoDashboardRespon
 import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.UpdateDashboardNameRequest;
 import com.nhnacademy.lastfrontproject.dto.grafana.folder.FolderInfoResponse;
 import com.nhnacademy.lastfrontproject.dto.grafana.panel.*;
+import com.nhnacademy.lastfrontproject.dto.sensor.SensorDataMappingIndexResponse;
 
 import java.util.List;
+import java.util.Set;
 
 public interface DashboardService {
 
     // 모든 폴더 조회
     List<FolderInfoResponse> getFolders();
-
-    // 모든 대시보드명 조회
-    List<String> getDashboardName();
 
     // 모든 대시보드 정보 조회
     List<InfoDashboardResponse> getAllDashboard();
@@ -46,4 +45,6 @@ public interface DashboardService {
 
     // 패널 삭제
     void deletePanel(DeletePanelRequest deletePanelRequest);
+
+    Set<SensorDataMappingIndexResponse> getSensor();
 }

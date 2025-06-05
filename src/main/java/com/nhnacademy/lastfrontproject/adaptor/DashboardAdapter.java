@@ -1,6 +1,7 @@
 package com.nhnacademy.lastfrontproject.adaptor;
 
 import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.CreateDashboardRequest;
+import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.DeleteDashboardRequest;
 import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.InfoDashboardResponse;
 import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.UpdateDashboardNameRequest;
 import com.nhnacademy.lastfrontproject.dto.grafana.folder.FolderInfoResponse;
@@ -56,11 +57,11 @@ public interface DashboardAdapter {
             @RequestBody UpdatePanelPriorityRequest updatePriority
     );
 
-    //    @DeleteMapping("/dashboards")
-//    ResponseEntity<Void> deleteDashboard(
-//            @RequestBody DeleteDashboardRequest deleteDashboardRequest);
-//
-//    @DeleteMapping("/panels")
-//    ResponseEntity<Void> deletePanel(
-//            @RequestBody DeletePanelRequest deletePanelRequest);
+        @DeleteMapping("/dashboards")
+    ResponseEntity<Void> deleteDashboard(
+            @RequestBody DeleteDashboardRequest deleteDashboardRequest);
+
+    @DeleteMapping("/panels")
+    ResponseEntity<Void> deletePanel(
+            @RequestBody DeletePanelRequest deletePanelRequest);
 }

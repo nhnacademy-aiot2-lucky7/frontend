@@ -54,8 +54,8 @@
             </div>
 
             <div class="add-dashboard-form-row">
-                <label for="heigh">그래프 높이</label>
-                <input type="text" name="heigh" id="heigh" required />
+                <label for="height">그래프 높이</label>
+                <input type="text" name="height" id="height" required />
             </div>
 
             <div class="add-dashboard-form-row">
@@ -85,25 +85,27 @@
             <!-- 임계치 설정 (2열 전체 사용) -->
             <div class="add-dashboard-form-row add-dashboard-description">
                 <label>임계값 설정 (AI 추천)</label>
-                <div style="display: flex; flex-wrap: wrap; gap: 2rem;">
+                <div style="display: flex; flex-wrap: wrap; gap: 4rem;">
 
                     <!-- 최소값 선택 -->
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <label for="minSuggestion">최소값</label>
-                        <select id="minSuggestion" name="minSuggestion">
-                            <!-- 옵션은 JS에서 동적으로 추가 -->
-                        </select>
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <span>최소값</span>
+                        <div id="minSuggestionGroup" style="display: flex; gap: 10px;">
+                            <!-- JS에서 라디오 버튼 3개 생성 -->
+                        </div>
                     </div>
 
                     <!-- 최대값 선택 -->
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <label for="maxSuggestion">최대값</label>
-                        <select id="maxSuggestion" name="maxSuggestion">
-                        </select>
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <span>최대값</span>
+                        <div id="maxSuggestionGroup" style="display: flex; gap: 10px;">
+                            <!-- JS에서 라디오 버튼 3개 생성 -->
+                        </div>
                     </div>
 
                 </div>
             </div>
+
 
         </form>
 

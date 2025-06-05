@@ -64,4 +64,6 @@ public interface DashboardAdapter {
     @DeleteMapping("/panels")
     ResponseEntity<Void> deletePanel(
             @RequestBody DeletePanelRequest deletePanelRequest);
+
+
 }

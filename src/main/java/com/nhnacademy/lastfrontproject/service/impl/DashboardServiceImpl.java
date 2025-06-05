@@ -9,6 +9,7 @@ import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.UpdateDashboardName
 import com.nhnacademy.lastfrontproject.dto.grafana.folder.FolderInfoResponse;
 import com.nhnacademy.lastfrontproject.dto.grafana.panel.*;
 import com.nhnacademy.lastfrontproject.dto.sensor.SensorDataMappingIndexResponse;
+import com.nhnacademy.lastfrontproject.dto.sensor.ThresholdBoundResponse;
 import com.nhnacademy.lastfrontproject.service.DashboardService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -90,5 +91,14 @@ public class DashboardServiceImpl implements DashboardService {
     @Override
     public Set<SensorDataMappingIndexResponse> getSensor() {
         return sensorAdapter.getSensorData().getBody();
+    }
+
+    @Override
+    public ThresholdBoundResponse getSensorBound(SensorFieldRequestDto sensorFieldRequestDto) {
+        return sensorAdapter.getSensorBound(
+                sensorFieldRequestDto.getGatewayId(),
+                sensorFieldRequestDto.getSensorId(),
+                sensorFieldRequestDto.getField())
+                .getBody();
     }
 }

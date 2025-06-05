@@ -3,7 +3,9 @@ package com.nhnacademy.lastfrontproject.controller;
 import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.CreateDashboardRequest;
 import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.InfoDashboardResponse;
 import com.nhnacademy.lastfrontproject.dto.grafana.folder.FolderInfoResponse;
+import com.nhnacademy.lastfrontproject.dto.grafana.panel.SensorFieldRequestDto;
 import com.nhnacademy.lastfrontproject.dto.sensor.SensorDataMappingIndexResponse;
+import com.nhnacademy.lastfrontproject.dto.sensor.ThresholdBoundResponse;
 import com.nhnacademy.lastfrontproject.service.DashboardService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,5 +45,10 @@ public class DashboardRestController {
     @GetMapping("/sensor")
     public Set<SensorDataMappingIndexResponse> getSensorData(){
         return dashboardService.getSensor();
+    }
+
+    @GetMapping("/sensor/bound")
+    public ThresholdBoundResponse getSensorBoundData(@RequestBody SensorFieldRequestDto sensorFieldRequestDto){
+        return dashboardService.getSensorBound(sensorFieldRequestDto);
     }
 }

@@ -7,6 +7,7 @@ import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.UpdateDashboardName
 import com.nhnacademy.lastfrontproject.dto.grafana.folder.FolderInfoResponse;
 import com.nhnacademy.lastfrontproject.dto.grafana.panel.*;
 import com.nhnacademy.lastfrontproject.dto.sensor.SensorDataMappingIndexResponse;
+import com.nhnacademy.lastfrontproject.dto.sensor.ThresholdBoundResponse;
 
 import java.util.List;
 import java.util.Set;
@@ -47,4 +48,6 @@ public interface DashboardService {
     void deletePanel(DeletePanelRequest deletePanelRequest);
 
     Set<SensorDataMappingIndexResponse> getSensor();
+
+    ThresholdBoundResponse getSensorBound(SensorFieldRequestDto sensorFieldRequestDto);
 }

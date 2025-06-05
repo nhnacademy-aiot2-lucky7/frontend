@@ -46,42 +46,9 @@
 				</tr>
 				</thead>
 				<tbody id="ai-table-body">
-				<!-- 데이터가 없을 경우 메시지 출력 -->
-				<tr th:if="${#lists.isEmpty(ais)}">
-					<td colspan="4" style="text-align: center; padding: 2rem; color: #6c757d;">
-						AI 분석 내역이 없습니다.
-					</td>
-				</tr>
-
-				<!-- 데이터가 있을 경우 반복 출력 -->
-				<!-- <tr th:each="ai : ${ais}">-->
-				<!-- <td class="level-cell" th:text="${ai.level}">1</td>-->
-				<!-- <td class="sensor-cell" th:text="${ai.sensorName}">센서-A</td>-->
-				<!-- <td class="message-cell" th:text="${ai.message}">경고 발생</td>-->
-				<!-- <td class="date-cell" th:text="${#temporals.format(ai.dateTime, 'yyyy-MM-dd HH:mm')}">2025-04-22</td>-->
-				<!-- </tr>-->
+				<!-- JS에서 데이터 행과 확장행(tr) 동적 생성 -->
 				</tbody>
-
 			</table>
-			<!-- 차트 확장 영역 -->
-			<div id="ai-detail-expand" style="display:none; margin-top:2rem;">
-				<div style="display:flex; gap:2rem; flex-wrap:wrap;">
-					<div>
-						<canvas id="ai-bar-chart" height="120" width="250"></canvas>
-						<div style="text-align:center;">막대그래프</div>
-					</div>
-					<div>
-						<canvas id="ai-line-chart" height="120" width="250"></canvas>
-						<div style="text-align:center;">선그래프</div>
-					</div>
-					<div>
-						<canvas id="ai-pie-chart" height="120" width="250"></canvas>
-						<div style="text-align:center;">원그래프</div>
-					</div>
-				</div>
-				<div id="ai-score" style="margin:1rem 0; font-size:2rem;"></div>
-				<div id="ai-emoji" style="font-size:3rem;"></div>
-			</div>
 		</section>
 	</main>
 </section>

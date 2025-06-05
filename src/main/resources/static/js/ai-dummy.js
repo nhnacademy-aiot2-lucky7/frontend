@@ -1,149 +1,75 @@
 document.addEventListener('DOMContentLoaded', function() {
     const tableBody = document.getElementById('ai-table-body');
     let chartInstances = {};
-    let expandedRowId = null; // 현재 확장된 행의 id
+    let expandedRowId = null;
 
-    // 더미 데이터
+    // // 실제 api 받아오기
+    // async function fetchList() {
+    //     const res = await fetch('/api/ai-results'); // 실제 API URL로 수정
+    //     if (!res.ok) {
+    //         tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center;">데이터를 불러올 수 없습니다.</td></tr>';
+    //         return;
+    //     }
+    //     const data = await res.json();
+    //     originData = data; renderTable(originData);
+    // }
+
+    // 하드코딩된 더미 데이터 (2개)
     const dummyData = [
         {
             id: 1,
-            departmentName: "백동호",
-            type: "CORRELATION_RISK_PREDICT",
-            resultSummary: "정상",
+            departmentName: "개발",
+            type: "CORRELATION-RISK-PREDICT",
+            resultSummary: "위험",
             analyzedAt: "2025-06-05 14:10",
-            score: Math.floor(Math.random() * 100),
+            score: 83,
             resultJson: {
-                type: "CORRELATION_RISK_PREDICT",
-                predictedData: Array.from({ length: 4 }, () => ({
-                    correlationRiskModel: +(Math.random() * 1).toFixed(2)
-                }))
+                analysisType: "CORRELATION-RISK-PREDICT",
+                result: {
+                    sensorInfo: {
+                        sensorA: {
+                            gatewayId: "58",
+                            sensorId: "sensorA123",
+                            sensorType: "temperature"
+                        },
+                        sensorB: {
+                            gatewayId: "58",
+                            sensorId: "sensorB456",
+                            sensorType: "humidity"
+                        }
+                    },
+                    predictedData: {
+                        sensorA: { SingleRiskModel: 0.23, CorrelationRiskModel: 0.41 },
+                        sensorB: { SingleRiskModel: 0.18, CorrelationRiskModel: 0.37 }
+                    },
+                    analyzedAt: 1717318290000
+                }
             }
         },
         {
             id: 2,
-            departmentName: "박준영",
+            departmentName: "마케팅",
             type: "SINGLE_SENSOR_PREDICT",
             resultSummary: "경고",
             analyzedAt: "2025-06-05 13:10",
-            score: Math.floor(Math.random() * 100),
+            score: 68,
             resultJson: {
-                type: "SINGLE_SENSOR_PREDICT",
-                predictedData: Array.from({ length: 4 }, () => ({
-                    predictedValue: Math.floor(Math.random() * 10)
-                }))
+                analysisType: "SINGLE_SENSOR_PREDICT",
+                result: {
+                    sensorInfo: {
+                        gatewayId: "58",
+                        sensorId: "s39fd3dfd32",
+                        sensorType: "temperature"
+                    },
+                    predictedData: [
+                        { predictedValue: 60, predictedDate: "2025-05-31" },
+                        { predictedValue: 50, predictedDate: "2025-06-01" },
+                        { predictedValue: 38, predictedDate: "2025-06-02" },
+                        { predictedValue: 42, predictedDate: "2025-06-03" }
+                    ],
+                    analyzedAt: "2025-05-30"
+                }
             }
-        },
-        {
-            id: 3,
-            departmentName: "이동현",
-            type: "THRESHOLD_DIFF_ANALYSIS",
-            resultSummary: "위험",
-            analyzedAt: "2025-06-05 12:10",
-            score: Math.floor(Math.random() * 100),
-            resultJson: {
-                type: "THRESHOLD_DIFF_ANALYSIS",
-                healthScore: Math.floor(Math.random() * 100)
-            }
-        },
-        {
-            id: 4,
-            departmentName: "김송빈",
-            type: ["CORRELATION_RISK_PREDICT", "SINGLE_SENSOR_PREDICT", "THRESHOLD_DIFF_ANALYSIS"][Math.floor(Math.random() * 3)],
-            resultSummary: ["정상", "경고", "위험"][Math.floor(Math.random() * 3)],
-            analyzedAt: "2025-06-05 11:10",
-            score: Math.floor(Math.random() * 100),
-            resultJson: (() => {
-                const type = ["CORRELATION_RISK_PREDICT", "SINGLE_SENSOR_PREDICT", "THRESHOLD_DIFF_ANALYSIS"][Math.floor(Math.random() * 3)];
-                return {
-                    type: type,
-                    ...(type === "CORRELATION_RISK_PREDICT" ? {
-                        predictedData: Array.from({ length: 4 }, () => ({
-                            correlationRiskModel: +(Math.random() * 1).toFixed(2)
-                        }))
-                    } : type === "SINGLE_SENSOR_PREDICT" ? {
-                        predictedData: Array.from({ length: 4 }, () => ({
-                            predictedValue: Math.floor(Math.random() * 10)
-                        }))
-                    } : {
-                        healthScore: Math.floor(Math.random() * 100)
-                    })
-                }
-            })()
-        },
-        {
-            id: 5,
-            departmentName: "문찬희",
-            type: ["CORRELATION_RISK_PREDICT", "SINGLE_SENSOR_PREDICT", "THRESHOLD_DIFF_ANALYSIS"][Math.floor(Math.random() * 3)],
-            resultSummary: ["정상", "경고", "위험"][Math.floor(Math.random() * 3)],
-            analyzedAt: "2025-06-05 10:10",
-            score: Math.floor(Math.random() * 100),
-            resultJson: (() => {
-                const type = ["CORRELATION_RISK_PREDICT", "SINGLE_SENSOR_PREDICT", "THRESHOLD_DIFF_ANALYSIS"][Math.floor(Math.random() * 3)];
-                return {
-                    type: type,
-                    ...(type === "CORRELATION_RISK_PREDICT" ? {
-                        predictedData: Array.from({ length: 4 }, () => ({
-                            correlationRiskModel: +(Math.random() * 1).toFixed(2)
-                        }))
-                    } : type === "SINGLE_SENSOR_PREDICT" ? {
-                        predictedData: Array.from({ length: 4 }, () => ({
-                            predictedValue: Math.floor(Math.random() * 10)
-                        }))
-                    } : {
-                        healthScore: Math.floor(Math.random() * 100)
-                    })
-                }
-            })()
-        },
-        {
-            id: 6,
-            departmentName: "송영찬",
-            type: ["CORRELATION_RISK_PREDICT", "SINGLE_SENSOR_PREDICT", "THRESHOLD_DIFF_ANALYSIS"][Math.floor(Math.random() * 3)],
-            resultSummary: ["정상", "경고", "위험"][Math.floor(Math.random() * 3)],
-            analyzedAt: "2025-06-05 09:10",
-            score: Math.floor(Math.random() * 100),
-            resultJson: (() => {
-                const type = ["CORRELATION_RISK_PREDICT", "SINGLE_SENSOR_PREDICT", "THRESHOLD_DIFF_ANALYSIS"][Math.floor(Math.random() * 3)];
-                return {
-                    type: type,
-                    ...(type === "CORRELATION_RISK_PREDICT" ? {
-                        predictedData: Array.from({ length: 4 }, () => ({
-                            correlationRiskModel: +(Math.random() * 1).toFixed(2)
-                        }))
-                    } : type === "SINGLE_SENSOR_PREDICT" ? {
-                        predictedData: Array.from({ length: 4 }, () => ({
-                            predictedValue: Math.floor(Math.random() * 10)
-                        }))
-                    } : {
-                        healthScore: Math.floor(Math.random() * 100)
-                    })
-                }
-            })()
-        },
-        {
-            id: 7,
-            departmentName: "강부식",
-            type: ["CORRELATION_RISK_PREDICT", "SINGLE_SENSOR_PREDICT", "THRESHOLD_DIFF_ANALYSIS"][Math.floor(Math.random() * 3)],
-            resultSummary: ["정상", "경고", "위험"][Math.floor(Math.random() * 3)],
-            analyzedAt: "2025-06-05 08:10",
-            score: Math.floor(Math.random() * 100),
-            resultJson: (() => {
-                const type = ["CORRELATION_RISK_PREDICT", "SINGLE_SENSOR_PREDICT", "THRESHOLD_DIFF_ANALYSIS"][Math.floor(Math.random() * 3)];
-                return {
-                    type: type,
-                    ...(type === "CORRELATION_RISK_PREDICT" ? {
-                        predictedData: Array.from({ length: 4 }, () => ({
-                            correlationRiskModel: +(Math.random() * 1).toFixed(2)
-                        }))
-                    } : type === "SINGLE_SENSOR_PREDICT" ? {
-                        predictedData: Array.from({ length: 4 }, () => ({
-                            predictedValue: Math.floor(Math.random() * 10)
-                        }))
-                    } : {
-                        healthScore: Math.floor(Math.random() * 100)
-                    })
-                }
-            })()
         }
     ];
 
@@ -156,15 +82,17 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function clearExpandRows() {
+        // 확장행(tr) 모두 제거
         document.querySelectorAll('.expand-row').forEach(tr => tr.remove());
-        Object.values(chartInstances).forEach(inst => inst && inst.destroy());
+        // 모든 차트 인스턴스 destroy
+        Object.values(chartInstances).forEach(inst => inst && inst.destroy && inst.destroy());
         chartInstances = {};
         expandedRowId = null;
     }
 
-    function renderTable(data) {
+    function renderTable(list) {
         tableBody.innerHTML = '';
-        data.forEach((row) => {
+        list.forEach(row => {
             const tr = document.createElement('tr');
             tr.style.cursor = "pointer";
             tr.innerHTML = `
@@ -175,132 +103,220 @@ document.addEventListener('DOMContentLoaded', function() {
             `;
             tr.addEventListener('click', function() {
                 if(expandedRowId === row.id) {
-                    // 이미 확장된 행이면 접기
                     clearExpandRows();
-                } else {
-                    // 다른 행 클릭 시 기존 확장 닫고 새로 확장
-                    clearExpandRows();
-                    const expandTr = document.createElement('tr');
-                    expandTr.className = "expand-row";
-                    expandTr.innerHTML = `
-                        <td colspan="4">
-                            <div style="display:flex; gap:2rem; align-items:stretch;">
-                                <div style="flex:2; min-width:320px;">
-                                    <canvas id="bar-chart-${row.id}" style="width:100%;height:320px;max-width:600px;max-height:400px;"></canvas>
-                                    <div style="text-align:center;">막대그래프</div>
-                                </div>
-                                <div style="flex:1; display:flex; flex-direction:column; gap:1rem; min-width:220px;">
-                                    <div style="flex:1;">
-                                        <canvas id="line-chart-${row.id}" style="width:100%;height:140px;max-height:180px;"></canvas>
-                                        <div style="text-align:center;">선그래프</div>
-                                    </div>
-                                    <div style="flex:1;">
-                                        <canvas id="pie-chart-${row.id}" style="width:100%;height:140px;max-height:180px;"></canvas>
-                                        <div style="text-align:center;">원그래프</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div style="margin-top:1.5rem; font-size:1.3rem;">점수: <span id="score-${row.id}"></span></div>
-                            <div id="emoji-${row.id}" style="font-size:2.5rem;"></div>
-                        </td>
-                    `;
-                    tr.after(expandTr);
-                    showDetail(row.resultJson, row.id);
-                    expandedRowId = row.id;
+                    return;
                 }
+                clearExpandRows();
+                showDetail(row, tr, row.id);
+                expandedRowId = row.id;
             });
             tableBody.appendChild(tr);
         });
     }
 
-    function showDetail(result, id) {
-        let chartData = [];
-        let score = null;
-        let chartLabel = "AI 분석값";
+    function showDetail(detail, baseTr, id) {
+        const result = detail.resultJson.result;
+        const analysisType =
+            result.analysisType ||
+            detail.resultJson.analysisType ||
+            detail.type ||
+            detail.analysisType;
 
-        // score를 dummyData에서 직접 가져옴
-        const row = dummyData.find(r => r.id === id);
-        if (row && typeof row.score === 'number') {
-            score = row.score;
+        const isCorrelation = /CORRELATION[-_]RISK[-_]PREDICT/i.test(analysisType);
+        const isSingle = /SINGLE[-_]SENSOR[-_]PREDICT/i.test(analysisType);
+
+        // 센서 정보 테이블 추가
+        let sensorInfoTable = '';
+        if (isCorrelation && result.sensorInfo) {
+            sensorInfoTable = `
+                <table style="margin:0 auto 1rem auto; border-collapse:collapse; min-width:400px; font-size:1rem;">
+                    <thead>
+                        <tr style="background:#f3f4f6;">
+                            <th style="padding:8px 16px; border:1px solid #e5e7eb;">센서명</th>
+                            <th style="padding:8px 16px; border:1px solid #e5e7eb;">gatewayId</th>
+                            <th style="padding:8px 16px; border:1px solid #e5e7eb;">sensorId</th>
+                            <th style="padding:8px 16px; border:1px solid #e5e7eb;">sensorType</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${Object.entries(result.sensorInfo).map(([key, info]) => `
+                            <tr>
+                                <td style="padding:8px 16px; border:1px solid #e5e7eb;">${key}</td>
+                                <td style="padding:8px 16px; border:1px solid #e5e7eb;">${info.gatewayId}</td>
+                                <td style="padding:8px 16px; border:1px solid #e5e7eb;">${info.sensorId}</td>
+                                <td style="padding:8px 16px; border:1px solid #e5e7eb;">${info.sensorType}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        } else if (isSingle && result.sensorInfo) {
+            const info = result.sensorInfo;
+            sensorInfoTable = `
+                <table style="margin:0 auto 1rem auto; border-collapse:collapse; min-width:400px; font-size:1rem;">
+                    <thead>
+                        <tr style="background:#f3f4f6;">
+                            <th style="padding:8px 16px; border:1px solid #e5e7eb;">gatewayId</th>
+                            <th style="padding:8px 16px; border:1px solid #e5e7eb;">sensorId</th>
+                            <th style="padding:8px 16px; border:1px solid #e5e7eb;">sensorType</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding:8px 16px; border:1px solid #e5e7eb;">${info.gatewayId}</td>
+                            <td style="padding:8px 16px; border:1px solid #e5e7eb;">${info.sensorId}</td>
+                            <td style="padding:8px 16px; border:1px solid #e5e7eb;">${info.sensorType}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            `;
         }
 
-        if(result.type === "CORRELATION_RISK_PREDICT") {
-            chartData = (result.predictedData || []).map(d => d.correlationRiskModel);
-            if(score === null) {
-                score = Math.round((chartData.reduce((a,b)=>a+b,0) / (chartData.length || 1)) * 100);
-            }
-            chartLabel = "상관관계 위험도";
-        } else if(result.type === "SINGLE_SENSOR_PREDICT") {
-            chartData = (result.predictedData || []).map(d => d.predictedValue);
-            if(score === null) {
-                score = Math.round((chartData.reduce((a,b)=>a+b,0) / (chartData.length || 1)));
-            }
-            chartLabel = "예측값";
-        } else if(result.type === "THRESHOLD_DIFF_ANALYSIS") {
-            chartData = [result.healthScore || 0];
-            if(score === null) {
-                score = result.healthScore || 0;
-            }
-            chartLabel = "헬스스코어";
-        } else {
-            chartData = [0];
-            if(score === null) {
-                score = 0;
-            }
+        // 차트 flex 행
+        let html = `<td colspan="4">
+    ${sensorInfoTable}
+    <div style="display:flex; gap:2.5rem; align-items:center; justify-content:center; flex-wrap:wrap;">
+`;
+
+        if (isCorrelation && result.predictedData) {
+            html += `
+        <div style="width:600px; height:320px; display:flex; flex-direction:column; align-items:center;">
+            <canvas id="bar-${id}" width="600" height="320"></canvas>
+            <div style="text-align:center; margin-top:0.5rem;">상관관계 위험도</div>
+        </div>
+        <div style="width:320px; height:320px; display:flex; flex-direction:column; align-items:center;">
+            <canvas id="pie-${id}" width="320" height="320"></canvas>
+            <div style="text-align:center; margin-top:0.5rem;">센서별 위험 비율</div>
+        </div>
+    `;
+        } else if (isSingle && result.predictedData) {
+            html += `
+        <div style="width:600px; height:320px; display:flex; flex-direction:column; align-items:center;">
+            <canvas id="line-${id}" width="600" height="320"></canvas>
+            <div style="text-align:center; margin-top:0.5rem;">예측값 추이</div>
+        </div>
+    `;
         }
-        // 차트 그리기
-        const barCtx = document.getElementById(`bar-chart-${id}`).getContext('2d');
-        chartInstances.bar = new Chart(barCtx, {
-            type: 'bar',
-            data: {
-                labels: chartData.map((_,i) => `#${i+1}`),
-                datasets: [{
-                    label: chartLabel,
-                    data: chartData,
-                    backgroundColor: 'rgba(54,162,235,0.5)'
-                }]
-            },
-            options: { responsive: true, maintainAspectRatio: false }
-        });
-        const lineCtx = document.getElementById(`line-chart-${id}`).getContext('2d');
-        chartInstances.line = new Chart(lineCtx, {
-            type: 'line',
-            data: {
-                labels: chartData.map((_,i) => `#${i+1}`),
-                datasets: [{
-                    label: chartLabel,
-                    data: chartData,
-                    borderColor: 'rgba(255,99,132,0.8)',
-                    backgroundColor: 'rgba(255,99,132,0.2)',
-                    fill: false,
-                    tension: 0.3
-                }]
-            },
-            options: { responsive: true, maintainAspectRatio: false }
-        });
-        const pieCtx = document.getElementById(`pie-chart-${id}`).getContext('2d');
-        chartInstances.pie = new Chart(pieCtx, {
-            type: 'doughnut',
-            data: {
-                labels: chartData.map((_,i) => `#${i+1}`),
-                datasets: [{
-                    label: chartLabel,
-                    data: chartData,
-                    backgroundColor: [
-                        'rgba(54,162,235,0.5)',
-                        'rgba(255,99,132,0.5)',
-                        'rgba(255,206,86,0.5)',
-                        'rgba(75,192,192,0.5)',
-                        'rgba(153,102,255,0.5)',
-                        'rgba(255,159,64,0.5)'
-                    ]
-                }]
-            },
-            options: { responsive: true, maintainAspectRatio: false }
-        });
-        document.getElementById(`score-${id}`).textContent = score;
-        document.getElementById(`emoji-${id}`).textContent = getEmoji(score);
+
+        html += `</div>
+    <div style="margin-top:2rem; text-align:center; width:100%; font-size:1.5rem;">
+        점수: ${detail.score} <span style="font-size:2rem;">${getEmoji(detail.score)}</span>
+    </div>
+</td>`;
+
+        const expandTr = document.createElement('tr');
+        expandTr.className = "expand-row";
+        expandTr.innerHTML = html;
+        baseTr.after(expandTr);
+
+        setTimeout(() => {
+            if (chartInstances[`bar-${id}`]) chartInstances[`bar-${id}`].destroy();
+            if (chartInstances[`pie-${id}`]) chartInstances[`pie-${id}`].destroy();
+            if (chartInstances[`line-${id}`]) chartInstances[`line-${id}`].destroy();
+
+            if (isCorrelation && result.predictedData) {
+                const sensors = Object.keys(result.predictedData);
+                const data = sensors.map(sensor => result.predictedData[sensor].CorrelationRiskModel);
+
+                chartInstances[`bar-${id}`] = new Chart(document.getElementById(`bar-${id}`), {
+                    type: 'bar',
+                    data: {
+                        labels: sensors,
+                        datasets: [{
+                            label: 'Correlation Risk',
+                            data: data,
+                            backgroundColor: 'rgba(255, 99, 132, 0.5)'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false
+                    }
+                });
+
+                chartInstances[`pie-${id}`] = new Chart(document.getElementById(`pie-${id}`), {
+                    type: 'pie',
+                    data: {
+                        labels: sensors,
+                        datasets: [{
+                            data: data,
+                            backgroundColor: ['#FF6384', '#36A2EB']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false
+                    }
+                });
+            } else if (isSingle && result.predictedData) {
+                const labels = result.predictedData.map(d => d.predictedDate);
+                const data = result.predictedData.map(d => d.predictedValue);
+
+                chartInstances[`line-${id}`] = new Chart(document.getElementById(`line-${id}`), {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Predicted Value',
+                            data: data,
+                            borderColor: '#4BC0C0'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false
+                    }
+                });
+            }
+        }, 0);
     }
 
     renderTable(dummyData);
+});
+
+let originData = dummyData.slice(); // 또는 fetch로 받아온 전체 데이터
+
+// 검색 폼 이벤트 등록
+document.getElementById('ai-search-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const search = this.search.value.trim().toLowerCase();
+    if (!search) {
+        renderTable(originData);
+        return;
+    }
+    // 검색 필터
+    const filtered = originData.filter(row => {
+        // 부서명, 분석타입, 결과요약, 시간 기본 검색
+        if (
+            (row.departmentName && row.departmentName.toLowerCase().includes(search)) ||
+            (row.type && row.type.toLowerCase().includes(search)) ||
+            (row.resultSummary && row.resultSummary.toLowerCase().includes(search)) ||
+            (row.analyzedAt && row.analyzedAt.toLowerCase().includes(search))
+        ) return true;
+
+        // CORRELATION-RISK-PREDICT: sensorInfo의 각 센서명/필드 검색
+        if (row.type && row.type.includes('CORRELATION')) {
+            const info = row.resultJson.result.sensorInfo;
+            return Object.entries(info).some(([sensorName, sensor]) =>
+                sensorName.toLowerCase().includes(search) ||
+                (sensor.gatewayId && String(sensor.gatewayId).toLowerCase().includes(search)) ||
+                (sensor.sensorId && sensor.sensorId.toLowerCase().includes(search)) ||
+                (sensor.sensorType && sensor.sensorType.toLowerCase().includes(search))
+            );
+        }
+        // SINGLE_SENSOR_PREDICT: sensorInfo 검색
+        if (row.type && row.type.includes('SINGLE_SENSOR_PREDICT')) {
+            const sensor = row.resultJson.result.sensorInfo;
+            return (
+                (sensor.gatewayId && String(sensor.gatewayId).toLowerCase().includes(search)) ||
+                (sensor.sensorId && sensor.sensorId.toLowerCase().includes(search)) ||
+                (sensor.sensorType && sensor.sensorType.toLowerCase().includes(search))
+            );
+        }
+        return false;
+    });
+    renderTable(filtered);
+
+    // // 실제 데이터 대응
+    // fetchList();
 });

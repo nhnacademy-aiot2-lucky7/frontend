@@ -4,6 +4,7 @@ import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.CreateDashboardRequ
 import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.InfoDashboardResponse;
 import com.nhnacademy.lastfrontproject.dto.grafana.folder.FolderInfoResponse;
 import com.nhnacademy.lastfrontproject.dto.grafana.panel.CreatePanelRequest;
+import com.nhnacademy.lastfrontproject.dto.grafana.panel.PanelWithRuleRequest;
 import com.nhnacademy.lastfrontproject.dto.grafana.panel.SensorFieldRequestDto;
 import com.nhnacademy.lastfrontproject.dto.sensor.DataTypeInfoResponse;
 import com.nhnacademy.lastfrontproject.dto.sensor.SensorDataMappingIndexResponse;
@@ -19,6 +20,7 @@ import java.util.Set;
 
 @Slf4j
 @RestController
+@RequestMapping("/api")
 public class DashboardRestController {
 
     private final DashboardService dashboardService;
@@ -51,9 +53,16 @@ public class DashboardRestController {
 
     @PostMapping({"/panels"})
     ResponseEntity<Void> createPanel(
-            CreatePanelRequest createPanelRequest
+            @RequestBody PanelWithRuleRequest panelWithRuleRequest
     ){
-        return dashboardService.createPanel(createPanelRequest);
+        return dashboardService.createPanel(panelWithRuleRequest);
+    }
+
+    @PostMapping({"/test"})
+    ResponseEntity<Void> createTest(
+            @RequestBody CreatePanelRequest createPanelRequest
+    ){
+        return dashboardService.createTest(createPanelRequest);
     }
 
     @GetMapping("/sensor")

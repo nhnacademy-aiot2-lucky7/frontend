@@ -197,31 +197,56 @@ document.addEventListener('DOMContentLoaded', () => {
             const typeInfo = await typeRes.json();
             const dataTypeKrName = typeInfo.type_kr_name;
 
+            // const panelWithRuleRequest = {
+            //     createPanelRequest: {
+            //         dashboardUid,
+            //         panelId: null,
+            //         panelTitle,
+            //         field: field,                      // @JsonProperty("type_en_name")
+            //         gatewayId: gatewayId,              // @JsonProperty("gateway_id")
+            //         sensorId: sensorId,                // @JsonProperty("sensor_id")
+            //         dataTypeKrName: dataTypeKrName,    // @JsonProperty("type_kr_name")
+            //         gridPos: { w: width, h: height },
+            //         type: type,
+            //         aggregation: aggregation,
+            //         time: time,
+            //         thresholdMin: min,                 // @JsonProperty("threshold_min")
+            //         thresholdMax: max,                 // @JsonProperty("threshold_max")
+            //         bucket: "team1-sensor-data",
+            //         measurement: "sensor-data"
+            //     },
+            //     ruleRequest: {
+            //         gatewayId: gatewayId,
+            //         sensorId: sensorId,
+            //         sensorType: field,
+            //         departmentId: departmentId
+            //     }
+            // };
+
             const createPanelRequest = {
-                dashboardUid,
+                dashboardUid: dashboardUid,
                 panelId: null,
-                panelTitle,
-                gateway_id: gatewayId,
-                sensor_id: sensorId,
-                department_id: departmentId,
+                panelTitle: panelTitle,
+                type_en_name: field,              // Java: @JsonProperty("type_en_name")
+                gateway_id: gatewayId,            // Java: @JsonProperty("gateway_id")
+                sensor_id: sensorId,              // Java: @JsonProperty("sensor_id")
+                type_kr_name: dataTypeKrName,     // Java: @JsonProperty("type_kr_name")
                 gridPos: { w: width, h: height },
-                type,
-                aggregation,
-                time,
-                threshold_min: min,
-                threshold_max: max,
+                type: type,
+                aggregation: aggregation,
+                time: time,
+                threshold_min: min,               // Java: @JsonProperty("threshold_min")
+                threshold_max: max,               // Java: @JsonProperty("threshold_max")
                 bucket: "team1-sensor-data",
                 measurement: "sensor-data"
             };
 
-            const response = await fetch("/panels", {
+            const response = await fetch("/api/test", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({
-                    createPanelRequest
-                })
+                body: JSON.stringify(createPanelRequest)
             });
 
             if (!response.ok) {

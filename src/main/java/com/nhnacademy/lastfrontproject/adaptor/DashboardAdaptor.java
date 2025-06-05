@@ -38,6 +38,11 @@ public interface DashboardAdaptor {
 
     @PostMapping("/panels")
     ResponseEntity<Void> createPanel(
+            @RequestBody PanelWithRuleRequest panelWithRuleRequest
+    );
+
+    @PostMapping("/panels/test")
+    ResponseEntity<Void> createPaneltest(
             @RequestBody CreatePanelRequest createPanelRequest
     );
 

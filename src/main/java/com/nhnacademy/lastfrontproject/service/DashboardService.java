@@ -7,7 +7,6 @@ import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.UpdateDashboardName
 import com.nhnacademy.lastfrontproject.dto.grafana.folder.FolderInfoResponse;
 import com.nhnacademy.lastfrontproject.dto.grafana.panel.*;
 import com.nhnacademy.lastfrontproject.dto.sensor.DataTypeInfoResponse;
-import com.nhnacademy.lastfrontproject.dto.sensor.RuleRequest;
 import com.nhnacademy.lastfrontproject.dto.sensor.SensorDataMappingIndexResponse;
 import com.nhnacademy.lastfrontproject.dto.sensor.ThresholdBoundResponse;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +32,10 @@ public interface DashboardService {
     List<IframePanelResponse> getFilterPanel(ReadPanelRequest readPanelRequest, List<Integer> offPanelId);
 
     // 패널 생성
-    ResponseEntity<Void> createPanel(CreatePanelRequest createPanelRequest);
+    ResponseEntity<Void> createPanel(PanelWithRuleRequest panelWithRuleRequest);
+
+    // 패널 생성
+    ResponseEntity<Void> createTest(CreatePanelRequest createPanelRequest);
 
     // 대시보드 수정
     void updateDashboard(UpdateDashboardNameRequest updateDashboardNameRequest);

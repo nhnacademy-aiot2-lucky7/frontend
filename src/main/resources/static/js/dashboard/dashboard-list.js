@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
 
             banner.addEventListener('click', () => {
-                window.location.href = `/panels?dashboardUid=${dashboardUid}`;
+                window.location.href = `/panels/${dashboardUid}`;
             });
 
             container.appendChild(banner);

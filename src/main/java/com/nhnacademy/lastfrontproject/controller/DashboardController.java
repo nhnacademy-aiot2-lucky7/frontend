@@ -43,6 +43,7 @@ public class DashboardController {
     public String showPanelsPage(Model model,
                              @RequestParam(name = "dashboardUid", required = true) String dashboardUid) {
         model.addAttribute("departmentId", dashboardUid);
+
         return "pages/member/dashboard/pages-add-panel";
     }
 
@@ -52,6 +53,7 @@ public class DashboardController {
                             @PathVariable String dashboardUid) {
         List<IframePanelResponse> panelResponses = dashboardService.getPanel(dashboardUid);
         model.addAttribute("panels", panelResponses);
+        model.addAttribute("dashboardUid", dashboardUid);
 
         return "pages/member/dashboard/pages-panel-list";
     }

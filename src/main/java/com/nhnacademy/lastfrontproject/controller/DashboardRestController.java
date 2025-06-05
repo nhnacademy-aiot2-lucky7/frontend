@@ -58,7 +58,7 @@ public class DashboardRestController {
         return dashboardService.createPanel(panelWithRuleRequest);
     }
 
-    @PostMapping({"/test"})
+    @PostMapping("/test")
     ResponseEntity<Void> createTest(
             @RequestBody CreatePanelRequest createPanelRequest
     ){

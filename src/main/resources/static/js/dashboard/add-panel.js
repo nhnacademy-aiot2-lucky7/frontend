@@ -181,11 +181,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const createPanelRequest = {
                 dashboardUid: dashboardUid,
-                panelId: null,
+                panelId: 1,
                 panelTitle: panelTitle,
                 sensorFieldRequestDto: [
                     {
-                        type_en_name: "field",      // Java @JsonProperty("type_en_name")
+                        type_en_name: "temperature",      // Java @JsonProperty("type_en_name")
                         gateway_id: 1,            // Java @JsonProperty("gateway_id") (숫자만 넣어주세요)
                         sensor_id: "sensorId"       // Java @JsonProperty("sensor_id")
                     }

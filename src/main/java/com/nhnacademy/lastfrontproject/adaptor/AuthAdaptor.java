@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
-@FeignClient(name = "auth", url = "${feign.client.gateway-service.url}")
+@FeignClient(name = "auth", url = "https://luckyseven.live")
 public interface AuthAdaptor {
     @PostMapping("/auth/register")
     ResponseEntity<String> register(@RequestBody RegisterRequest registerRequest);

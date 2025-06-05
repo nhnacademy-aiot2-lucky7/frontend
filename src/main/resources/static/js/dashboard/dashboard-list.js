@@ -51,6 +51,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             const bannerSrc = getBannerImage(dashboardTitle);
 
+            const bannerWrapper = document.createElement('div');
+            bannerWrapper.style.position = 'relative';
+            bannerWrapper.style.width = '1800px';
+            bannerWrapper.style.height = '150px';
+
             const banner = document.createElement('div');
             banner.style.backgroundImage = `url(${bannerSrc})`;
             banner.style.backgroundSize = 'cover';
@@ -82,7 +87,44 @@ document.addEventListener('DOMContentLoaded', async () => {
                 window.location.href = `/panels/${dashboardUid}`;
             });
 
-            container.appendChild(banner);
+            // 삭제 버튼 추가
+            const deleteBtn = document.createElement('button');
+            deleteBtn.textContent = '삭제';
+            deleteBtn.style.position = 'absolute';
+            deleteBtn.style.top = '10px';
+            deleteBtn.style.right = '10px';
+            deleteBtn.style.backgroundColor = '#e74c3c';
+            deleteBtn.style.border = 'none';
+            deleteBtn.style.color = 'white';
+            deleteBtn.style.padding = '6px 10px';
+            deleteBtn.style.borderRadius = '6px';
+            deleteBtn.style.cursor = 'pointer';
+            deleteBtn.style.boxShadow = '0 2px 6px rgba(0,0,0,0.2)';
+            deleteBtn.style.zIndex = '2';
+
+            deleteBtn.addEventListener('click', async (e) => {
+                e.stopPropagation(); // 배너 클릭 이벤트 방지
+
+                if (!confirm(`정말 "${dashboardTitle}" 대시보드를 삭제하시겠습니까?`)) return;
+
+                try {
+                    const res = await fetch(`/dashboards/${dashboardUid}`, {
+                        method: 'DELETE',
+                        credentials: 'include'
+                    });
+
+                    if (!res.ok) throw new Error('삭제 실패');
+
+                    // UI에서 제거
+                    bannerWrapper.remove();
+                } catch (err) {
+                    alert('삭제 중 오류 발생: ' + err.message);
+                }
+            });
+
+            bannerWrapper.appendChild(banner);
+            bannerWrapper.appendChild(deleteBtn);
+            container.appendChild(bannerWrapper);
         });
 
         dashboardList.appendChild(container);

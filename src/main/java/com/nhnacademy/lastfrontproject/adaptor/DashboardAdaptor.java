@@ -56,7 +56,7 @@ public interface DashboardAdaptor {
             @RequestBody UpdatePanelPriorityRequest updatePriority
     );
 
-        @DeleteMapping("/dashboards")
+    @DeleteMapping("/dashboards")
     ResponseEntity<Void> deleteDashboard(
             @RequestBody DeleteDashboardRequest deleteDashboardRequest);
 

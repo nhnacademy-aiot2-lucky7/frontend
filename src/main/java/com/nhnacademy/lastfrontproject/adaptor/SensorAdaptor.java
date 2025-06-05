@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.Set;
 
 @FeignClient(name = "sensor", url = "${feign.client.gateway-service.url}")
-public interface SensorAdapter {
+public interface SensorAdaptor {
 
     @GetMapping("/sensor-data-mappings")
     ResponseEntity<Set<SensorDataMappingIndexResponse>> getSensorData();

@@ -6,7 +6,6 @@ import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.InfoDashboardRespon
 import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.UpdateDashboardNameRequest;
 import com.nhnacademy.lastfrontproject.dto.grafana.folder.FolderInfoResponse;
 import com.nhnacademy.lastfrontproject.dto.grafana.panel.*;
-import com.nhnacademy.lastfrontproject.dto.sensor.RuleRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @FeignClient(name = "dashboard", url = "${feign.client.gateway-service.url}")
-public interface DashboardAdapter {
+public interface DashboardAdaptor {
 
     @GetMapping("/folders")
     ResponseEntity<List<FolderInfoResponse>> getFolders();

@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!response.ok) throw new Error('대시보드 조회 실패');
 
         const dashboards = await response.json();
+
         console.log("결과",dashboards);
         const userDepartment = window.currentUser.department;
 
@@ -47,6 +48,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         filteredDashboards.forEach(d => {
             const dashboardTitle = d.title || '이름 없음';
             const dashboardUid = d.uid;
+
             const bannerSrc = getBannerImage(dashboardTitle);
 
             const banner = document.createElement('div');
@@ -77,7 +79,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
 
             banner.addEventListener('click', () => {
-                window.location.href = `/panels`;
+                window.location.href = `/panels/${dashboardUid}`;
             });
 
             container.appendChild(banner);

@@ -3,7 +3,6 @@ package com.nhnacademy.lastfrontproject.controller;
 import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.DeleteDashboardRequest;
 import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.UpdateDashboardNameRequest;
 import com.nhnacademy.lastfrontproject.dto.grafana.panel.*;
-import com.nhnacademy.lastfrontproject.dto.sensor.RuleRequest;
 import com.nhnacademy.lastfrontproject.service.DashboardService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,9 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static org.hibernate.query.sqm.tree.SqmNode.log;
-
 @Controller
+@RequestMapping("/pages")
 public class DashboardController {
     private final DashboardService dashboardService;
 
@@ -42,24 +40,11 @@ public class DashboardController {
     }
 
     // 패널 조회
-    @GetMapping("/panels")
-    public String showPanelsPage(Model model,
-                             @RequestParam(name = "dashboardUid", required = true) String dashboardUid) {
-        model.addAttribute("departmentId", dashboardUid);
-
-        return "pages/member/dashboard/pages-add-panel";
-    }
-
-    // 패널 조회
     @GetMapping("/panels/{dashboardUid}")
     public String getPanels(Model model,
                             @PathVariable String dashboardUid) {
-        log.info("getPanels 실행");
-        List<IframePanelResponse> panelResponses = dashboardService.getPanel(dashboardUid);
-        model.addAttribute("panels", panelResponses);
         model.addAttribute("dashboardUid", dashboardUid);
-
-        return "pages/member/dashboard/pages-panel-list";
+        return "pages/member/dashboard/pages-add-panel";
     }
 
     // 5. 필터링된 패널 조회

@@ -1,5 +1,6 @@
 package com.nhnacademy.lastfrontproject.dto.grafana.panel;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,19 +11,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SensorFieldRequestDto {
 
-    /**
-     * 측정값에 포함될 필드들의 목록 (예: activity, humidity, battery)
-     */
+    @JsonProperty("type_en_name")
     private String field;
 
-    /**
-     * 측정값에 포함될 gateway_id
-     */
+    @JsonProperty("gateway_id")
     private Long gatewayId;
 
-    /**
-     * 측정값에 포함될 sensor_id
-     */
+    @JsonProperty("sensor_id")
     private String sensorId;
 }
 

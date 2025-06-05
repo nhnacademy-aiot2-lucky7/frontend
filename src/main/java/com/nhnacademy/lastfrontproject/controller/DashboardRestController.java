@@ -10,6 +10,7 @@ import com.nhnacademy.lastfrontproject.dto.sensor.RuleRequest;
 import com.nhnacademy.lastfrontproject.dto.sensor.SensorDataMappingIndexResponse;
 import com.nhnacademy.lastfrontproject.dto.sensor.ThresholdBoundResponse;
 import com.nhnacademy.lastfrontproject.service.DashboardService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,8 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Set;
 
+@Slf4j
 @RestController
-@RequestMapping("/pages")
 public class DashboardRestController {
 
     private final DashboardService dashboardService;
@@ -28,13 +29,17 @@ public class DashboardRestController {
     }
 
     // 폴더 조회
+    @CrossOrigin(origins = "*")
     @GetMapping("/admin/folders")
     public List<FolderInfoResponse> getFolders() {
-        return dashboardService.getFolders();
+        log.info("📡 폴더 리스트 조회 시작");
+        List<FolderInfoResponse> folders = dashboardService.getFolders();
+        log.info("📦 폴더 수: {}", folders.size());
+        return folders;
     }
 
     @GetMapping({"/dashboards"})
-    public List<InfoDashboardResponse> getDashboardPage() {
+    public List<InfoDashboardResponse> getDashboardInfo() {
         return dashboardService.getAllDashboard();
     }
 

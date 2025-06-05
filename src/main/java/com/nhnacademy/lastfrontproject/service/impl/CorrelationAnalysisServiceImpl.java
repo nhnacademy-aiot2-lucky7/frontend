@@ -2,7 +2,7 @@ package com.nhnacademy.lastfrontproject.service.impl;
 
 import com.nhnacademy.lastfrontproject.adaptor.CorrelationAdaptor;
 import com.nhnacademy.lastfrontproject.adaptor.GatewayAdaptor;
-import com.nhnacademy.lastfrontproject.adaptor.SensorAdapter;
+import com.nhnacademy.lastfrontproject.adaptor.SensorAdaptor;
 import com.nhnacademy.lastfrontproject.dto.analysis.AnalysisRequest;
 import com.nhnacademy.lastfrontproject.dto.analysis.AnalysisResponse;
 import com.nhnacademy.lastfrontproject.dto.gateway.GatewayInfoResponse;
@@ -19,7 +19,7 @@ import java.util.List;
 public class CorrelationAnalysisServiceImpl implements CorrelationAnalysisService {
 
     private final GatewayAdaptor gatewayAdaptor;
-    private final SensorAdapter sensorAdapter;
+    private final SensorAdaptor sensorAdaptor;
     private final CorrelationAdaptor correlationAdaptor;
 
     @Override
@@ -30,7 +30,7 @@ public class CorrelationAnalysisServiceImpl implements CorrelationAnalysisServic
 
     @Override
     public List<SensorDataMappingWebResponse> getSensorListByGatewayId(Long gatewayId) {
-        ResponseEntity<List<SensorDataMappingWebResponse>> sensorList = sensorAdapter.getSensorDataByGatewayId(gatewayId);
+        ResponseEntity<List<SensorDataMappingWebResponse>> sensorList = sensorAdaptor.getSensorDataByGatewayId(gatewayId);
         return sensorList.getBody();
     }
 

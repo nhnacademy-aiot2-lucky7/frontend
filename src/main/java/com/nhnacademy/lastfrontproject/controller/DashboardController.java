@@ -70,34 +70,34 @@ public class DashboardController {
         return dashboardService.getFilterPanel(readPanelRequest, offPanelId);
     }
 
-//
-//    // 8. 대시보드 이름 수정
-//    @PutMapping("/dashboards")
-//    public void updateDashboard(@RequestBody UpdateDashboardNameRequest request) {
-//        dashboardService.updateDashboard(request);
-//    }
-//
-//    // 9. 패널 수정
-//    @PutMapping("/panels")
-//    public void updatePanel(@RequestBody UpdatePanelRequest request) {
-//        dashboardService.updatePanel(request);
-//    }
-//
-//    // 10. 패널 우선순위 수정
-//    @PutMapping("/panels/priority")
-//    public void updatePriority(@RequestBody UpdatePanelPriorityRequest request) {
-//        dashboardService.updatePriority(request);
-//    }
-//
-//    // 11. 대시보드 삭제
-//    @DeleteMapping("/dashboard")
-//    public void deleteDashboard(@RequestBody DeleteDashboardRequest request) {
-//        dashboardService.deleteDashboard(request);
-//    }
-//
-//    // 12. 패널 삭제
-//    @DeleteMapping("/panel")
-//    public void deletePanel(@RequestBody DeletePanelRequest request) {
-//        dashboardService.deletePanel(request);
-//    }
+
+    // 8. 대시보드 이름 수정
+    @PutMapping("/dashboards")
+    public void updateDashboard(@RequestBody UpdateDashboardNameRequest request) {
+        dashboardService.updateDashboard(request);
+    }
+
+    // 9. 패널 수정
+    @PutMapping("/panels")
+    public void updatePanel(@RequestBody UpdatePanelRequest request) {
+        dashboardService.updatePanel(request);
+    }
+
+    // 10. 패널 우선순위 수정
+    @PutMapping("/panels/priority")
+    public void updatePriority(@RequestBody UpdatePanelPriorityRequest request) {
+        dashboardService.updatePriority(request);
+    }
+
+    // 11. 대시보드 삭제
+    @DeleteMapping("/dashboard")
+    public void deleteDashboard(@RequestBody DeleteDashboardRequest request) {
+        dashboardService.deleteDashboard(request);
+    }
+
+    // 12. 패널 삭제
+    @DeleteMapping("/panel")
+    public void deletePanel(@RequestBody DeletePanelRequest request) {
+        dashboardService.deletePanel(request);
+    }
 }

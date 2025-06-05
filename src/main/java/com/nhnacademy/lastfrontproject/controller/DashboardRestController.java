@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
+@RequestMapping("/pages")
 public class DashboardRestController {
 
     private final DashboardService dashboardService;

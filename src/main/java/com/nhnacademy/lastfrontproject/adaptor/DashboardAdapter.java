@@ -1,19 +1,16 @@
 package com.nhnacademy.lastfrontproject.adaptor;
 
 import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.CreateDashboardRequest;
-import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.DeleteDashboardRequest;
 import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.InfoDashboardResponse;
 import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.UpdateDashboardNameRequest;
 import com.nhnacademy.lastfrontproject.dto.grafana.folder.FolderInfoResponse;
 import com.nhnacademy.lastfrontproject.dto.grafana.panel.*;
-import com.nhnacademy.lastfrontproject.dto.sensor.SensorDataMappingIndexResponse;
 import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 
 @FeignClient(name = "dashboard", url = "${feign.client.gateway-service.url}")
 public interface DashboardAdapter {
@@ -22,12 +19,9 @@ public interface DashboardAdapter {
     ResponseEntity<List<FolderInfoResponse>> getFolders();
 
     @GetMapping("/dashboards")
-    ResponseEntity<List<String>> getDashboardName();
-
-    @GetMapping("/dashboards")
     ResponseEntity<List<InfoDashboardResponse>> getAllDashboard();
 
-    @GetMapping("/panels")
+    @PostMapping("/get/panels")
     ResponseEntity<List<IframePanelResponse>> getPanel(
             @RequestBody ReadPanelRequest readPanelRequest);
 
@@ -62,14 +56,11 @@ public interface DashboardAdapter {
             @RequestBody UpdatePanelPriorityRequest updatePriority
     );
 
-    @DeleteMapping("/dashboards")
-    ResponseEntity<Void> deleteDashboard(
-            @RequestBody DeleteDashboardRequest deleteDashboardRequest);
-
-    @DeleteMapping("/panels")
-    ResponseEntity<Void> deletePanel(
-            @RequestBody DeletePanelRequest deletePanelRequest);
-
-    @GetMapping("/sensor-data-mappings")
-    ResponseEntity<Set<SensorDataMappingIndexResponse>> getSensorData();
+    //    @DeleteMapping("/dashboards")
+//    ResponseEntity<Void> deleteDashboard(
+//            @RequestBody DeleteDashboardRequest deleteDashboardRequest);
+//
+//    @DeleteMapping("/panels")
+//    ResponseEntity<Void> deletePanel(
+//            @RequestBody DeletePanelRequest deletePanelRequest);
 }

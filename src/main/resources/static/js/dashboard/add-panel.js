@@ -146,12 +146,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const departmentId = localStorage.getItem('departmentId');
 
-            const typeRes = await fetch(`/data-types/${field}`);
-            if (!typeRes.ok) {
-                throw new Error(`데이터 타입 정보를 불러오지 못했습니다: ${typeRes.status}`);
-            }
-            const typeInfo = await typeRes.json();
-            const dataTypeKrName = typeInfo.type_kr_name;
+            // const typeRes = await fetch(`/data-types/${field}`);
+            // if (!typeRes.ok) {
+            //     alert(`데이터 타입 정보를 불러오지 못했습니다: ${typeRes.status}`);
+            // }
+            // const typeInfo = await typeRes.json();
+            // const dataTypeKrName = typeInfo.type_kr_name;
 
             // const panelWithRuleRequest = {
             //     createPanelRequest: {

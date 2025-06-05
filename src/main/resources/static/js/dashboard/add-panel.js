@@ -5,9 +5,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const typeSelect = document.getElementById('typeSelect');
     const aggregationSelect = document.getElementById('aggregationSelect');
     const timeSelect = document.getElementById('timeSelect');
-    const minInput = document.getElementById('minValue');
-    const middleInput = document.getElementById('middleValue'); // 중간값 입력 필드 추가
-    const maxInput = document.getElementById('maxValue');
+    const minInput = document.getElementById('minInput');
+    const middleInput = document.getElementById('middleInput');
+    const maxInput = document.getElementById('maxInput');
     const thresholdRadios = document.getElementsByName('threshold');
     const saveBtn = document.getElementById('saveBtn');
 
@@ -35,20 +35,20 @@ document.addEventListener('DOMContentLoaded', () => {
         return sensorBound.find(b =>
             b.gatewayId === gatewayId &&
             b.sensorId === sensorId &&
-            b.dataTypeEnName === field
+            b.sensorType === field
         );
     }
 
     function applyThresholdLimits(bound) {
         const selected = document.querySelector('input[name="threshold"]:checked')?.value;
 
-        const hasMin = bound.thresholdMin !== null && bound.thresholdMin !== undefined;
-        const hasMax = bound.thresholdMax !== null && bound.thresholdMax !== undefined;
-        const middleValue = hasMin && hasMax ? (bound.thresholdMin + bound.thresholdMax) / 2 : null;
+        const hasMin = bound.minRangeMin !== null && bound.minRangeMin !== undefined;
+        const hasMax = bound.maxRangeMax !== null && bound.maxRangeMax !== undefined;
+        const middleValue = hasMin && hasMax ? (bound.minRangeMin + bound.maxRangeMax) / 2 : null;
 
         if (selected === 'min' && hasMin) {
             minInput.disabled = false;
-            minInput.value = bound.thresholdMin ?? '';
+            minInput.value = bound.minRangeMin ?? '';
             minInput.min = bound.minRangeMin ?? '';
             minInput.max = bound.minRangeMax ?? '';
 
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
             maxInput.value = '';
         } else if (selected === 'max' && hasMax) {
             maxInput.disabled = false;
-            maxInput.value = bound.thresholdMax ?? '';
+            maxInput.value = bound.maxRangeMax ?? '';
             maxInput.min = bound.maxRangeMin ?? '';
             maxInput.max = bound.maxRangeMax ?? '';
 
@@ -81,6 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
             minInput.disabled = true;
             maxInput.disabled = true;
             middleInput.disabled = true;
+
             minInput.value = '';
             maxInput.value = '';
             middleInput.value = '';
@@ -146,6 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
             thresholdRadios.forEach(radio => {
                 radio.addEventListener('change', () => {
                     const bound = getSelectedBound();
+                    console.log("API 응답", bound);
                     if (bound) applyThresholdLimits(bound);
                 });
             });
@@ -193,28 +195,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error(`데이터 타입 정보를 불러오지 못했습니다: ${typeRes.status}`);
             }
             const typeInfo = await typeRes.json();
-            const dataTypeKrName = typeInfo.dataTypeKrName;
-
-            const ruleRequest = {
-                gateway_id: gatewayId,
-                sensor_id: sensorId,
-                department_id: departmentId,
-                type_en_name: field,
-                type_kr_name: dataTypeKrName,
-                threshold_min: min,
-                threshold_middle: middle,  // 필요하면 백엔드 반영
-                threshold_max: max
-            };
+            const dataTypeKrName = typeInfo.type_kr_name;
 
             const createPanelRequest = {
                 dashboardUid,
                 panelId: null,
                 panelTitle,
-                sensorFieldRequestDto: [ruleRequest],
+                gateway_id: gatewayId,
+                sensor_id: sensorId,
+                department_id: departmentId,
                 gridPos: { w: width, h: height },
                 type,
                 aggregation,
                 time,
+                threshold_min: min,
+                threshold_max: max,
                 bucket: "team1-sensor-data",
                 measurement: "sensor-data"
             };
@@ -225,7 +220,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    ruleRequest,
                     createPanelRequest
                 })
             });

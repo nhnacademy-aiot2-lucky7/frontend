@@ -10,8 +10,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SensorDataMappingIndexResponse {
 
-    private long gatewayId;
+    @JsonProperty("gateway_id")
+    private Long gatewayId;
 
+    @JsonProperty("sensor_id")
     private String sensorId;
 
     @JsonProperty("type_en_name")

@@ -22,9 +22,9 @@ public interface DashboardAdapter {
     @GetMapping("/dashboards")
     ResponseEntity<List<InfoDashboardResponse>> getAllDashboard();
 
-    @GetMapping("/panels")
+    @GetMapping("/panels/{dashboardUid}")
     ResponseEntity<List<IframePanelResponse>> getPanel(
-            @RequestBody ReadPanelRequest readPanelRequest);
+            @PathVariable String dashboardUid);
 
     @PostMapping("/dashboards")
     ResponseEntity<Void> createDashboard(

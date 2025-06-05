@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.hibernate.query.sqm.tree.SqmNode.log;
+
 @Controller
 public class DashboardController {
     private final DashboardService dashboardService;
@@ -51,6 +53,7 @@ public class DashboardController {
     @GetMapping("/panel/{dashboardUid}")
     public String getPanels(Model model,
                             @PathVariable String dashboardUid) {
+        log.info("getPanels 실행");
         List<IframePanelResponse> panelResponses = dashboardService.getPanel(dashboardUid);
         model.addAttribute("panels", panelResponses);
         model.addAttribute("dashboardUid", dashboardUid);

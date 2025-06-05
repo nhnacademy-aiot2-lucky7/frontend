@@ -15,4 +15,9 @@ public class AiAnalyzeController {
     public String aiAdmin(){
         return "pages/admin/pages-ai-analyze-adm";
     }
+
+    @GetMapping("correlation-analysis")
+    public String correlationAnalysis() {
+        return "pages/ai-risk-analyze";
+    }
 }

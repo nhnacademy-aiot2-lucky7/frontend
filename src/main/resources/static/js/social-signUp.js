@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
     // 부서 목록 불러오기
-    fetch('https://luckyseven.live/departments')
+    fetch('https://luckyseven.live/departments/all')
         .then(response => {
             if (!response.ok) throw new Error('부서 정보를 불러오는데 실패했습니다.');
             return response.json();

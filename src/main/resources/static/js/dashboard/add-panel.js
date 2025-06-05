@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 📡 센서 매핑 정보 API 호출
-    fetch('/sensor-data-mappings')
+    fetch('/sensor')
         .then(response => {
             if (!response.ok) {
                 throw new Error('센서 매핑 정보를 불러오는 데 실패했습니다.');
@@ -47,30 +47,43 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('게이트웨이/센서/필드를 불러오는 중 오류가 발생했습니다.');
         });
 
+    fetch("/sensor/bound")
+        .then(response =>{
+            if(!response.ok){
+                throw new Error("센서 임계치 범위를 불러올 수 없습니다.");
+            }
+            return response.json();
+        })
+        .then(data=>{
+            // threshold 라디오 제어
+            thresholdRadios.forEach(radio => {
+                radio.addEventListener('change', () => {
+                    if (radio.value === 'min') {
+                        minInput.disabled = false;
+                        maxInput.disabled = true;
+                        maxInput.value = '';
+                    } else if (radio.value === 'max') {
+                        minInput.disabled = true;
+                        maxInput.disabled = false;
+                        minInput.value = '';
+                    } else {
+                        minInput.disabled = true;
+                        maxInput.disabled = true;
+                        minInput.value = '';
+                        maxInput.value = '';
+                    }
+                });
+            });
+        })
+        .catch(error =>{
+            console.error(error);
+            alert('센서 임계치 정보를 불러오는 중 오류가 발생했습니다.');
+        })
+
     // 고정 옵션 select 박스 채우기
     populateSelect(typeSelect, typeList);
     populateSelect(aggregationSelect, aggregationList);
     populateSelect(timeSelect, timeList);
-
-    // threshold 라디오 제어
-    thresholdRadios.forEach(radio => {
-        radio.addEventListener('change', () => {
-            if (radio.value === 'min') {
-                minInput.disabled = false;
-                maxInput.disabled = true;
-                maxInput.value = '';
-            } else if (radio.value === 'max') {
-                minInput.disabled = true;
-                maxInput.disabled = false;
-                minInput.value = '';
-            } else {
-                minInput.disabled = true;
-                maxInput.disabled = true;
-                minInput.value = '';
-                maxInput.value = '';
-            }
-        });
-    });
 
     // 저장 버튼 이벤트
     saveBtn.addEventListener('click', async (e) => {

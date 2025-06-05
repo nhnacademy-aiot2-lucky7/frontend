@@ -25,6 +25,7 @@ public class GlobalUserInfoAdvice {
             try {
                  imageResponse = authAdaptor.getImage(userResponse.getUserEmail()).getBody();
             }catch (Exception e){
+                log.info("{}",e.getMessage(), e);
                 imageResponse = null;
             }
             return new UserWithImageResponse(userResponse.getUserRole(),

@@ -22,7 +22,7 @@
 //     token
 
 // 부서 목록 불러오기
-fetch('http://localhost:10232/departments')
+fetch('https://luckyseven.live/departments')
     .then(response => {
         if (!response.ok) {
             throw new Error('부서 정보를 불러오는데 실패했습니다.');
@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // }
 
         // 서버에 회원가입 요청 보내기
-        fetch('http://localhost:10232/auth/signUp', {
+        fetch('https://luckyseven.live/auth/signUp', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

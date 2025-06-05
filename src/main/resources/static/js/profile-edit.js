@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const formData = new FormData();
             formData.append('file', file);
 
-            fetch('http://localhost:10232/profile-image/upload', {
+            fetch('https://luckyseven.live/profile-image/upload', {
                 method: 'POST',
                 credentials: 'include',
                 body: formData
@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // 비밀번호가 비어 있을 경우 -> 전화번호만 수정
         if (!currentPasswordInput.value && !newPasswordInput.value && !confirmPasswordInput.value) {
-            fetch('http://localhost:10232/users/me', {
+            fetch('https://luckyseven.live/users/me', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
 
-            fetch('http://localhost/users/me/password', {
+            fetch('https://luckyseven.live/users/me/password', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'

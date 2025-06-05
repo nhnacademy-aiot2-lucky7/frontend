@@ -43,14 +43,18 @@ public class DashboardController {
     public String showPanelsPage(Model model,
                              @RequestParam(name = "dashboardUid", required = true) String dashboardUid) {
         model.addAttribute("departmentId", dashboardUid);
+
         return "pages/member/dashboard/pages-add-panel";
     }
 
     // 패널 조회
-    @GetMapping("/panels/{dashboardUid}")
+    @GetMapping("/panel/{dashboardUid}")
     public String getPanels(Model model,
                             @PathVariable String dashboardUid) {
-        dashboardService.getPanel(dashboardUid);
+        List<IframePanelResponse> panelResponses = dashboardService.getPanel(dashboardUid);
+        model.addAttribute("panels", panelResponses);
+        model.addAttribute("dashboardUid", dashboardUid);
+
         return "pages/member/dashboard/pages-panel-list";
     }
 
@@ -66,6 +70,7 @@ public class DashboardController {
     @PostMapping({"/panels"})
     public String createPanel(@RequestBody CreatePanelRequest request) {
         dashboardService.createPanel(request);
+
         return "pages/member/dashboard/pages-add-panel";
     }
 

@@ -15,13 +15,17 @@
     <main class="panel-info-container" style="flex: 1;">
         <section class="panel-info-header">
             <h1>대시보드-차트 내역</h1>
-            <a href="/add-panel" class="panel-add-btn">+ 차트 추가</a>
+            <a th:href="@{/panels(dashboardUid=${dashboardUid})}" class="panel-add-btn">+ 차트 추가</a>
         </section>
 
         <div id="panelList" class="panel-grid-scrollable">
-
+            <!-- 예: panels 반복 렌더링 시 필요하면 여기에 리스트 출력 추가 -->
+            <!--
+            <div th:each="panel : ${panels}">
+                <p th:text="${panel.title}">Panel Title</p>
+            </div>
+            -->
         </div>
-
     </main>
 </section>
 </body>

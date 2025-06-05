@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 📡 센서 매핑 정보 API 호출
-    fetch('/sensor-data-mappings')
+    fetch('/sensor')
         .then(response => {
             if (!response.ok) {
                 throw new Error('센서 매핑 정보를 불러오는 데 실패했습니다.');

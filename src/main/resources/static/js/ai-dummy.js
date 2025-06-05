@@ -3,16 +3,26 @@ document.addEventListener('DOMContentLoaded', function() {
     let chartInstances = {};
     let expandedRowId = null;
 
-    // // 실제 api 받아오기
-    // async function fetchList() {
-    //     const res = await fetch('/api/ai-results'); // 실제 API URL로 수정
-    //     if (!res.ok) {
-    //         tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center;">데이터를 불러올 수 없습니다.</td></tr>';
-    //         return;
-    //     }
-    //     const data = await res.json();
-    //     originData = data; renderTable(originData);
-    // }
+    // window.currentUser에서 부서명, 역할 추출
+    const myDepartmentName = window.currentUser && window.currentUser.department && window.currentUser.department.departmentName;
+    const myRole = window.currentUser && window.currentUser.userRole; // 예: 'ROLE_ADMIN', 'ROLE_MEMBER'
+
+    // 실제 api 받아오기
+    async function fetchList() {
+        const res = await fetch('/api/ai-results'); // 실제 API URL로 수정
+        if (!res.ok) {
+            tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center;">데이터를 불러올 수 없습니다.</td></tr>';
+            return;
+        }
+        const data = await res.json();
+        // 역할에 따라 필터링
+        if (myRole === 'ROLE_ADMIN') {
+            originData = data;
+        } else {
+            originData = data.filter(row => row.departmentName === myDepartmentName);
+        }
+        renderTable(originData);
+    }
 
     // 하드코딩된 더미 데이터 (2개)
     const dummyData = [
@@ -73,6 +83,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     ];
 
+    // 더미데이터에서도 역할에 따라 필터링
+    let originData;
+    if (myRole === 'ROLE_ADMIN') {
+        originData = dummyData.slice();
+    } else {
+        originData = dummyData.filter(row => row.departmentName === myDepartmentName);
+    }
+
     function getEmoji(score) {
         if(score >= 90) return "😄";
         if(score >= 70) return "🙂";
@@ -82,9 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function clearExpandRows() {
-        // 확장행(tr) 모두 제거
         document.querySelectorAll('.expand-row').forEach(tr => tr.remove());
-        // 모든 차트 인스턴스 destroy
         Object.values(chartInstances).forEach(inst => inst && inst.destroy && inst.destroy());
         chartInstances = {};
         expandedRowId = null;
@@ -172,7 +188,6 @@ document.addEventListener('DOMContentLoaded', function() {
             `;
         }
 
-        // 차트 flex 행
         let html = `<td colspan="4">
     ${sensorInfoTable}
     <div style="display:flex; gap:2.5rem; align-items:center; justify-content:center; flex-wrap:wrap;">
@@ -271,52 +286,46 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 0);
     }
 
-    renderTable(dummyData);
-});
-
-let originData = dummyData.slice(); // 또는 fetch로 받아온 전체 데이터
-
-// 검색 폼 이벤트 등록
-document.getElementById('ai-search-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const search = this.search.value.trim().toLowerCase();
-    if (!search) {
-        renderTable(originData);
-        return;
-    }
-    // 검색 필터
-    const filtered = originData.filter(row => {
-        // 부서명, 분석타입, 결과요약, 시간 기본 검색
-        if (
-            (row.departmentName && row.departmentName.toLowerCase().includes(search)) ||
-            (row.type && row.type.toLowerCase().includes(search)) ||
-            (row.resultSummary && row.resultSummary.toLowerCase().includes(search)) ||
-            (row.analyzedAt && row.analyzedAt.toLowerCase().includes(search))
-        ) return true;
-
-        // CORRELATION-RISK-PREDICT: sensorInfo의 각 센서명/필드 검색
-        if (row.type && row.type.includes('CORRELATION')) {
-            const info = row.resultJson.result.sensorInfo;
-            return Object.entries(info).some(([sensorName, sensor]) =>
-                sensorName.toLowerCase().includes(search) ||
-                (sensor.gatewayId && String(sensor.gatewayId).toLowerCase().includes(search)) ||
-                (sensor.sensorId && sensor.sensorId.toLowerCase().includes(search)) ||
-                (sensor.sensorType && sensor.sensorType.toLowerCase().includes(search))
-            );
+    // 검색 폼 이벤트 등록
+    document.getElementById('ai-search-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const search = this.search.value.trim().toLowerCase();
+        if (!search) {
+            renderTable(originData);
+            return;
         }
-        // SINGLE_SENSOR_PREDICT: sensorInfo 검색
-        if (row.type && row.type.includes('SINGLE_SENSOR_PREDICT')) {
-            const sensor = row.resultJson.result.sensorInfo;
-            return (
-                (sensor.gatewayId && String(sensor.gatewayId).toLowerCase().includes(search)) ||
-                (sensor.sensorId && sensor.sensorId.toLowerCase().includes(search)) ||
-                (sensor.sensorType && sensor.sensorType.toLowerCase().includes(search))
-            );
-        }
-        return false;
+        const filtered = originData.filter(row => {
+            if (
+                (row.departmentName && row.departmentName.toLowerCase().includes(search)) ||
+                (row.type && row.type.toLowerCase().includes(search)) ||
+                (row.resultSummary && row.resultSummary.toLowerCase().includes(search)) ||
+                (row.analyzedAt && row.analyzedAt.toLowerCase().includes(search))
+            ) return true;
+            if (row.type && row.type.includes('CORRELATION')) {
+                const info = row.resultJson.result.sensorInfo;
+                return Object.entries(info).some(([sensorName, sensor]) =>
+                    sensorName.toLowerCase().includes(search) ||
+                    (sensor.gatewayId && String(sensor.gatewayId).toLowerCase().includes(search)) ||
+                    (sensor.sensorId && sensor.sensorId.toLowerCase().includes(search)) ||
+                    (sensor.sensorType && sensor.sensorType.toLowerCase().includes(search))
+                );
+            }
+            if (row.type && row.type.includes('SINGLE_SENSOR_PREDICT')) {
+                const sensor = row.resultJson.result.sensorInfo;
+                return (
+                    (sensor.gatewayId && String(sensor.gatewayId).toLowerCase().includes(search)) ||
+                    (sensor.sensorId && sensor.sensorId.toLowerCase().includes(search)) ||
+                    (sensor.sensorType && sensor.sensorType.toLowerCase().includes(search))
+                );
+            }
+            return false;
+        });
+        renderTable(filtered);
     });
-    renderTable(filtered);
 
-    // // 실제 데이터 대응
+    // 실제 API 사용 시: fetchList() 호출
     // fetchList();
+
+    // 더미데이터 사용 시: 역할에 따라 필터링된 데이터만 렌더링
+    renderTable(originData);
 });

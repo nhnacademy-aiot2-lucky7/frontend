@@ -44,8 +44,13 @@ public class DashboardServiceImpl implements DashboardService {
 
     @Override
     public List<IframePanelResponse> getPanel(String dashboardUid) {
-        ResponseEntity<List<IframePanelResponse>> panels = dashboardAdapter.getPanel(dashboardUid);
-        return panels.getBody();
+        try {
+            ResponseEntity<List<IframePanelResponse>> panels = dashboardAdapter.getPanel(dashboardUid);
+
+            return panels.getBody();
+        }catch (Exception e) {
+            return List.of();
+        }
     }
 
     @Override

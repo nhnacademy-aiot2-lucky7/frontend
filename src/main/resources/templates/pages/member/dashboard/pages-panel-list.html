@@ -7,7 +7,6 @@
     <meta charset="utf-8"/>
     <title>대시보드 차트 | Lucky Seven</title>
     <link href="/css/dashboard/dashboard.css" rel="stylesheet"/>
-    <script src="/js/dashboard/panel-list.js"></script>
 </head>
 
 <body>
@@ -19,12 +18,18 @@
         </section>
 
         <div id="panelList" class="panel-grid-scrollable">
-            <!-- 예: panels 반복 렌더링 시 필요하면 여기에 리스트 출력 추가 -->
-            <!--
-            <div th:each="panel : ${panels}">
-                <p th:text="${panel.title}">Panel Title</p>
+            <div th:each="panel : ${panels}" class="panel-card">
+                <h3 th:text="${panel.dashboardTitle} ?: '제목 없음'" class="panel-title"></h3>
+                <iframe th:src="'https://grafana.luckyseven.live/d-solo/' + ${panel.dashboardUid}
+                                + '?orgId=1&from=' + ${panel.from}
+                                + '&to=' + ${panel.now}
+                                + '&panelId=' + ${panel.panelId}"
+                        width="450"
+                        height="200"
+                        frameborder="0"
+                        class="grafana-iframe">
+                </iframe>
             </div>
-            -->
         </div>
     </main>
 </section>

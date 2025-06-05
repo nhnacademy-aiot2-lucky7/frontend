@@ -164,6 +164,7 @@ buildNumber.properties
 
 # End of https://www.toptal.com/developers/gitignore/api/java,intellij,maven
 src/main/resources/dev.properties
+src/main/resources/application-dev.properties
 
 # 로그, 빌드 결과물
 logs/

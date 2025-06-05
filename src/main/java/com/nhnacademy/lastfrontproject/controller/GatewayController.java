@@ -5,6 +5,7 @@ import com.nhnacademy.lastfrontproject.dto.gateway.GatewayDetailResponse;
 import com.nhnacademy.lastfrontproject.dto.gateway.GatewayResponse;
 import com.nhnacademy.lastfrontproject.dto.gateway.SensorResponse;
 import com.nhnacademy.lastfrontproject.service.GatewayService;
+import com.nhnacademy.lastfrontproject.util.holder.DepartmentContextHolder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -25,17 +26,8 @@ public class GatewayController {
 
     @GetMapping("/gateway")
     public String showGateway(Model model) {
-        /*List<GatewayResponse> gatewayList = List.of(
-                new GatewayResponse(1L, "센터동-GTW1", true, 12),
-                new GatewayResponse(2L, "센터동-GTW2", false, 0),
-                new GatewayResponse(3L, "본관-GTW1", true, 8),
-                new GatewayResponse(4L, "본관-GTW2", true, 5),
-                new GatewayResponse(5L, "신관-GTW1", false, 2),
-                new GatewayResponse(6L, "외부-GTW1", true, 15)
-        );*/
-        /// TODO: 프론트엔드에서 departmentId를 전달 받을 방법이 구현되어 있지 않습니다.
         List<GatewayResponse> gateways =
-                gatewayService.getGatewayResponses("nhnacademy");
+                gatewayService.getGatewaySummaryList(DepartmentContextHolder.getDepartmentId());
 
         model.addAttribute("gateways", gateways);
         return "pages/member/gateway/pages-gateway";
@@ -48,29 +40,10 @@ public class GatewayController {
 
     @GetMapping("/admin/gateway")
     public String showAdminGateway(Model model) {
-        /*List<AdminGatewayResponse> gatewayList = List.of(
-                new AdminGatewayResponse(1L, "센터동-GTW1", true, 12, "시설팀"),
-                new AdminGatewayResponse(2L, "센터동-GTW2", false, 0, "시설팀"),
-                new AdminGatewayResponse(3L, "본관-GTW1", true, 8, "보안팀"),
-                new AdminGatewayResponse(4L, "본관-GTW2", true, 5, "보안팀"),
-                new AdminGatewayResponse(5L, "신관-GTW1", false, 2, "운영팀"),
-                new AdminGatewayResponse(6L, "외부-GTW1", true, 15, "운영팀")
-        );*/
         List<AdminGatewayResponse> gateways =
-                gatewayService.getAdminGatewayResponses();
+                gatewayService.getAdminGatewaySummaryList();
 
-        // 부서별로 그룹핑
-        Map<String, List<AdminGatewayResponse>> grouped = gateways.stream()
-                .collect(Collectors.groupingBy(AdminGatewayResponse::getDepartment));
-
-        model.addAttribute(
-                "gatewayGroups",
-                grouped.entrySet().stream()
-                        .map(e ->
-                                new GatewayGroup(e.getKey(), e.getValue())
-                        )
-                        .toList()
-        );
+        model.addAttribute("gateways", gateways);
         return "pages/admin/gateway/pages-gateway";
     }
 

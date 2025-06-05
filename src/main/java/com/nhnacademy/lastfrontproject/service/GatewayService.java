@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface GatewayService {
 
-    List<GatewayResponse> getGatewayResponses(String departmentId);
+    List<GatewayResponse> getGatewaySummaryList(String departmentId);
 
-    List<AdminGatewayResponse> getAdminGatewayResponses();
+    List<AdminGatewayResponse> getAdminGatewaySummaryList();
 }

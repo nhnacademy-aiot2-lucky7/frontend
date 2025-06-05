@@ -4,12 +4,14 @@ import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.DeleteDashboardRequ
 import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.UpdateDashboardNameRequest;
 import com.nhnacademy.lastfrontproject.dto.grafana.panel.*;
 import com.nhnacademy.lastfrontproject.service.DashboardService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @Controller
 @RequestMapping("/pages")
 public class DashboardController {
@@ -43,8 +45,12 @@ public class DashboardController {
     @GetMapping("/panels/{dashboardUid}")
     public String getPanels(Model model,
                             @PathVariable String dashboardUid) {
+        log.info("getPanels 실행");
+        List<IframePanelResponse> panelResponses = dashboardService.getPanel(dashboardUid);
+        model.addAttribute("panels", panelResponses);
         model.addAttribute("dashboardUid", dashboardUid);
-        return "pages/member/dashboard/pages-add-panel";
+
+        return "pages/member/dashboard/pages-panel-list";
     }
 
     // 5. 필터링된 패널 조회

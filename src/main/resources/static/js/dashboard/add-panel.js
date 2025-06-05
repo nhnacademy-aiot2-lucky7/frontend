@@ -212,7 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log(JSON.stringify(createPanelRequest, null, 2));
             if (!response.ok) {
                 const errorText = await response.text();
-                throw new Error(`생성 실패: ${response.status} - ${errorText}`);
+                alert(`생성 실패: ${response.status} - ${errorText}`);
             }
 
             alert('패널이 성공적으로 생성되었습니다!');

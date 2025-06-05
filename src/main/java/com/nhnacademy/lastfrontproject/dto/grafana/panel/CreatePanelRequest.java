@@ -2,7 +2,10 @@ package com.nhnacademy.lastfrontproject.dto.grafana.panel;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.nhnacademy.lastfrontproject.dto.grafana.GridPos;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
+
+import java.util.List;
 
 @Getter
 @Builder
@@ -26,17 +29,10 @@ public class CreatePanelRequest {
      */
     private String panelTitle;
 
-    @JsonProperty("type_en_name")
-    private String field;
-
-    @JsonProperty("gateway_id")
-    private Long gatewayId;
-
-    @JsonProperty("sensor_id")
-    private String sensorId;
-
-    @JsonProperty("type_kr_name")
-    private String dataTypeKrName;
+    /**
+     * 측정하려는 데이터의 종류 모음 dto(field, gatewayId, sensorId)
+     */
+    private List<SensorFieldRequestDto> sensorFieldRequestDto;
 
     /**
      * 패널의 위치 정보.
@@ -46,6 +42,9 @@ public class CreatePanelRequest {
     /**
      * 패널의 타입 (예: 그래프, 테이블 등).
      */
+    @Pattern(
+            regexp = "timeseries|table|heatmap|histogram|barchart|gauge|stat|piechart|logs|alertlist|dashlist|row|text",
+            message = "지원하지 않는 그래프 타입입니다.")
     private String type;
 
     /**
@@ -58,11 +57,15 @@ public class CreatePanelRequest {
      */
     private String time;
 
-    @JsonProperty("threshold_min")
-    private Double thresholdMin;
+    /**
+     * 데이터 최소값 임계치
+     */
+    private Integer min;
 
-    @JsonProperty("threshold_max")
-    private Double thresholdMax;
+    /**
+     * 데이터 최대값 임계치
+     */
+    private Integer max;
 
     /**
      * 데이터를 조회할 InfluxDB 버킷 이름.

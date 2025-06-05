@@ -227,19 +227,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 dashboardUid: dashboardUid,
                 panelId: null,
                 panelTitle: panelTitle,
-                type_en_name: field,              // Java: @JsonProperty("type_en_name")
-                gateway_id: gatewayId,            // Java: @JsonProperty("gateway_id")
-                sensor_id: sensorId,              // Java: @JsonProperty("sensor_id")
-                type_kr_name: dataTypeKrName,     // Java: @JsonProperty("type_kr_name")
+                sensorFieldRequestDto: [
+                    {
+                        type_en_name: "field",      // Java @JsonProperty("type_en_name")
+                        gateway_id: 1,            // Java @JsonProperty("gateway_id") (숫자만 넣어주세요)
+                        sensor_id: "sensorId"       // Java @JsonProperty("sensor_id")
+                    }
+                ],
                 gridPos: { w: width, h: height },
                 type: type,
                 aggregation: aggregation,
                 time: time,
-                threshold_min: 15,               // Java: @JsonProperty("threshold_min")
-                threshold_max: 80,               // Java: @JsonProperty("threshold_max")
+                min: 15,                       // Java 필드 min
+                max: 80,                       // Java 필드 max
                 bucket: "team1-sensor-data",
                 measurement: "sensor-data"
             };
+
 
             const response = await fetch("/api/test", {
                 method: "POST",

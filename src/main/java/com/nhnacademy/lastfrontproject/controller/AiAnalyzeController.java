@@ -16,7 +16,7 @@ public class AiAnalyzeController {
         return "pages/admin/pages-ai-analyze-adm";
     }
 
-    @GetMapping("correlation-analysis")
+    @GetMapping("/correlation-analysis")
     public String correlationAnalysis() {
         return "pages/ai-risk-analyze";
     }

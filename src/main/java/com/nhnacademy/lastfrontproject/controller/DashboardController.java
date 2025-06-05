@@ -50,7 +50,9 @@ public class DashboardController {
     @GetMapping("/panels/{dashboardUid}")
     public String getPanels(Model model,
                             @PathVariable String dashboardUid) {
-        dashboardService.getPanel(dashboardUid);
+        List<IframePanelResponse> panelResponses = dashboardService.getPanel(dashboardUid);
+        model.addAttribute("panels", panelResponses);
+
         return "pages/member/dashboard/pages-panel-list";
     }
 
@@ -66,6 +68,7 @@ public class DashboardController {
     @PostMapping({"/panels"})
     public String createPanel(@RequestBody CreatePanelRequest request) {
         dashboardService.createPanel(request);
+
         return "pages/member/dashboard/pages-add-panel";
     }
 

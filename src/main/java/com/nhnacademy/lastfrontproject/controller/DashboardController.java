@@ -41,6 +41,13 @@ public class DashboardController {
         return "pages/admin/dashboard/pages-dashboard-info";
     }
 
+    // 패널 추가
+    @GetMapping("/panels")
+    public String createPanel(
+    ) {
+        return "pages/member/dashboard/pages-add-panel";
+    }
+
     // 패널 조회
     @GetMapping("/panels/{dashboardUid}")
     public String getPanels(Model model,

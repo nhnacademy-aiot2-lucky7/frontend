@@ -6,7 +6,6 @@ import com.nhnacademy.lastfrontproject.dto.grafana.folder.FolderInfoResponse;
 import com.nhnacademy.lastfrontproject.dto.grafana.panel.CreatePanelRequest;
 import com.nhnacademy.lastfrontproject.dto.grafana.panel.SensorFieldRequestDto;
 import com.nhnacademy.lastfrontproject.dto.sensor.DataTypeInfoResponse;
-import com.nhnacademy.lastfrontproject.dto.sensor.RuleRequest;
 import com.nhnacademy.lastfrontproject.dto.sensor.SensorDataMappingIndexResponse;
 import com.nhnacademy.lastfrontproject.dto.sensor.ThresholdBoundResponse;
 import com.nhnacademy.lastfrontproject.service.DashboardService;
@@ -52,7 +51,6 @@ public class DashboardRestController {
 
     @PostMapping({"/panels"})
     ResponseEntity<Void> createPanel(
-            @RequestBody RuleRequest ruleRequest,
             CreatePanelRequest createPanelRequest
     ){
         return dashboardService.createPanel(createPanelRequest);

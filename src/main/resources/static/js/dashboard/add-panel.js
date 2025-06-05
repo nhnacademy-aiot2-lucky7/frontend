@@ -39,85 +39,48 @@ document.addEventListener('DOMContentLoaded', () => {
         );
     }
 
-    function applyThresholdLimits(bound) {
-        const selected = document.querySelector('input[name="threshold"]:checked')?.value;
+    function applyThreshold(bound, type, value) {
+        if (!bound) return;
 
-        const hasMin = bound.minRangeMin !== null && bound.minRangeMin !== undefined;
-        const hasMax = bound.maxRangeMax !== null && bound.maxRangeMax !== undefined;
-        const middleValue = hasMin && hasMax ? (bound.minRangeMin + bound.maxRangeMax) / 2 : null;
+        const isMin = type === 'min';
+        const input = isMin ? minInput : maxInput;
+        let val = '';
 
-        if (selected === 'min' && hasMin) {
-            minInput.disabled = false;
-            minInput.value = bound.minRangeMin ?? '';
-            minInput.min = bound.minRangeMin ?? '';
-            minInput.max = bound.minRangeMax ?? '';
-
-            middleInput.disabled = true;
-            middleInput.value = '';
-
-            maxInput.disabled = true;
-            maxInput.value = '';
-        } else if (selected === 'middle' && middleValue !== null) {
-            middleInput.disabled = false;
-            middleInput.value = middleValue;
-
-            minInput.disabled = true;
-            minInput.value = '';
-
-            maxInput.disabled = true;
-            maxInput.value = '';
-        } else if (selected === 'max' && hasMax) {
-            maxInput.disabled = false;
-            maxInput.value = bound.maxRangeMax ?? '';
-            maxInput.min = bound.maxRangeMin ?? '';
-            maxInput.max = bound.maxRangeMax ?? '';
-
-            minInput.disabled = true;
-            minInput.value = '';
-
-            middleInput.disabled = true;
-            middleInput.value = '';
+        if (isMin) {
+            if (value === 'min') val = bound.minRangeMin;
+            else if (value === 'middle') val = (bound.minRangeMin + bound.minRangeMax) / 2;
+            else if (value === 'max') val = bound.minRangeMax;
         } else {
-            minInput.disabled = true;
-            maxInput.disabled = true;
-            middleInput.disabled = true;
-
-            minInput.value = '';
-            maxInput.value = '';
-            middleInput.value = '';
+            if (value === 'min') val = bound.maxRangeMin;
+            else if (value === 'middle') val = (bound.maxRangeMin + bound.maxRangeMax) / 2;
+            else if (value === 'max') val = bound.maxRangeMax;
         }
+
+        input.disabled = false;
+        input.value = val ?? '';
+    }
+
+    function attachThresholdHandlers() {
+        document.querySelectorAll('input[name="minThreshold"]').forEach(radio => {
+            radio.addEventListener('change', () => {
+                const bound = getSelectedBound();
+                applyThreshold(bound, 'min', radio.value);
+            });
+        });
+
+        document.querySelectorAll('input[name="maxThreshold"]').forEach(radio => {
+            radio.addEventListener('change', () => {
+                const bound = getSelectedBound();
+                applyThreshold(bound, 'max', radio.value);
+            });
+        });
     }
 
     function updateThresholdUI() {
         const bound = getSelectedBound();
-
         if (!bound) {
-            minInput.disabled = true;
-            maxInput.disabled = true;
-            middleInput.disabled = true;
-            minInput.value = '';
-            maxInput.value = '';
-            middleInput.value = '';
-
-            document.getElementById('radioNone').checked = true;
-            return;
+            resetInputs();
         }
-
-        const hasMin = bound.thresholdMin !== null && bound.thresholdMin !== undefined;
-        const hasMax = bound.thresholdMax !== null && bound.thresholdMax !== undefined;
-        const hasMiddle = hasMin && hasMax;
-
-        if (hasMin && !hasMax) {
-            document.getElementById('radioMin').checked = true;
-        } else if (hasMiddle) {
-            document.getElementById('radioMiddle').checked = true;
-        } else if (!hasMin && hasMax) {
-            document.getElementById('radioMax').checked = true;
-        } else {
-            document.getElementById('radioNone').checked = true;
-        }
-
-        applyThresholdLimits(bound);
     }
 
     // 초기 센서 매핑 정보 불러오기
@@ -144,13 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(data => {
             sensorBound = data;
 
-            thresholdRadios.forEach(radio => {
-                radio.addEventListener('change', () => {
-                    const bound = getSelectedBound();
-                    console.log("API 응답", bound);
-                    if (bound) applyThresholdLimits(bound);
-                });
-            });
+            attachThresholdHandlers();
 
             [gatewaySelect, sensorSelect, fieldSelect].forEach(select => {
                 select.addEventListener('change', updateThresholdUI);
@@ -185,7 +142,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const time = timeSelect.value;
 
             const min = !minInput.disabled ? parseFloat(minInput.value) : null;
-            const middle = !middleInput.disabled ? parseFloat(middleInput.value) : null;
             const max = !maxInput.disabled ? parseFloat(maxInput.value) : null;
 
             const departmentId = localStorage.getItem('departmentId');
@@ -253,12 +209,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify(createPanelRequest)
             });
 
+            console.log(JSON.stringify(createPanelRequest, null, 2));
             if (!response.ok) {
                 const errorText = await response.text();
-                throw new Error(`저장 실패: ${response.status} - ${errorText}`);
+                throw new Error(`생성 실패: ${response.status} - ${errorText}`);
             }
 
-            alert('패널이 성공적으로 저장되었습니다!');
+            alert('패널이 성공적으로 생성되었습니다!');
             window.location.href = `/panels/${dashboardUid}`;
         } catch (error) {
             console.error('패널 저장 오류:', error);

@@ -87,19 +87,31 @@
                 <label>임계값 설정 (AI 추천)</label>
                 <div style="display: flex; flex-wrap: wrap; gap: 4rem;">
 
-                    <!-- 최소값 선택 -->
-                    <div style="display: flex; flex-direction: column; gap: 10px;">
-                        <span>최소값</span>
-                        <div id="minSuggestionGroup" style="display: flex; gap: 10px;">
-                            <!-- JS에서 라디오 버튼 3개 생성 -->
-                        </div>
-                    </div>
+                    <div class="add-dashboard-form-row add-dashboard-description">
+                        <label>임계값 설정 (AI 추천)</label>
+                        <div style="display: flex; flex-wrap: wrap; gap: 4rem;">
 
-                    <!-- 최대값 선택 -->
-                    <div style="display: flex; flex-direction: column; gap: 10px;">
-                        <span>최대값</span>
-                        <div id="maxSuggestionGroup" style="display: flex; gap: 10px;">
-                            <!-- JS에서 라디오 버튼 3개 생성 -->
+                            <!-- 최소값 선택 -->
+                            <div style="display: flex; flex-direction: column; gap: 10px;">
+                                <span>최소값</span>
+                                <div id="minSuggestionGroup" style="display: flex; gap: 10px;">
+                                    <label><input type="radio" name="minThreshold" value="min" /> 최소값의 최소</label>
+                                    <label><input type="radio" name="minThreshold" value="middle" /> 최소값의 중간</label>
+                                    <label><input type="radio" name="minThreshold" value="max" /> 최소값의 최대</label>
+                                </div>
+                                <input id="minInput" type="number" disabled />
+                            </div>
+
+                            <!-- 최대값 선택 -->
+                            <div style="display: flex; flex-direction: column; gap: 10px;">
+                                <span>최대값</span>
+                                <div id="maxSuggestionGroup" style="display: flex; gap: 10px;">
+                                    <label><input type="radio" name="maxThreshold" value="min" /> 최대값의 최소</label>
+                                    <label><input type="radio" name="maxThreshold" value="middle" /> 최대값의 중간</label>
+                                    <label><input type="radio" name="maxThreshold" value="max" /> 최대값의 최대</label>
+                                </div>
+                                <input id="maxInput" type="number" disabled />
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -1,26 +1,50 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/layout}">
-
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
-    <title>부서 내역 | Lucky Seven</title>
-    <link href="/css/dashboard/dashboard.css" rel="stylesheet"/>
-    <script src="/js/dashboard/dashboard-utils.js"></script>
-    <script src="/js/dashboard/dashboard-list.js"></script>
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+    <link href="/img/icons/777_64x64.png" rel="shortcut icon"/>
+    <title>Lucky Seven</title>
+
+    <link href="/css/common.css" rel="stylesheet"/>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        window.currentUser = /*[[${user} != null ? ${user} : null]]*/ null;
+        /*]]>*/
+    </script>
+
+    <script defer src="/js/bootstrap.bundle.min.js"></script>
+    <script defer src="/js/feather.min.js"></script>
+    <script defer src="/js/feather-replace.js"></script>
+    <script defer src="/js/admin-check.js"></script>
+    <script defer src="/js/common.js"></script>
+    <script defer src="/js/dashboard/dashboard-manager.js"></script>
+    <script defer src="/js/dashboard/dashboard-list.js"></script>
+    <script defer src="/js/auth-check.js"></script>
 </head>
-
 <body>
-<section layout:fragment="content">
-    <main class="dashboard-info-container" style="flex: 1;">
-        <section class="dashboard-info-header">
-            <h1>대시보드 내역</h1>
-            <a href="/pages/add-dashboard" class="dashboard-add-btn">+ 대시보드 추가</a>
-        </section>
+<div class="wrapper d-flex">
+    <!-- 관리자 사이드바 -->
+    <th:block th:if="${user != null and #strings.trim(user.userRole).toUpperCase() == 'ROLE_ADMIN'}">
+        <div th:replace="~{fragments/sidebar_adm :: sidebar_admin}"></div>
+    </th:block>
+    <!-- 일반 유저 사이드바 -->
+    <th:block th:if="${user != null and #strings.trim(user.userRole).toUpperCase() != 'ROLE_ADMIN'}">
+        <div th:replace="~{fragments/sidebar :: sidebar_user}"></div>
+    </th:block>
+    <!-- 게스트 사이드바 -->
+    <th:block th:if="${user == null}">
+        <div th:replace="~{fragments/sidebar_guest :: sidebar_guest}"></div>
+    </th:block>
 
-        <div id="dashboardList" style="margin-top: 20px;"></div>
+    <main class="main flex-grow-1">
+        <header th:replace="fragments/navbar :: navbar"></header>
+        <section class="content" layout:fragment="content"></section>
+        <footer th:replace="fragments/footer :: footer"></footer>
     </main>
-</section>
+</div>
 </body>
 </html>

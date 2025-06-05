@@ -1,17 +1,15 @@
 package com.nhnacademy.lastfrontproject.dto.grafana.panel;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.nhnacademy.lastfrontproject.dto.grafana.GridPos;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
 import java.util.List;
 
-@Getter
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class CreatePanelRequest {
 
     /**

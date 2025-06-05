@@ -213,10 +213,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!response.ok) {
                 const errorText = await response.text();
                 alert(`생성 실패: ${response.status} - ${errorText}`);
+            }else{
+                alert('패널이 성공적으로 생성되었습니다!');
+                window.location.href = `/panels/${dashboardUid}`;
             }
-
-            alert('패널이 성공적으로 생성되었습니다!');
-            window.location.href = `/panels/${dashboardUid}`;
         } catch (error) {
             console.error('패널 저장 오류:', error);
             alert('패널 저장 중 오류가 발생했습니다.');

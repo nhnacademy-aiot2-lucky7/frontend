@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const dashboardList = document.getElementById('dashboardList');
 
     try {
-        const response = await fetch('/dashboards', {
+        const response = await fetch('/api/dashboards', {
             method: 'GET',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' }

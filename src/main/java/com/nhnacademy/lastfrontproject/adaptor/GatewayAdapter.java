@@ -5,7 +5,6 @@ import com.nhnacademy.lastfrontproject.dto.gateway.GatewayResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
@@ -13,13 +12,12 @@ import java.util.List;
         name = "gateway-service",
         url = "${feign.client.gateway-service.url}"
 )
-@RequestMapping("/api")
 public interface GatewayAdapter {
-    @GetMapping("/gateways/department/{departmentId}")
+    @GetMapping("/api/gateways/department/{departmentId}")
     List<GatewayResponse> getGatewaySummaries(
             @PathVariable String departmentId
     );
 
-    @GetMapping("/admin/gateways")
+    @GetMapping("/api/admin/gateways")
     List<AdminGatewayResponse> getGatewayAdminSummaries();
 }

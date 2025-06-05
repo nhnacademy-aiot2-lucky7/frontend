@@ -22,6 +22,8 @@
 
         <form id="filterForm" class="add-dashboard-form">
 
+            <input type="hidden" id="dashboardUid" name="dashboardUid" th:value="${dashboardUid}" />
+
             <div class="add-dashboard-form-row">
                 <label for="name">패널 이름</label>
                 <input type="text" name="name" id="name" required />

@@ -42,8 +42,8 @@ public class DashboardController {
 
     // 패널 추가
     @GetMapping("/panels")
-    public String createPanel(
-    ) {
+    public String createPanel(@RequestParam("dashboardUid") String dashboardUid, Model model) {
+        model.addAttribute("dashboardUid", dashboardUid);
         return "pages/member/dashboard/pages-add-panel";
     }
 

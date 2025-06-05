@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
 
         try {
-            const dashboardUid = new URLSearchParams(window.location.search).get("dashboardUid");
+            const dashboardUid = document.getElementById('dashboardUid').value;
             const panelTitle = document.getElementById('name').value;
             const gatewayId = parseInt(gatewaySelect.value);
             const sensorId = sensorSelect.value;

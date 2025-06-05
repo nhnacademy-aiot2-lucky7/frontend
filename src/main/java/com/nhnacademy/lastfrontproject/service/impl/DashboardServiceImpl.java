@@ -8,6 +8,8 @@ import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.InfoDashboardRespon
 import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.UpdateDashboardNameRequest;
 import com.nhnacademy.lastfrontproject.dto.grafana.folder.FolderInfoResponse;
 import com.nhnacademy.lastfrontproject.dto.grafana.panel.*;
+import com.nhnacademy.lastfrontproject.dto.sensor.DataTypeInfoResponse;
+import com.nhnacademy.lastfrontproject.dto.sensor.RuleRequest;
 import com.nhnacademy.lastfrontproject.dto.sensor.SensorDataMappingIndexResponse;
 import com.nhnacademy.lastfrontproject.dto.sensor.ThresholdBoundResponse;
 import com.nhnacademy.lastfrontproject.service.DashboardService;
@@ -59,8 +61,9 @@ public class DashboardServiceImpl implements DashboardService {
     }
 
     @Override
-    public void createPanel(CreatePanelRequest createPanelRequest) {
-        dashboardAdapter.createPanel(createPanelRequest);
+    public ResponseEntity<Void> createPanel(RuleRequest ruleRequest, CreatePanelRequest createPanelRequest) {
+        dashboardAdapter.createPanel(ruleRequest, createPanelRequest);
+        return null;
     }
 
     @Override
@@ -100,5 +103,10 @@ public class DashboardServiceImpl implements DashboardService {
                 sensorFieldRequestDto.getSensorId(),
                 sensorFieldRequestDto.getField())
                 .getBody();
+    }
+
+    @Override
+    public DataTypeInfoResponse getDataTypeByKrName(String typeEnName) {
+        return sensorAdapter.getDataTypeKrName(typeEnName).getBody();
     }
 }

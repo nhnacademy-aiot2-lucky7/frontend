@@ -15,4 +15,3 @@ public class ThresholdBoundResponse {
     private Double maxRangeMin;
     private Double maxRangeMax;
 }
-

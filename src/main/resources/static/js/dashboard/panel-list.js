@@ -4,8 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function loadIframes() {
     try {
-        const isAdmin = localStorage.getItem("role") === "ADMIN";
-        const endpoint = isAdmin ? '/admin/panels' : '/user/panels';
+        const endpoint = '/panels';
 
         const res = await fetch(endpoint);
         if (!res.ok) new Error('패널 정보를 불러오지 못했습니다.');

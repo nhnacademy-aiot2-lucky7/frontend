@@ -3,6 +3,7 @@ package com.nhnacademy.lastfrontproject.controller;
 import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.DeleteDashboardRequest;
 import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.UpdateDashboardNameRequest;
 import com.nhnacademy.lastfrontproject.dto.grafana.panel.*;
+import com.nhnacademy.lastfrontproject.dto.sensor.RuleRequest;
 import com.nhnacademy.lastfrontproject.service.DashboardService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,7 +28,7 @@ public class DashboardController {
     }
 
     // 사용자 대시보드 정보 조회
-    @GetMapping("/user/dashboard-info")
+    @GetMapping("/dashboard-info")
     public String getUserDashboards(){
         return "pages/member/dashboard/pages-dashboard-info";
     }
@@ -64,8 +65,9 @@ public class DashboardController {
 
     // 패널 생성
     @PostMapping({"/panels"})
-    public String createPanel(@RequestBody CreatePanelRequest request) {
-        dashboardService.createPanel(request);
+    public String createPanel(@RequestBody RuleRequest ruleRequest,
+                              @RequestBody CreatePanelRequest request) {
+        dashboardService.createPanel(ruleRequest, request);
         return "pages/member/dashboard/pages-add-panel";
     }
 

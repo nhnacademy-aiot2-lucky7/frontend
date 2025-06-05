@@ -7,7 +7,6 @@ import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.UpdateDashboardName
 import com.nhnacademy.lastfrontproject.dto.grafana.folder.FolderInfoResponse;
 import com.nhnacademy.lastfrontproject.dto.grafana.panel.*;
 import com.nhnacademy.lastfrontproject.dto.sensor.RuleRequest;
-import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +39,6 @@ public interface DashboardAdapter {
 
     @PostMapping("/panels")
     ResponseEntity<Void> createPanel(
-            @RequestBody RuleRequest ruleRequest,
             @RequestBody CreatePanelRequest createPanelRequest
     );
 

@@ -27,7 +27,7 @@ public class DashboardController {
     }
 
     // 사용자 대시보드 정보 조회
-    @GetMapping("/user/dashboard-info")
+    @GetMapping("/dashboard-info")
     public String getUserDashboards(){
         return "pages/member/dashboard/pages-dashboard-info";
     }

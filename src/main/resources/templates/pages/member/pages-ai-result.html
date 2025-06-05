@@ -8,15 +8,18 @@
 	<meta charset="utf-8"/>
 	<title>AI 분석 | Lucky Seven</title>
 	<link href="/css/ai-analyze.css" rel="stylesheet"/>
-	<script src="/js/admin-check.js"></script>
+	<!--	<script src="/js/ai-analyze.js"></script>-->
+	<script src="/js/chart.js"></script>
+	<script src="/js/ai-dummy.js"></script>
 </head>
 
 <body>
 <section layout:fragment="content">
-	<!--	본문내용 추가-->
+	<!-- 본문내용 추가-->
 	<main class="ai-container" style="flex: 1;">
-		<section class="ai-header">
-			<h1>AI 분석 (관리자용)</h1>
+		<section class="ai-header" style="display: flex; align-items: center;">
+			<h1>AI 분석</h1>
+			<a href="/ai-analyze" class="ai-analyze-btn">AI 분석 요청</a>
 		</section>
 		<section class="ai-filter">
 			<form id="ai-search-form">
@@ -36,7 +39,6 @@
 			<table class="ai-table">
 				<thead>
 				<tr>
-					<th>사용자명</th>
 					<th>부서명</th>
 					<th>분석타입</th>
 					<th>결과요약</th>
@@ -52,14 +54,34 @@
 				</tr>
 
 				<!-- 데이터가 있을 경우 반복 출력 -->
-<!--				<tr th:each="ai : ${ais}">-->
-<!--					<td class="level-cell" th:text="${ai.level}">1</td>-->
-<!--					<td class="sensor-cell" th:text="${ai.sensorName}">센서-A</td>-->
-<!--					<td class="message-cell" th:text="${ai.message}">경고 발생</td>-->
-<!--					<td class="date-cell" th:text="${#temporals.format(ai.dateTime, 'yyyy-MM-dd HH:mm')}">2025-04-22</td>-->
-<!--				</tr>-->
+				<!-- <tr th:each="ai : ${ais}">-->
+				<!-- <td class="level-cell" th:text="${ai.level}">1</td>-->
+				<!-- <td class="sensor-cell" th:text="${ai.sensorName}">센서-A</td>-->
+				<!-- <td class="message-cell" th:text="${ai.message}">경고 발생</td>-->
+				<!-- <td class="date-cell" th:text="${#temporals.format(ai.dateTime, 'yyyy-MM-dd HH:mm')}">2025-04-22</td>-->
+				<!-- </tr>-->
 				</tbody>
+
 			</table>
+			<!-- 차트 확장 영역 -->
+			<div id="ai-detail-expand" style="display:none; margin-top:2rem;">
+				<div style="display:flex; gap:2rem; flex-wrap:wrap;">
+					<div>
+						<canvas id="ai-bar-chart" height="120" width="250"></canvas>
+						<div style="text-align:center;">막대그래프</div>
+					</div>
+					<div>
+						<canvas id="ai-line-chart" height="120" width="250"></canvas>
+						<div style="text-align:center;">선그래프</div>
+					</div>
+					<div>
+						<canvas id="ai-pie-chart" height="120" width="250"></canvas>
+						<div style="text-align:center;">원그래프</div>
+					</div>
+				</div>
+				<div id="ai-score" style="margin:1rem 0; font-size:2rem;"></div>
+				<div id="ai-emoji" style="font-size:3rem;"></div>
+			</div>
 		</section>
 	</main>
 </section>

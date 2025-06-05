@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const dummyData = [
         {
             id: 1,
-            userName: "백동호",
+            departmentName: "백동호",
             type: "CORRELATION_RISK_PREDICT",
             resultSummary: "정상",
             analyzedAt: "2025-06-05 14:10",
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         {
             id: 2,
-            userName: "박준영",
+            departmentName: "박준영",
             type: "SINGLE_SENSOR_PREDICT",
             resultSummary: "경고",
             analyzedAt: "2025-06-05 13:10",
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         {
             id: 3,
-            userName: "이동현",
+            departmentName: "이동현",
             type: "THRESHOLD_DIFF_ANALYSIS",
             resultSummary: "위험",
             analyzedAt: "2025-06-05 12:10",
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         {
             id: 4,
-            userName: "김송빈",
+            departmentName: "김송빈",
             type: ["CORRELATION_RISK_PREDICT", "SINGLE_SENSOR_PREDICT", "THRESHOLD_DIFF_ANALYSIS"][Math.floor(Math.random() * 3)],
             resultSummary: ["정상", "경고", "위험"][Math.floor(Math.random() * 3)],
             analyzedAt: "2025-06-05 11:10",
@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         {
             id: 5,
-            userName: "문찬희",
+            departmentName: "문찬희",
             type: ["CORRELATION_RISK_PREDICT", "SINGLE_SENSOR_PREDICT", "THRESHOLD_DIFF_ANALYSIS"][Math.floor(Math.random() * 3)],
             resultSummary: ["정상", "경고", "위험"][Math.floor(Math.random() * 3)],
             analyzedAt: "2025-06-05 10:10",
@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         {
             id: 6,
-            userName: "송영찬",
+            departmentName: "송영찬",
             type: ["CORRELATION_RISK_PREDICT", "SINGLE_SENSOR_PREDICT", "THRESHOLD_DIFF_ANALYSIS"][Math.floor(Math.random() * 3)],
             resultSummary: ["정상", "경고", "위험"][Math.floor(Math.random() * 3)],
             analyzedAt: "2025-06-05 09:10",
@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         {
             id: 7,
-            userName: "강부식",
+            departmentName: "강부식",
             type: ["CORRELATION_RISK_PREDICT", "SINGLE_SENSOR_PREDICT", "THRESHOLD_DIFF_ANALYSIS"][Math.floor(Math.random() * 3)],
             resultSummary: ["정상", "경고", "위험"][Math.floor(Math.random() * 3)],
             analyzedAt: "2025-06-05 08:10",
@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const tr = document.createElement('tr');
             tr.style.cursor = "pointer";
             tr.innerHTML = `
-                <td>${row.userName || '-'}</td>
+                <td>${row.departmentName || '-'}</td>
                 <td>${row.type || '-'}</td>
                 <td>${row.resultSummary || '-'}</td>
                 <td>${row.analyzedAt || '-'}</td>

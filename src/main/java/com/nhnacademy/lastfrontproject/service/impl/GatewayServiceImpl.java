@@ -24,7 +24,7 @@ public class GatewayServiceImpl implements GatewayService {
             log.info("gateway summary 조회 완료!! 개수:{}", response.size());
             return response;
         } catch (Exception e) {
-            log.warn("gateway summary 조회 실패: {}", departmentId);
+            log.warn("gateway summary 조회 실패: {}", departmentId, e);
             return List.of();
         }
     }

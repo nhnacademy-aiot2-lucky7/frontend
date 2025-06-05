@@ -20,7 +20,9 @@ public class GatewayServiceImpl implements GatewayService {
     @Override
     public List<GatewayResponse> getGatewaySummaryList(String departmentId) {
         try {
-            return gatewayAdapter.getGatewaySummaries(departmentId);
+            List<GatewayResponse> response = gatewayAdapter.getGatewaySummaries(departmentId);
+            log.info("gateway summary 조회 완료!! 개수:{}", response.size());
+            return response;
         } catch (Exception e) {
             log.warn("gateway summary 조회 실패: {}", departmentId);
             return List.of();

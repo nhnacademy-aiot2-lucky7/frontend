@@ -6,7 +6,7 @@ import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.InfoDashboardRespon
 import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.UpdateDashboardNameRequest;
 import com.nhnacademy.lastfrontproject.dto.grafana.folder.FolderInfoResponse;
 import com.nhnacademy.lastfrontproject.dto.grafana.panel.*;
-import jakarta.validation.Valid;
+import com.nhnacademy.lastfrontproject.dto.sensor.RuleRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,9 +22,9 @@ public interface DashboardAdapter {
     @GetMapping("/dashboards")
     ResponseEntity<List<InfoDashboardResponse>> getAllDashboard();
 
-    @PostMapping("/get/panels")
+    @GetMapping("/panels/{dashboardUid}")
     ResponseEntity<List<IframePanelResponse>> getPanel(
-            @RequestBody ReadPanelRequest readPanelRequest);
+            @PathVariable String dashboardUid);
 
     @PostMapping("/dashboards")
     ResponseEntity<Void> createDashboard(
@@ -39,7 +39,7 @@ public interface DashboardAdapter {
 
     @PostMapping("/panels")
     ResponseEntity<Void> createPanel(
-            @RequestBody @Valid CreatePanelRequest createPanelRequest
+            @RequestBody CreatePanelRequest createPanelRequest
     );
 
     @PutMapping("/dashboards")

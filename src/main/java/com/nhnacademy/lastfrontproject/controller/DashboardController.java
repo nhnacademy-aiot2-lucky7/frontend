@@ -3,12 +3,15 @@ package com.nhnacademy.lastfrontproject.controller;
 import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.DeleteDashboardRequest;
 import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.UpdateDashboardNameRequest;
 import com.nhnacademy.lastfrontproject.dto.grafana.panel.*;
+import com.nhnacademy.lastfrontproject.dto.sensor.RuleRequest;
 import com.nhnacademy.lastfrontproject.service.DashboardService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static org.hibernate.query.sqm.tree.SqmNode.log;
 
 @Controller
 public class DashboardController {
@@ -48,9 +51,10 @@ public class DashboardController {
     }
 
     // 패널 조회
-    @GetMapping("/panel/{dashboardUid}")
+    @GetMapping("/panels/{dashboardUid}")
     public String getPanels(Model model,
                             @PathVariable String dashboardUid) {
+        log.info("getPanels 실행");
         List<IframePanelResponse> panelResponses = dashboardService.getPanel(dashboardUid);
         model.addAttribute("panels", panelResponses);
         model.addAttribute("dashboardUid", dashboardUid);
@@ -64,14 +68,6 @@ public class DashboardController {
             @RequestBody ReadPanelRequest readPanelRequest,
             @RequestParam List<Integer> offPanelId) {
         return dashboardService.getFilterPanel(readPanelRequest, offPanelId);
-    }
-
-    // 패널 생성
-    @PostMapping({"/panels"})
-    public String createPanel(@RequestBody CreatePanelRequest request) {
-        dashboardService.createPanel(request);
-
-        return "pages/member/dashboard/pages-add-panel";
     }
 
 

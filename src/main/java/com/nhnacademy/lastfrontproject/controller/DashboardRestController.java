@@ -3,7 +3,10 @@ package com.nhnacademy.lastfrontproject.controller;
 import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.CreateDashboardRequest;
 import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.InfoDashboardResponse;
 import com.nhnacademy.lastfrontproject.dto.grafana.folder.FolderInfoResponse;
+import com.nhnacademy.lastfrontproject.dto.grafana.panel.CreatePanelRequest;
 import com.nhnacademy.lastfrontproject.dto.grafana.panel.SensorFieldRequestDto;
+import com.nhnacademy.lastfrontproject.dto.sensor.DataTypeInfoResponse;
+import com.nhnacademy.lastfrontproject.dto.sensor.RuleRequest;
 import com.nhnacademy.lastfrontproject.dto.sensor.SensorDataMappingIndexResponse;
 import com.nhnacademy.lastfrontproject.dto.sensor.ThresholdBoundResponse;
 import com.nhnacademy.lastfrontproject.service.DashboardService;
@@ -15,7 +18,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping
+@RequestMapping("/pages")
 public class DashboardRestController {
 
     private final DashboardService dashboardService;
@@ -42,6 +45,14 @@ public class DashboardRestController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @PostMapping({"/panels"})
+    ResponseEntity<Void> createPanel(
+            @RequestBody RuleRequest ruleRequest,
+            CreatePanelRequest createPanelRequest
+    ){
+        return dashboardService.createPanel(createPanelRequest);
+    }
+
     @GetMapping("/sensor")
     public Set<SensorDataMappingIndexResponse> getSensorData(){
         return dashboardService.getSensor();
@@ -50,5 +61,10 @@ public class DashboardRestController {
     @GetMapping("/sensor/bound")
     public ThresholdBoundResponse getSensorBoundData(@RequestBody SensorFieldRequestDto sensorFieldRequestDto){
         return dashboardService.getSensorBound(sensorFieldRequestDto);
+    }
+
+    @GetMapping("/data-types/{name}")
+    public DataTypeInfoResponse getDataType(@PathVariable("name") String dataTypeEnName) {
+        return dashboardService.getDataTypeByKrName(dataTypeEnName);
     }
 }

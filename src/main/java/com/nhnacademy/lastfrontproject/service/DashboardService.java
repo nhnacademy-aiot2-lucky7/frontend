@@ -6,8 +6,11 @@ import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.InfoDashboardRespon
 import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.UpdateDashboardNameRequest;
 import com.nhnacademy.lastfrontproject.dto.grafana.folder.FolderInfoResponse;
 import com.nhnacademy.lastfrontproject.dto.grafana.panel.*;
+import com.nhnacademy.lastfrontproject.dto.sensor.DataTypeInfoResponse;
+import com.nhnacademy.lastfrontproject.dto.sensor.RuleRequest;
 import com.nhnacademy.lastfrontproject.dto.sensor.SensorDataMappingIndexResponse;
 import com.nhnacademy.lastfrontproject.dto.sensor.ThresholdBoundResponse;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.Set;
@@ -30,7 +33,7 @@ public interface DashboardService {
     List<IframePanelResponse> getFilterPanel(ReadPanelRequest readPanelRequest, List<Integer> offPanelId);
 
     // 패널 생성
-    void createPanel(CreatePanelRequest createPanelRequest);
+    ResponseEntity<Void> createPanel(CreatePanelRequest createPanelRequest);
 
     // 대시보드 수정
     void updateDashboard(UpdateDashboardNameRequest updateDashboardNameRequest);
@@ -50,4 +53,6 @@ public interface DashboardService {
     Set<SensorDataMappingIndexResponse> getSensor();
 
     ThresholdBoundResponse getSensorBound(SensorFieldRequestDto sensorFieldRequestDto);
+
+    DataTypeInfoResponse getDataTypeByKrName(String typeEnName);
 }

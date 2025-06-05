@@ -1,5 +1,6 @@
 package com.nhnacademy.lastfrontproject.adaptor;
 
+import com.nhnacademy.lastfrontproject.dto.sensor.DataTypeInfoResponse;
 import com.nhnacademy.lastfrontproject.dto.sensor.SensorDataMappingIndexResponse;
 import com.nhnacademy.lastfrontproject.dto.sensor.SensorDataMappingWebResponse;
 import com.nhnacademy.lastfrontproject.dto.sensor.ThresholdBoundResponse;
@@ -31,4 +32,8 @@ public interface SensorAdapter {
             @PathVariable("sensor-id") String sensorId,
             @PathVariable("type-en-name") String typeEnName
     );
-}
+
+    @GetMapping("/data-types/{typeEnName}")
+    ResponseEntity<DataTypeInfoResponse> getDataTypeKrName(@PathVariable("typeEnName") String typeEnName) ;
+
+    }

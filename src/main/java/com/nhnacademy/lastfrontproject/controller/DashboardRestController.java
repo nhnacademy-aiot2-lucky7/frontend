@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping
+@RequestMapping("/pages")
 public class DashboardRestController {
 
     private final DashboardService dashboardService;
@@ -48,9 +48,9 @@ public class DashboardRestController {
     @PostMapping({"/panels"})
     ResponseEntity<Void> createPanel(
             @RequestBody RuleRequest ruleRequest,
-            @RequestBody CreatePanelRequest createPanelRequest
+            CreatePanelRequest createPanelRequest
     ){
-        return dashboardService.createPanel(ruleRequest, createPanelRequest);
+        return dashboardService.createPanel(createPanelRequest);
     }
 
     @GetMapping("/sensor")

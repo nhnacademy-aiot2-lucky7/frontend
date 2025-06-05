@@ -70,14 +70,6 @@ public class DashboardController {
         return dashboardService.getFilterPanel(readPanelRequest, offPanelId);
     }
 
-    // 패널 생성
-    @PostMapping({"/panels"})
-    public String createPanel(@RequestBody RuleRequest ruleRequest,
-                              @RequestBody CreatePanelRequest request) {
-        dashboardService.createPanel(ruleRequest, request);
-        return "pages/member/dashboard/pages-add-panel";
-    }
-
 
     // 8. 대시보드 이름 수정
     @PutMapping("/dashboards")

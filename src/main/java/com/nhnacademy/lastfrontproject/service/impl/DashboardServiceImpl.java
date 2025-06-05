@@ -60,8 +60,8 @@ public class DashboardServiceImpl implements DashboardService {
     }
 
     @Override
-    public ResponseEntity<Void> createPanel(RuleRequest ruleRequest, CreatePanelRequest createPanelRequest) {
-        dashboardAdapter.createPanel(ruleRequest, createPanelRequest);
+    public ResponseEntity<Void> createPanel(CreatePanelRequest createPanelRequest) {
+        dashboardAdapter.createPanel(createPanelRequest);
         return null;
     }
 

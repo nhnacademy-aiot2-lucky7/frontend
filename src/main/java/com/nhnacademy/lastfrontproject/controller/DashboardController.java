@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.hibernate.query.sqm.tree.SqmNode.log;
+
 @Controller
 public class DashboardController {
     private final DashboardService dashboardService;
@@ -28,7 +30,7 @@ public class DashboardController {
     }
 
     // 사용자 대시보드 정보 조회
-    @GetMapping("/dashboard-info")
+    @GetMapping("/user/dashboard-info")
     public String getUserDashboards(){
         return "pages/member/dashboard/pages-dashboard-info";
     }
@@ -44,6 +46,7 @@ public class DashboardController {
     public String showPanelsPage(Model model,
                              @RequestParam(name = "dashboardUid", required = true) String dashboardUid) {
         model.addAttribute("departmentId", dashboardUid);
+
         return "pages/member/dashboard/pages-add-panel";
     }
 
@@ -51,7 +54,11 @@ public class DashboardController {
     @GetMapping("/panels/{dashboardUid}")
     public String getPanels(Model model,
                             @PathVariable String dashboardUid) {
-        dashboardService.getPanel(dashboardUid);
+        log.info("getPanels 실행");
+        List<IframePanelResponse> panelResponses = dashboardService.getPanel(dashboardUid);
+        model.addAttribute("panels", panelResponses);
+        model.addAttribute("dashboardUid", dashboardUid);
+
         return "pages/member/dashboard/pages-panel-list";
     }
 

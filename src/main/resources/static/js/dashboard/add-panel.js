@@ -235,8 +235,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 type: type,
                 aggregation: aggregation,
                 time: time,
-                threshold_min: min,               // Java: @JsonProperty("threshold_min")
-                threshold_max: max,               // Java: @JsonProperty("threshold_max")
+                threshold_min: 15,               // Java: @JsonProperty("threshold_min")
+                threshold_max: 80,               // Java: @JsonProperty("threshold_max")
                 bucket: "team1-sensor-data",
                 measurement: "sensor-data"
             };

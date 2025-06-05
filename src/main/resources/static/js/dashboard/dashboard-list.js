@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
 
             banner.addEventListener('click', () => {
-                window.location.href = `/pages/panels`;
+                window.location.href = `/panels`;
             });
 
             container.appendChild(banner);

@@ -48,7 +48,7 @@ public class DashboardController {
     }
 
     // 패널 조회
-    @GetMapping("/panels/{dashboardUid}")
+    @GetMapping("/panel/{dashboardUid}")
     public String getPanels(Model model,
                             @PathVariable String dashboardUid) {
         List<IframePanelResponse> panelResponses = dashboardService.getPanel(dashboardUid);

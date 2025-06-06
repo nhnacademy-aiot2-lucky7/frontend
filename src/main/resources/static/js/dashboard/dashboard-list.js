@@ -121,7 +121,76 @@ document.addEventListener('DOMContentLoaded', async () => {
             // 수정 버튼 클릭 시 페이지 이동
             updateBtn.addEventListener('click', function (e) {
                 e.stopPropagation(); // 배너 클릭 방지
-                window.location.href = `/test/${d.dashboardId}`;
+
+                // 이미 입력창이 존재하는지 체크
+                if (banner.querySelector('input')) return;
+
+                const originalTitle = dashboardTitle;
+
+                // 입력창 생성
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.value = dashboardTitle;
+                input.style.padding = '4px 8px';
+                input.style.fontSize = '1rem';
+                input.style.borderRadius = '4px';
+                input.style.border = '1px solid #ccc';
+                input.style.marginRight = '8px';
+
+                // 확인 버튼 생성
+                const confirmBtn = document.createElement('button');
+                confirmBtn.textContent = '확인';
+                confirmBtn.style.padding = '4px 10px';
+                confirmBtn.style.backgroundColor = '#10b981'; // green
+                confirmBtn.style.color = 'white';
+                confirmBtn.style.border = 'none';
+                confirmBtn.style.borderRadius = '4px';
+                confirmBtn.style.cursor = 'pointer';
+
+                // 기존 텍스트 제거
+                banner.textContent = '';
+                banner.style.justifyContent = 'flex-start';
+                banner.style.paddingLeft = '24px';
+                banner.appendChild(input);
+                banner.appendChild(confirmBtn);
+
+                // 확인 버튼 이벤트
+                confirmBtn.addEventListener('click', async (event) => {
+                    event.stopPropagation();
+                    const newTitle = input.value.trim();
+
+                    if (!newTitle) {
+                        alert('제목을 입력해주세요.');
+                        return;
+                    }
+
+                    try {
+                        const res = await fetch("https://luckyseven.live/api/dashboards", {
+                            method: 'PUT',
+                            credentials: 'include',
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                dashboardUid: dashboardUid,
+                                title: newTitle
+                            })
+                        });
+
+                        if (!res.ok) throw new Error('업데이트 실패');
+
+                        // 성공 시 UI 업데이트
+                        banner.textContent = newTitle;
+                        banner.style.justifyContent = 'center';
+                        banner.style.paddingLeft = '0';
+                    } catch (err) {
+                        alert('업데이트 중 오류 발생: ' + err.message);
+                        // 실패 시 원래 제목 복원
+                        banner.textContent = originalTitle;
+                        banner.style.justifyContent = 'center';
+                        banner.style.paddingLeft = '0';
+                    }
+                });
             });
 
             // 삭제 버튼 클릭 이벤트

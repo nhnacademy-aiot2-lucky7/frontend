@@ -160,9 +160,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 // 저장 로직 함수
                 async function saveNewTitle() {
-                    const newTitle = input.value.trim();
+                    const dashboardNewTitle = input.value.trim();
 
-                    if (!newTitle) {
+                    if (!dashboardNewTitle) {
                         alert('제목을 입력해주세요.');
                         return;
                     }
@@ -176,7 +176,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                             },
                             body: JSON.stringify({
                                 dashboardUid: dashboardUid,
-                                title: newTitle
+                                dashboardNewTitle: dashboardNewTitle
                             })
                         });
 

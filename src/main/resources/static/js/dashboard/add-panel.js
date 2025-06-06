@@ -90,8 +90,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             const departmentId = window.currentUser?.department?.departmentId;
             const res = await fetch(`https://luckyseven.live/api/gateways/department/${departmentId}`);
             if (!res.ok) throw new Error('게이트웨이 목록 불러오기 실패');
-            const gatewayId = await res.json();
-            console.log("gatewayId:{}", gatewayId);
+            const gatewayInfo = await res.json();
+            console.log("gatewayId:{}", gatewayInfo);
+
+            if (!Array.isArray(gatewayInfo) || gatewayInfo.length === 0) {
+                throw new Error('게이트웨이 정보가 없습니다.');
+            }
+
+            const gatewayId = gatewayInfo[0].gateway_id;
+            console.log("선택된 gatewayId:", gatewayId);
             return gatewayId;
         } catch (err) {
             console.error(err);

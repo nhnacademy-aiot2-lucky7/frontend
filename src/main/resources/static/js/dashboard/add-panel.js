@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (dashboardUid) {
                 window.location.href = `/panel/${dashboardUid}`;
             } else {
-                window.location.href = '/panel';
+                window.location.href = '/dashboard-info';
             }
         }
     };
@@ -198,61 +198,45 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             const departmentId = localStorage.getItem('departmentId');
 
-            const typeRes = await fetch(`https://luckyseven.live/api/data-types/${field}`);
-            if (!typeRes.ok) {
-                alert(`데이터 타입 정보를 불러오지 못했습니다: ${typeRes.status}`);
-                return
-            }
-            const typeInfo = await typeRes.json();
+            // const typeRes = await fetch(`https://luckyseven.live/api/data-types/${field}`);
+            // if (!typeRes.ok) {
+            //     alert(`데이터 타입 정보를 불러오지 못했습니다: ${typeRes.status}`);
+            //     return
+            // }else{
+            //     const typeInfo = await typeRes.json();
+            // }
 
             const panelWithRuleRequest = {
                 createPanelRequest: {
                     dashboardUid: dashboardUid,
                     panelId: null,
                     panelTitle: panelTitle,
-                    type_en_name: field,
-                    gateway_id: gatewayId,
-                    sensor_id: sensorId,
-                    dataTypeKrName: typeInfo.type_kr_name,
+                    sensorFieldRequestDto: [{
+                        type_en_name: field,
+                        gateway_id: gatewayId,
+                        sensor_id: sensorId
+                        }],
                     gridPos: {w: width, h: height},
                     type: type,
                     aggregation: aggregation,
                     time: time,
-                    thresholdMin: min,                 // @JsonProperty("threshold_min")
-                    thresholdMax: max,                 // @JsonProperty("threshold_max")
+                    thresholdMin: min,
+                    thresholdMax: max,
                     bucket: "team1-sensor-data",
                     measurement: "sensor-data"
                 },
                 ruleRequest: {
-                    type_en_name: field,
                     gateway_id: gatewayId,
                     sensor_id: sensorId,
-                    departmentId: departmentId
+                    departmentId: departmentId,
+                    type_en_name: field,
+                    type_kr_name:"알수없음",
+                    thresholdMin: min,
+                    thresholdMax: max
                 }
             };
 
-            // const createPanelRequest = {
-            //     dashboardUid: dashboardUid,
-            //     panelId: 1,
-            //     panelTitle: panelTitle,
-            //     sensorFieldRequestDto: [
-            //         {
-            //             type_en_name: "temperature",      // Java @JsonProperty("type_en_name")
-            //             gateway_id: 1,            // Java @JsonProperty("gateway_id") (숫자만 넣어주세요)
-            //             sensor_id: "sensorId"       // Java @JsonProperty("sensor_id")
-            //         }
-            //     ],
-            //     gridPos: { w: width, h: height },
-            //     type: type,
-            //     aggregation: aggregation,
-            //     time: time,
-            //     min: 15,                       // Java 필드 min
-            //     max: 80,                       // Java 필드 max
-            //     bucket: "team1-sensor-data",
-            //     measurement: "sensor-data"
-            // };
-
-            const response = await fetch("https://luckyseven.live/api/panels/test", {
+            const response = await fetch("https://luckyseven.live/api/panels", {
                 method: "POST",
                 credentials: 'include',
                 headers: {

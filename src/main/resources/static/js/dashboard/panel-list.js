@@ -38,10 +38,8 @@ async function loadIframes(dashboardUid) {
                 if (!confirmed) return;
 
                 const deleteRequest = {
-                    deletePanelRequest:{
                         dashboardUid: panel.dashboardUid,
                         panelId: panel.panelId
-                    }
                 }
 
                 try {
@@ -56,15 +54,15 @@ async function loadIframes(dashboardUid) {
 
                     if (res.status === 204) {
                         wrapper.remove(); // 성공 시 DOM에서 제거
+                        alert(`${panel.dashboardTitle || '제목 없음'} 패널이 삭제되었습니다.`);
                     } else {
-                        alert('패널 삭제에 실패했습니다.');
+                        alert('패널 삭제에 실패했습니다. 다시 시도해주세요.');
                     }
                 } catch (err) {
                     console.error('삭제 중 오류:', err);
                     alert('서버 오류로 삭제에 실패했습니다.');
                 }
             });
-
 
             wrapper.appendChild(deleteBtn);
 

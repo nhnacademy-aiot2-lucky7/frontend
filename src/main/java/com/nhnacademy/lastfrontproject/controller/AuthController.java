@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.Duration;
 import java.util.Map;
 
-@RestController
+@Controller
 public class AuthController {
     private final AuthAdaptor authAdaptor;
     private final OAuth2AuthorizedClientService authorizedClientService;
@@ -88,22 +88,5 @@ public class AuthController {
         model.addAttribute("accessToken", accessToken);
 
         return "pages/member/pages-additional-info";
-    }
-
-    @PostMapping("/set-token-cookie")
-    public ResponseEntity<Void> setTokenCookie(@RequestBody Map<String, String> body) {
-        String token = body.get("token");
-
-        ResponseCookie cookie = ResponseCookie.from("accessToken", token)
-                .httpOnly(true)
-                .secure(true)
-                .path("/")
-                .maxAge(Duration.ofHours(1))
-                .sameSite("None")
-                .build();
-
-        return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                .build();
     }
 }

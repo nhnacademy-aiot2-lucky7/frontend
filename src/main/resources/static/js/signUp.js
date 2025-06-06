@@ -1,144 +1,145 @@
-// 추후 변경 필요
-//
-// API 엔드포인트 URL:
-//     /api/signup
-//     /api/login
-//
-// 요청 본문(body)의 필드명:
-//     회원가입: name, email, password
-//     로그인: email, password, rememberMe
-//
-// 응답 데이터의 필드명:
-//     success: 요청 성공 여부
-//     token: JWT 토큰 (로그인 성공 시)
-//     message: 오류 메시지 등
-//     user: 사용자 정보 (선택적)
-//
-// HTTP 상태 코드:
-//     409: 이미 존재하는 이메일 (회원가입 시)
-//     401: 인증 실패 (로그인 실패 또는 토큰 만료)
-//
-// 토큰 필드명
-//     token
-
-// 부서 목록 불러오기
-fetch('https://luckyseven.live/api/departments/all')
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('부서 정보를 불러오는데 실패했습니다.');
-        }
-        return response.json();
-    })
-    .then(departments => {
-        const departmentSelect = document.getElementById('departmentId');
-
-        // 각 부서를 드롭다운 옵션으로 추가
-        departments.forEach(dept => {
-            const option = document.createElement('option');
-            option.value = dept.departmentId; // 부서 ID
-            option.textContent = dept.departmentName; // 부서 이름
-            departmentSelect.appendChild(option);
-        });
-    })
-    .catch(error => {
-        console.error('부서 목록을 불러오지 못했습니다:', error);
-        const departmentSelect = document.getElementById('departmentId');
-        const errorOption = document.createElement('option');
-        errorOption.textContent = '부서 정보를 불러올 수 없습니다';
-        errorOption.disabled = true;
-        departmentSelect.appendChild(errorOption);
-    });
-
-// 회원가입 페이지
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.querySelector('form');
+    if (!form) return;
 
-    //로그인 여부 확인
+    const nameInput = form.querySelector('input[name="userName"]');
+    const emailInput = form.querySelector('input[name="userEmail"]');
+    const passwordInput = form.querySelector('input[name="userPassword"]');
+    const departmentSelect = form.querySelector('select[name="departmentId"]');
+
+    // 저장된 이메일 불러오기
+    const savedEmail = localStorage.getItem('rememberedEmail');
+    if (savedEmail) {
+        emailInput.value = savedEmail;
+    }
+
+    // 로그인 여부 확인
     const token = localStorage.getItem('token');
     if (token) {
-        window.location.href = '/dashboard'; // 이미 로그인 된 사람은 인덱스 페이지로 리다이렉트
+        window.location.href = '/dashboard';
         return;
+    }
+
+    // 부서 목록 불러오기
+    fetch('https://luckyseven.live/api/departments/all')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('부서 정보를 불러오는데 실패했습니다.');
+            }
+            return response.json();
+        })
+        .then(departments => {
+            departments.forEach(dept => {
+                const option = document.createElement('option');
+                option.value = dept.departmentId;
+                option.textContent = dept.departmentName;
+                departmentSelect.appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error('부서 목록을 불러오지 못했습니다:', error);
+            const errorOption = document.createElement('option');
+            errorOption.textContent = '부서 정보를 불러올 수 없습니다';
+            errorOption.disabled = true;
+            departmentSelect.appendChild(errorOption);
+        });
+
+    async function loadUserToLocalStorage() {
+        try {
+            const userResponse = await fetch("https://luckyseven.live/api/users/me", {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include'
+            });
+            const user = await userResponse.json();
+
+            const imageResponse = await fetch(`https://luckyseven.live/api/images/${user.userEmail}`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include'
+            });
+            const image = await imageResponse.json();
+
+            const fullUser = {
+                userRole: user.userRole,
+                userNo: user.userNo,
+                userName: user.userName,
+                userEmail: user.userEmail,
+                userPhone: user.userPhone,
+                department: user.department,
+                eventLevelResponse: user.eventLevelResponse,
+                image: image
+            };
+
+            localStorage.setItem("currentUser", JSON.stringify(fullUser));
+            console.log("유저정보 로컬스토리지 저장 완료");
+
+        } catch (error) {
+            console.error("유저 정보 불러오기 실패:", error);
+        }
     }
 
     form.addEventListener('submit', function (e) {
         e.preventDefault();
 
-        const name = form.querySelector('input[name = "userName"]').value;
-        const email = form.querySelector('input[name = "userEmail"]').value;
-        const password = form.querySelector('input[name = "userPassword"]').value;
+        const name = nameInput.value;
+        const email = emailInput.value;
+        const password = passwordInput.value;
+        const departmentId = departmentSelect.value;
+        const rememberMe = form.querySelector('input[name="remember-me"]')?.checked ?? false;
 
-        // 유효성 검사
         if (!name || !email || !password) {
             alert('값을 입력해 주세요');
             return;
         }
 
-        // 이메일 형식 검사
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
             alert('유효한 이메일 주소를 입력해주세요.');
             return;
         }
 
-        // // 휴대폰 인증 여부 확인
-        // if (!window.isPhoneVerified) {
-        //     alert('휴대폰 인증을 완료해 주세요.');
-        //     return;
-        // }
-
-        // 서버에 회원가입 요청 보내기
         fetch('https://luckyseven.live/api/auth/signUp', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 userName: name,
                 userEmail: email,
                 userPassword: password,
-                userDepartment: form.querySelector('select[name="departmentId"]').value,
-                // userPhone: form.querySelector('input[name="userPhone"]').value
-                userPhone: "010-1234-5678" // 빈 문자열이라도 포함
+                userDepartment: departmentId,
+                userPhone: "010-1234-5678"
             }),
             credentials: 'include'
         })
             .then(response => {
-                // HTTP 상태 확인
                 if (!response.ok) {
                     if (response.status === 409) {
-                        throw new Error('이미 가입된 이메일 입니다');
+                        throw new Error('이미 가입된 이메일입니다.');
                     }
-                    throw new Error(`HTTP Error! : , ${response.status}`);
+                    throw new Error(`HTTP Error: ${response.status}`);
                 }
-                const contentType = response.headers.get('content-type');
-                if (contentType && contentType.includes('application/json')) {
-                    return response.json();
-                }
-                return {success: true};
+                return response.text();
             })
-            .then(data => {
-                if (data.success) {
-                    alert('회원가입이 완료되었습니다');
-
-                    if (rememberMe) {
+            .then(token => {
+                return fetch('/set-token-cookie', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ token }),
+                    credentials: 'include'
+                })
+                    .then(() => {
+                        alert('회원가입 및 로그인 성공!');
                         localStorage.setItem('rememberedEmail', email);
-                    } else {
-                        localStorage.removeItem('rememberedEmail');
-                    }
 
-                    // 로그인 상태 저장 (UI 업데이트용)
-                    localStorage.setItem('isLoggedIn', 'true');
-
-                    alert('로그인 성공!');
-                    // 페이지 새로고침으로 Thymeleaf 렌더링 갱신
-                    window.location.replace('/dashboard');
-                } else {
-                    alert(data.message || '회원가입에 실패했습니다');
-                }
+                        localStorage.setItem('isLoggedIn', 'true');
+                        loadUserToLocalStorage().then(()=>{
+                            window.location.replace('/dashboard');
+                        })
+                    });
             })
             .catch(error => {
-                console.error('Error : ', error);
-                alert(error.message || '서버 오류가 발생했습니다');
+                console.error('Error:', error);
+                alert(error.message || '서버 오류가 발생했습니다.');
             });
     });
 });

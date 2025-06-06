@@ -92,22 +92,22 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(token => {
                 console.log('로그인 성공, 토큰:', token);
 
-                if (rememberMe) {
-                    localStorage.setItem('rememberedEmail', email);
-                } else {
-                    localStorage.removeItem('rememberedEmail');
-                }
-
-                localStorage.setItem('isLoggedIn', 'true');
-
                 return fetch('/set-token-cookie', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ token }),  // 토큰 전달
                     credentials: 'include'
                 })
-                    .then(response => {
+                    .then(() => {
                         alert('로그인 성공!');
+
+                        if (rememberMe) {
+                            localStorage.setItem('rememberedEmail', email);
+                        } else {
+                            localStorage.removeItem('rememberedEmail');
+                        }
+
+                        localStorage.setItem('isLoggedIn', 'true');
 
                         loadUserToLocalStorage().then(()=>{
                             window.location.replace('/dashboard');

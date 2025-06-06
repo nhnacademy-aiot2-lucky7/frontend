@@ -117,6 +117,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (!res.ok) throw new Error('센서 매핑 정보 실패');
             const data = await res.json();
 
+            console.log("data:{}", data);
             const sensorList = [...new Set(data.map(item => item.sensorId))];
             const fieldList = [...new Set(data.map(item => item.dataTypeEnName))];
 
@@ -127,8 +128,24 @@ document.addEventListener('DOMContentLoaded', async () => {
             const thresholdRes = await fetch(
                 `https://luckyseven.live/api/threshold-histories/gateway-id/${gatewayId}`
             );
-            if (!thresholdRes.ok) throw new Error('임계치 정보 실패');
-            sensorBound = await thresholdRes.json();
+            if (!thresholdRes.ok) {
+                console.warn('임계치 정보를 불러오지 못했습니다. 기본 값을 사용합니다.');
+
+                const defaultSensorId = sensorSelect.options[0]?.value || 'unknown_sensor';
+                const defaultField = fieldSelect.options[0]?.value || 'unknown_field';
+
+                sensorBound = [{
+                    gatewayId: gatewayId,
+                    sensorId: defaultSensorId,
+                    sensorType: defaultField,
+                    minRangeMin: 10.0,
+                    minRangeMax: 30.0,
+                    maxRangeMin: 70.0,
+                    maxRangeMax: 90.0
+                }];
+            } else {
+                sensorBound = await thresholdRes.json();
+            }
 
             attachThresholdHandlers();
             [gatewaySelect, sensorSelect, fieldSelect].forEach(select => {
@@ -139,6 +156,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         } catch (err) {
             console.error(err);
             alert('센서/임계치 로딩 오류');
+
+            const dashboardUid = document.getElementById('dashboardUid').value;
+            if (dashboardUid) {
+                window.location.href = `/panel/${dashboardUid}`;
+            } else {
+                window.location.href = '/panel';
+            }
         }
     };
 

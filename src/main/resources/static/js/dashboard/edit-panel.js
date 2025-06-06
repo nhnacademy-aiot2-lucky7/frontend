@@ -118,8 +118,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             const data = await res.json();
 
             console.log("data:{}", data);
-            const sensorList = [...new Set(data.map(item => item.sensor_id))];
-            const fieldList = [...new Set(data.map(item => item.type_en_name))];
+            const sensorList = [...new Set(data.map(item => item.sensorId))];
+            const fieldList = [...new Set(data.map(item => item.dataTypeEnName))];
 
             populateSelect(sensorSelect, sensorList);
             populateSelect(fieldSelect, fieldList);
@@ -128,10 +128,23 @@ document.addEventListener('DOMContentLoaded', async () => {
             const thresholdRes = await fetch(
                 `https://luckyseven.live/api/threshold-histories/gateway-id/${gatewayId}`
             );
-
-            log.info("thresholdRes:{}", thresholdRes);
             if (!thresholdRes.ok) {
-                console.warn('임계치 정보를 불러오지 못했습니다.');
+                console.warn('임계치 정보를 불러오지 못했습니다. 기본 값을 사용합니다.');
+
+                const defaultSensorId = sensorSelect.options[0]?.value || 'unknown_sensor';
+                const defaultField = fieldSelect.options[0]?.value || 'unknown_field';
+
+                sensorBound = [{
+                    gatewayId: gatewayId,
+                    sensorId: defaultSensorId,
+                    sensorType: defaultField,
+                    minRangeMin: 10.0,
+                    minRangeMax: 30.0,
+                    maxRangeMin: 70.0,
+                    maxRangeMax: 90.0
+                }];
+            } else {
+                sensorBound = await thresholdRes.json();
             }
 
             attachThresholdHandlers();
@@ -196,13 +209,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             const panelWithRuleRequest = {
                 createPanelRequest: {
                     dashboardUid: dashboardUid,
-                    panelId: null,
+                    panelId: 1,
                     panelTitle: panelTitle,
                     sensorFieldRequestDto: [{
                         type_en_name: field,
                         gateway_id: gatewayId,
                         sensor_id: sensorId
-                        }],
+                    }],
                     gridPos: {w: width, h: height},
                     type: type,
                     aggregation: aggregation,
@@ -215,11 +228,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                 ruleRequest: {
                     gateway_id: gatewayId,
                     sensor_id: sensorId,
-                    departmentId: departmentId,
+                    department_id: departmentId,
                     type_en_name: field,
                     type_kr_name:"알수없음",
-                    thresholdMin: min,
-                    thresholdMax: max
+                    threshold_min: min,
+                    threshold_max: max
                 }
             };
 

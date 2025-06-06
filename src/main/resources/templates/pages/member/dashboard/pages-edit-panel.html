@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>패널 수정 | Lucky Seven</title>
+    <link href="/css/dashboard/dashboard.css" rel="stylesheet" />
+    <script src="/js/dashboard/edit-panel.js"></script>
+</head>
+
+<body>
+<section layout:fragment="content">
+    <div class="add-dashboard-container">
+        <div class="add-dashboard-header">
+            <h2 class="add-dashboard-title">패널 수정</h2>
+            <div class="button-container">
+                <button class="add-dashboard-save-btn" id="saveBtn">저장</button>
+            </div>
+        </div>
+
+        <form id="filterForm" class="add-dashboard-form">
+
+            <input type="hidden" id="dashboardUid" name="dashboardUid" th:value="${dashboardUid}" />
+
+            <div class="add-dashboard-form-row">
+                <label for="name">패널 이름</label>
+                <input type="text" name="name" id="name" required />
+            </div>
+
+            <div class="add-dashboard-form-row">
+                <label for="gatewaySelect">Gateway ID</label>
+                <select id="gatewaySelect" name="gatewayId">
+                    <option value="">모든 게이트웨이 아이디</option>
+                </select>
+            </div>
+
+            <div class="add-dashboard-form-row">
+                <label for="sensorSelect">Sensor ID</label>
+                <select id="sensorSelect" name="sensorId">
+                    <option value="">모든 센서 아이디</option>
+                </select>
+            </div>
+
+            <div class="add-dashboard-form-row">
+                <label for="fieldSelect">Field</label>
+                <select id="fieldSelect" name="sensorType">
+                    <option value="">모든 센서 타입</option>
+                </select>
+            </div>
+
+            <div class="add-dashboard-form-row">
+                <label for="width">그래프 너비</label>
+                <input type="text" name="width" id="width" required />
+            </div>
+
+            <div class="add-dashboard-form-row">
+                <label for="height">그래프 높이</label>
+                <input type="text" name="height" id="height" required />
+            </div>
+
+            <div class="add-dashboard-form-row">
+                <label for="typeSelect">그래프 타입</label>
+                <select id="typeSelect" name="type">
+                    <option value="">모든 그래프 타입</option>
+                </select>
+            </div>
+
+            <div class="add-dashboard-form-row">
+                <label for="aggregationSelect">집계 방식</label>
+                <select id="aggregationSelect" name="aggregation">
+                    <option value="">모든 집계 방식</option>
+                </select>
+            </div>
+
+            <div class="add-dashboard-form-row">
+                <label for="timeSelect">시간</label>
+                <select id="timeSelect" name="time">
+                    <option value="">모든 가능 시간</option>
+                </select>
+            </div>
+
+            <!-- 빈 칸 채워서 정렬 유지 -->
+            <div class="add-dashboard-form-row"></div>
+
+            <!-- 임계치 설정 (2열 전체 사용) -->
+            <div class="add-dashboard-form-row add-dashboard-description">
+                <div class="add-dashboard-form-row add-dashboard-description">
+                    <label>임계값 설정 (AI 추천)</label>
+                    <div style="display: flex; flex-wrap: wrap; gap: 4rem;">
+
+                        <!-- 최소값 선택 -->
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                            <span>최소값</span>
+                            <div id="minSuggestionGroup" style="display: flex; gap: 10px;">
+                                <label><input type="radio" name="minThreshold" value="min" /></label>
+                                <label><input type="radio" name="minThreshold" value="middle" /></label>
+                                <label><input type="radio" name="minThreshold" value="max" /></label>
+                            </div>
+                            <input id="minInput" type="number" disabled />
+                        </div>
+
+                        <!-- 최대값 선택 -->
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                            <span>최대값</span>
+                            <div id="maxSuggestionGroup" style="display: flex; gap: 10px;">
+                                <label><input type="radio" name="maxThreshold" value="min" /></label>
+                                <label><input type="radio" name="maxThreshold" value="middle" /></label>
+                                <label><input type="radio" name="maxThreshold" value="max" /></label>
+                            </div>
+                            <input id="maxInput" type="number" disabled />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+</body>
+</html>

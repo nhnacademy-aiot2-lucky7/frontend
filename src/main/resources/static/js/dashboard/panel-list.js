@@ -1,10 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
-    loadIframes();
+    const dashboardUid = document.getElementById('panelList').dataset.dashboardUid;
+    loadIframes(dashboardUid);
 });
 
-async function loadIframes() {
+async function loadIframes(dashboardUid) {
     try {
-        const endpoint = '/panels';
+        const endpoint = `https://luckyseven.live/api/panels/${dashboardUid}`;
 
         const res = await fetch(endpoint);
         if (!res.ok) new Error('패널 정보를 불러오지 못했습니다.');
@@ -12,6 +13,9 @@ async function loadIframes() {
         const panels = await res.json();
         const container = document.getElementById('panelList');
         container.innerHTML = ''; // 초기화
+
+        console.log('로그 확인: ', panels);
+        console.log('삭제 요청 panelId: ', panels.panelId);
 
         panels.forEach(panel => {
             const wrapper = document.createElement('div');
@@ -28,18 +32,21 @@ async function loadIframes() {
             deleteBtn.textContent = '삭제';
             deleteBtn.className = 'delete-button';
             deleteBtn.addEventListener('click', async () => {
-                const confirmed = confirm(`"${panel.dashboardTitle}" 패널을 삭제하시겠습니까?`);
+                console.log('삭제 시도 panel:', panel); // 디버깅용
+
+                const confirmed = confirm(`"${panel.dashboardTitle || '제목 없음'}" 패널을 삭제하시겠습니까?`);
                 if (!confirmed) return;
 
                 try {
                     const res = await fetch("https://luckyseven.live/api/panels", {
                         method: 'DELETE',
+                        credentials: 'include',
                         headers: {
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
                             dashboardUid: panel.dashboardUid,
-                            panelId: panel.panelId
+                            panelId: panel.panelId  // 하드코딩 제거!
                         })
                     });
 
@@ -53,6 +60,7 @@ async function loadIframes() {
                     alert('서버 오류로 삭제에 실패했습니다.');
                 }
             });
+
 
             wrapper.appendChild(deleteBtn);
 

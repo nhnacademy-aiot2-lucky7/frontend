@@ -31,5 +31,4 @@ public interface SensorAdaptor {
     @GetMapping("/api/sensor-data-mappings/gateway-id/{gateway-id}/sensors")
     ResponseEntity<List<SensorDataMappingWebResponse>> getSensorDataByGatewayId(
             @PathVariable("gateway-id") Long gatewayId);
-
     }

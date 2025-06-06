@@ -171,7 +171,7 @@ saveBtn.addEventListener('click', () => {
 
     fetch(`https://luckyseven.live/api/gateways`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(payload),
         credentials: 'include'
     })
@@ -182,15 +182,23 @@ saveBtn.addEventListener('click', () => {
         .then(data => {
             // 서버 저장 성공 시 UI 다시 출력
             // description은 textarea 대신 텍스트로 바꾸기
-            const descElem = document.getElementById('description');
-            descElem.innerText = payload.description;
 
-            // gateway_name 필드 다시 텍스트로 바꾸기
+            // description textarea → 일반 텍스트로 복원
+            const descElem = document.getElementById('description');
+            if (descElem && descElem.tagName === 'DIV') {
+                // description이 잘못된 상태로 있는 경우 처리
+                descElem.innerText = payload.description;
+            } else if (descElem) {
+                descElem.innerText = payload.description;
+            }
+
+            // gateway_name input → 일반 텍스트로 복원
             const nameItem = document.querySelector('[data-field="name"]');
             if (nameItem) {
+                const labelText = nameItem.querySelector('.label')?.innerText || 'Gateway 이름';
                 nameItem.innerHTML = `
-                <span class="label">Gateway 이름</span>
-                <span class="value" data-value="${payload.gateway_name}">${payload.gateway_name}</span>
+                    <span class="label">${labelText}</span>
+                    <span class="value" data-value="${payload.gateway_name}">${payload.gateway_name}</span>
                 `;
             }
 
@@ -200,6 +208,6 @@ saveBtn.addEventListener('click', () => {
         })
         .catch(error => {
             console.error('저장 실패:', error);
-            alert('저장 중 오류가 발생했습니다.');
+            alert(`저장 중 오류가 발생했습니다. 에러 메시지: ${error.message}`);
         });
 });

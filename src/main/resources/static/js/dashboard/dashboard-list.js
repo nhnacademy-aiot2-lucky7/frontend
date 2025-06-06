@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (!confirm(`정말 "${dashboardTitle}" 대시보드를 삭제하시겠습니까?`)) return;
 
                 try {
-                    const res = await fetch(`/api/dashboards/${dashboardUid}`, {
+                    const res = await fetch(`/api/dashboards/uid/${dashboardUid}`, {
                         method: 'DELETE',
                         credentials: 'include'
                     });

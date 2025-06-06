@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
             params.append('keyword', currentKeyword);
         }
 
-        fetch(`https://luckyseven.live/api/users/all?${params}`, {
+        fetch(`https://luckyseven.live/api/admin/users/all?${params}`, {
             credentials: 'include'
         })
             .then(res => res.json())
@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             row.querySelector('.btn-save').addEventListener('click', function () {
                 const newRole = row.querySelector('.edit-role').value;
-                fetch('https://luckyseven.live/api/admin/users/roles', {
+                fetch('https://luckyseven.live/api/admin/admin/users/roles', {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     credentials: 'include',

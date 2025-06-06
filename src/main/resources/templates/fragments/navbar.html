@@ -16,8 +16,8 @@
                     <div class="list-group"></div>
                     <div class="dropdown-menu-footer">
                         <a class="text-muted" href="/notification">모든 알림 보기</a>
+                        </div>
                     </div>
-                </div>
             </li>
 
             <!-- 사용자 정보 드롭다운 (JS로 상태 분기) -->
@@ -60,6 +60,8 @@
         const usernameSpan = document.getElementById('navbar-username');
         const profileImg = document.getElementById('navbar-profile-img');
 
+
+        console.log(userJson);
         if (user) {
             navDropdown.classList.remove("d-none");
             loginButton.classList.add("d-none");  // ✅ 로그인 상태일 땐 무조건 숨김

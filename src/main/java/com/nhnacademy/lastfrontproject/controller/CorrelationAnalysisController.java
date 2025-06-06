@@ -3,7 +3,7 @@ package com.nhnacademy.lastfrontproject.controller;
 import com.nhnacademy.lastfrontproject.dto.analysis.AnalysisRequest;
 import com.nhnacademy.lastfrontproject.dto.analysis.AnalysisResponse;
 import com.nhnacademy.lastfrontproject.dto.gateway.GatewaySummaryResponse;
-import com.nhnacademy.lastfrontproject.dto.sensor.SensorDataMappingWebResponse;
+import com.nhnacademy.lastfrontproject.dto.sensor.SensorDataDetailResponse;
 import com.nhnacademy.lastfrontproject.service.CorrelationAnalysisService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,8 +25,8 @@ public class CorrelationAnalysisController {
     }
 
     @GetMapping("/sensor-list/{gateway-id}")
-    public ResponseEntity<List<SensorDataMappingWebResponse>> getSensors(@PathVariable("gateway-id") Long gatewayId) {
-        List<SensorDataMappingWebResponse> sensors = correlationAnalysisService.getSensorListByGatewayId(gatewayId);
+    public ResponseEntity<List<SensorDataDetailResponse>> getSensors(@PathVariable("gateway-id") Long gatewayId) {
+        List<SensorDataDetailResponse> sensors = correlationAnalysisService.getSensorListByGatewayId(gatewayId);
 
         return ResponseEntity.ok(sensors);
     }

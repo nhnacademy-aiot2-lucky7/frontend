@@ -2,7 +2,7 @@ package com.nhnacademy.lastfrontproject.adaptor;
 
 import com.nhnacademy.lastfrontproject.dto.sensor.DataTypeInfoResponse;
 import com.nhnacademy.lastfrontproject.dto.sensor.SensorDataMappingIndexResponse;
-import com.nhnacademy.lastfrontproject.dto.sensor.SensorDataMappingWebResponse;
+import com.nhnacademy.lastfrontproject.dto.sensor.SensorDataDetailResponse;
 import com.nhnacademy.lastfrontproject.dto.sensor.ThresholdBoundResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +29,6 @@ public interface SensorAdaptor {
     ResponseEntity<DataTypeInfoResponse> getDataTypeKrName(@PathVariable("typeEnName") String typeEnName) ;
 
     @GetMapping("/api/sensor-data-mappings/gateway-id/{gateway-id}/sensors")
-    ResponseEntity<List<SensorDataMappingWebResponse>> getSensorDataByGatewayId(
+    ResponseEntity<List<SensorDataDetailResponse>> getSensorDataByGatewayId(
             @PathVariable("gateway-id") Long gatewayId);
     }

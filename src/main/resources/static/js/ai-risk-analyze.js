@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     sensors.forEach(sensor => {
                         const option = document.createElement("option");
                         option.value = JSON.stringify(sensor); // 전체 객체 저장
-                        option.text = `${sensor.location} - ${sensor.type_en_name}`;
+                        option.text = `${sensor.location} - ${sensor.type_en_name} - ${sensor.spot}`;
                         sensorSelect.appendChild(option);
                     });
                 })

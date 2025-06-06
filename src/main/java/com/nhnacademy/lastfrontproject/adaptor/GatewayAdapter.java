@@ -1,10 +1,13 @@
 package com.nhnacademy.lastfrontproject.adaptor;
 
 import com.nhnacademy.lastfrontproject.dto.gateway.AdminGatewayResponse;
+import com.nhnacademy.lastfrontproject.dto.gateway.GatewayInfoResponse;
 import com.nhnacademy.lastfrontproject.dto.gateway.GatewayResponse;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -13,11 +16,15 @@ import java.util.List;
         url = "${feign.client.gateway-service.url}"
 )
 public interface GatewayAdapter {
-    @GetMapping("/api/gateways/department/{departmentId}")
+    @GetMapping("/api/gateways")
     List<GatewayResponse> getGatewaySummaries(
-            @PathVariable String departmentId
+            @RequestBody String departmentId
     );
 
     @GetMapping("/api/admin/gateways")
     List<AdminGatewayResponse> getGatewayAdminSummaries();
+
+    @GetMapping("/department-id/{department-id}")
+    ResponseEntity<List<GatewayInfoResponse>> getGatewayListByDepartmentId(
+            @PathVariable("department-id") String departmentId);
 }

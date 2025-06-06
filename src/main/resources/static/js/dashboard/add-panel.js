@@ -118,8 +118,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             const data = await res.json();
 
             console.log("data:{}", data);
-            const sensorList = [...new Set(data.map(item => item.sensorId))];
-            const fieldList = [...new Set(data.map(item => item.dataTypeEnName))];
+            const sensorList = [...new Set(data.map(item => item.sensor_id))];
+            const fieldList = [...new Set(data.map(item => item.type_en_name))];
 
             populateSelect(sensorSelect, sensorList);
             populateSelect(fieldSelect, fieldList);

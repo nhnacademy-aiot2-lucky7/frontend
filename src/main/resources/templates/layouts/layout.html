@@ -52,7 +52,7 @@
 
     async function fetchUnreadCount() {
         try {
-            const response = await fetch('https://luckyseven.live/notifications/unread-count', {
+            const response = await fetch('https://luckyseven.live/api/notifications/unread-count', {
                 method: 'GET',
                 credentials: 'include',
                 headers: { 'Content-Type': 'application/json' }
@@ -71,7 +71,7 @@
 
     async function fetchNotifications() {
         try {
-            const response = await fetch('https://luckyseven.live/notifications/unread?size=5', {
+            const response = await fetch('https://luckyseven.live/api/notifications/unread?size=5', {
                 method: 'GET',
                 credentials: 'include',
                 headers: { 'Content-Type': 'application/json' }

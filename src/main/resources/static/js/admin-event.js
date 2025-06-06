@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!lastSearchRequest) return;
 
         try {
-            const response = await fetch(`https://luckyseven.live/events/search?page=${page}&size=10`, {
+            const response = await fetch(`https://luckyseven.live/api/events/search?page=${page}&size=10`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(lastSearchRequest)
@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function deleteEvent(eventNo) {
         try {
-            const res = await fetch(`https://luckyseven.live/admin/events/${eventNo}`, {
+            const res = await fetch(`https://luckyseven.live/api/admin/events/${eventNo}`, {
                 method: 'DELETE'
             });
             if (!res.ok) throw new Error('삭제 실패');

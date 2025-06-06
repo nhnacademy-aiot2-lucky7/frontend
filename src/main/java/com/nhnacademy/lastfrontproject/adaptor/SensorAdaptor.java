@@ -15,20 +15,20 @@ import java.util.Set;
 @FeignClient(name = "sensor", url = "${feign.client.gateway-service.url}")
 public interface SensorAdaptor {
 
-    @GetMapping("/sensor-data-mappings")
+    @GetMapping("/api/sensor-data-mappings")
     ResponseEntity<Set<SensorDataMappingIndexResponse>> getSensorData();
 
-    @GetMapping("/threshold-histories/gateway-id/{gateway-id}/sensor-id/{sensor-id}/type-en-name/{type-en-name}")
+    @GetMapping("/api/threshold-histories/gateway-id/{gateway-id}/sensor-id/{sensor-id}/type-en-name/{type-en-name}")
     ResponseEntity<ThresholdBoundResponse> getSensorBound(
             @PathVariable("gateway-id") Long gatewayId,
             @PathVariable("sensor-id") String sensorId,
             @PathVariable("type-en-name") String typeEnName
     );
 
-    @GetMapping("/data-types/{typeEnName}")
+    @GetMapping("/api/data-types/{typeEnName}")
     ResponseEntity<DataTypeInfoResponse> getDataTypeKrName(@PathVariable("typeEnName") String typeEnName) ;
 
-    @GetMapping("/sensor-data-mappings/gateway-id/{gateway-id}/sensors")
+    @GetMapping("/api/sensor-data-mappings/gateway-id/{gateway-id}/sensors")
     ResponseEntity<List<SensorDataMappingWebResponse>> getSensorDataByGatewayId(
             @PathVariable("gateway-id") Long gatewayId);
 

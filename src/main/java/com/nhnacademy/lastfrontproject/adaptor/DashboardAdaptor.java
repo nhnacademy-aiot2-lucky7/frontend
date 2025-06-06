@@ -15,57 +15,57 @@ import java.util.List;
 @FeignClient(name = "dashboard", url = "${feign.client.gateway-service.url}")
 public interface DashboardAdaptor {
 
-    @GetMapping("/folders")
+    @GetMapping("/api/folders")
     ResponseEntity<List<FolderInfoResponse>> getFolders();
 
-    @GetMapping("/dashboards")
+    @GetMapping("/api/dashboards")
     ResponseEntity<List<InfoDashboardResponse>> getAllDashboard();
 
-    @GetMapping("/panels/{dashboardUid}")
+    @GetMapping("/api/panels/{dashboardUid}")
     ResponseEntity<List<IframePanelResponse>> getPanel(
             @PathVariable String dashboardUid);
 
-    @PostMapping("/dashboards")
+    @PostMapping("/api/dashboards")
     ResponseEntity<Void> createDashboard(
             @RequestBody CreateDashboardRequest createDashboardRequest
     );
 
-    @PostMapping("/panels/filter")
+    @PostMapping("/api/panels/filter")
     ResponseEntity<List<IframePanelResponse>> getFilterPanel(
             @RequestBody ReadPanelRequest readFilterPanelRequest,
             @RequestParam List<Integer> offPanelId
     );
 
-    @PostMapping("/panels")
+    @PostMapping("/api/panels")
     ResponseEntity<Void> createPanel(
             @RequestBody PanelWithRuleRequest panelWithRuleRequest
     );
 
-    @PostMapping("/panels/test")
+    @PostMapping("/api/panels/test")
     ResponseEntity<Void> createPaneltest(
             @RequestBody CreatePanelRequest createPanelRequest
     );
 
-    @PutMapping("/dashboards")
+    @PutMapping("/api/dashboards")
     ResponseEntity<Void> updateDashboard(
             @RequestBody UpdateDashboardNameRequest updateDashboardNameRequest
     );
 
-    @PutMapping("/panels")
+    @PutMapping("/api/panels")
     ResponseEntity<Void> updatePanel(
             @RequestBody UpdatePanelRequest updateRequest
     );
 
-    @PutMapping("/panels/priority")
+    @PutMapping("/api/panels/priority")
     ResponseEntity<Void> updatePriority(
             @RequestBody UpdatePanelPriorityRequest updatePriority
     );
 
-    @DeleteMapping("/dashboards")
+    @DeleteMapping("/api/dashboards")
     ResponseEntity<Void> deleteDashboard(
             @RequestBody DeleteDashboardRequest deleteDashboardRequest);
 
-    @DeleteMapping("/panels")
+    @DeleteMapping("/api/panels")
     ResponseEntity<Void> deletePanel(
             @RequestBody DeletePanelRequest deletePanelRequest);
 }

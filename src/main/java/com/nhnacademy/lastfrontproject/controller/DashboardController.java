@@ -22,14 +22,12 @@ public class DashboardController {
 
     // 대시보드 추가
     @GetMapping({"/add-dashboard"})
-    public String showDashboardPage(Model model,
-                                    @RequestParam(name = "departmentId", required = false) String departmentId) {
-        model.addAttribute("departmentId", departmentId);
+    public String showDashboardPage() {
         return "pages/member/dashboard/pages-add-dashboard";
     }
 
     // 사용자 대시보드 정보 조회
-    @GetMapping("/user/dashboard-info")
+    @GetMapping("/dashboard-info")
     public String getUserDashboards(){
         return "pages/member/dashboard/pages-dashboard-info";
     }
@@ -48,13 +46,18 @@ public class DashboardController {
     }
 
     // 패널 조회
-    @GetMapping("/panels/{dashboardUid}")
+    @GetMapping("/panel/{dashboardUid}")
     public String getPanels(Model model,
                             @PathVariable String dashboardUid) {
         log.info("getPanels 실행");
         List<IframePanelResponse> panelResponses = dashboardService.getPanel(dashboardUid);
+
+        // 리스트가 비어있지 않다면 dashboardTitle 하나 꺼내서 model에 추가
+        String dashboardTitle = panelResponses.isEmpty() ? "제목 없음" : panelResponses.getFirst().getDashboardTitle();
+
         model.addAttribute("panels", panelResponses);
         model.addAttribute("dashboardUid", dashboardUid);
+        model.addAttribute("dashboardTitle", dashboardTitle);
 
         return "pages/member/dashboard/pages-panel-list";
     }

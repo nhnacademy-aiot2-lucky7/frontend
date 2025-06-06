@@ -13,30 +13,30 @@ import java.util.Map;
 
 @FeignClient(name = "auth", url = "${feign.client.gateway-service.url}")
 public interface AuthAdaptor {
-    @PostMapping("/auth/register")
+    @PostMapping("/api/auth/register")
     ResponseEntity<String> register(@RequestBody RegisterRequest registerRequest);
 
-    @PostMapping("/auth/login")
+    @PostMapping("/api/auth/login")
     void login(@RequestBody LoginRequest loginRequest);
 
-    @GetMapping("/users/{userEmail}")
+    @GetMapping("/api/users/{userEmail}")
     Boolean existsByEmail(@PathVariable String userEmail);
 
-    @PostMapping("/auth/social/signIn")
+    @PostMapping("/api/auth/social/signIn")
     ResponseEntity<Void> socialSignIn(@RequestBody String email, @RequestHeader("Authorization") String accessTokenHeader);
 
-    @GetMapping("/users/me")
+    @GetMapping("/api/users/me")
     ResponseEntity<UserResponse> getMyInfo();
 
-    @GetMapping("/admin/users")
+    @GetMapping("/api/admin/users")
     List<UserResponse> getAllMembers();
 
-    @PutMapping("/admin/users/roles")
+    @PutMapping("/api/admin/users/roles")
     void updateMemberRole(@RequestBody Map<String, String> request);
 
-    @DeleteMapping("/admin/users/{userEmail}")
+    @DeleteMapping("/api/admin/users/{userEmail}")
     void deleteMember(@PathVariable("userEmail") String userEmail);
 
-    @GetMapping("/images/{userEmail}")
+    @GetMapping("/api/images/{userEmail}")
     ResponseEntity<ImageResponse> getImage(@PathVariable String userEmail);
 }

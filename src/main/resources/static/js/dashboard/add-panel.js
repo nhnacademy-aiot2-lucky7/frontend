@@ -201,8 +201,9 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
 
-            const response = await fetch("/api/test", {
+            const response = await fetch("https://luckyseven.live/api/panels/test", {
                 method: "POST",
+                credentials:'include',
                 headers: {
                     "Content-Type": "application/json"
                 },

@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
 
             banner.addEventListener('click', () => {
-                window.location.href = `/panels?dashboardUid=${dashboardUid}`;
+                window.location.href = `/panel/${dashboardUid}`;
             });
 
             // 삭제 버튼 추가
@@ -108,9 +108,15 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (!confirm(`정말 "${dashboardTitle}" 대시보드를 삭제하시겠습니까?`)) return;
 
                 try {
-                    const res = await fetch(`/dashboards/${dashboardUid}`, {
+                    const res = await fetch("https://luckyseven.live/api/dashboards", {
                         method: 'DELETE',
-                        credentials: 'include'
+                        credentials: 'include',
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            dashboardUid: dashboardUid
+                        })
                     });
 
                     if (!res.ok) throw new Error('삭제 실패');

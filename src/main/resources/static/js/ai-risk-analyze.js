@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const analyzeButton = document.getElementById("analyzeButton");
 
     // 1. 게이트웨이 목록 채우기
-    fetch(`/gateway-list?departmentId=${departmentId}`)
+    fetch(`/gateway-list/${departmentId}`)
         .then(res => res.json())
         .then(gateways => {
             console.log("게이트웨이 목록 받아옴:", gateways);

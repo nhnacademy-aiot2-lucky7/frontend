@@ -6,14 +6,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class AiAnalyzeController {
 
-    @GetMapping("/ai-analyze")
+    @GetMapping("/ai-result")
     public String ai(){
-        return "pages/member/pages-ai-analyze";
+        return "pages/member/pages-ai-result";
     }
 
-    @GetMapping("/admin/ai-analyze")
+    @GetMapping("/admin/ai-result")
     public String aiAdmin(){
-        return "pages/admin/pages-ai-analyze-adm";
+        return "pages/admin/pages-ai-result-adm";
     }
 
     @GetMapping("/correlation-analysis")

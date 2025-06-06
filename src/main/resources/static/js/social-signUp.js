@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
     authCard.style.display = 'none';
 
     // 1. 회원가입 여부 확인
-    fetch(`https://luckyseven.live/auth/social/signIn`, {
+    fetch(`https://luckyseven.live/api/auth/social/signIn`, {
         method: 'POST',
         headers: {
             'Authorization': accessToken ? `${accessToken}` : ''
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
     // 부서 목록 불러오기
-    fetch('https://luckyseven.live/departments/all')
+    fetch('https://luckyseven.live/api/departments/all')
         .then(response => {
             if (!response.ok) throw new Error('부서 정보를 불러오는데 실패했습니다.');
             return response.json();
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        fetch('https://luckyseven.live/auth/social/signUp', {
+        fetch('https://luckyseven.live/api/auth/social/signUp', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

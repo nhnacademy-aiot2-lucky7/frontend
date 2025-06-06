@@ -19,6 +19,8 @@ public class CorrelationAdaptor {
     @Value("${feign.client.gateway-service.url}")
     private String gatewayUrl;
 
+    private static final String CORRELATION_ANALYZE_PATH = "/api/correlation-analyze";
+
     public ResponseEntity<AnalysisResponse> analyzeCorrelation(Object requestBody, String encryptedEmail) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -26,6 +28,11 @@ public class CorrelationAdaptor {
 
         HttpEntity<Object> request = new HttpEntity<>(requestBody, headers);
 
-        return restTemplate.postForEntity(gatewayUrl, request, AnalysisResponse.class);
+        // gatewayUrl 끝에 '/'가 있든 없든 안전하게 경로 붙이기
+        String url = gatewayUrl.endsWith("/")
+                ? gatewayUrl.substring(0, gatewayUrl.length() - 1) + CORRELATION_ANALYZE_PATH
+                : gatewayUrl + CORRELATION_ANALYZE_PATH;
+
+        return restTemplate.postForEntity(url, request, AnalysisResponse.class);
     }
 }

@@ -146,7 +146,7 @@ async function loadPage(page, fromPopState = false) {
     }
 
     try {
-        const res = await fetch(`https://luckyseven.live/events/search?page=${page}&size=${pageSize}`, {
+        const res = await fetch(`https://luckyseven.live/api/events/search?page=${page}&size=${pageSize}`, {
             method: 'POST',
             credentials: 'include',
             headers: {'Content-Type': 'application/json'},
@@ -169,7 +169,7 @@ async function fetchEventDetail(eventNo) {
     showError(null);
 
     try {
-        const res = await fetch(`https://luckyseven.live/events/${eventNo}`, {credentials: 'include'});
+        const res = await fetch(`https://luckyseven.live/api/events/${eventNo}`, {credentials: 'include'});
         if (!res.ok) throw new Error('이벤트 상세 불러오기 실패');
         const e = await res.json();
         showDetailModal(e);

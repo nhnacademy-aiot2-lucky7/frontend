@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             // 수정 버튼
             const updateBtn = document.createElement('button');
             updateBtn.textContent = '수정';
-            updateBtn.style.backgroundColor = '#2ecc71';
+            updateBtn.style.backgroundColor = '#1e3a8a';
             updateBtn.style.border = 'none';
             updateBtn.style.color = 'white';
             updateBtn.style.padding = '6px 10px';

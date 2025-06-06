@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function fetchNotifications() {
         const endpoint = isRead ? 'read' : 'unread';
-        const response = await fetch(`https://luckyseven.live/notifications/${endpoint}?size=10`, {
+        const response = await fetch(`https://luckyseven.live/api/notifications/${endpoint}?size=10`, {
             method: 'GET',
             credentials: 'include'
         });
@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function fetchUnreadCount() {
-        const response = await fetch(`https://luckyseven.live/notifications/unread-count`, {
+        const response = await fetch(`https://luckyseven.live/api/notifications/unread-count`, {
             method: 'GET',
             credentials: 'include'
         });
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function markAsRead(notificationNo) {
-        await fetch(`https://luckyseven.live/notifications/${notificationNo}`, {
+        await fetch(`https://luckyseven.live/api/notifications/${notificationNo}`, {
             method: 'GET',
             credentials: 'include'
         });
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function deleteReadNotifications() {
-        await fetch(`https://luckyseven.live/notifications/read`, {
+        await fetch(`https://luckyseven.live/api/notifications/read`, {
             method: 'DELETE',
             credentials: 'include'
         });

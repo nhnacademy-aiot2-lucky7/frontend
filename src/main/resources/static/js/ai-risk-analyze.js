@@ -68,7 +68,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // 동일한 센서 분석 요청 거부
         const [s1, s2] = sensorObjs;
-        if (s1.gatewayId === s2.gatewayId && s1.sensorId === s2.sensorId) {
+        if (
+            s1.gatewayId === s2.gatewayId &&
+            s1.sensorId === s2.sensorId &&
+            s1.sensorType === s2.sensorType
+        ) {
             alert("동일한 센서를 두 번 선택할 수 없습니다. 다른 센서를 선택해주세요.");
             return;
         }

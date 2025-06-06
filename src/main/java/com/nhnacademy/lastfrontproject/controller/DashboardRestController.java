@@ -1,18 +1,13 @@
 package com.nhnacademy.lastfrontproject.controller;
 
-import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.CreateDashboardRequest;
 import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.InfoDashboardResponse;
 import com.nhnacademy.lastfrontproject.dto.grafana.folder.FolderInfoResponse;
-import com.nhnacademy.lastfrontproject.dto.grafana.panel.CreatePanelRequest;
-import com.nhnacademy.lastfrontproject.dto.grafana.panel.PanelWithRuleRequest;
 import com.nhnacademy.lastfrontproject.dto.grafana.panel.SensorFieldRequestDto;
 import com.nhnacademy.lastfrontproject.dto.sensor.DataTypeInfoResponse;
 import com.nhnacademy.lastfrontproject.dto.sensor.SensorDataMappingIndexResponse;
 import com.nhnacademy.lastfrontproject.dto.sensor.ThresholdBoundResponse;
 import com.nhnacademy.lastfrontproject.service.DashboardService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

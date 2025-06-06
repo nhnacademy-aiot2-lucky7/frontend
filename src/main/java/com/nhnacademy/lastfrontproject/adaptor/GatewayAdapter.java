@@ -1,8 +1,8 @@
 package com.nhnacademy.lastfrontproject.adaptor;
 
 import com.nhnacademy.lastfrontproject.dto.gateway.AdminGatewayResponse;
-import com.nhnacademy.lastfrontproject.dto.gateway.GatewayInfoResponse;
 import com.nhnacademy.lastfrontproject.dto.gateway.GatewayResponse;
+import com.nhnacademy.lastfrontproject.dto.gateway.GatewaySummaryResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +24,7 @@ public interface GatewayAdapter {
     @GetMapping("/api/admin/gateways")
     List<AdminGatewayResponse> getGatewayAdminSummaries();
 
-    @GetMapping("/api/gateways/department-id/{department-id}")
-    ResponseEntity<List<GatewayInfoResponse>> getGatewayListByDepartmentId(
+    @GetMapping("/api/gateways/department/{department-id}")
+    ResponseEntity<List<GatewaySummaryResponse>> getGatewayListByDepartmentId(
             @PathVariable("department-id") String departmentId);
 }

@@ -5,7 +5,7 @@ import com.nhnacademy.lastfrontproject.adaptor.GatewayAdapter;
 import com.nhnacademy.lastfrontproject.adaptor.SensorAdaptor;
 import com.nhnacademy.lastfrontproject.dto.analysis.AnalysisRequest;
 import com.nhnacademy.lastfrontproject.dto.analysis.AnalysisResponse;
-import com.nhnacademy.lastfrontproject.dto.gateway.GatewayInfoResponse;
+import com.nhnacademy.lastfrontproject.dto.gateway.GatewaySummaryResponse;
 import com.nhnacademy.lastfrontproject.dto.sensor.SensorDataMappingWebResponse;
 import com.nhnacademy.lastfrontproject.service.CorrelationAnalysisService;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +23,8 @@ public class CorrelationAnalysisServiceImpl implements CorrelationAnalysisServic
     private final CorrelationAdaptor correlationAdaptor;
 
     @Override
-    public List<GatewayInfoResponse> getGatewayListByDepartmentId(String departmentId) {
-        ResponseEntity<List<GatewayInfoResponse>> gatewayList = gatewayAdaptor.getGatewayListByDepartmentId(departmentId);
+    public List<GatewaySummaryResponse> getGatewayListByDepartmentId(String departmentId) {
+        ResponseEntity<List<GatewaySummaryResponse>> gatewayList = gatewayAdaptor.getGatewayListByDepartmentId(departmentId);
         return gatewayList.getBody();
     }
 

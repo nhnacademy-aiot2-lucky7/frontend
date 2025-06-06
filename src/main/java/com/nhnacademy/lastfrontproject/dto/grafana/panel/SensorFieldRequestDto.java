@@ -1,14 +1,13 @@
 package com.nhnacademy.lastfrontproject.dto.grafana.panel;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
+@Setter
+@NoArgsConstructor
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString
 public class SensorFieldRequestDto {
 
     @JsonProperty("type_en_name")

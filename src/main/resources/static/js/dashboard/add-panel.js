@@ -83,42 +83,42 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // 초기 센서 매핑 정보 불러오기
-    fetch('/sensor')
-        .then(response => {
-            if (!response.ok) throw new Error('센서 매핑 정보를 불러오는 데 실패했습니다.');
-            return response.json();
-        })
-        .then(data => {
-            const gatewayList = [...new Set(data.map(item => item.gatewayId))];
-            const sensorList = [...new Set(data.map(item => item.sensorId))];
-            const fieldList = [...new Set(data.map(item => item.dataTypeEnName))];
-
-            populateSelect(gatewaySelect, gatewayList);
-            populateSelect(sensorSelect, sensorList);
-            populateSelect(fieldSelect, fieldList);
-
-            return fetch("/sensor/bound");
-        })
-        .then(response => {
-            if (!response.ok) throw new Error("센서 임계치 범위를 불러올 수 없습니다.");
-            return response.json();
-        })
-        .then(data => {
-            sensorBound = data;
-
-            attachThresholdHandlers();
-
-            [gatewaySelect, sensorSelect, fieldSelect].forEach(select => {
-                select.addEventListener('change', updateThresholdUI);
-            });
-
-            updateThresholdUI();
-        })
-        .catch(error => {
-            console.error(error);
-            alert('게이트웨이/센서/필드 또는 센서 임계치 정보를 불러오는 중 오류가 발생했습니다.');
-        });
+    // // 초기 센서 매핑 정보 불러오기
+    // fetch('/sensor')
+    //     .then(response => {
+    //         if (!response.ok) throw new Error('센서 매핑 정보를 불러오는 데 실패했습니다.');
+    //         return response.json();
+    //     })
+    //     .then(data => {
+    //         const gatewayList = [...new Set(data.map(item => item.gatewayId))];
+    //         const sensorList = [...new Set(data.map(item => item.sensorId))];
+    //         const fieldList = [...new Set(data.map(item => item.dataTypeEnName))];
+    //
+    //         populateSelect(gatewaySelect, gatewayList);
+    //         populateSelect(sensorSelect, sensorList);
+    //         populateSelect(fieldSelect, fieldList);
+    //
+    //         return fetch("/sensor/bound");
+    //     })
+    //     .then(response => {
+    //         if (!response.ok) throw new Error("센서 임계치 범위를 불러올 수 없습니다.");
+    //         return response.json();
+    //     })
+    //     .then(data => {
+    //         sensorBound = data;
+    //
+    //         attachThresholdHandlers();
+    //
+    //         [gatewaySelect, sensorSelect, fieldSelect].forEach(select => {
+    //             select.addEventListener('change', updateThresholdUI);
+    //         });
+    //
+    //         updateThresholdUI();
+    //     })
+    //     .catch(error => {
+    //         console.error(error);
+    //         alert('게이트웨이/센서/필드 또는 센서 임계치 정보를 불러오는 중 오류가 발생했습니다.');
+    //     });
 
     populateSelect(typeSelect, typeList);
     populateSelect(aggregationSelect, aggregationList);

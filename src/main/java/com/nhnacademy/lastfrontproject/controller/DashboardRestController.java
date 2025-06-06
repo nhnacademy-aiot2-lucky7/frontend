@@ -62,7 +62,12 @@ public class DashboardRestController {
     ResponseEntity<Void> createTest(
             @RequestBody CreatePanelRequest createPanelRequest
     ){
-        return dashboardService.createTest(createPanelRequest);
+        try {
+            return dashboardService.createTest(createPanelRequest);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     @GetMapping("/sensor")

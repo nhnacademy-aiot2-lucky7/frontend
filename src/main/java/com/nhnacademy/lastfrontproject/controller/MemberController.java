@@ -3,12 +3,12 @@ package com.nhnacademy.lastfrontproject.controller;
 import com.nhnacademy.lastfrontproject.service.MemberService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
 @Controller
+@RequestMapping("/pages")
 public class MemberController {
     private final MemberService memberService;
 
@@ -17,7 +17,7 @@ public class MemberController {
     }
 
     @GetMapping("/admin/member_management")
-    public String memberManagement(Model model) {
+    public String memberManagement() {
         return "pages/admin/pages-member-management";
     }
 

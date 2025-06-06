@@ -175,15 +175,15 @@ document.addEventListener('DOMContentLoaded', async () => {
                                 "Content-Type": "application/json"
                             },
                             body: JSON.stringify({
-                                dashboardUid: dashboardUid,
-                                dashboardNewTitle: dashboardNewTitle
+                                "dashboardUid": `${dashboardUid}`,
+                                "dashboardNewTitle": `${dashboardNewTitle}`
                             })
                         });
 
                         if (!res.ok) throw new Error('업데이트 실패');
 
                         // 성공 시 UI 업데이트
-                        banner.textContent = newTitle;
+                        banner.textContent = dashboardNewTitle;
                         banner.style.justifyContent = 'center';
                         banner.style.paddingLeft = '0';
                     } catch (err) {

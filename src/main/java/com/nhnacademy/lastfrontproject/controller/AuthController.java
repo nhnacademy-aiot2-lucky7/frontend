@@ -4,6 +4,9 @@ import com.nhnacademy.lastfrontproject.adaptor.AuthAdaptor;
 import com.nhnacademy.lastfrontproject.dto.auth.LoginRequest;
 import com.nhnacademy.lastfrontproject.dto.auth.RegisterRequest;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
@@ -12,11 +15,12 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+import java.time.Duration;
+import java.util.Map;
+
+@RestController
 public class AuthController {
     private final AuthAdaptor authAdaptor;
     private final OAuth2AuthorizedClientService authorizedClientService;
@@ -84,5 +88,22 @@ public class AuthController {
         model.addAttribute("accessToken", accessToken);
 
         return "pages/member/pages-additional-info";
+    }
+
+    @PostMapping("/set-token-cookie")
+    public ResponseEntity<Void> setTokenCookie(@RequestBody Map<String, String> body) {
+        String token = body.get("token");
+
+        ResponseCookie cookie = ResponseCookie.from("accessToken", token)
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(Duration.ofHours(1))
+                .sameSite("None")
+                .build();
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .build();
     }
 }

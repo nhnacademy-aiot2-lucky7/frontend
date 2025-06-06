@@ -76,7 +76,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 userPassword: password,
                 rememberMe: rememberMe
             }),
-            credentials: 'include' // 쿠키 포함
         })
             .then(response => {
                 console.log('응답 상태:', response.status);
@@ -88,29 +87,32 @@ document.addEventListener('DOMContentLoaded', function () {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
 
-                // 응답이 성공(200)이면 로그인 성공으로 간주
-                return true;
+                return response.text();  // 토큰 문자열 반환
             })
-            .then(success =>  {
-                if (success) {
-                    console.log('로그인 성공');
+            .then(token => {
+                console.log('로그인 성공, 토큰:', token);
 
-                    // 이메일 기억하기
-                    if (rememberMe) {
-                        localStorage.setItem('rememberedEmail', email);
-                    } else {
-                        localStorage.removeItem('rememberedEmail');
-                    }
-
-                    // 로그인 상태 저장 (UI 업데이트용)
-                    localStorage.setItem('isLoggedIn', 'true');
-
-                    alert('로그인 성공!');
-                    // 페이지 새로고침으로 Thymeleaf 렌더링 갱신
-                    loadUserToLocalStorage().then(()=>{
-                        window.location.replace('/dashboard');
-                    })
+                if (rememberMe) {
+                    localStorage.setItem('rememberedEmail', email);
+                } else {
+                    localStorage.removeItem('rememberedEmail');
                 }
+
+                localStorage.setItem('isLoggedIn', 'true');
+
+                return fetch('/set-token-cookie', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ token }),  // 토큰 전달
+                    credentials: 'include'
+                })
+                    .then(response => {
+                        alert('로그인 성공!');
+
+                        loadUserToLocalStorage().then(()=>{
+                            window.location.replace('/dashboard');
+                        })
+                    });
             })
             .catch(error => {
                 console.error('Error:', error);

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 
-@FeignClient(name = "gateway-service", url = "${feign.client.gateway-service.url}")
+@FeignClient(name = "correlation-analysis-service", url = "${feign.client.gateway-service.url}")
 public interface CorrelationAdaptor {
 
     @PostMapping("/api/correlation-analyze")

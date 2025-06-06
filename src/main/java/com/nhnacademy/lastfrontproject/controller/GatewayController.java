@@ -2,10 +2,8 @@ package com.nhnacademy.lastfrontproject.controller;
 
 import com.nhnacademy.lastfrontproject.dto.gateway.AdminGatewayResponse;
 import com.nhnacademy.lastfrontproject.dto.gateway.GatewayDetailResponse;
-import com.nhnacademy.lastfrontproject.dto.gateway.GatewayResponse;
 import com.nhnacademy.lastfrontproject.dto.gateway.SensorResponse;
 import com.nhnacademy.lastfrontproject.service.GatewayService;
-import com.nhnacademy.lastfrontproject.util.holder.DepartmentContextHolder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -24,10 +22,10 @@ public class GatewayController {
 
     @GetMapping("/gateway")
     public String showGateway(Model model) {
-        List<GatewayResponse> gateways =
-                gatewayService.getGatewaySummaryList(DepartmentContextHolder.getDepartmentId());
-
-        model.addAttribute("gateways", gateways);
+//        List<GatewayResponse> gateways =
+////                gatewayService.getGatewaySummaryList(DepartmentContextHolder.getDepartmentId());
+//
+//        model.addAttribute("gateways", gateways);
         return "pages/member/gateway/pages-gateway";
     }
 

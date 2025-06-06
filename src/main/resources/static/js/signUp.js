@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // }
 
         // 서버에 회원가입 요청 보내기
-        fetch('https://luckyseven.live/auth/signUp', {
+        fetch('https://api/luckyseven.live/auth/signUp', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

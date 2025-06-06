@@ -145,6 +145,14 @@
     background-color: #2e67b5;
 }
 
+.pw-rule-msg {
+    font-size: 0.93rem;
+    color: #888;
+    margin-top: 6px;
+    margin-left: 2px;
+    line-height: 1.5;
+}
+
 /* ========== 휴대폰 인증 ========== */
 .cert-row {
     display: flex;

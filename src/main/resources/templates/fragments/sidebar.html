@@ -23,6 +23,12 @@
                     <span class="align-middle">마이페이지</span>
                 </a>
             </li>
+            <li class="sidebar-item" th:classappend="${currentPath == '/management' or currentPath == '/dashboard-preview'} ? 'active'">
+                <a class="sidebar-link" href="/management">
+                    <i class="align-middle" data-feather="file-text"></i>
+                    <span class="align-middle">대시보드 관리</span>
+                </a>
+            </li>
             <li class="sidebar-item"
                 th:classappend="${
                     currentPath.startsWith('/dashboard-list')
@@ -30,15 +36,9 @@
                     or currentPath.startsWith('/dashboard-detail')
                     or currentPath.startsWith('/dashboard-logs')
                 } ? 'active'">
-                <a class="sidebar-link" href="/dashboard-list">
+                <a class="sidebar-link" href="/dashboard-info">
                     <i class="align-middle" data-feather="trending-up"></i>
                     <span class="align-middle">대시보드 내역</span>
-                </a>
-            </li>
-            <li class="sidebar-item" th:classappend="${currentPath == '/management' or currentPath == '/dashboard-preview'} ? 'active'">
-                <a class="sidebar-link" href="/management">
-                    <i class="align-middle" data-feather="file-text"></i>
-                    <span class="align-middle">대시보드 관리</span>
                 </a>
             </li>
             <li class="sidebar-item" th:classappend="${currentPath == '/event'} ? 'active'">
@@ -54,8 +54,8 @@
                     <span class="align-middle">게이트웨이 추가</span>
                 </a>
             </li>
-            <li class="sidebar-item" th:classappend="${currentPath == '/ai-analyze'} ? 'active'">
-                <a class="sidebar-link" href="/ai-analyze">
+            <li class="sidebar-item" th:classappend="${currentPath == '/ai-analyze' or currentPath == '/ai-result'} ? 'active'">
+                <a class="sidebar-link" href="/ai-result">
                     <i class="align-middle" data-feather="activity"></i>
                     <span class="align-middle">AI 분석</span>
                 </a>

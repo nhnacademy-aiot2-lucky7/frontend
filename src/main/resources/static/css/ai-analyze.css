@@ -61,6 +61,18 @@
     cursor: pointer;
 }
 
+.ai-analyze-btn {
+    padding: 0.6rem 1.2rem;
+    font-weight: 500;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-left: auto;
+}
+
 /* 테이블 */
 .ai-table {
     width: 100%;

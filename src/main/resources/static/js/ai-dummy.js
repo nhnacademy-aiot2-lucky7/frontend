@@ -31,8 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
             departmentName: "개발",
             type: "CORRELATION-RISK-PREDICT",
             resultSummary: "위험",
-            analyzedAt: "2025-06-05 14:10",
-            score: 83,
+            analyzedAt: "2025-06-05 13:10",
             resultJson: {
                 analysisType: "CORRELATION-RISK-PREDICT",
                 result: {
@@ -61,8 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
             departmentName: "마케팅",
             type: "SINGLE_SENSOR_PREDICT",
             resultSummary: "경고",
-            analyzedAt: "2025-06-05 13:10",
-            score: 68,
+            analyzedAt: "2025-06-05 14:10",
             resultJson: {
                 analysisType: "SINGLE_SENSOR_PREDICT",
                 result: {
@@ -80,6 +78,25 @@ document.addEventListener('DOMContentLoaded', function() {
                     analyzedAt: "2025-05-30"
                 }
             }
+        },
+        {
+            id: 3,
+            departmentName: "연구팀",
+            type: "THRESHOLD_DIFF_ANALYSIS",
+            resultSummary: "정상",
+            analyzedAt: "2025-06-05 15:10",
+            resultJson: {
+                analysisType: "THRESHOLD_DIFF_ANALYSIS",
+                result: {
+                    sensorInfo: {
+                        gatewayId: "58",
+                        sensorId: "s39fd3dfd32",
+                        sensorType: "temperature"
+                    },
+                    healthScore: 0.3,
+                    analyzedAt: "2025-05-30"
+                }
+            }
         }
     ];
 
@@ -91,6 +108,7 @@ document.addEventListener('DOMContentLoaded', function() {
         originData = dummyData.filter(row => row.departmentName === myDepartmentName);
     }
 
+    // 결과값에 따른 이모지
     function getEmoji(score) {
         if(score >= 90) return "😄";
         if(score >= 70) return "🙂";
@@ -99,6 +117,9 @@ document.addEventListener('DOMContentLoaded', function() {
         return "😱";
     }
 
+    // 테이블에서 확장된 상세/차트 행(tr.expand-row)을 모두 제거하고
+    // 생성된 Chart.js 차트 인스턴스도 destroy()로 메모리 해제 및 상태 초기화
+    // (확장행/차트 중복 생성, 메모리 누수, 스크롤 무한 증가 방지)
     function clearExpandRows() {
         document.querySelectorAll('.expand-row').forEach(tr => tr.remove());
         Object.values(chartInstances).forEach(inst => inst && inst.destroy && inst.destroy());
@@ -106,6 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
         expandedRowId = null;
     }
 
+    // 테이블 생성
     function renderTable(list) {
         tableBody.innerHTML = '';
         list.forEach(row => {
@@ -130,6 +152,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // 상세 보기
     function showDetail(detail, baseTr, id) {
         const result = detail.resultJson.result;
         const analysisType =
@@ -140,8 +163,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const isCorrelation = /CORRELATION[-_]RISK[-_]PREDICT/i.test(analysisType);
         const isSingle = /SINGLE[-_]SENSOR[-_]PREDICT/i.test(analysisType);
+        const isThreshold = /THRESHOLD[-_]DIFF[-_]ANALYSIS/i.test(analysisType);
 
         // 센서 정보 테이블 추가
+        // CORRELATION_RISK_PREDICT 정보 표
         let sensorInfoTable = '';
         if (isCorrelation && result.sensorInfo) {
             sensorInfoTable = `
@@ -165,7 +190,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         `).join('')}
                     </tbody>
                 </table>
+                <br><br>
             `;
+        // SINGLE_SENSOR_PREDICT 정보 표
         } else if (isSingle && result.sensorInfo) {
             const info = result.sensorInfo;
             sensorInfoTable = `
@@ -185,6 +212,29 @@ document.addEventListener('DOMContentLoaded', function() {
                         </tr>
                     </tbody>
                 </table>
+                <br><br>
+            `;
+        // THRESHOLD_DIFF_ANALYSIS 정보 표
+        } else if (isThreshold && result.sensorInfo) {
+            const info = result.sensorInfo;
+            sensorInfoTable = `
+                <table style="margin:0 auto 1rem auto; border-collapse:collapse; min-width:400px; font-size:1rem;">
+                    <thead>
+                        <tr style="background:#f3f4f6;">
+                            <th style="padding:8px 16px; border:1px solid #e5e7eb;">gatewayId</th>
+                            <th style="padding:8px 16px; border:1px solid #e5e7eb;">sensorId</th>
+                            <th style="padding:8px 16px; border:1px solid #e5e7eb;">sensorType</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding:8px 16px; border:1px solid #e5e7eb;">${info.gatewayId}</td>
+                            <td style="padding:8px 16px; border:1px solid #e5e7eb;">${info.sensorId}</td>
+                            <td style="padding:8px 16px; border:1px solid #e5e7eb;">${info.sensorType}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br><br>
             `;
         }
 
@@ -211,12 +261,19 @@ document.addEventListener('DOMContentLoaded', function() {
             <div style="text-align:center; margin-top:0.5rem;">예측값 추이</div>
         </div>
     `;
+        } else if (isThreshold && typeof result.healthScore === 'number') {
+            html += `
+        <div style="width:320px; height:180px; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+            <canvas id="gauge-${id}" width="320" height="180"></canvas>
+            <div style="margin-top:-120px; text-align:center; font-size:2rem; color:#39a0ff;">
+                ${Math.round(result.healthScore * 100)}점
+            </div>
+            <div style="margin-top:0.5rem; color:#888;">healthScore</div>
+        </div>
+    `;
         }
-
         html += `</div>
-    <div style="margin-top:2rem; text-align:center; width:100%; font-size:1.5rem;">
-        점수: ${detail.score} <span style="font-size:2rem;">${getEmoji(detail.score)}</span>
-    </div>
+    <br><br><br>
 </td>`;
 
         const expandTr = document.createElement('tr');
@@ -280,6 +337,30 @@ document.addEventListener('DOMContentLoaded', function() {
                     options: {
                         responsive: true,
                         maintainAspectRatio: false
+                    }
+                });
+            } else if (isThreshold && typeof result.healthScore === 'number') {
+                const score = Math.round(result.healthScore * 100);
+                const remain = 100 - score;
+
+                chartInstances[`gauge-${id}`] = new Chart(document.getElementById(`gauge-${id}`), {
+                    type: 'doughnut',
+                    data: {
+                        datasets: [{
+                            data: [score, 100 - score],
+                            backgroundColor: ['#39a0ff', '#f3f4f6'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: false,
+                        rotation: Math.PI,
+                        circumference: Math.PI,
+                        cutout: '70%',             // 도넛 두께 (60~80% 조정 가능)
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: { enabled: false }
+                        }
                     }
                 });
             }

@@ -6,6 +6,7 @@
 <head>
     <title>게이트웨이 조회 | Lucky Seven</title>
     <link href="/css/gateway/gateway.css" rel="stylesheet"/>
+    <script src="/js/gateway/gateway-api.js" defer></script>
 </head>
 
 <section layout:fragment="content">
@@ -23,38 +24,8 @@
             <a href="/add-gateway" class="gateway-add-btn">+ 게이트웨이 추가</a>
         </div>
 
-        <!-- 카드 목록 -->
-        <div class="gateway-grid">
-            <a th:each="gateway : ${gateways}"
-               th:href="@{'/gateway/' + ${gateway.id}}"
-               class="gateway-card">
-
-                <!-- 카드 상단 -->
-                <div class="gateway-card-header">
-                    <!-- 왼쪽: 수정일자 -->
-                    <div class="gateway-modified-date" th:text="'수정일: ' + ${gateway.updatedAt}">
-                        수정일: 2024-06-07
-                    </div>
-
-                    <!-- 오른쪽: 활성화 상태 -->
-                    <div th:class="'status ' + (${gateway.active} ? 'active' : 'inactive')"
-                         th:text="${gateway.active} ? '● 활성화' : '● 비활성화'">
-                    </div>
-                </div>
-
-                <!-- 카드 본문 -->
-                <div class="gateway-name" th:text="${gateway.name}">게이트웨이 이름</div>
-
-                <div class="gateway-meta" th:text="'센서: ' + ${gateway.sensorCount} + '개'">센서 수</div>
-
-                <div class="gateway-protocol" th:text="'프로토콜: ' + ${gateway.protocol}">
-                    프로토콜: MQTT
-                </div>
-
-            </a>
-        </div>
+        <!-- 카드 목록 (JS에서 여기로 렌더링) -->
+        <div class="gateway-grid" id="gatewayGrid"></div>
     </div>
-
-    <script src="/js/gateway/gateway-api.js"></script>
 </section>
 </html>

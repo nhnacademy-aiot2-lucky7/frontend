@@ -48,6 +48,8 @@
 </div>
 
 <script>
+
+
     async function fetchUnreadCount() {
         try {
             const response = await fetch('https://luckyseven.live/notifications/unread-count', {
@@ -153,7 +155,9 @@
         renderNotifications(data);
     }
 
-    document.addEventListener('DOMContentLoaded', updateNotificationUI);
+    document.addEventListener('DOMContentLoaded', async ()=>{
+        await updateNotificationUI
+    });
 </script>
 
 </body>

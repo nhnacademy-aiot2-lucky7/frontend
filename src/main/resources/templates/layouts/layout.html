@@ -10,6 +10,12 @@
 
     <link href="/css/common.css" rel="stylesheet"/>
 
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        window.currentUser = /*[[${user} != null ? ${user} : null]]*/ null;
+        /*]]>*/
+    </script>
+
     <!-- 유저정보 localStorage에서만 가져오기 -->
     <script>
         const localUserJson = localStorage.getItem("currentUser");

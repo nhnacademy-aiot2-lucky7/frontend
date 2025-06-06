@@ -92,20 +92,23 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (!res.ok) throw new Error('게이트웨이 목록 불러오기 실패');
             const gatewayInfo = await res.json();
             console.log("gatewayId:{}", gatewayInfo);
-
-            if (!Array.isArray(gatewayInfo) || gatewayInfo.length === 0) {
-                throw new Error('게이트웨이 정보가 없습니다.');
-            }
-
-            const gatewayId = gatewayInfo[0].gateway_id;
-            console.log("선택된 gatewayId:", gatewayId);
-            return gatewayId;
+            return gatewayInfo;
         } catch (err) {
             console.error(err);
             alert('게이트웨이 목록 로딩 오류');
             return [];
         }
     };
+
+    const gateways = await getAllGateways();
+
+    if (!Array.isArray(gateways) || gateways.length === 0) {
+        throw new Error('게이트웨이 정보가 없습니다.');
+    }
+
+    const gatewayIds = gateways.map(gw => gw.gateway_id);
+    const gatewayId = gateways[0].gateway_id;
+    console.log("선택된 gatewayId:", gatewayId);
 
     // 초기 센서 매핑 정보 불러오기
     const getAllsensors = async (gatewayId) => {
@@ -143,8 +146,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     populateSelect(aggregationSelect, aggregationList);
     populateSelect(timeSelect, timeList);
 
-    const gateways = await getAllGateways();
-    const gatewayIds = gateways.map(gw => gw.id);
     populateSelect(gatewaySelect, gatewayIds);
 
     if (gatewayIds.length > 0) {

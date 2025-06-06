@@ -9,7 +9,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 실제 api 받아오기
     async function fetchList() {
-        const res = await fetch('/api/ai-results'); // 실제 API URL로 수정
+        const res = await fetch(`https://luckyseven.live/api/analysis-results/search`, {
+            method: 'GET',
+            credentials: 'include'
+        });
         if (!res.ok) {
             tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center;">데이터를 불러올 수 없습니다.</td></tr>';
             return;
@@ -24,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
         renderTable(originData);
     }
 
-    // 하드코딩된 더미 데이터 (2개)
+    // 하드코딩된 더미 데이터
     const dummyData = [
         {
             id: 1,
@@ -95,6 +98,323 @@ document.addEventListener('DOMContentLoaded', function() {
                     },
                     healthScore: 0.3,
                     analyzedAt: "2025-05-30"
+                }
+            }
+        },
+        {
+            id: 4,
+            departmentName: "개발",
+            type: "CORRELATION-RISK-PREDICT",
+            resultSummary: "위험",
+            analyzedAt: "2025-06-05 16:10",
+            resultJson: {
+                analysisType: "CORRELATION-RISK-PREDICT",
+                result: {
+                    sensorInfo: {
+                        sensorA: {
+                            gatewayId: "58",
+                            sensorId: "sensorA123",
+                            sensorType: "temperature"
+                        },
+                        sensorB: {
+                            gatewayId: "58",
+                            sensorId: "sensorB456",
+                            sensorType: "humidity"
+                        }
+                    },
+                    predictedData: {
+                        sensorA: { SingleRiskModel: 0.83, CorrelationRiskModel: 0.81 },
+                        sensorB: { SingleRiskModel: 0.18, CorrelationRiskModel: 0.57 }
+                    },
+                    analyzedAt: 1717318290000
+                }
+            }
+        },
+        {
+            id: 5,
+            departmentName: "마케팅",
+            type: "SINGLE_SENSOR_PREDICT",
+            resultSummary: "경고",
+            analyzedAt: "2025-06-05 17:10",
+            resultJson: {
+                analysisType: "SINGLE_SENSOR_PREDICT",
+                result: {
+                    sensorInfo: {
+                        gatewayId: "58",
+                        sensorId: "s39fd3dfd32",
+                        sensorType: "temperature"
+                    },
+                    predictedData: [
+                        { predictedValue: 90, predictedDate: "2025-05-31" },
+                        { predictedValue: 40, predictedDate: "2025-06-01" },
+                        { predictedValue: 78, predictedDate: "2025-06-02" },
+                        { predictedValue: 32, predictedDate: "2025-06-03" }
+                    ],
+                    analyzedAt: "2025-05-30"
+                }
+            }
+        },
+        {
+            id: 6,
+            departmentName: "연구팀",
+            type: "THRESHOLD_DIFF_ANALYSIS",
+            resultSummary: "정상",
+            analyzedAt: "2025-06-05 18:10",
+            resultJson: {
+                analysisType: "THRESHOLD_DIFF_ANALYSIS",
+                result: {
+                    sensorInfo: {
+                        gatewayId: "58",
+                        sensorId: "s39fd3dfd32",
+                        sensorType: "temperature"
+                    },
+                    healthScore: 0.8,
+                    analyzedAt: "2025-05-30"
+                }
+            }
+        },
+        {
+            id: 7,
+            departmentName: "개발",
+            type: "CORRELATION-RISK-PREDICT",
+            resultSummary: "경고",
+            analyzedAt: "2025-06-05 16:10",
+            resultJson: {
+                analysisType: "CORRELATION-RISK-PREDICT",
+                result: {
+                    sensorInfo: {
+                        sensorA: {
+                            gatewayId: "12",
+                            sensorId: "sensorA789",
+                            sensorType: "temperature"
+                        },
+                        sensorB: {
+                            gatewayId: "12",
+                            sensorId: "sensorB987",
+                            sensorType: "humidity"
+                        }
+                    },
+                    predictedData: {
+                        sensorA: { SingleRiskModel: 0.35, CorrelationRiskModel: 0.59 },
+                        sensorB: { SingleRiskModel: 0.28, CorrelationRiskModel: 0.52 }
+                    },
+                    analyzedAt: 1717318390000
+                }
+            }
+        },
+        {
+            id: 8,
+            departmentName: "마케팅",
+            type: "SINGLE_SENSOR_PREDICT",
+            resultSummary: "위험",
+            analyzedAt: "2025-06-05 17:10",
+            resultJson: {
+                analysisType: "SINGLE_SENSOR_PREDICT",
+                result: {
+                    sensorInfo: {
+                        gatewayId: "21",
+                        sensorId: "mktg1122",
+                        sensorType: "co2"
+                    },
+                    predictedData: [
+                        { predictedValue: 45, predictedDate: "2025-06-04" },
+                        { predictedValue: 55, predictedDate: "2025-06-05" },
+                        { predictedValue: 67, predictedDate: "2025-06-06" },
+                        { predictedValue: 60, predictedDate: "2025-06-07" }
+                    ],
+                    analyzedAt: "2025-06-03"
+                }
+            }
+        },
+        {
+            id: 9,
+            departmentName: "연구팀",
+            type: "THRESHOLD_DIFF_ANALYSIS",
+            resultSummary: "정상",
+            analyzedAt: "2025-06-05 18:10",
+            resultJson: {
+                analysisType: "THRESHOLD_DIFF_ANALYSIS",
+                result: {
+                    sensorInfo: {
+                        gatewayId: "33",
+                        sensorId: "labtemp01",
+                        sensorType: "temperature"
+                    },
+                    healthScore: 0.82,
+                    analyzedAt: "2025-06-04"
+                }
+            }
+        },
+        {
+            id: 10,
+            departmentName: "개발",
+            type: "CORRELATION-RISK-PREDICT",
+            resultSummary: "위험",
+            analyzedAt: "2025-06-05 19:10",
+            resultJson: {
+                analysisType: "CORRELATION-RISK-PREDICT",
+                result: {
+                    sensorInfo: {
+                        sensorA: {
+                            gatewayId: "15",
+                            sensorId: "devA001",
+                            sensorType: "temperature"
+                        },
+                        sensorB: {
+                            gatewayId: "15",
+                            sensorId: "devB002",
+                            sensorType: "humidity"
+                        }
+                    },
+                    predictedData: {
+                        sensorA: { SingleRiskModel: 0.67, CorrelationRiskModel: 0.85 },
+                        sensorB: { SingleRiskModel: 0.61, CorrelationRiskModel: 0.81 }
+                    },
+                    analyzedAt: 1717318490000
+                }
+            }
+        },
+        {
+            id: 11,
+            departmentName: "마케팅",
+            type: "SINGLE_SENSOR_PREDICT",
+            resultSummary: "정상",
+            analyzedAt: "2025-06-05 20:10",
+            resultJson: {
+                analysisType: "SINGLE_SENSOR_PREDICT",
+                result: {
+                    sensorInfo: {
+                        gatewayId: "22",
+                        sensorId: "marketingSensor2",
+                        sensorType: "co2"
+                    },
+                    predictedData: [
+                        { predictedValue: 35, predictedDate: "2025-06-04" },
+                        { predictedValue: 30, predictedDate: "2025-06-05" },
+                        { predictedValue: 28, predictedDate: "2025-06-06" },
+                        { predictedValue: 25, predictedDate: "2025-06-07" }
+                    ],
+                    analyzedAt: "2025-06-03"
+                }
+            }
+        },
+        {
+            id: 12,
+            departmentName: "연구팀",
+            type: "THRESHOLD_DIFF_ANALYSIS",
+            resultSummary: "경고",
+            analyzedAt: "2025-06-05 21:10",
+            resultJson: {
+                analysisType: "THRESHOLD_DIFF_ANALYSIS",
+                result: {
+                    sensorInfo: {
+                        gatewayId: "34",
+                        sensorId: "labhum01",
+                        sensorType: "humidity"
+                    },
+                    healthScore: 0.55,
+                    analyzedAt: "2025-06-04"
+                }
+            }
+        },
+        {
+            id: 13,
+            departmentName: "개발",
+            type: "CORRELATION-RISK-PREDICT",
+            resultSummary: "정상",
+            analyzedAt: "2025-06-05 22:10",
+            resultJson: {
+                analysisType: "CORRELATION-RISK-PREDICT",
+                result: {
+                    sensorInfo: {
+                        sensorA: {
+                            gatewayId: "11",
+                            sensorId: "devA003",
+                            sensorType: "temperature"
+                        },
+                        sensorB: {
+                            gatewayId: "11",
+                            sensorId: "devB004",
+                            sensorType: "humidity"
+                        }
+                    },
+                    predictedData: {
+                        sensorA: { SingleRiskModel: 0.15, CorrelationRiskModel: 0.22 },
+                        sensorB: { SingleRiskModel: 0.13, CorrelationRiskModel: 0.18 }
+                    },
+                    analyzedAt: 1717318590000
+                }
+            }
+        },
+        {
+            id: 14,
+            departmentName: "마케팅",
+            type: "SINGLE_SENSOR_PREDICT",
+            resultSummary: "위험",
+            analyzedAt: "2025-06-05 23:10",
+            resultJson: {
+                analysisType: "SINGLE_SENSOR_PREDICT",
+                result: {
+                    sensorInfo: {
+                        gatewayId: "23",
+                        sensorId: "mktg3344",
+                        sensorType: "co2"
+                    },
+                    predictedData: [
+                        { predictedValue: 80, predictedDate: "2025-06-04" },
+                        { predictedValue: 70, predictedDate: "2025-06-05" },
+                        { predictedValue: 60, predictedDate: "2025-06-06" },
+                        { predictedValue: 50, predictedDate: "2025-06-07" }
+                    ],
+                    analyzedAt: "2025-06-03"
+                }
+            }
+        },
+        {
+            id: 15,
+            departmentName: "연구팀",
+            type: "THRESHOLD_DIFF_ANALYSIS",
+            resultSummary: "위험",
+            analyzedAt: "2025-06-06 00:10",
+            resultJson: {
+                analysisType: "THRESHOLD_DIFF_ANALYSIS",
+                result: {
+                    sensorInfo: {
+                        gatewayId: "35",
+                        sensorId: "labco201",
+                        sensorType: "co2"
+                    },
+                    healthScore: 0.12,
+                    analyzedAt: "2025-06-05"
+                }
+            }
+        },
+        {
+            id: 16,
+            departmentName: "개발",
+            type: "CORRELATION-RISK-PREDICT",
+            resultSummary: "경고",
+            analyzedAt: "2025-06-06 01:10",
+            resultJson: {
+                analysisType: "CORRELATION-RISK-PREDICT",
+                result: {
+                    sensorInfo: {
+                        sensorA: {
+                            gatewayId: "16",
+                            sensorId: "devA999",
+                            sensorType: "temperature"
+                        },
+                        sensorB: {
+                            gatewayId: "16",
+                            sensorId: "devB888",
+                            sensorType: "humidity"
+                        }
+                    },
+                    predictedData: {
+                        sensorA: { SingleRiskModel: 0.41, CorrelationRiskModel: 0.53 },
+                        sensorB: { SingleRiskModel: 0.36, CorrelationRiskModel: 0.48 }
+                    },
+                    analyzedAt: 1717318690000
                 }
             }
         }
@@ -245,20 +565,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (isCorrelation && result.predictedData) {
             html += `
-        <div style="width:600px; height:320px; display:flex; flex-direction:column; align-items:center;">
+        <div style="width:600px; height:auto; display:block; text-align:center;">
+        <div style="height:320px;">
             <canvas id="bar-${id}" width="600" height="320"></canvas>
-            <div style="text-align:center; margin-top:0.5rem;">상관관계 위험도</div>
         </div>
-        <div style="width:320px; height:320px; display:flex; flex-direction:column; align-items:center;">
-            <canvas id="pie-${id}" width="320" height="320"></canvas>
-            <div style="text-align:center; margin-top:0.5rem;">센서별 위험 비율</div>
+        <div style="margin-top:1.5rem; min-height:2.5rem;">상관관계 위험도</div>
+        </div>
+        <div style="width:320px; height:auto; display:block; text-align:center;">
+            <div style="height:320px;">
+                <canvas id="pie-${id}" width="320" height="320"></canvas>
+            </div>
+            <div style="margin-top:1.5rem; min-height:2.5rem;">센서별 위험 비율</div>
         </div>
     `;
         } else if (isSingle && result.predictedData) {
             html += `
-        <div style="width:600px; height:320px; display:flex; flex-direction:column; align-items:center;">
-            <canvas id="line-${id}" width="600" height="320"></canvas>
-            <div style="text-align:center; margin-top:0.5rem;">예측값 추이</div>
+        <div style="width:600px; height:auto; display:block; text-align:center;">
+            <div style="height:320px;">
+                <canvas id="line-${id}" width="600" height="320"></canvas>
+            </div>
+            <div style="margin-top:1.5rem; min-height:2.5rem;">예측값 추이</div>
         </div>
     `;
         } else if (isThreshold && typeof result.healthScore === 'number') {
@@ -404,7 +730,7 @@ document.addEventListener('DOMContentLoaded', function() {
         renderTable(filtered);
     });
 
-    // 실제 API 사용 시: fetchList() 호출
+    // // 실제 API 사용 시: fetchList() 호출
     // fetchList();
 
     // 더미데이터 사용 시: 역할에 따라 필터링된 데이터만 렌더링

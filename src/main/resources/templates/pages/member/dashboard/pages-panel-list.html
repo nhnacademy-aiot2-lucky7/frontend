@@ -5,21 +5,21 @@
 
 <head>
     <meta charset="utf-8"/>
-    <title th:text="${dashboardTitle}">차트 | Lucky Seven</title>
-    <link href="/css/dashboard/panel.css" rel="stylesheet"/>
+    <title th:text="${dashboardTitle}"> 차트 | Lucky Seven</title>
+    <link href="/css/dashboard/dashboard.css" rel="stylesheet"/>
 </head>
 
 <body>
 <section layout:fragment="content">
-    <main class="panel-info-container">
+    <main class="panel-info-container" style="flex: 1;">
         <section class="panel-info-header">
-            <h1 th:text="${dashboardTitle} ?: '차트 내역'">차트 내역</h1>
+            <h1 th:text="${dashboardTitle}"> 차트 내역</h1>
             <a th:href="@{/panels(dashboardUid=${dashboardUid})}" class="panel-add-btn">+ 차트 추가</a>
         </section>
 
         <div id="panelList" class="panel-grid-scrollable">
             <div th:each="panel : ${panels}" class="panel-card">
-                <h3 th:text="${panel.panelTitle} ?: '제목 없음'" class="panel-title"></h3>
+                <h3 th:text="${panel.dashboardTitle} ?: '제목 없음'" class="panel-title"></h3>
                 <iframe th:src="'https://grafana.luckyseven.live/d-solo/' + ${panel.dashboardUid}
                                 + '?orgId=1&from=' + ${panel.from}
                                 + '&to=' + ${panel.now}
@@ -29,6 +29,8 @@
                         frameborder="0"
                         class="grafana-iframe">
                 </iframe>
+
+                <button type="button" class="panel-delete-btn">삭제</button>
             </div>
         </div>
     </main>

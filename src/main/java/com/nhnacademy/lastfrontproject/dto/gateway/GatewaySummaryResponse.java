@@ -11,17 +11,22 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public final class GatewaySummaryResponse {
 
+    @JsonProperty("gateway_id")
     private final long gatewayId;
 
+    @JsonProperty("gateway_name")
     private final String gatewayName;
 
-    @JsonProperty("iot_protocol") // JSON key가 iot_protocol이니까 필드명과 매칭 위해 붙임
+    @JsonProperty("iot_protocol")
     private final IoTProtocol ioTProtocol;
 
+    @JsonProperty("sensor_count")
     private final int sensorCount;
 
+    @JsonProperty("threshold_status")
     private final boolean thresholdStatus;
 
+    @JsonProperty("updated_at")
     @JsonFormat(
             shape = JsonFormat.Shape.STRING,
             pattern = "yyyy.MM.dd"

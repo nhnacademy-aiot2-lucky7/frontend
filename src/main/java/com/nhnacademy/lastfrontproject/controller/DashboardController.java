@@ -1,22 +1,32 @@
 package com.nhnacademy.lastfrontproject.controller;
 
-import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.DeleteDashboardRequest;
 import com.nhnacademy.lastfrontproject.dto.grafana.dashboard.UpdateDashboardNameRequest;
-import com.nhnacademy.lastfrontproject.dto.grafana.panel.*;
+import com.nhnacademy.lastfrontproject.dto.grafana.panel.DeletePanelRequest;
+import com.nhnacademy.lastfrontproject.dto.grafana.panel.IframePanelResponse;
+import com.nhnacademy.lastfrontproject.dto.grafana.panel.ReadPanelRequest;
+import com.nhnacademy.lastfrontproject.dto.grafana.panel.UpdatePanelPriorityRequest;
+import com.nhnacademy.lastfrontproject.dto.grafana.panel.UpdatePanelRequest;
 import com.nhnacademy.lastfrontproject.service.DashboardService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
 @Slf4j
 @Controller
 public class DashboardController {
+
     private final DashboardService dashboardService;
 
-    public DashboardController(DashboardService dashboardService){
+    public DashboardController(DashboardService dashboardService) {
         this.dashboardService = dashboardService;
     }
 
@@ -28,13 +38,13 @@ public class DashboardController {
 
     // 사용자 대시보드 정보 조회
     @GetMapping("/dashboard-info")
-    public String getUserDashboards(){
+    public String getUserDashboards() {
         return "pages/member/dashboard/pages-dashboard-info";
     }
 
     // admin 대시보드 정보 조회
     @GetMapping("/pages/admin/dashboard-info")
-    public String getAdminDashboards(){
+    public String getAdminDashboards() {
         return "pages/admin/dashboard/pages-dashboard-info";
     }
 
@@ -69,7 +79,6 @@ public class DashboardController {
             @RequestParam List<Integer> offPanelId) {
         return dashboardService.getFilterPanel(readPanelRequest, offPanelId);
     }
-
 
     // 8. 대시보드 이름 수정
     @PutMapping("/dashboards")

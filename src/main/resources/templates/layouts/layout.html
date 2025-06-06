@@ -174,9 +174,30 @@
         renderNotifications(data);
     }
 
+    function updateNavbarState() {
+        const userJson = localStorage.getItem("currentUser");
+        const user = userJson ? JSON.parse(userJson) : null;
+
+        const navDropdown = document.getElementById('nav-dropdown');
+        const loginButton = document.getElementById('login-button');
+        const usernameSpan = document.getElementById('navbar-username');
+        const profileImg = document.getElementById('navbar-profile-img');
+
+        if (user && navDropdown && loginButton && usernameSpan && profileImg) {
+            navDropdown.classList.remove("d-none");
+            loginButton.classList.add("d-none");
+            usernameSpan.textContent = user.userName || "사용자";
+            profileImg.src = user?.image?.imagePath ?? "/img/avatars/default-avatar.jpg";
+        } else if (loginButton && navDropdown) {
+            navDropdown.classList.add("d-none");
+            loginButton.classList.remove("d-none");
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', async () => {
         await renderSidebar();
         await renderNavbar();
+        updateNavbarState();
         await renderFooter();
         await updateNotificationUI();
     });

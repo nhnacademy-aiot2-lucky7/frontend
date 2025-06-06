@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const departmentId = window.currentUser?.department?.departmentId;
+    const departmentId = window.currentUser && window.currentUser.department && window.currentUser.department.departmentId;
     if (!departmentId) return console.error("부서 ID 없음");
 
     const gateSelects = [document.getElementById("gatewaySelect1"), document.getElementById("gatewaySelect2")];
@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     fetch(`/gateway-list?departmentId=${departmentId}`)
         .then(res => res.json())
         .then(gateways => {
+            console.log("게이트웨이 목록 받아옴:", gateways);
             gateSelects.forEach(select => {
                 gateways.forEach(gateway => {
                     const option = document.createElement("option");
@@ -35,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 .then(sensors => {
                     sensors.forEach(sensor => {
                         const option = document.createElement("option");
-                        option.value = JSON.stringify(sensor); // full object 저장
+                        option.value = JSON.stringify(sensor); // 전체 객체 저장
                         option.text = `${sensor.sensorLocation} - ${sensor.typeEnName}`;
                         sensorSelect.appendChild(option);
                     });

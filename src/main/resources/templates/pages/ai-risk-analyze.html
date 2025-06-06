@@ -44,15 +44,8 @@
         <button id="analyzeButton">상관 분석 요청</button>
     </form>
 
-    <!-- departmentId 추출 -->
-    <script th:inline="javascript">
-        /*<![CDATA[*/
-        const departmentId = /*[[${#authentication.principal.department.departmentId}]]*/ "unknown";
-        window.currentUser = { department: { departmentId: departmentId } };
-        /*]]>*/
-    </script>
-
     <script src="/js/ai-risk-analyze.js"></script>
+
 </section>
 </body>
 </html>

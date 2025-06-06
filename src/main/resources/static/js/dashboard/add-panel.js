@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     const gatewaySelect = document.getElementById('gatewaySelect');
     const sensorSelect = document.getElementById('sensorSelect');
     const fieldSelect = document.getElementById('fieldSelect');
@@ -42,25 +42,24 @@ document.addEventListener('DOMContentLoaded', () => {
     function applyThreshold(bound, type, value) {
         if (!bound) return;
 
-        const isMin = type === 'min';
-        const input = isMin ? minInput : maxInput;
+        const input = type === 'min' ? minInput : maxInput;
         let val = '';
 
-        if (isMin) {
-            if (value === 'min') val = bound.minRangeMin;
-            else if (value === 'middle') val = (bound.minRangeMin + bound.minRangeMax) / 2;
-            else if (value === 'max') val = bound.minRangeMax;
+        if (type === 'min') {
+            val = value === 'min' ? bound.minRangeMin :
+                value === 'middle' ? (bound.minRangeMin + bound.minRangeMax) / 2 :
+                    bound.minRangeMax;
         } else {
-            if (value === 'min') val = bound.maxRangeMin;
-            else if (value === 'middle') val = (bound.maxRangeMin + bound.maxRangeMax) / 2;
-            else if (value === 'max') val = bound.maxRangeMax;
+            val = value === 'min' ? bound.maxRangeMin :
+                value === 'middle' ? (bound.maxRangeMin + bound.maxRangeMax) / 2 :
+                    bound.maxRangeMax;
         }
 
         input.disabled = false;
         input.value = val ?? '';
     }
 
-    function attachThresholdHandlers() {
+    const attachThresholdHandlers = () => {
         document.querySelectorAll('input[name="minThreshold"]').forEach(radio => {
             radio.addEventListener('change', () => {
                 const bound = getSelectedBound();
@@ -74,55 +73,74 @@ document.addEventListener('DOMContentLoaded', () => {
                 applyThreshold(bound, 'max', radio.value);
             });
         });
-    }
+    };
 
-    function updateThresholdUI() {
+    const updateThresholdUI = () => {
         const bound = getSelectedBound();
         if (!bound) {
-            resetInputs();
+            minInput.value = '';
+            maxInput.value = '';
+            minInput.disabled = true;
+            maxInput.disabled = true;
         }
-    }
+    };
 
-    // // 초기 센서 매핑 정보 불러오기
-    // fetch('/sensor')
-    //     .then(response => {
-    //         if (!response.ok) throw new Error('센서 매핑 정보를 불러오는 데 실패했습니다.');
-    //         return response.json();
-    //     })
-    //     .then(data => {
-    //         const gatewayList = [...new Set(data.map(item => item.gatewayId))];
-    //         const sensorList = [...new Set(data.map(item => item.sensorId))];
-    //         const fieldList = [...new Set(data.map(item => item.dataTypeEnName))];
-    //
-    //         populateSelect(gatewaySelect, gatewayList);
-    //         populateSelect(sensorSelect, sensorList);
-    //         populateSelect(fieldSelect, fieldList);
-    //
-    //         return fetch("/sensor/bound");
-    //     })
-    //     .then(response => {
-    //         if (!response.ok) throw new Error("센서 임계치 범위를 불러올 수 없습니다.");
-    //         return response.json();
-    //     })
-    //     .then(data => {
-    //         sensorBound = data;
-    //
-    //         attachThresholdHandlers();
-    //
-    //         [gatewaySelect, sensorSelect, fieldSelect].forEach(select => {
-    //             select.addEventListener('change', updateThresholdUI);
-    //         });
-    //
-    //         updateThresholdUI();
-    //     })
-    //     .catch(error => {
-    //         console.error(error);
-    //         alert('게이트웨이/센서/필드 또는 센서 임계치 정보를 불러오는 중 오류가 발생했습니다.');
-    //     });
+    const getAllGateways = async () => {
+        try {
+            const departmentId = window.currentUser?.department?.departmentId;
+            const res = await fetch(`https://luckyseven.live/api/gateways/department/${departmentId}`);
+            if (!res.ok) throw new Error('게이트웨이 목록 불러오기 실패');
+            return await res.json(); // gatewaySummaries 반환
+        } catch (err) {
+            console.error(err);
+            alert('게이트웨이 목록 로딩 오류');
+            return [];
+        }
+    };
+
+    // 초기 센서 매핑 정보 불러오기
+    const getAllsensors = async (gatewayId) => {
+        try {
+            const res = await fetch(`https://luckyseven.live/api/sensor-data-mappings/gateway-id/${gatewayId}/sensors`);
+            if (!res.ok) throw new Error('센서 매핑 정보 실패');
+            const data = await res.json();
+
+            const sensorList = [...new Set(data.map(item => item.sensorId))];
+            const fieldList = [...new Set(data.map(item => item.dataTypeEnName))];
+
+            populateSelect(sensorSelect, sensorList);
+            populateSelect(fieldSelect, fieldList);
+
+            // 하나의 센서라도 존재할 경우, 첫 번째 센서/필드에 대한 bound 정보 미리 로딩
+            const thresholdRes = await fetch(
+                `https://luckyseven.live/api/threshold-histories/gateway-id/${gatewayId}`
+            );
+            if (!thresholdRes.ok) throw new Error('임계치 정보 실패');
+            sensorBound = await thresholdRes.json();
+
+            attachThresholdHandlers();
+            [gatewaySelect, sensorSelect, fieldSelect].forEach(select => {
+                select.addEventListener('change', updateThresholdUI, {once: true});
+            });
+
+            updateThresholdUI();
+        } catch (err) {
+            console.error(err);
+            alert('센서/임계치 로딩 오류');
+        }
+    };
 
     populateSelect(typeSelect, typeList);
     populateSelect(aggregationSelect, aggregationList);
     populateSelect(timeSelect, timeList);
+
+    const gateways = await getAllGateways();
+    const gatewayIds = gateways.map(gw => gw.id);
+    populateSelect(gatewaySelect, gatewayIds);
+
+    if (gatewayIds.length > 0) {
+        await getAllsensors(gatewayIds[0]); // 첫 번째 gateway 기준
+    }
 
     saveBtn.addEventListener('click', async (e) => {
         e.preventDefault();
@@ -146,75 +164,74 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const departmentId = localStorage.getItem('departmentId');
 
-            // const typeRes = await fetch(`/data-types/${field}`);
-            // if (!typeRes.ok) {
-            //     alert(`데이터 타입 정보를 불러오지 못했습니다: ${typeRes.status}`);
-            // }
-            // const typeInfo = await typeRes.json();
-            // const dataTypeKrName = typeInfo.type_kr_name;
+            const typeRes = await fetch(`https://luckyseven.live/api/data-types/${field}`);
+            if (!typeRes.ok) {
+                alert(`데이터 타입 정보를 불러오지 못했습니다: ${typeRes.status}`);
+                return
+            }
+            const typeInfo = await typeRes.json();
 
-            // const panelWithRuleRequest = {
-            //     createPanelRequest: {
-            //         dashboardUid,
-            //         panelId: null,
-            //         panelTitle,
-            //         field: field,                      // @JsonProperty("type_en_name")
-            //         gatewayId: gatewayId,              // @JsonProperty("gateway_id")
-            //         sensorId: sensorId,                // @JsonProperty("sensor_id")
-            //         dataTypeKrName: dataTypeKrName,    // @JsonProperty("type_kr_name")
-            //         gridPos: { w: width, h: height },
-            //         type: type,
-            //         aggregation: aggregation,
-            //         time: time,
-            //         thresholdMin: min,                 // @JsonProperty("threshold_min")
-            //         thresholdMax: max,                 // @JsonProperty("threshold_max")
-            //         bucket: "team1-sensor-data",
-            //         measurement: "sensor-data"
-            //     },
-            //     ruleRequest: {
-            //         gatewayId: gatewayId,
-            //         sensorId: sensorId,
-            //         sensorType: field,
-            //         departmentId: departmentId
-            //     }
-            // };
-
-            const createPanelRequest = {
-                dashboardUid: dashboardUid,
-                panelId: 1,
-                panelTitle: panelTitle,
-                sensorFieldRequestDto: [
-                    {
-                        type_en_name: "temperature",      // Java @JsonProperty("type_en_name")
-                        gateway_id: 1,            // Java @JsonProperty("gateway_id") (숫자만 넣어주세요)
-                        sensor_id: "sensorId"       // Java @JsonProperty("sensor_id")
-                    }
-                ],
-                gridPos: { w: width, h: height },
-                type: type,
-                aggregation: aggregation,
-                time: time,
-                min: 15,                       // Java 필드 min
-                max: 80,                       // Java 필드 max
-                bucket: "team1-sensor-data",
-                measurement: "sensor-data"
+            const panelWithRuleRequest = {
+                createPanelRequest: {
+                    dashboardUid: dashboardUid,
+                    panelId: null,
+                    panelTitle: panelTitle,
+                    type_en_name: field,
+                    gateway_id: gatewayId,
+                    sensor_id: sensorId,
+                    dataTypeKrName: typeInfo.type_kr_name,
+                    gridPos: {w: width, h: height},
+                    type: type,
+                    aggregation: aggregation,
+                    time: time,
+                    thresholdMin: min,                 // @JsonProperty("threshold_min")
+                    thresholdMax: max,                 // @JsonProperty("threshold_max")
+                    bucket: "team1-sensor-data",
+                    measurement: "sensor-data"
+                },
+                ruleRequest: {
+                    type_en_name: field,
+                    gateway_id: gatewayId,
+                    sensor_id: sensorId,
+                    departmentId: departmentId
+                }
             };
 
+            // const createPanelRequest = {
+            //     dashboardUid: dashboardUid,
+            //     panelId: 1,
+            //     panelTitle: panelTitle,
+            //     sensorFieldRequestDto: [
+            //         {
+            //             type_en_name: "temperature",      // Java @JsonProperty("type_en_name")
+            //             gateway_id: 1,            // Java @JsonProperty("gateway_id") (숫자만 넣어주세요)
+            //             sensor_id: "sensorId"       // Java @JsonProperty("sensor_id")
+            //         }
+            //     ],
+            //     gridPos: { w: width, h: height },
+            //     type: type,
+            //     aggregation: aggregation,
+            //     time: time,
+            //     min: 15,                       // Java 필드 min
+            //     max: 80,                       // Java 필드 max
+            //     bucket: "team1-sensor-data",
+            //     measurement: "sensor-data"
+            // };
 
             const response = await fetch("https://luckyseven.live/api/panels/test", {
                 method: "POST",
-                credentials:'include',
+                credentials: 'include',
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(createPanelRequest)
+                body: JSON.stringify(panelWithRuleRequest)
             });
 
-            console.log(JSON.stringify(createPanelRequest, null, 2));
+            console.log(JSON.stringify(panelWithRuleRequest, null, 2));
             if (!response.ok) {
                 const errorText = await response.text();
                 alert(`생성 실패: ${response.status} - ${errorText}`);
-            }else{
+            } else {
                 alert('패널이 성공적으로 생성되었습니다!');
                 window.location.href = `/panels/${dashboardUid}`;
             }

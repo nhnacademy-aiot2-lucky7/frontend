@@ -24,7 +24,7 @@ public interface GatewayAdapter {
     @GetMapping("/api/admin/gateways")
     List<AdminGatewayResponse> getGatewayAdminSummaries();
 
-    @GetMapping("/department-id/{department-id}")
+    @GetMapping("/api/gateways/department-id/{department-id}")
     ResponseEntity<List<GatewayInfoResponse>> getGatewayListByDepartmentId(
             @PathVariable("department-id") String departmentId);
 }

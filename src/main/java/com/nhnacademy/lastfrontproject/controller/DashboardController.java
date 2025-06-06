@@ -22,9 +22,7 @@ public class DashboardController {
 
     // 대시보드 추가
     @GetMapping({"/add-dashboard"})
-    public String showDashboardPage(Model model,
-                                    @RequestParam(name = "departmentId", required = false) String departmentId) {
-        model.addAttribute("departmentId", departmentId);
+    public String showDashboardPage() {
         return "pages/member/dashboard/pages-add-dashboard";
     }
 

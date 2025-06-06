@@ -192,7 +192,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 </table>
                 <br><br>
             `;
-        // SINGLE_SENSOR_PREDICT 정보 표
+            // SINGLE_SENSOR_PREDICT 정보 표
         } else if (isSingle && result.sensorInfo) {
             const info = result.sensorInfo;
             sensorInfoTable = `
@@ -214,7 +214,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 </table>
                 <br><br>
             `;
-        // THRESHOLD_DIFF_ANALYSIS 정보 표
+            // THRESHOLD_DIFF_ANALYSIS 정보 표
         } else if (isThreshold && result.sensorInfo) {
             const info = result.sensorInfo;
             sensorInfoTable = `
@@ -262,18 +262,18 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
     `;
         } else if (isThreshold && typeof result.healthScore === 'number') {
+            const score = Math.round(result.healthScore * 100);
             html += `
-        <div style="width:320px; height:180px; display:flex; flex-direction:column; align-items:center; justify-content:center;">
-            <canvas id="gauge-${id}" width="320" height="180"></canvas>
-            <div style="margin-top:-120px; text-align:center; font-size:2rem; color:#39a0ff;">
-                ${Math.round(result.healthScore * 100)}점
+        <div style="width:320px; height:200px; overflow:hidden; position:relative;">
+            <canvas id="gauge-${id}" width="320" height="320"></canvas>
+            <div style="position:absolute; left:0; right:0; top:110px; text-align:center; font-size:2.2rem; color:#39a0ff; font-weight:bold;">
+                ${score}점
             </div>
-            <div style="margin-top:0.5rem; color:#888;">healthScore</div>
+            <div style="position:absolute; left:0; right:0; top:150px; text-align:center; color:#888;">healthScore</div>
         </div>
     `;
         }
         html += `</div>
-    <br><br><br>
 </td>`;
 
         const expandTr = document.createElement('tr');
@@ -340,28 +340,28 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 });
             } else if (isThreshold && typeof result.healthScore === 'number') {
-                const score = Math.round(result.healthScore * 100);
-                const remain = 100 - score;
+                const score = Math.round(result.healthScore * 100); // 0~100
 
                 chartInstances[`gauge-${id}`] = new Chart(document.getElementById(`gauge-${id}`), {
                     type: 'doughnut',
                     data: {
                         datasets: [{
                             data: [score, 100 - score],
-                            backgroundColor: ['#39a0ff', '#f3f4f6'],
+                            backgroundColor: ['#39a0ff', '#e5e7eb'],
                             borderWidth: 0
                         }]
                     },
                     options: {
-                        responsive: false,
-                        rotation: Math.PI,
-                        circumference: Math.PI,
-                        cutout: '70%',             // 도넛 두께 (60~80% 조정 가능)
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        cutout: '70%',
+                        rotation: -90,
+                        circumference: 180,
                         plugins: {
                             legend: { display: false },
                             tooltip: { enabled: false }
                         }
-                    }
+                    },
                 });
             }
         }, 0);

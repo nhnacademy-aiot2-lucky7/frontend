@@ -23,6 +23,39 @@ async function loadIframes() {
             title.className = 'panel-title';
             wrapper.appendChild(title);
 
+            // 삭제 버튼
+            const deleteBtn = document.createElement('button');
+            deleteBtn.textContent = '삭제';
+            deleteBtn.className = 'delete-button';
+            deleteBtn.addEventListener('click', async () => {
+                const confirmed = confirm(`"${panel.dashboardTitle}" 패널을 삭제하시겠습니까?`);
+                if (!confirmed) return;
+
+                try {
+                    const res = await fetch("https://luckyseven.live/api/panels", {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            dashboardUid: panel.dashboardUid,
+                            panelId: panel.panelId
+                        })
+                    });
+
+                    if (res.status === 204) {
+                        wrapper.remove(); // 성공 시 DOM에서 제거
+                    } else {
+                        alert('패널 삭제에 실패했습니다.');
+                    }
+                } catch (err) {
+                    console.error('삭제 중 오류:', err);
+                    alert('서버 오류로 삭제에 실패했습니다.');
+                }
+            });
+
+            wrapper.appendChild(deleteBtn);
+
             // iframe 생성
             const iframe = document.createElement('iframe');
             iframe.src = `https://grafana.luckyseven.live/d-solo/${panel.dashboardUid}?orgId=1&from=${panel.from}&to=${panel.now}&panelId=${panel.panelId}`;

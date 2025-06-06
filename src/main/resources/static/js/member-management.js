@@ -23,7 +23,9 @@ document.addEventListener('DOMContentLoaded', function () {
             params.append('keyword', currentKeyword);
         }
 
-        fetch(`/users/all?${params}`)
+        fetch(`https://luckyseven.live/api/users/all?${params}`, {
+            credentials: 'include'
+        })
             .then(res => res.json())
             .then(renderMembers);
     }
@@ -86,10 +88,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
             row.querySelector('.btn-save').addEventListener('click', function () {
                 const newRole = row.querySelector('.edit-role').value;
-                fetch('/admin/users/roles', {
+                fetch('https://luckyseven.live/api/admin/users/roles', {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
-                    credentials:'include',
+                    credentials: 'include',
                     body: JSON.stringify({
                         userId: member.userEmail,
                         roleId: newRole
@@ -108,15 +110,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
             row.querySelector('.btn-delete').addEventListener('click', function () {
                 if (confirm('정말 삭제 하시겠습니까?')) {
-                    fetch(`/admin/users/${member.userEmail}`, { method: 'DELETE' })
-                        .then(res => {
-                            if (res.ok) {
-                                alert('삭제되었습니다.');
-                                fetchMembers();
-                            } else {
-                                alert('삭제 실패');
-                            }
-                        });
+                    fetch(`https://luckyseven.live/api/admin/users/${member.userEmail}`, {
+                        method: 'DELETE',
+                        credentials: 'include'
+                    }).then(res => {
+                        if (res.ok) {
+                            alert('삭제되었습니다.');
+                            fetchMembers();
+                        } else {
+                            alert('삭제 실패');
+                        }
+                    });
                 }
             });
         });

@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                             "Content-Type": "application/json"
                         },
                         body: JSON.stringify({
-                            uid: dashboardUid
+                            dashboardUid: dashboardUid
                         })
                     });
 

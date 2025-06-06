@@ -8,6 +8,11 @@
     <meta charset="utf-8"/>
     <title th:text="${dashboardTitle}">차트 | Lucky Seven</title>
     <link href="/css/dashboard/panel-list.css" rel="stylesheet"/>
+    <!-- JSP 페이지에서 전달된 dashboardTitle을 JavaScript로 전달 -->
+    <script type="text/javascript">
+        var dashboardTitle = "${dashboardTitle}";
+    </script>
+
 </head>
 
 <body>

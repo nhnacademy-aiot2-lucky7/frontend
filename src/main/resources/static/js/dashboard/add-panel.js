@@ -130,7 +130,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             );
 
             const threshold = await thresholdRes.json();
-            log.info("threshold_value:{}", threshold);
+
+            console.log("Type EN Name: ", threshold.type_en_name);
+            console.log("Min Range Min: ", threshold.minRangeMin);
+            console.log("Min Range Max: ", threshold.minRangeMax);
+            console.log("Max Range Min: ", threshold.maxRangeMin);
+            console.log("Max Range Max: ", threshold.maxRangeMax);
+
             if (!thresholdRes.ok) {
                 console.warn('임계치 정보를 불러오지 못했습니다.');
             }
@@ -192,6 +198,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 return
             }else{
                 const typeInfo = await typeRes.json();
+                return typeInfo;
             }
 
             const panelWithRuleRequest = {
@@ -218,7 +225,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     sensor_id: sensorId,
                     departmentId: departmentId,
                     type_en_name: field,
-                    type_kr_name:"알수없음",
+                    type_kr_name: typeInfo.type_kr_name,
                     thresholdMin: min,
                     thresholdMax: max
                 }

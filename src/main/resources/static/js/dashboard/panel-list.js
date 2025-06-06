@@ -37,6 +37,13 @@ async function loadIframes(dashboardUid) {
                 const confirmed = confirm(`"${panel.dashboardTitle || '제목 없음'}" 패널을 삭제하시겠습니까?`);
                 if (!confirmed) return;
 
+                const deleteRequest = {
+                    deletePanelRequest:{
+                        dashboardUid: panel.dashboardUid,
+                        panelId: panel.panelId
+                    }
+                }
+
                 try {
                     const res = await fetch("https://luckyseven.live/api/panels", {
                         method: 'DELETE',
@@ -44,10 +51,7 @@ async function loadIframes(dashboardUid) {
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({
-                            dashboardUid: panel.dashboardUid,
-                            panelId: panel.panelId  // 하드코딩 제거!
-                        })
+                        body: JSON.stringify(deleteRequest)
                     });
 
                     if (res.status === 204) {

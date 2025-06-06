@@ -44,31 +44,6 @@ public class DashboardRestController {
         return dashboardService.getAllDashboard();
     }
 
-    @PostMapping({"/dashboard"})
-    public ResponseEntity<Void> createDashboardPage(
-            @RequestBody CreateDashboardRequest createDashboardRequest) {
-        dashboardService.createDashboard(createDashboardRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
-
-    @PostMapping({"/panels"})
-    ResponseEntity<Void> createPanel(
-            @RequestBody PanelWithRuleRequest panelWithRuleRequest
-    ){
-        return dashboardService.createPanel(panelWithRuleRequest);
-    }
-
-    @PostMapping("/test")
-    ResponseEntity<Void> createTest(
-            @RequestBody CreatePanelRequest createPanelRequest
-    ){
-        try {
-            return dashboardService.createTest(createPanelRequest);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
-    }
 
     @GetMapping("/sensor")
     public Set<SensorDataMappingIndexResponse> getSensorData(){

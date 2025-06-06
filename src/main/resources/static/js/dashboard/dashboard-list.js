@@ -87,8 +87,74 @@ document.addEventListener('DOMContentLoaded', async () => {
                 window.location.href = `/panel/${dashboardUid}`;
             });
 
-            // 삭제 버튼 추가
+            // 버튼 컨테이너 생성
+            const buttonContainer = document.createElement('div');
+            buttonContainer.style.position = 'absolute';
+            buttonContainer.style.top = '10px';
+            buttonContainer.style.right = '10px';
+            buttonContainer.style.display = 'flex';
+            buttonContainer.style.gap = '8px'; // 버튼 간격
+            buttonContainer.style.zIndex = '2';
+
+            // 삭제 버튼
             const deleteBtn = document.createElement('button');
+            deleteBtn.textContent = '삭제';
+            deleteBtn.style.backgroundColor = '#e74c3c';
+            deleteBtn.style.border = 'none';
+            deleteBtn.style.color = 'white';
+            deleteBtn.style.padding = '6px 10px';
+            deleteBtn.style.borderRadius = '6px';
+            deleteBtn.style.cursor = 'pointer';
+            deleteBtn.style.boxShadow = '0 2px 6px rgba(0,0,0,0.2)';
+
+            // 수정 버튼
+            const updateBtn = document.createElement('button');
+            updateBtn.textContent = '수정';
+            updateBtn.style.backgroundColor = '#00ff78';
+            updateBtn.style.border = 'none';
+            updateBtn.style.color = 'white';
+            updateBtn.style.padding = '6px 10px';
+            updateBtn.style.borderRadius = '6px';
+            updateBtn.style.cursor = 'pointer';
+            updateBtn.style.boxShadow = '0 2px 6px rgba(0,0,0,0.2)';
+
+            // 수정 버튼 클릭 시 페이지 이동
+            updateBtn.addEventListener('click', function (e) {
+                e.stopPropagation(); // 배너 클릭 방지
+                window.location.href = `/test/${d.dashboardId}`;
+            });
+
+            // 삭제 버튼 클릭 이벤트
+            deleteBtn.addEventListener('click', async (e) => {
+                e.stopPropagation();
+                if (!confirm(`정말 "${dashboardTitle}" 대시보드를 삭제하시겠습니까?`)) return;
+
+                try {
+                    const res = await fetch("https://luckyseven.live/api/dashboards", {
+                        method: 'DELETE',
+                        credentials: 'include',
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            dashboardUid: dashboardUid
+                        })
+                    });
+
+                    if (!res.ok) throw new Error('삭제 실패');
+
+                    bannerWrapper.remove(); // UI에서 제거
+                } catch (err) {
+                    alert('삭제 중 오류 발생: ' + err.message);
+                }
+            });
+
+            // 버튼 컨테이너에 버튼 추가
+            buttonContainer.appendChild(updateBtn);
+            buttonContainer.appendChild(deleteBtn);
+
+            // 삭제 버튼 추가
+            /*const deleteBtn = document.createElement('button');
             deleteBtn.textContent = '삭제';
             deleteBtn.style.position = 'absolute';
             deleteBtn.style.top = '10px';
@@ -145,10 +211,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             updateBtn.addEventListener('click', function () {
                 window.location.href = 'test/${d.dashboardId}';
-            });
+            });*/
 
             bannerWrapper.appendChild(banner);
-            bannerWrapper.appendChild(deleteBtn);
+            bannerWrapper.appendChild(buttonContainer);
             container.appendChild(bannerWrapper);
         });
 

@@ -1,32 +1,22 @@
 <!DOCTYPE html>
-
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="~{layouts/layout}">
-
 <head>
 	<meta charset="utf-8"/>
 	<title>멤버 관리 | Lucky Seven</title>
 	<script src="/js/admin-check.js"></script>
 	<link href="/css/member-management.css" rel="stylesheet"/>
 	<script src="/js/member-management.js"></script>
-	<script th:inline="javascript">
-		/*<![CDATA[*/
-		window.members = /*[[${members}]]*/ [];
-		/*]]>*/
-	</script>
 </head>
-
 <body>
 <section layout:fragment="content">
-	<!--	본문내용 추가-->
 	<main class="member-container" style="flex: 1;">
 		<section class="member-header">
 			<h1>멤버 관리 (관리자용)</h1>
 			<span class="member-count-badge" id="member-count-badge">총 0명</span>
 		</section>
 
-		<!-- 검색 영역 -->
 		<section class="member-filter">
 			<form id="member-search-form" class="search-form-row">
 				<input class="input-text" name="keyword" placeholder="이름, 이메일, 휴대전화 검색" type="text"/>
@@ -34,27 +24,31 @@
 			</form>
 		</section>
 
-		<!-- 멤버 테이블 -->
 		<section class="member-table-wrapper">
 			<table class="member-table">
 				<thead>
 				<tr>
-					<th th:classappend="${sort == 'name' ? 'sorted' : ''}" data-sort="name">이름</th>
-					<th th:classappend="${sort == 'email' ? 'sorted' : ''}" data-sort="email">이메일</th>
-					<th th:classappend="${sort == 'department' ? 'sorted' : ''}" data-sort="department">부서</th>
-					<th th:classappend="${sort == 'phone' ? 'sorted' : ''}" data-sort="phone">휴대전화</th>
-					<th th:classappend="${sort == 'userRole' ? 'sorted' : ''}" data-sort="userRole">권한</th>
+					<th data-sort="userName">이름</th>
+					<th data-sort="userEmail">이메일</th>
+					<th data-sort="department">부서</th>
+					<th data-sort="userPhone">휴대전화</th>
+					<th data-sort="userRole">권한</th>
 					<th>관리</th>
 				</tr>
 				</thead>
 				<tbody id="member-table-body">
-				<tr th:if="${#lists.isEmpty(members)}">
+				<tr>
 					<td colspan="6" style="text-align: center; padding: 2rem; color: #6c757d;">
 						멤버가 없습니다.
 					</td>
 				</tr>
 				</tbody>
 			</table>
+		</section>
+
+		<!-- 페이지네이션 -->
+		<section class="pagination-wrapper">
+			<ul class="pagination" id="pagination"></ul>
 		</section>
 	</main>
 </section>

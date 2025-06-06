@@ -176,3 +176,27 @@ td.date-cell {
         margin-bottom: 0.5rem;
     }
 }
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    list-style: none;
+    padding: 1rem 0;
+    margin: 0;
+}
+.pagination li {
+    padding: 0.5rem 0.9rem;
+    background: #e5e7eb;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+.pagination li:hover {
+    background: #cbd5e1;
+}
+.pagination li.active {
+    background: #2563eb;
+    color: #fff;
+}

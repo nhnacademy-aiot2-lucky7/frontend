@@ -1,13 +1,11 @@
 package com.nhnacademy.lastfrontproject.controller;
 
-import com.nhnacademy.lastfrontproject.dto.user.UserResponse;
 import com.nhnacademy.lastfrontproject.service.MemberService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -20,8 +18,6 @@ public class MemberController {
 
     @GetMapping("/admin/member_management")
     public String memberManagement(Model model) {
-        List<UserResponse> members = memberService.getAllMembers();
-        model.addAttribute("members", members);
         return "pages/admin/pages-member-management";
     }
 

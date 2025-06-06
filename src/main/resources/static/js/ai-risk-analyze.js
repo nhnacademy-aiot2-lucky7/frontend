@@ -14,8 +14,8 @@ document.addEventListener("DOMContentLoaded", () => {
             gateSelects.forEach(select => {
                 gateways.forEach(gateway => {
                     const option = document.createElement("option");
-                    option.value = gateway.gatewayId;
-                    option.text = gateway.gatewayName;
+                    option.value = gateway.gateway_id;
+                    option.text = gateway.gateway_name;
                     select.appendChild(option);
                 });
             });
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
             sensorSelect.innerHTML = "<option value=''>-- 선택하세요 --</option>";
             if (!gatewayId) return;
 
-            fetch(`/sensor-list?gatewayId=${gatewayId}`)
+            fetch(`/sensor-list/${gatewayId}`)
                 .then(res => res.json())
                 .then(sensors => {
                     sensors.forEach(sensor => {

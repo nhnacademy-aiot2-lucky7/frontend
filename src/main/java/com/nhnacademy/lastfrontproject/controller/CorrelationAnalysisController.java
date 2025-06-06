@@ -24,8 +24,8 @@ public class CorrelationAnalysisController {
         return ResponseEntity.ok(gateways);
     }
 
-    @GetMapping("/sensor-list")
-    public ResponseEntity<List<SensorDataMappingWebResponse>> getSensors(@RequestParam Long gatewayId) {
+    @GetMapping("/sensor-list/{gateway-id}")
+    public ResponseEntity<List<SensorDataMappingWebResponse>> getSensors(@PathVariable("gateway-id") Long gatewayId) {
         List<SensorDataMappingWebResponse> sensors = correlationAnalysisService.getSensorListByGatewayId(gatewayId);
 
         return ResponseEntity.ok(sensors);

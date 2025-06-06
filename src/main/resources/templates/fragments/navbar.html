@@ -1,5 +1,4 @@
-<!-- navbar.html -->
-<nav class="navbar navbar-expand navbar-light navbar-bg" th:fragment="navbar">
+<nav class="navbar navbar-expand navbar-light navbar-bg">
     <a aria-label="사이드바 열기" class="sidebar-toggle js-sidebar-toggle" href="#">
         <i class="hamburger align-self-center"><span></span></i>
     </a>
@@ -8,40 +7,31 @@
         <ul class="navbar-nav navbar-align">
             <!-- 알림 드롭다운 -->
             <li class="nav-item dropdown">
-                <a aria-expanded="false" aria-haspopup="true" class="nav-icon dropdown-toggle"
-                   data-bs-auto-close="outside" data-bs-toggle="dropdown" href="#" id="alertsDropdown" role="button">
+                <a class="nav-icon dropdown-toggle" data-bs-toggle="dropdown" id="alertsDropdown" role="button">
                     <i class="align-middle" data-feather="bell"></i>
                     <span class="indicator">0</span>
                 </a>
-                <div aria-labelledby="alertsDropdown"
-                     class="dropdown-menu dropdown-menu-lg dropdown-menu-end dropdown-menu-bottom py-0">
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
                     <div class="dropdown-menu-header">알림</div>
-                    <div class="list-group">
-                        <!-- JS가 여기 알림 항목을 동적으로 생성 -->
-                    </div>
+                    <div class="list-group"></div>
                     <div class="dropdown-menu-footer">
                         <a class="text-muted" href="/notification">모든 알림 보기</a>
                     </div>
                 </div>
             </li>
 
-            <!-- 사용자 정보 드롭다운 -->
-            <li class="nav-item dropdown" id="nav-dropdown" th:if="${user != null}">
+            <!-- 사용자 정보 드롭다운 (JS로 상태 분기) -->
+            <li class="nav-item dropdown d-none" id="nav-dropdown">
                 <a class="nav-link dropdown-toggle d-none d-sm-inline-block" data-bs-toggle="dropdown" href="#">
-                    <img alt="프로필 사진"
-                         class="navbar-profile-photo"
-                         th:src="${user.image != null and user.image.imagePath != null
-                                  ? user.image.imagePath
-                                  : '/img/avatars/default-avatar.jpg'}"/>
-                    <span class="text-dark" th:text="${user.userName}">사용자</span>
+                    <img alt="프로필 사진" id="navbar-profile-img" class="navbar-profile-photo" src="/img/avatars/default-avatar.jpg" />
+                    <span class="text-dark" id="navbar-username">사용자</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end">
                     <a class="dropdown-item user-menu-item" href="/profile" id="nav-mypage">
                         <i class="align-middle me-1" data-feather="user"></i> 마이페이지
                     </a>
                     <div class="dropdown-divider"></div>
-                    <form action="https://luckyseven.live/auth/logout" id="logout-form" method="post"
-                          style="margin: 0; padding: 0;">
+                    <form action="https://luckyseven.live/auth/logout" id="logout-form" method="post" style="margin: 0; padding: 0;">
                         <button class="dropdown-item user-menu-item" onclick="handleLogout()" type="button">
                             <i class="align-middle me-1" data-feather="log-out"></i> 로그아웃
                         </button>
@@ -50,13 +40,34 @@
             </li>
 
             <!-- 로그인 버튼 -->
-            <li class="nav-item" th:if="${user == null}">
+            <li class="nav-item d-none" id="login-button">
                 <a class="nav-link" href="/sign-in">
-                    <span class="icon-wrapper">
-                        <i class="align-middle me-1" data-feather="log-in"></i>
-                    </span>
+                    <i class="align-middle me-1" data-feather="log-in"></i>
                 </a>
             </li>
         </ul>
     </div>
 </nav>
+
+<script>
+    // 페이지 로드 시 localStorage 기반으로 상태 분기
+    document.addEventListener("DOMContentLoaded", () => {
+        const userJson = localStorage.getItem("currentUser");
+        const user = userJson ? JSON.parse(userJson) : null;
+
+        const navDropdown = document.getElementById('nav-dropdown');
+        const loginButton = document.getElementById('login-button');
+        const usernameSpan = document.getElementById('navbar-username');
+        const profileImg = document.getElementById('navbar-profile-img');
+
+        if (user) {
+            navDropdown.classList.remove("d-none");
+            loginButton.classList.add("d-none");  // ✅ 로그인 상태일 땐 무조건 숨김
+            usernameSpan.textContent = user.userName || "사용자";
+            profileImg.src = user?.image?.imagePath ?? "/img/avatars/default-avatar.jpg";
+        } else {
+            navDropdown.classList.add("d-none");
+            loginButton.classList.remove("d-none");
+        }
+    });
+</script>

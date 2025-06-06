@@ -129,7 +129,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 `https://luckyseven.live/api/threshold-histories/gateway-id/${gatewayId}`
             );
 
-            log.info("thresholdRes:{}", thresholdRes);
+            const threshold = await thresholdRes.json();
+            log.info("threshold_value:{}", threshold);
             if (!thresholdRes.ok) {
                 console.warn('임계치 정보를 불러오지 못했습니다.');
             }
@@ -185,13 +186,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             const departmentId = window.currentUser?.department?.departmentId;
 
-            // const typeRes = await fetch(`https://luckyseven.live/api/data-types/${field}`);
-            // if (!typeRes.ok) {
-            //     alert(`데이터 타입 정보를 불러오지 못했습니다: ${typeRes.status}`);
-            //     return
-            // }else{
-            //     const typeInfo = await typeRes.json();
-            // }
+            const typeRes = await fetch(`https://luckyseven.live/api/data-types/${field}`);
+            if (!typeRes.ok) {
+                alert(`데이터 타입 정보를 불러오지 못했습니다: ${typeRes.status}`);
+                return
+            }else{
+                const typeInfo = await typeRes.json();
+            }
 
             const panelWithRuleRequest = {
                 createPanelRequest: {
@@ -238,7 +239,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 alert(`생성 실패: ${response.status} - ${errorText}`);
             } else {
                 alert('패널이 성공적으로 생성되었습니다!');
-                window.location.href = `/panels/${dashboardUid}`;
+                window.location.href = `/panel/${dashboardUid}`;
             }
         } catch (error) {
             console.error('패널 저장 오류:', error);

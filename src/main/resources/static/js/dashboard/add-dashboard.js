@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             alert('🎉 대시보드 생성 성공');
 
             // 생성 후 이동 처리
-            window.location.href = window.currentUser.role === 'ROLE_ADMIN' ? '/admin/dashboard-info' : '/user/dashboard-info';
+            window.location.href = window.currentUser.role === 'ROLE_ADMIN' ? '/admin/dashboard-info' : '/dashboard-info';
 
         } catch (error) {
             console.error('⚠️ 대시보드 생성 오류:', error);

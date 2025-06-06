@@ -12,6 +12,44 @@ document.addEventListener('DOMContentLoaded', function () {
         emailInput.value = savedEmail;
     }
 
+    async function loadUserToLocalStorage() {
+        try {
+            // 유저 정보 가져오기
+            let userResponse = await fetch("https://luckyseven.live/api/users/me", {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include'
+            });
+            let user = await userResponse.json();
+
+            // 이미지 정보 가져오기
+            let imageResponse = await fetch(`https://luckyseven.live/api/images/${user.userEmail}`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include'
+            });
+            let image = await imageResponse.json();
+
+            // 로컬 스토리지에 저장
+            let fullUser = {
+                userRole: user.userRole,
+                userNo: user.userNo,
+                userName: user.userName,
+                userEmail: user.userEmail,
+                userPhone: user.userPhone,
+                department: user.department,
+                eventLevelResponse: user.eventLevelResponse,
+                image: image
+            };
+
+            localStorage.setItem("currentUser", JSON.stringify(fullUser));
+            console.log("유저정보 로컬스토리지 저장 완료");
+
+        } catch (error) {
+            console.error("유저 정보 불러오기 실패:", error);
+        }
+    }
+
     form.addEventListener('submit', function (e) {
         e.preventDefault();
 
@@ -53,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 // 응답이 성공(200)이면 로그인 성공으로 간주
                 return true;
             })
-            .then(success => {
+            .then(success =>  {
                 if (success) {
                     console.log('로그인 성공');
 
@@ -69,7 +107,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     alert('로그인 성공!');
                     // 페이지 새로고침으로 Thymeleaf 렌더링 갱신
-                    window.location.replace('/dashboard');
+                    loadUserToLocalStorage().then(()=>{
+                        window.location.replace('/dashboard');
+                    })
                 }
             })
             .catch(error => {

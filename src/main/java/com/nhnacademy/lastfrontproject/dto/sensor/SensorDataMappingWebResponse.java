@@ -1,9 +1,11 @@
 package com.nhnacademy.lastfrontproject.dto.sensor;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-@Value
+@Getter
+@AllArgsConstructor
 public class SensorDataMappingWebResponse {
 
     @JsonProperty("no")

@@ -11,7 +11,7 @@ public class AiAnalyzeController {
         return "pages/member/pages-ai-result";
     }
 
-    @GetMapping("/admin/ai-result")
+    @GetMapping("/pages/admin/ai-result")
     public String aiAdmin(){
         return "pages/admin/pages-ai-result-adm";
     }

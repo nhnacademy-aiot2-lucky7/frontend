@@ -1,0 +1,20 @@
+{
+  "name": "lastfrontproject",
+  "version": "1.0.0",
+  "description": "첫주째 프론트앤드 리포지토리",
+  "main": "postcss.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nhnacademy-aiot2-lucky7/frontend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nhnacademy-aiot2-lucky7/frontend/issues"
+  },
+  "homepage": "https://github.com/nhnacademy-aiot2-lucky7/frontend#readme"
+}

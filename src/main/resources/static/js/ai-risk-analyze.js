@@ -14,8 +14,8 @@ document.addEventListener("DOMContentLoaded", () => {
             gateSelects.forEach(select => {
                 gateways.forEach(gateway => {
                     const option = document.createElement("option");
-                    option.value = gateway.gatewayId;
-                    option.text = gateway.gatewayName;
+                    option.value = gateway.gateway_id;
+                    option.text = gateway.gateway_name;
                     select.appendChild(option);
                 });
             });
@@ -31,13 +31,13 @@ document.addEventListener("DOMContentLoaded", () => {
             sensorSelect.innerHTML = "<option value=''>-- 선택하세요 --</option>";
             if (!gatewayId) return;
 
-            fetch(`/sensor-list?gatewayId=${gatewayId}`)
+            fetch(`/sensor-list/${gatewayId}`)
                 .then(res => res.json())
                 .then(sensors => {
                     sensors.forEach(sensor => {
                         const option = document.createElement("option");
                         option.value = JSON.stringify(sensor); // 전체 객체 저장
-                        option.text = `${sensor.sensorLocation} - ${sensor.typeEnName}`;
+                        option.text = `${sensor.location} - ${sensor.type_en_name}`;
                         sensorSelect.appendChild(option);
                     });
                 })
@@ -50,11 +50,13 @@ document.addEventListener("DOMContentLoaded", () => {
         const sensorObjs = sensorSelects.map(select => {
             const selected = select.value;
             if (!selected) return null;
-            const { gatewayId, sensorId, typeEnName } = JSON.parse(selected);
+
+            const parsed = JSON.parse(selected);
+
             return {
-                gatewayId: gatewayId.toString(),
-                sensorId,
-                sensorType: typeEnName
+                gatewayId: parsed.gateway_id.toString(),
+                sensorId: parsed.sensor_id,
+                sensorType: parsed.type_en_name
             };
         });
 

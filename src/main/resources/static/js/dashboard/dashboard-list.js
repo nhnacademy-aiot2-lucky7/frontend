@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
 
             banner.addEventListener('click', () => {
-                window.location.href = `/panels?dashboardUid=${dashboardUid}`;
+                window.location.href = `/panels/${dashboardUid}`;
             });
 
             // 삭제 버튼 추가
@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (!confirm(`정말 "${dashboardTitle}" 대시보드를 삭제하시겠습니까?`)) return;
 
                 try {
-                    const res = await fetch(`/dashboards/${dashboardUid}`, {
+                    const res = await fetch(`/api/dashboards/${dashboardUid}`, {
                         method: 'DELETE',
                         credentials: 'include'
                     });

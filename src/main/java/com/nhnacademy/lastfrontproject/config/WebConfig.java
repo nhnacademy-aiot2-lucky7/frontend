@@ -14,6 +14,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(interceptor)
-                .addPathPatterns("*");
+                .addPathPatterns("/**") // 모든 경로에 대해 적용
+                .excludePathPatterns("/static/**", "/css/**", "/js/**", "/images/**", "/favicon.ico"); // 정적 리소스 제외
     }
 }

@@ -196,7 +196,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const min = !minInput.disabled ? parseFloat(minInput.value) : null;
             const max = !maxInput.disabled ? parseFloat(maxInput.value) : null;
 
-            const departmentId = localStorage.getItem('departmentId');
+            const departmentId = window.currentUser?.department?.departmentId;
 
             // const typeRes = await fetch(`https://luckyseven.live/api/data-types/${field}`);
             // if (!typeRes.ok) {

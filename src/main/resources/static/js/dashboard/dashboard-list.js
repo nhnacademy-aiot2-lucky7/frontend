@@ -121,7 +121,95 @@ document.addEventListener('DOMContentLoaded', async () => {
             // 수정 버튼 클릭 시 페이지 이동
             updateBtn.addEventListener('click', function (e) {
                 e.stopPropagation(); // 배너 클릭 방지
-                window.location.href = `/test/${d.dashboardId}`;
+
+                // 이미 입력창이 존재하는지 체크
+                if (banner.querySelector('input')) return;
+
+                const originalTitle = dashboardTitle;
+
+                // 입력창 생성
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.value = dashboardTitle;
+                input.style.padding = '4px 8px';
+                input.style.fontSize = '1rem';
+                input.style.borderRadius = '4px';
+                input.style.border = '1px solid #ccc';
+                input.style.marginRight = '8px';
+
+                // 확인 버튼 생성
+                const confirmBtn = document.createElement('button');
+                confirmBtn.textContent = '확인';
+                confirmBtn.style.padding = '4px 10px';
+                confirmBtn.style.backgroundColor = '#10b981'; // green
+                confirmBtn.style.color = 'white';
+                confirmBtn.style.border = 'none';
+                confirmBtn.style.borderRadius = '4px';
+                confirmBtn.style.cursor = 'pointer';
+
+                // 이벤트 전파 방지
+                input.addEventListener('click', e => e.stopPropagation());
+                confirmBtn.addEventListener('click', e => e.stopPropagation());
+
+                // 기존 텍스트 제거
+                banner.textContent = '';
+                banner.style.justifyContent = 'flex-start';
+                banner.style.paddingLeft = '24px';
+                banner.appendChild(input);
+                banner.appendChild(confirmBtn);
+
+                // 저장 로직 함수
+                async function saveNewTitle() {
+                    const dashboardNewTitle = input.value.trim();
+
+                    if (!dashboardNewTitle) {
+                        alert('제목을 입력해주세요.');
+                        return;
+                    }
+
+                    try {
+                        const res = await fetch("https://luckyseven.live/api/dashboards", {
+                            method: 'PUT',
+                            credentials: 'include',
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                dashboardUid: dashboardUid,
+                                dashboardNewTitle: dashboardNewTitle
+                            })
+                        });
+
+                        if (!res.ok) throw new Error('업데이트 실패');
+
+                        // 성공 시 UI 업데이트
+                        banner.textContent = newTitle;
+                        banner.style.justifyContent = 'center';
+                        banner.style.paddingLeft = '0';
+                    } catch (err) {
+                        alert('업데이트 중 오류 발생: ' + err.message);
+                        // 실패 시 원래 제목 복원
+                        banner.textContent = originalTitle;
+                        banner.style.justifyContent = 'center';
+                        banner.style.paddingLeft = '0';
+                    }
+                }
+
+                // 확인 버튼 이벤트
+                confirmBtn.addEventListener('click', async (event) => {
+                    event.stopPropagation();
+                    await saveNewTitle();
+                });
+
+                // Enter 키로 저장
+                input.addEventListener('keydown', async (event) => {
+                    if (event.key === 'Enter') {
+                        event.stopPropagation();
+                        await saveNewTitle();
+                    }
+                });
+
+                input.focus();
             });
 
             // 삭제 버튼 클릭 이벤트
@@ -152,66 +240,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             // 버튼 컨테이너에 버튼 추가
             buttonContainer.appendChild(updateBtn);
             buttonContainer.appendChild(deleteBtn);
-
-            // 삭제 버튼 추가
-            /*const deleteBtn = document.createElement('button');
-            deleteBtn.textContent = '삭제';
-            deleteBtn.style.position = 'absolute';
-            deleteBtn.style.top = '10px';
-            deleteBtn.style.right = '10px';
-            deleteBtn.style.backgroundColor = '#e74c3c';
-            deleteBtn.style.border = 'none';
-            deleteBtn.style.color = 'white';
-            deleteBtn.style.padding = '6px 10px';
-            deleteBtn.style.borderRadius = '6px';
-            deleteBtn.style.cursor = 'pointer';
-            deleteBtn.style.boxShadow = '0 2px 6px rgba(0,0,0,0.2)';
-            deleteBtn.style.zIndex = '2';
-
-            deleteBtn.addEventListener('click', async (e) => {
-                e.stopPropagation(); // 배너 클릭 이벤트 방지
-
-                if (!confirm(`정말 "${dashboardTitle}" 대시보드를 삭제하시겠습니까?`)) return;
-
-                try {
-                    const res = await fetch("https://luckyseven.live/api/dashboards", {
-                        method: 'DELETE',
-                        credentials: 'include',
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({
-                            dashboardUid: dashboardUid
-                        })
-                    });
-
-                    if (!res.ok) throw new Error('삭제 실패');
-
-                    // UI에서 제거
-                    bannerWrapper.remove();
-                } catch (err) {
-                    alert('삭제 중 오류 발생: ' + err.message);
-                }
-            });
-
-            // 수정 버튼
-            const updateBtn = document.createElement('button');
-            updateBtn.textContent = '삭제';
-            updateBtn.style.position = 'absolute';
-            updateBtn.style.top = '10px';
-            updateBtn.style.right = '10px';
-            updateBtn.style.backgroundColor = '#00ff78'; // '#e74c3c';
-            updateBtn.style.border = 'none';
-            updateBtn.style.color = 'white';
-            updateBtn.style.padding = '6px 10px';
-            updateBtn.style.borderRadius = '6px';
-            updateBtn.style.cursor = 'pointer';
-            updateBtn.style.boxShadow = '0 2px 6px rgba(0,0,0,0.2)';
-            updateBtn.style.zIndex = '2';
-
-            updateBtn.addEventListener('click', function () {
-                window.location.href = 'test/${d.dashboardId}';
-            });*/
 
             bannerWrapper.appendChild(banner);
             bannerWrapper.appendChild(buttonContainer);

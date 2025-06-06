@@ -80,12 +80,6 @@ public class DashboardController {
         return dashboardService.getFilterPanel(readPanelRequest, offPanelId);
     }
 
-    // 8. 대시보드 이름 수정
-    @PutMapping("/dashboards")
-    public void updateDashboard(@RequestBody UpdateDashboardNameRequest request) {
-        dashboardService.updateDashboard(request);
-    }
-
     // 9. 패널 수정
     @PutMapping("/panels")
     public void updatePanel(@RequestBody UpdatePanelRequest request) {

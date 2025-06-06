@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
 
             banner.addEventListener('click', () => {
-                window.location.href = `/panels/${dashboardUid}`;
+                window.location.href = `/panel/${dashboardUid}`;
             });
 
             // 삭제 버튼 추가

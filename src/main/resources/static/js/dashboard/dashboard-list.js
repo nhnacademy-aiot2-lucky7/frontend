@@ -14,14 +14,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         const response = await fetch('/api/dashboards', {
             method: 'GET',
             credentials: 'include',
-            headers: { 'Content-Type': 'application/json' }
+            headers: {'Content-Type': 'application/json'}
         });
 
         if (!response.ok) throw new Error('대시보드 조회 실패');
 
         const dashboards = await response.json();
 
-        console.log("결과",dashboards);
+        console.log("결과", dashboards);
         const userDepartment = window.currentUser.department;
 
         if (!userDepartment) {
@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const userDepartmentId = userDepartment.id;
         const filteredDashboards = dashboards.filter(d => d.departmentId === userDepartmentId);
 
-        console.log("userDepartmentId: ",userDepartment.id);
+        console.log("userDepartmentId: ", userDepartment.id);
 
         console.log("filter:", filteredDashboards);
         if (filteredDashboards.length === 0) {
@@ -126,6 +126,25 @@ document.addEventListener('DOMContentLoaded', async () => {
                 } catch (err) {
                     alert('삭제 중 오류 발생: ' + err.message);
                 }
+            });
+
+            // 수정 버튼
+            const updateBtn = document.createElement('button');
+            updateBtn.textContent = '삭제';
+            updateBtn.style.position = 'absolute';
+            updateBtn.style.top = '10px';
+            updateBtn.style.right = '10px';
+            updateBtn.style.backgroundColor = '#00ff78'; // '#e74c3c';
+            updateBtn.style.border = 'none';
+            updateBtn.style.color = 'white';
+            updateBtn.style.padding = '6px 10px';
+            updateBtn.style.borderRadius = '6px';
+            updateBtn.style.cursor = 'pointer';
+            updateBtn.style.boxShadow = '0 2px 6px rgba(0,0,0,0.2)';
+            updateBtn.style.zIndex = '2';
+
+            updateBtn.addEventListener('click', function () {
+                window.location.href = 'test/${d.dashboardId}';
             });
 
             bannerWrapper.appendChild(banner);

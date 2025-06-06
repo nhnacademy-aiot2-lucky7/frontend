@@ -175,33 +175,33 @@ saveBtn.addEventListener('click', () => {
         body: JSON.stringify(payload),
         credentials: 'include'
     })
-        .then(response => {
+        .then(async response => {
             if (!response.ok) throw new Error('서버 오류 발생');
-            return response.json();
-        })
-        .then(data => {
-            // 서버 저장 성공 시 UI 다시 출력
-            // description은 textarea 대신 텍스트로 바꾸기
 
-            // description textarea → 일반 텍스트로 복원
-            const descElem = document.getElementById('description');
-            if (descElem && descElem.tagName === 'DIV') {
-                // description이 잘못된 상태로 있는 경우 처리
-                descElem.innerText = payload.description;
-            } else if (descElem) {
-                descElem.innerText = payload.description;
+            // ✅ 204 No Content 응답이면 JSON 파싱 건너뜀
+            if (response.status === 204) {
+                return {}; // 또는 null 등
             }
 
-            // gateway_name input → 일반 텍스트로 복원
+            const contentType = response.headers.get("content-type");
+            if (contentType && contentType.includes("application/json")) {
+                return response.json();
+            } else {
+                return {};
+            }
+        })
+        .then(data => {
+            // UI 갱신
+            const descElem = document.getElementById('description');
+            if (descElem) descElem.innerText = payload.description;
+
             const nameItem = document.querySelector('[data-field="name"]');
             if (nameItem) {
-                const labelText = nameItem.querySelector('.label')?.innerText || 'Gateway 이름';
                 nameItem.innerHTML = `
-                    <span class="label">${labelText}</span>
+                    <span class="label">Gateway 이름</span>
                     <span class="value" data-value="${payload.gateway_name}">${payload.gateway_name}</span>
                 `;
             }
-
             saveBtn.style.display = 'none';
             editBtn.style.display = 'inline-block';
             alert('저장되었습니다.');

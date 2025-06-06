@@ -8,8 +8,7 @@
     <link href="/css/gateway/detail-gateway.css" rel="stylesheet"/>
 </head>
 
-<body>
-<section layout:fragment="content">
+<section layout:fragment="content" id="content-section">
     <div class="container">
         <!-- 타이틀 -->
         <div class="header">
@@ -24,105 +23,20 @@
         <!-- 정보 카드 -->
         <div class="info-container">
             <h3>게이트웨이 기본 정보</h3>
-
-            <!-- 기본 정보들 (그리드) -->
-            <div class="info-grid">
-                <div class="info-item" data-field="name">
-                    <span class="label">게이트웨이 이름</span>
-                    <span class="value" data-value th:text="${gateway.name}">센터동-GTW1</span>
-                </div>
-                <div class="info-item" data-field="id">
-                    <span class="label">게이트웨이 ID</span>
-                    <span class="value" data-value th:text="${gateway.id}">1</span>
-                </div>
-                <div class="info-item" data-field="protocol">
-                    <span class="label">통신 방식</span>
-                    <span class="value" data-value th:text="${gateway.protocol}">MQTT</span>
-                </div>
-                <div class="info-item" data-field="brokerIp">
-                    <span class="label">브로커 IP</span>
-                    <span class="value" data-value th:text="${gateway.brokerIp}">192.168.0.1</span>
-                </div>
-                <div class="info-item" data-field="port">
-                    <span class="label">포트</span>
-                    <span class="value" data-value th:text="${gateway.port}">1883</span>
-                </div>
-                <div class="info-item" data-field="clientId">
-                    <span class="label">Client ID</span>
-                    <span class="value" data-value th:text="${gateway.clientId}">client-center-1</span>
-                </div>
-            </div>
-
-            <!-- 상태 카드 - info-grid 밖에서 중앙 배치 -->
-            <div class="status-wrapper">
-                <div class="status-item">
-                    <div class="label">상태</div>
-                    <span class="value"
-                          th:text="${gateway.active ? '활성화' : '비활성화(데이터 수집 중)'}"
-                          th:classappend="${gateway.active} ? 'active' : 'inactive'">
-                    </span>
-                </div>
-            </div>
+            <div class="info-grid" id="info-grid"></div>
         </div>
 
         <!-- 설명란 -->
         <div class="description-box" data-field="description">
-            <h4>설명</h4>
-            <div class="desc" data-value th:text="${gateway.description}">센터동의 메인 게이트웨이입니다.</div>
+            <div class="section-title">설명</div>
+            <div class="desc" id="description"></div>
         </div>
 
         <!-- 센서 목록 -->
         <h3>센서 목록</h3>
-        <div class="sensor-list">
-            <div class="sensor-card" th:each="sensor : ${sensors}">
-                <div class="sensor-field">
-                    <span class="label">종류</span>
-                    <span class="value" th:text="${sensor.type}">온도</span>
-                </div>
-                <div class="sensor-field">
-                    <span class="label">위치</span>
-                    <span class="value" th:text="${sensor.location}">서버실</span>
-                </div>
-                <div class="sensor-field">
-                    <span class="label">하드웨어</span>
-                    <span class="value" th:text="${sensor.hardware}">모듈 A</span>
-                </div>
-                <button class="btn sensor-btn"
-                        th:attr="data-sensor-id=${sensor.id},
-                 data-gateway-id=${gateway.id},
-                 data-type=${sensor.type},
-                 data-location=${sensor.location},
-                 data-hardware=${sensor.hardware}">
-                    룰 설정
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 룰 보기 모달 -->
-    <div id="rule-modal" class="modal hidden">
-        <div class="modal-overlay"></div>
-        <div class="modal-content">
-            <h3>센서 룰 관리</h3>
-
-            <!-- 센서 정보 요약 -->
-            <div class="sensor-brief" id="sensor-info"></div>
-
-            <!-- ✅ 룰 카드 -->
-            <div class="rule-card">
-                <h4 class="rule-label">등록된 룰</h4>
-                <ul id="rule-list" class="rule-list">
-                    <!-- JS로 룰 채움 -->
-                </ul>
-            </div>
-
-            <!-- 닫기 버튼 -->
-            <button class="btn btn-secondary" id="close-rule-modal">닫기</button>
-        </div>
+        <div id="sensor-section"></div>
     </div>
 
     <script src="/js/gateway/detail-gateway.js"></script>
-    <script src="/js/gateway/sensor-rule-modal.js"></script>
 </section>
-</body>
 </html>

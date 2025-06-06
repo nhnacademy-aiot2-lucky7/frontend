@@ -11,6 +11,25 @@ h2, h3, h4 {
     font-weight: 600;
 }
 
+h4 {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 40px 0 16px 24px;
+    color: #1f2937;
+    position: relative;
+}
+
+h4::after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 100px;
+    height: 3px;
+    background-color: #1e3a8a;
+    border-radius: 4px;
+}
+
 /* ---------- 헤더 ---------- */
 .header {
     display: flex;
@@ -132,8 +151,8 @@ h2, h3, h4 {
     padding: 24px;
     border-radius: 10px;
     margin-bottom: 40px;
-    border: 1px solid #e5e7eb; /* ✅ 연한 라인 */
-    box-shadow: 0 0 0 1px rgba(229, 231, 235, 0.4); /* ✅ 라인에 입체감 추가 */
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 0 0 1px rgba(229, 231, 235, 0.4);
 }
 
 .description-box h4 {
@@ -151,20 +170,24 @@ h2, h3, h4 {
 /* ---------- 센서 카드 ---------- */
 .sensor-list {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4열 고정 */
-    gap: 24px; /* 카드 사이 간격 */
-    margin-top: 24px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 280px));
+    gap: 24px;
+    margin-top: 16px;
+    padding: 0 24px;
+    justify-content: start; /* ✅ 왼쪽 정렬로 고정 */
 }
 
 .sensor-card {
-    background-color: #ffffff;
-    padding: 16px 20px;
+    background-color: #fdfdfd;
+    padding: 20px 24px;
     border-radius: 12px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-height: 180px;
+    height: 280px;
+    width: 280px;
+    border: 1px solid #e5e7eb;
 }
 
 .sensor-field {
@@ -185,7 +208,7 @@ h2, h3, h4 {
 }
 
 .sensor-btn {
-    width: 70px;
+    width: 80px;
     height: 40px;
     align-self: flex-end;
     font-size: 13px;
@@ -201,183 +224,17 @@ h2, h3, h4 {
     background-color: #c7d2fe;
 }
 
-/* ---------- 룰 추가 모달 ---------- */
-.modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 2000;
+.info-item .value.active {
+    color: #059669; /* 활성화 초록색 */
 }
 
-.modal-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1;
+.info-item .value.inactive {
+    color: #6b7280; /* 비활성화 회색 */
 }
 
-.modal-content {
-    position: relative;
-    z-index: 2;
-    background: #ffffff;
-    padding: 32px 40px;
-    border-radius: 12px;
-    min-width: 480px;
-    max-width: 720px;
-    width: 80%;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-    font-size: 16px;
-    line-height: 1.6;
-}
-
-/* 버튼 스타일 강화 */
-.modal-content .btn {
-    font-size: 15px;
-    padding: 12px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-.modal-content .btn-primary {
-    background-color: #1d4ed8;
-    color: #fff;
-    border: none;
-}
-
-.modal-content .btn-secondary {
-    background-color: #e5e7eb;
-    color: #111827;
-    border: none;
-}
-
-.rule-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.rule-card {
-    background-color: #f9fafb;
-    border: 1px solid #e5e7eb;
-    border-radius: 10px;
-    padding: 16px 20px;
-    margin-top: 16px;
-    margin-bottom: 24px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-}
-
-.rule-label {
-    font-size: 16px;
+.section-title {
+    font-size: 18px;
     font-weight: 600;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
     color: #1f2937;
-}
-
-.rule-item-card {
-    background-color: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    padding: 12px 16px;
-    margin-bottom: 12px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-}
-
-.rule-item-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.rule-text {
-    font-size: 15px;
-    color: #111827;
-    margin: 0;
-    flex: 1;
-}
-
-.btn-edit-rule {
-    margin-left: 16px;
-    font-size: 13px;
-    padding: 6px 12px;
-    background-color: #f3f4f6;
-    border: 1px solid #d1d5db;
-    border-radius: 6px;
-    color: #374151;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.btn-edit-rule:hover {
-    background-color: #e5e7eb;
-}
-
-/* ---------- 수정 폼 ---------- */
-.rule-edit-form {
-    margin-top: 6px;
-    padding: 10px 12px;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.rule-edit-form .radio-group,
-.rule-edit-form .input-group,
-.rule-edit-form .action-group {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    flex-wrap: wrap;
-}
-
-.rule-edit-form label {
-    font-size: 14px;
-    color: #374151;
-}
-
-.rule-edit-form input[type="number"] {
-    width: 100px;
-    padding: 6px;
-    font-size: 14px;
-    border: 1px solid #d1d5db;
-    border-radius: 4px;
-}
-
-.rule-edit-buttons {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-top: 10px;
-}
-
-.rule-edit-buttons .btn {
-    padding: 6px 14px;
-    font-size: 14px;
-    border-radius: 6px;
-}
-
-.btn-cancel-edit {
-    background-color: #f3f4f6;
-    color: #374151;
-    border: 1px solid #d1d5db;
-}
-
-.btn-save-edit {
-    background-color: #2563eb;
-    color: white;
-    border: none;
-}
-
-.hidden {
-    display: none;
 }

@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     let response = await fetch(`https://luckyseven.live/api/gateways/${gatewayId}`, {
         method: 'GET',
-        headers: { "Content-Type": "application/json" },
+        headers: {"Content-Type": "application/json"},
         credentials: 'include'
     }).then(response => response.json());
 
@@ -17,19 +17,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // ✅ Gateway 정보 표시
     const infoFields = [
-        { field: "id", label: "Gateway ID", value: gateway.gateway_id },
-        { field: "name", label: "Gateway 이름", value: gateway.gateway_name },
-        { field: "protocol", label: "Protocol", value: gateway.iot_protocol },
-        { field: "brokerIp", label: "Broker IP", value: gateway.address },
-        { field: "port", label: "Port", value: gateway.port },
-        { field: "status", label: "Gateway 상태", value: gateway.threshold_status },
-        { field: "sensorCount", label: "센서 개수", value: gateway.sensor_count },
-        { field: "created_at", label: "생성일자", value: gateway.created_at },
-        { field: "updated_at", label: "수정일자", value: gateway.updated_at }
+        {field: "id", label: "Gateway ID", value: gateway.gateway_id},
+        {field: "name", label: "Gateway 이름", value: gateway.gateway_name},
+        {field: "protocol", label: "Protocol", value: gateway.iot_protocol},
+        {field: "broker_ip", label: "Broker IP", value: gateway.address},
+        {field: "port", label: "Port", value: gateway.port},
+        {field: "status", label: "Gateway 상태", value: gateway.threshold_status},
+        {field: "sensor_count", label: "센서 개수", value: gateway.sensor_count},
+        {field: "created_at", label: "생성일자", value: gateway.created_at},
+        {field: "updated_at", label: "수정일자", value: gateway.updated_at}
     ];
 
     const infoGrid = document.getElementById('info-grid');
-    infoFields.forEach(({ field, label, value }) => {
+    infoFields.forEach(({field, label, value}) => {
         const item = document.createElement('div');
         item.className = 'info-item';
         item.dataset.field = field;
@@ -122,51 +122,84 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 });
 
-// ✅ 수정 버튼 이벤트
+
+// 수정 버튼 이벤트
 editBtn.addEventListener('click', () => {
     document.querySelectorAll('[data-field]').forEach(item => {
         const field = item.dataset.field;
-        const value = item.querySelector('[data-value]').innerText.replace(/^●\s*/, '');
+        const valueSpan = item.querySelector('[data-value]');
+        const value = valueSpan ? valueSpan.innerText.replace(/^●\s*/, '') : null;
 
         if (field === 'description') {
-            document.getElementById('description').innerHTML =
-                `<textarea name="description" class="edit-textarea">${value}</textarea>`;
-        } else if (!['created_at', 'updated_at', 'status', 'sensorCount'].includes(field)) {
+            const descElem = document.getElementById('description');
+            const descValue = descElem.innerText;
+            descElem.innerHTML = `<textarea name="description" class="edit-textarea" rows="4">${descValue}</textarea>`;
+        } else if (field === 'name') {
+            // Gateway 이름은 input 필드로 변환
             item.innerHTML = `
                 <span class="label">${item.querySelector('.label').innerText}</span>
-                <input type="text" class="edit-input" name="${field}" value="${value}">
+                <input type="text" class="edit-input" name="gateway_name" value="${value}">
             `;
         }
+        // id 제외한 나머지는 수정불가 처리 (요구사항대로)
     });
 
     editBtn.style.display = 'none';
     saveBtn.style.display = 'inline-block';
 });
 
-// ✅ 저장 버튼 이벤트
+// 저장 버튼 이벤트
 saveBtn.addEventListener('click', () => {
-    const payload = {};
-    document.querySelectorAll('.edit-input').forEach(input => {
-        payload[input.name] = input.value;
-    });
+    // gateway_id는 info-grid 내 id 필드의 값에서 가져오기
+    const idElem = document.querySelector('[data-field="id"] .value');
+    const gateway_id = idElem ? idElem.dataset.value || idElem.innerText : null;
 
-    const desc = document.querySelector('.edit-textarea');
-    if (desc) payload["description"] = desc.value;
+    // gateway_name과 description은 수정된 입력값에서 가져오기
+    const nameInput = document.querySelector('input[name="gateway_name"]');
+    const descInput = document.querySelector('textarea[name="description"]');
 
-    document.querySelectorAll('[data-field]').forEach(item => {
-        const field = item.dataset.field;
-        if (field === 'description') {
-            document.getElementById('description').innerText = payload.description;
-        } else if (!['created_at', 'updated_at', 'status', 'sensorCount'].includes(field)) {
-            const label = item.querySelector('.label').innerText;
-            item.innerHTML = `
-                <span class="label">${label}</span>
-                <span class="value" data-value="${payload[field]}">${payload[field]}</span>
-            `;
-        }
-    });
+    if (!gateway_id) {
+        alert('Gateway ID를 찾을 수 없습니다.');
+        return;
+    }
 
-    saveBtn.style.display = 'none';
-    editBtn.style.display = 'inline-block';
-    alert('입력한 데이터로 반영되었습니다. (임시 상태)');
+    const payload = {
+        "gateway_id": gateway_id.trim(),
+        "gateway_name": nameInput ? nameInput.value.trim() : '',
+        "description": descInput ? descInput.value.trim() : ''
+    };
+
+    fetch(`https://luckyseven.live/api/gateways/${gateway_id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+        credentials: 'include'
+    })
+        .then(response => {
+            if (!response.ok) throw new Error('서버 오류 발생');
+            return response.json();
+        })
+        .then(data => {
+            // 서버 저장 성공 시 UI 다시 출력
+            // description은 textarea 대신 텍스트로 바꾸기
+            const descElem = document.getElementById('description');
+            descElem.innerText = payload.description;
+
+            // gateway_name 필드 다시 텍스트로 바꾸기
+            const nameItem = document.querySelector('[data-field="name"]');
+            if (nameItem) {
+                nameItem.innerHTML = `
+                <span class="label">Gateway 이름</span>
+                <span class="value" data-value="${payload.gateway_name}">${payload.gateway_name}</span>
+                `;
+            }
+
+            saveBtn.style.display = 'none';
+            editBtn.style.display = 'inline-block';
+            alert('저장되었습니다.');
+        })
+        .catch(error => {
+            console.error('저장 실패:', error);
+            alert('저장 중 오류가 발생했습니다.');
+        });
 });

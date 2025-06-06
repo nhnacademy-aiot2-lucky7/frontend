@@ -27,7 +27,8 @@ function handleLogout() {
         });
 }
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async () => {
+
     // 모든 드롭다운 요소 찾기
     var dropdownElements = document.querySelectorAll('[data-bs-toggle="dropdown"]');
 

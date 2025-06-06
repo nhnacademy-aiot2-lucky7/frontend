@@ -9,6 +9,45 @@
     <title>Lucky Seven MainPage | Lucky Seven</title>
     <link href="/css/index.css" rel="stylesheet"/>
     <link href="/css/common.css" rel="stylesheet"/>
+    <script >
+        // window 에 유저 저장
+        try {
+            // 유저 정보 가져오기
+            let userResponse = await fetch("https://luckyseven.live/api/users/me", {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include'
+            });
+            let user = await userResponse.json();
+
+            // 이미지 정보 가져오기
+            let imageResponse = await fetch(`https://luckyseven.live/api/images/${user.userEmail}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include'
+            });
+            let image = await imageResponse.json();
+
+            // window.currentUser 객체 통째로 세팅
+            document.currentUser = {
+                userRole: user.userRole,
+                userNo: user.userNo,
+                userName: user.userName,
+                userEmail: user.userEmail,
+                userPhone: user.userPhone,
+                department: user.department, // departmentId, departmentName 포함
+                eventLevelResponse: user.eventLevelResponse, // eventLevelName, eventLevelDetails, priority 포함
+                image: image
+            };
+
+        } catch (error) {
+            console.error("유저 데이터 가져오기 실패:", error);
+        }
+    </script>
 </head>
 
 <body>

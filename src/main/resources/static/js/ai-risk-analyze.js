@@ -50,11 +50,13 @@ document.addEventListener("DOMContentLoaded", () => {
         const sensorObjs = sensorSelects.map(select => {
             const selected = select.value;
             if (!selected) return null;
-            const { gatewayId, sensorId, typeEnName } = JSON.parse(selected);
+
+            const parsed = JSON.parse(selected);
+
             return {
-                gatewayId: gatewayId.toString(),
-                sensorId,
-                sensorType: typeEnName
+                gatewayId: parsed.gateway_id.toString(),
+                sensorId: parsed.sensor_id,
+                sensorType: parsed.type_en_name
             };
         });
 

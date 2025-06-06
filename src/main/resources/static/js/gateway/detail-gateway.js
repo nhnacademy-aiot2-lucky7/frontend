@@ -169,7 +169,7 @@ saveBtn.addEventListener('click', () => {
         "description": descInput ? descInput.value.trim() : ''
     };
 
-    fetch(`https://luckyseven.live/api/gateways/${gateway_id}`, {
+    fetch(`https://luckyseven.live/api/gateways`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),

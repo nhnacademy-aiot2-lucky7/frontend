@@ -1,37 +1,45 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}">
 
 <head>
     <meta charset="utf-8"/>
     <title th:text="${dashboardTitle}">차트 | Lucky Seven</title>
-    <link href="/css/dashboard/panel.css" rel="stylesheet"/>
+    <link href="/css/dashboard/panel-list.css" rel="stylesheet"/>
 </head>
 
 <body>
 <section layout:fragment="content">
-    <main class="panel-info-container" style="flex: 1;">
+    <main class="panel-info-container">
         <section class="panel-info-header">
-            <h1 th:text="${dashboardTitle}"> 차트 내역</h1>
+            <h1 th:text="${dashboardTitle}">차트 내역</h1>
             <a th:href="@{/panels(dashboardUid=${dashboardUid})}" class="panel-add-btn">+ 차트 추가</a>
         </section>
 
-        <div id="panelList" class="panel-grid-scrollable">
+        <div id="panelList" th:attr="data-dashboard-uid=${dashboardUid}" class="panel-grid">
             <div th:each="panel : ${panels}" class="panel-card">
-                <h3 th:text="${panel.dashboardTitle} ?: '제목 없음'" class="panel-title"></h3>
+                <h3 th:text="${panel.panelId} ?: '제목 없음'" class="panel-title"></h3>
                 <iframe th:src="'https://grafana.luckyseven.live/d-solo/' + ${panel.dashboardUid}
                                 + '?orgId=1&from=' + ${panel.from}
                                 + '&to=' + ${panel.now}
                                 + '&panelId=' + ${panel.panelId}"
-                        width="450"
+                        width="100%"
                         height="200"
                         frameborder="0"
                         class="grafana-iframe">
                 </iframe>
+                <button class="delete-button"
+                        th:attr="data-dashboard-uid=${panel.dashboardUid},
+                                 data-panel-id=${panel.panelId},
+                                 data-dashboard-title=${panel.dashboardTitle}">
+                    삭제
+                </button>
             </div>
         </div>
     </main>
 </section>
+<script src="/js/dashboard/panel-list.js"></script>
 </body>
 </html>

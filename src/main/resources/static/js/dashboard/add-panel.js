@@ -209,7 +209,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const panelWithRuleRequest = {
                 createPanelRequest: {
                     dashboardUid: dashboardUid,
-                    panelId: null,
+                    panelId: 1,
                     panelTitle: panelTitle,
                     sensorFieldRequestDto: [{
                         type_en_name: field,
@@ -228,11 +228,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                 ruleRequest: {
                     gateway_id: gatewayId,
                     sensor_id: sensorId,
-                    departmentId: departmentId,
+                    department_id: departmentId,
                     type_en_name: field,
                     type_kr_name:"알수없음",
-                    thresholdMin: min,
-                    thresholdMax: max
+                    threshold_min: min,
+                    threshold_max: max
                 }
             };
 

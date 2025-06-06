@@ -6,23 +6,25 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class SensorDataMappingWebResponse {
+public class SensorDataDetailResponse {
 
-    @JsonProperty("no")
-    Long sensorNo;
+    @JsonProperty("sensor_data_no")
+    private final Long sensorNo;
 
     @JsonProperty("gateway_id")
-    Long gatewayId;
+    private final Long gatewayId;
 
     @JsonProperty("sensor_id")
-    String sensorId;
+    private final String sensorId;
+
+    private final String sensorName;
 
     @JsonProperty("type_en_name")
-    String typeEnName;
+    private final String typeEnName;
 
     @JsonProperty("location")
-    String sensorLocation;
+    private final String sensorLocation;
 
     @JsonProperty("spot")
-    String sensorSpot;
+    private final String sensorSpot;
 }

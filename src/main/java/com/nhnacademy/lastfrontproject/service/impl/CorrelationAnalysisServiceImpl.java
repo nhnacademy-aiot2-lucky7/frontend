@@ -6,7 +6,7 @@ import com.nhnacademy.lastfrontproject.adaptor.SensorAdaptor;
 import com.nhnacademy.lastfrontproject.dto.analysis.AnalysisRequest;
 import com.nhnacademy.lastfrontproject.dto.analysis.AnalysisResponse;
 import com.nhnacademy.lastfrontproject.dto.gateway.GatewaySummaryResponse;
-import com.nhnacademy.lastfrontproject.dto.sensor.SensorDataMappingWebResponse;
+import com.nhnacademy.lastfrontproject.dto.sensor.SensorDataDetailResponse;
 import com.nhnacademy.lastfrontproject.service.CorrelationAnalysisService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -29,8 +29,8 @@ public class CorrelationAnalysisServiceImpl implements CorrelationAnalysisServic
     }
 
     @Override
-    public List<SensorDataMappingWebResponse> getSensorListByGatewayId(Long gatewayId) {
-        ResponseEntity<List<SensorDataMappingWebResponse>> sensorList = sensorAdaptor.getSensorDataByGatewayId(gatewayId);
+    public List<SensorDataDetailResponse> getSensorListByGatewayId(Long gatewayId) {
+        ResponseEntity<List<SensorDataDetailResponse>> sensorList = sensorAdaptor.getSensorDataByGatewayId(gatewayId);
         return sensorList.getBody();
     }
 

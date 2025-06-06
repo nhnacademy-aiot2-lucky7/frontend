@@ -55,7 +55,6 @@ public class DashboardController {
         List<IframePanelResponse> panelResponses = dashboardService.getPanel(dashboardUid);
         model.addAttribute("panels", panelResponses);
         model.addAttribute("dashboardUid", dashboardUid);
-
         return "pages/member/dashboard/pages-panel-list";
     }
 

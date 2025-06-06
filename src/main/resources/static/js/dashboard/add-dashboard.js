@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         // API 경로
-        const apiPath = '/dashboard';
+        const apiPath = '/api/dashboard';
 
         const requestBody = {
             dashboardTitle: nameInput,

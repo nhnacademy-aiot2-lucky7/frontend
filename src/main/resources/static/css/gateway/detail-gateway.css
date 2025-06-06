@@ -238,3 +238,70 @@ h4::after {
     margin-bottom: 8px;
     color: #1f2937;
 }
+
+/* ✅ 입력 필드 스타일 개선 */
+.edit-input,
+.edit-textarea {
+    width: 100%;
+    padding: 8px 12px;
+    font-size: 16px;       /* 기존 .value와 유사하게 */
+    font-weight: 600;      /* 가독성 향상 */
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.edit-input:focus,
+.edit-textarea:focus {
+    outline: none;
+    border-color: #409eff;           /* 포커스 시 파란색 강조 */
+    background-color: #fff;
+    box-shadow: 0 0 0 3px rgba(64, 158, 255, 0.15); /* 부드러운 포커스 효과 */
+}
+
+/* ✅ 편집 중 상태 강조 */
+.info-item.editing {
+    background-color: #eef2ff;       /* 연한 파란 배경 */
+    border: 1px solid #93c5fd;       /* 연한 파란 테두리 */
+    box-shadow: 0 0 0 2px rgba(147, 197, 253, 0.5);
+}
+
+/* ✅ 저장/취소 버튼 스타일 */
+.edit-btn-group {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.btn-save {
+    background-color: #1e40af;
+    color: white;
+    padding: 6px 12px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn-save:hover {
+    background-color: #1e3a8a;
+}
+
+.btn-cancel {
+    background-color: #f3f4f6;
+    color: #374151;
+    padding: 6px 12px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn-cancel:hover {
+    background-color: #e5e7eb;
+}

@@ -133,7 +133,9 @@ editBtn.addEventListener('click', () => {
         if (field === 'description') {
             const descElem = document.getElementById('description');
             const descValue = descElem.innerText;
-            descElem.innerHTML = `<textarea name="description" class="edit-textarea" rows="4">${descValue}</textarea>`;
+            descElem.innerHTML = `
+                <textarea name="description" class="edit-textarea" rows="4">${descValue}</textarea>
+            `;
         } else if (field === 'name') {
             // Gateway 이름은 input 필드로 변환
             item.innerHTML = `

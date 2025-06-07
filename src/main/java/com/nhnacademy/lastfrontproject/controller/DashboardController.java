@@ -72,6 +72,23 @@ public class DashboardController {
         return "pages/member/dashboard/pages-panel-list";
     }
 
+    @GetMapping("/panel/{dashboardUid}/{panelTitle}")
+    public String getPanel(Model model,
+                            @PathVariable String dashboardUid,
+                           @PathVariable String panelTitle) {
+        List<IframePanelResponse> panelResponses = dashboardService.getPanel(dashboardUid);
+
+        // 리스트가 비어있지 않다면 dashboardTitle 하나 꺼내서 model에 추가
+        String dashboardTitle = panelResponses.isEmpty() ? "제목 없음" : panelResponses.getFirst().getDashboardTitle();
+
+        model.addAttribute("panels", panelResponses);
+        model.addAttribute("dashboardUid", dashboardUid);
+        model.addAttribute("dashboardTitle", dashboardTitle);
+        model.addAttribute("panelTitle", panelTitle);
+
+        return "pages/member/dashboard/pages-panel-list";
+    }
+
     @GetMapping("/panel/edit")
     public String editPanel(@RequestParam("dashboardUid") String dashboardUid,
                             @RequestParam("panelId") int panelId, Model model) {

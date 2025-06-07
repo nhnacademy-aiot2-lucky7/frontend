@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         // API 경로
-        const apiPath = '/api/dashboard';
+        const apiPath = 'https://luckyseven.live/api/dashboards';
 
         const requestBody = {
             dashboardTitle: nameInput,

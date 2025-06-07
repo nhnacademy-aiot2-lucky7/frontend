@@ -8,14 +8,13 @@ async function loadIframes(dashboardUid) {
         const endpoint = `https://luckyseven.live/api/panels/${dashboardUid}`;
 
         const res = await fetch(endpoint);
-        if (!res.ok) new Error('패널 정보를 불러오지 못했습니다.');
+        if (!res.ok) throw new Error('패널 정보를 불러오지 못했습니다.');
 
         const panels = await res.json();
         const container = document.getElementById('panelList');
         container.innerHTML = ''; // 초기화
 
-        console.log('로그 확인: ', panels);
-        console.log('삭제 요청 panelId: ', panels.panelId);
+        console.log('패널 목록:', panels);
 
         panels.forEach(panel => {
             const wrapper = document.createElement('div');
@@ -31,39 +30,7 @@ async function loadIframes(dashboardUid) {
             const deleteBtn = document.createElement('button');
             deleteBtn.textContent = '삭제';
             deleteBtn.className = 'delete-button';
-            deleteBtn.addEventListener('click', async () => {
-                console.log('삭제 시도 panel:', panel); // 디버깅용
-
-                const confirmed = confirm(`"${panel.dashboardTitle || '제목 없음'}" 패널을 삭제하시겠습니까?`);
-                if (!confirmed) return;
-
-                const deleteRequest = {
-                        dashboardUid: panel.dashboardUid,
-                        panelId: panel.panelId
-                }
-
-                try {
-                    const res = await fetch("https://luckyseven.live/api/panels", {
-                        method: 'DELETE',
-                        credentials: 'include',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(deleteRequest)
-                    });
-
-                    if (res.status === 204) {
-                        wrapper.remove(); // 성공 시 DOM에서 제거
-                        alert(`${panel.dashboardTitle || '제목 없음'} 패널이 삭제되었습니다.`);
-                    } else {
-                        alert('패널 삭제에 실패했습니다. 다시 시도해주세요.');
-                    }
-                } catch (err) {
-                    console.error('삭제 중 오류:', err);
-                    alert('서버 오류로 삭제에 실패했습니다.');
-                }
-            });
-
+            deleteBtn.addEventListener('click', async () => await handleDelete(panel, wrapper));
             wrapper.appendChild(deleteBtn);
 
             // iframe 생성
@@ -79,5 +46,40 @@ async function loadIframes(dashboardUid) {
         });
     } catch (error) {
         console.error('iframe 로딩 오류:', error);
+        alert('패널을 불러오는 중 오류가 발생했습니다.');
+    }
+}
+
+// ✅ 삭제 기능만 따로 분리
+async function handleDelete(panel, wrapper) {
+    console.log('삭제 시도 panel:', panel);
+
+    const confirmed = confirm(`"${panel.dashboardTitle || '제목 없음'}" 패널을 삭제하시겠습니까?`);
+    if (!confirmed) return;
+
+    const deleteRequest = {
+        dashboardUid: panel.dashboardUid,
+        panelId: panel.panelId
+    };
+
+    try {
+        const res = await fetch("https://luckyseven.live/api/panels", {
+            method: 'DELETE',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(deleteRequest)
+        });
+
+        if (res.status === 204) {
+            wrapper.remove();
+            alert(`${panel.dashboardTitle || '제목 없음'} 패널이 삭제되었습니다.`);
+        } else {
+            alert('패널 삭제에 실패했습니다. 다시 시도해주세요.');
+        }
+    } catch (err) {
+        console.error('삭제 중 오류:', err);
+        alert('서버 오류로 삭제에 실패했습니다.');
     }
 }

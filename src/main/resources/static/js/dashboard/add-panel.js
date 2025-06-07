@@ -223,7 +223,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 ruleRequest: {
                     gateway_id: gatewayId,
                     sensor_id: sensorId,
-                    departmentId: departmentId,
+                    department_id: departmentId,
                     type_en_name: field,
                     type_kr_name: typeInfo.type_kr_name,
                     thresholdMin: min,

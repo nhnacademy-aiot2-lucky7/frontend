@@ -8,7 +8,6 @@
 	<meta charset="utf-8"/>
 	<title>AI 분석 | Lucky Seven</title>
 	<link href="/css/ai-analyze.css" rel="stylesheet"/>
-	<script src="/js/admin-check.js"></script>
 	<script src="/js/chart.js"></script>
 	<script src="/js/ai-dummy.js"></script>
 </head>
@@ -18,12 +17,18 @@
 	<!-- 본문내용 추가-->
 	<main class="ai-container" style="flex: 1;">
 		<section class="ai-header" style="display: flex; align-items: center;">
-			<h1>AI 분석 (관리자용)</h1>
+			<h1>AI 분석</h1>
 			<a href="/ai-analyze" class="ai-analyze-btn">AI 분석 요청</a>
 		</section>
 		<section class="ai-filter">
-			<form id="ai-search-form">
-				<input class="input-text" name="sensor" placeholder="센서 이름 또는 분석 결과" type="text"/>
+			<form id="ai-search-form" style="display:flex; gap:1rem; align-items:center;">
+				<input class="input-text" name="sensor" placeholder="센서타입(예: temperature, humidity 등)" type="text"/>
+				<select name="type" id="type-select" style="height:2.2rem;">
+					<option value="">전체 분석타입</option>
+					<option value="CORRELATION_RISK_PREDICT">CORRELATION_RISK_PREDICT (상관관계 위험예측)</option>
+					<option value="SINGLE_SENSOR_PREDICT">SINGLE_SENSOR_PREDICT (단일센서 예측)</option>
+					<option value="THRESHOLD_DIFF_ANALYSIS">THRESHOLD_DIFF_ANALYSIS (임계치 변화분석)</option>
+				</select>
 				<div class="date-picker">
 					<label for="start-date">시작일</label>
 					<input id="start-date" name="start-date" type="date"/>
@@ -35,7 +40,8 @@
 				<button class="search-btn" type="submit">검색</button>
 			</form>
 		</section>
-		<section class="ai-table-wrapper">
+		<section class="ai-table-wrapper" style="overflow-x:auto;">
+			<div id="pagination" class="pagination-bar"></div>
 			<table class="ai-table">
 				<thead>
 				<tr>
@@ -52,5 +58,9 @@
 		</section>
 	</main>
 </section>
+	<div id="detail-loading" style="display:none; text-align:center; padding:2rem 0; font-size:1.2rem; color:#39a0ff;">
+		<span class="spinner" style="display:inline-block; width:24px; height:24px; border:4px solid #eee; border-top:4px solid #39a0ff; border-radius:50%; animation:spin 1s linear infinite; vertical-align:middle;"></span>
+		<span style="margin-left:0.5em;">상세 데이터 로딩중...</span>
+	</div>
 </body>
 </html>

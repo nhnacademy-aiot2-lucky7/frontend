@@ -249,8 +249,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                     department_id: departmentId,
                     type_en_name: field,
                     type_kr_name: "한글이름",
-                    thresholdMin: min,
-                    thresholdMax: max
+                    threshold_min: min,
+                    threshold_max: max
                 }
             };
 

@@ -117,52 +117,54 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (!res.ok) throw new Error('센서 매핑 정보 실패');
             const data = await res.json();
 
-            console.log("data:{}", data);
+            console.log("센서 데이터: ", data);
             const sensorList = [...new Set(data.map(item => item.sensor_id))];
             const fieldList = [...new Set(data.map(item => item.type_en_name))];
 
             const selectedSensorId = sensorSelect.value;
             const selectedField = fieldSelect.value;
 
-            // 하나의 센서라도 존재할 경우, 첫 번째 센서/필드에 대한 bound 정보 미리 로딩
-            const thresholdRes = await fetch(
-                `https://luckyseven.live/api/threshold-histories/gateway-id/${gatewayId}/sensor-id/${selectedSensorId}/type-en-name/${selectedField}`
-            );
+            if(selectedSensorId != null && selectedField != null){
+                // 하나의 센서라도 존재할 경우, 첫 번째 센서/필드에 대한 bound 정보 미리 로딩
+                const thresholdRes = await fetch(
+                    `https://luckyseven.live/api/threshold-histories/gateway-id/${gatewayId}/sensor-id/${selectedSensorId}/type-en-name/${selectedField}`
+                );
 
-            const threshold = await thresholdRes.json();
+                const threshold = await thresholdRes.json();
 
-            console.log("Type EN Name: ", threshold.type_en_name);
-            console.log("Min Range Min: ", threshold.minRangeMin);
-            console.log("Min Range Max: ", threshold.minRangeMax);
-            console.log("Max Range Min: ", threshold.maxRangeMin);
-            console.log("Max Range Max: ", threshold.maxRangeMax);
+                console.log("Type EN Name: ", threshold.type_en_name);
+                console.log("Min Range Min: ", threshold.minRangeMin);
+                console.log("Min Range Max: ", threshold.minRangeMax);
+                console.log("Max Range Min: ", threshold.maxRangeMin);
+                console.log("Max Range Max: ", threshold.maxRangeMax);
 
-            if (!thresholdRes.ok) {
-                console.warn('임계치 정보를 불러오지 못했습니다. 기본 값을 사용합니다.');
+                if (!thresholdRes.ok) {
+                    console.warn('임계치 정보를 불러오지 못했습니다. 기본 값을 사용합니다.');
 
-                const defaultSensorId = sensorSelect.options[0]?.value || 'unknown_sensor';
-                const defaultField = fieldSelect.options[0]?.value || 'unknown_field';
+                    const defaultSensorId = sensorSelect.options[0]?.value || 'unknown_sensor';
+                    const defaultField = fieldSelect.options[0]?.value || 'unknown_field';
 
-                sensorBound = [{
-                    gatewayId: gatewayId,
-                    sensorId: defaultSensorId,
-                    sensorType: defaultField,
-                    minRangeMin: 10.0,
-                    minRangeMax: 30.0,
-                    maxRangeMin: 70.0,
-                    maxRangeMax: 90.0
-                }];
-            } else {
-                sensorBound = await thresholdRes.json();
+                    sensorBound = [{
+                        gatewayId: gatewayId,
+                        sensorId: defaultSensorId,
+                        sensorType: defaultField,
+                        minRangeMin: 10.0,
+                        minRangeMax: 30.0,
+                        maxRangeMin: 70.0,
+                        maxRangeMax: 90.0
+                    }];
+                } else {
+                    sensorBound = await thresholdRes.json();
+                }
+
+
+                attachThresholdHandlers();
+                [gatewaySelect, sensorSelect, fieldSelect].forEach(select => {
+                    select.addEventListener('change', updateThresholdUI, {once: true});
+                });
+
+                updateThresholdUI();
             }
-
-
-            attachThresholdHandlers();
-            [gatewaySelect, sensorSelect, fieldSelect].forEach(select => {
-                select.addEventListener('change', updateThresholdUI, {once: true});
-            });
-
-            updateThresholdUI();
         } catch (err) {
             console.error(err);
             alert('센서/임계치 로딩 오류');

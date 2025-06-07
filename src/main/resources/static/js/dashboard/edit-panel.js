@@ -118,8 +118,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             const data = await res.json();
 
             console.log("data:{}", data);
-            const sensorList = [...new Set(data.map(item => item.sensorId))];
-            const fieldList = [...new Set(data.map(item => item.dataTypeEnName))];
+            const sensorList = [...new Set(data.map(item => item.sensor_id))];
+            const fieldList = [...new Set(data.map(item => item.type_en_name))];
 
             populateSelect(sensorSelect, sensorList);
             populateSelect(fieldSelect, fieldList);
@@ -176,6 +176,63 @@ document.addEventListener('DOMContentLoaded', async () => {
         await getAllsensors(gatewayIds[0]); // 첫 번째 gateway 기준
     }
 
+    const getAllPanels = async (dashboardUid) => {
+        try {
+            const res = await fetch(`https://luckyseven.live/api/panels/${dashboardUid}`);
+            if (!res.ok) throw new Error('패널 목록 불러오기 실패');
+            const panels = await res.json();
+            return panels;
+        } catch (err) {
+            console.error(err);
+            alert('패널 목록 로딩 오류');
+            return [];
+        }
+    };
+
+    const setPanelDefaults = async (dashboardUid, panelId) => {
+        try {
+            // 대시보드에 속한 모든 패널 리스트를 가져옴
+            const panels = await getAllPanels(dashboardUid);
+            const panelData = panels.find(panel => panel.panelId === panelId);
+
+            if (!panelData) {
+                alert('패널을 찾을 수 없습니다.');
+                return;
+            }
+
+            // 필드 값들을 패널 데이터로 설정
+            document.getElementById('name').value = panelData.panelTitle || '';
+            document.getElementById('width').value = panelData.gridPos?.w || '';
+            document.getElementById('height').value = panelData.gridPos?.h || '';
+
+            // 타입, 집계 방식, 시간 설정
+            typeSelect.value = panelData.type || '';
+            aggregationSelect.value = panelData.aggregation || '';
+            timeSelect.value = panelData.time || '';
+
+            // 임계치 범위 설정
+            const bound = getSelectedBound();
+            if (bound) {
+                minInput.value = bound.minRangeMin;
+                maxInput.value = bound.maxRangeMax;
+                minInput.disabled = false;
+                maxInput.disabled = false;
+            }
+
+        } catch (err) {
+            console.error(err);
+            alert('패널 기본값 설정 오류');
+        }
+    };
+
+    // 대시보드 UID와 패널 ID에 맞는 기본값 설정
+    const dashboardUid = document.getElementById('dashboardUid').value;
+    const panelId = parseInt(document.getElementById('panelId').value); // 패널 ID는 HTML에서 가져옴
+
+    if (dashboardUid && panelId) {
+        await setPanelDefaults(dashboardUid, panelId);
+    }
+
     saveBtn.addEventListener('click', async (e) => {
         e.preventDefault();
 
@@ -198,18 +255,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             const departmentId = window.currentUser?.department?.departmentId;
 
-            // const typeRes = await fetch(`https://luckyseven.live/api/data-types/${field}`);
-            // if (!typeRes.ok) {
-            //     alert(`데이터 타입 정보를 불러오지 못했습니다: ${typeRes.status}`);
-            //     return
-            // }else{
-            //     const typeInfo = await typeRes.json();
-            // }
-
             const panelWithRuleRequest = {
                 createPanelRequest: {
                     dashboardUid: dashboardUid,
-                    panelId: 1,
+                    panelId: panelId,  // 패널 ID를 실제로 설정
                     panelTitle: panelTitle,
                     sensorFieldRequestDto: [{
                         type_en_name: field,
@@ -230,7 +279,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     sensor_id: sensorId,
                     department_id: departmentId,
                     type_en_name: field,
-                    type_kr_name:"알수없음",
+                    type_kr_name: "알수없음",
                     threshold_min: min,
                     threshold_max: max
                 }

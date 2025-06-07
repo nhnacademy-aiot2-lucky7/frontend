@@ -57,3 +57,20 @@ a {
     color: #222;
     text-align: center;
 }
+
+.panel-edit-btn {
+    display: inline-block;
+    margin-top: 0.75rem;
+    padding: 0.4rem 0.75rem;
+    background-color: #28a745;
+    color: #fff;
+    font-size: 0.9rem;
+    text-align: center;
+    border-radius: 0.375rem;
+    text-decoration: none;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.panel-edit-btn:hover {
+    background-color: #1e7e34;
+}

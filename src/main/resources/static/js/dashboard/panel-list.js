@@ -26,6 +26,13 @@ async function loadIframes(dashboardUid) {
             title.className = 'panel-title';
             wrapper.appendChild(title);
 
+            // 수정 버튼 (a 태그)
+            const editBtn = document.createElement('a');
+            editBtn.textContent = '차트 수정';
+            editBtn.className = 'edit-button';
+            editBtn.href = `/panel/edit?dashboardUid=${panel.dashboardUid}&panelId=${panel.panelId}`;
+            wrapper.appendChild(editBtn);
+
             // 삭제 버튼
             const deleteBtn = document.createElement('button');
             deleteBtn.textContent = '삭제';

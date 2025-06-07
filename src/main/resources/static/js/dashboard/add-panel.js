@@ -125,21 +125,44 @@ document.addEventListener('DOMContentLoaded', async () => {
             populateSelect(fieldSelect, fieldList);
 
             // 하나의 센서라도 존재할 경우, 첫 번째 센서/필드에 대한 bound 정보 미리 로딩
+            // const thresholdRes = await fetch(
+            //     `https://luckyseven.live/api/threshold-histories/gateway-id/${gatewayId}`
+            // );
+            //
+            // const threshold = await thresholdRes.json();
+            //
+            // console.log("Type EN Name: ", threshold.type_en_name);
+            // console.log("Min Range Min: ", threshold.minRangeMin);
+            // console.log("Min Range Max: ", threshold.minRangeMax);
+            // console.log("Max Range Min: ", threshold.maxRangeMin);
+            // console.log("Max Range Max: ", threshold.maxRangeMax);
+            //
+            // if (!thresholdRes.ok) {
+            //     console.warn('임계치 정보를 불러오지 못했습니다.');
+            // }
+
             const thresholdRes = await fetch(
                 `https://luckyseven.live/api/threshold-histories/gateway-id/${gatewayId}`
-            );
-
-            const threshold = await thresholdRes.json();
-
-            console.log("Type EN Name: ", threshold.type_en_name);
-            console.log("Min Range Min: ", threshold.minRangeMin);
-            console.log("Min Range Max: ", threshold.minRangeMax);
-            console.log("Max Range Min: ", threshold.maxRangeMin);
-            console.log("Max Range Max: ", threshold.maxRangeMax);
-
+        );
             if (!thresholdRes.ok) {
-                console.warn('임계치 정보를 불러오지 못했습니다.');
+                console.warn('임계치 정보를 불러오지 못했습니다. 기본 값을 사용합니다.');
+
+                const defaultSensorId = sensorSelect.options[0]?.value || 'unknown_sensor';
+                const defaultField = fieldSelect.options[0]?.value || 'unknown_field';
+
+                sensorBound = [{
+                    gatewayId: gatewayId,
+                    sensorId: defaultSensorId,
+                    sensorType: defaultField,
+                    minRangeMin: 10.0,
+                    minRangeMax: 30.0,
+                    maxRangeMin: 70.0,
+                    maxRangeMax: 90.0
+                }];
+            } else {
+                sensorBound = await thresholdRes.json();
             }
+
 
             attachThresholdHandlers();
             [gatewaySelect, sensorSelect, fieldSelect].forEach(select => {
@@ -192,14 +215,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             const departmentId = window.currentUser?.department?.departmentId;
 
-            const typeRes = await fetch(`https://luckyseven.live/api/data-types/${field}`);
-            if (!typeRes.ok) {
-                alert(`데이터 타입 정보를 불러오지 못했습니다: ${typeRes.status}`);
-                return
-            }else{
-                const typeInfo = await typeRes.json();
-                return typeInfo;
-            }
+            // const typeRes = await fetch(`https://luckyseven.live/api/data-types/${field}`);
+            // if (!typeRes.ok) {
+            //     alert(`데이터 타입 정보를 불러오지 못했습니다: ${typeRes.status}`);
+            //     return
+            // }else{
+            //     const typeInfo = await typeRes.json();
+            //     return typeInfo;
+            // }
 
             const panelWithRuleRequest = {
                 createPanelRequest: {
@@ -225,7 +248,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     sensor_id: sensorId,
                     department_id: departmentId,
                     type_en_name: field,
-                    type_kr_name: typeInfo.type_kr_name,
+                    type_kr_name: "한글이름",
                     thresholdMin: min,
                     thresholdMax: max
                 }

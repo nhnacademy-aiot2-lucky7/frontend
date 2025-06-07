@@ -193,7 +193,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         try {
             // 대시보드에 속한 모든 패널 리스트를 가져옴
             const panels = await getAllPanels(dashboardUid);
-            const panelData = panels.find(panel => panel.panelId === panelId);
+            console.log(panels);
+            const panelData = panels.find(panel => panel.panelId == panelId);
 
             if (!panelData) {
                 alert('패널을 찾을 수 없습니다.');
@@ -227,7 +228,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // 대시보드 UID와 패널 ID에 맞는 기본값 설정
     const dashboardUid = document.getElementById('dashboardUid').value;
-    const panelId = parseInt(document.getElementById('panelId').value); // 패널 ID는 HTML에서 가져옴
+    const panelId = document.getElementById('panelId').value; // 패널 ID는 HTML에서 가져옴
 
     if (dashboardUid && panelId) {
         await setPanelDefaults(dashboardUid, panelId);

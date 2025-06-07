@@ -25,7 +25,7 @@
 
         <div id="panelList" th:attr="data-dashboard-uid=${dashboardUid}" class="panel-grid">
             <div th:each="panel : ${panels}" class="panel-card">
-                <h3 th:text="${panel.panelId} ?: '제목 없음'" class="panel-title"></h3>
+                <h3 th:text="${panelTitle} ?: '제목 없음'" class="panel-title"></h3>
                 <iframe th:src="'https://grafana.luckyseven.live/d-solo/' + ${panel.dashboardUid}
                                 + '?orgId=1&from=' + ${panel.from}
                                 + '&to=' + ${panel.now}
@@ -35,7 +35,7 @@
                         frameborder="0"
                         class="grafana-iframe">
                 </iframe>
-                <a th:href="@{/panels/edit(dashboardUid=${panel.dashboardUid}, panelId=${panel.panelId})}" class="edit-button">차트 수정</a>
+                <a th:href="@{/panel/edit(dashboardUid=${panel.dashboardUid}, panelId=${panel.panelId})}" class="edit-button">차트 수정</a>
                 <button class="delete-button"
                         th:attr="data-dashboard-uid=${panel.dashboardUid},
                                  data-panel-id=${panel.panelId},

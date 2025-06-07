@@ -133,9 +133,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
     // 초기 센서 매핑 정보 불러오기
-    const getAllsensors = async (gatewayId) => {
+    const getThreshold = async (gatewayId) => {
         try {
-
             const { sensorList, fieldList } = await getSensorData(gatewayId);
 
             console.log("센서 목록: ", sensorList);
@@ -178,7 +177,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                     sensorBound = await thresholdRes.json();
                 }
 
-
                 attachThresholdHandlers();
                 [gatewaySelect, sensorSelect, fieldSelect].forEach(select => {
                     select.addEventListener('change', updateThresholdUI, {once: true});
@@ -206,7 +204,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     populateSelect(gatewaySelect, gatewayIds);
 
     if (gatewayIds.length > 0) {
-        await getAllsensors(gatewayIds[0]); // 첫 번째 gateway 기준
+        await getSensorData(gatewayId);
+        await getThreshold(gatewayIds[0]);
     }
 
     saveBtn.addEventListener('click', async (e) => {

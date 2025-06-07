@@ -110,17 +110,38 @@ document.addEventListener('DOMContentLoaded', async () => {
     const gatewayId = gateways[0].gateway_id;
     console.log("선택된 gatewayId:", gatewayId);
 
-    // 초기 센서 매핑 정보 불러오기
-    const getAllsensors = async (gatewayId) => {
+    const getSensorData = async (gatewayId) => {
         try {
+            // 센서 매핑 정보 요청
             const res = await fetch(`https://luckyseven.live/api/sensor-data-mappings/gateway-id/${gatewayId}/sensors`);
             if (!res.ok) throw new Error('센서 매핑 정보 실패');
-            const data = await res.json();
 
+            const data = await res.json();
             console.log("센서 데이터: ", data);
+
+            // 중복을 제거한 센서 목록과 필드 목록
             const sensorList = [...new Set(data.map(item => item.sensor_id))];
             const fieldList = [...new Set(data.map(item => item.type_en_name))];
 
+            return { sensorList, fieldList };
+
+        } catch (err) {
+            console.error(err);
+            alert('센서 매핑 정보 로딩 오류');
+        }
+    };
+
+
+    // 초기 센서 매핑 정보 불러오기
+    const getAllsensors = async (gatewayId) => {
+        try {
+
+            const { sensorList, fieldList } = await getSensorData(gatewayId);
+
+            console.log("센서 목록: ", sensorList);
+            console.log("필드 목록: ", fieldList);
+
+            // 현재 선택된 센서 ID와 필드
             const selectedSensorId = sensorSelect.value;
             const selectedField = fieldSelect.value;
 

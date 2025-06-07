@@ -44,13 +44,6 @@
             </div>
 
             <div class="add-dashboard-form-row">
-                <label for="fieldSelect">Field</label>
-                <select id="fieldSelect" name="sensorType">
-                    <option value="">모든 센서 타입</option>
-                </select>
-            </div>
-
-            <div class="add-dashboard-form-row">
                 <label for="width">그래프 너비</label>
                 <input type="text" name="width" id="width" required />
             </div>
@@ -94,8 +87,11 @@
                         <span>최소 임계값 설정</span>
                         <div id="minSuggestionGroup" class="radio-group">
                             <label><input type="radio" name="minThreshold" value="min" /> 기본 최소값 (Ai추천)</label>
+                            <span id="minMinValueText"></span>
                             <label><input type="radio" name="minThreshold" value="middle" checked /> AI 추천값 (자동 설정)</label>
+                            <span id="minMiddleValueText"></span>
                             <label><input type="radio" name="minThreshold" value="max" /> 기본 최대값으로 설정</label>
+                            <span id="minMaxValueText"></span>
                             <label><input type="radio" name="minThreshold" value="custom" id="minCustomRadio" /> 사용자 설정</label>
                             <input type="text" id="minCustomValue" name="minCustomValue" class="custom-input" placeholder="최소값 입력" />
                             <span id="minValueText"></span> <!-- AI 추천값 표시 -->
@@ -107,11 +103,14 @@
                         <span>최대 임계값 설정</span>
                         <div id="maxSuggestionGroup" class="radio-group">
                             <label><input type="radio" name="maxThreshold" value="min" /> 기본 최소값 (Ai추천)</label>
+                            <span id="maxMinValueText"></span>
                             <label><input type="radio" name="maxThreshold" value="middle" checked /> AI 추천값 (자동 설정)</label>
+                            <span id="maxMiddleValueText"></span>
                             <label><input type="radio" name="maxThreshold" value="max" /> 기본 최대값으로 설정</label>
+                            <span id="maxMaxValueText"></span>
                             <label><input type="radio" name="maxThreshold" value="custom" id="maxCustomRadio" /> 사용자 설정</label>
                             <input type="text" id="maxCustomValue" name="maxCustomValue" class="custom-input" placeholder="최대값 입력" />
-                            <span id="maxValueText"></span> <!-- AI 추천값 표시 -->
+                            <span id="customValueText"></span> <!-- AI 추천값 표시 -->
                         </div>
                     </div>
                 </div>

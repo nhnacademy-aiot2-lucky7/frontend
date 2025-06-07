@@ -2,52 +2,93 @@ document.addEventListener('DOMContentLoaded', async () => {
     // DOM 요소들
     const gatewaySelect = document.getElementById('gatewaySelect');
     const sensorSelect = document.getElementById('sensorSelect');
-    const fieldSelect = document.getElementById('fieldSelect');
     const typeSelect = document.getElementById('typeSelect');
     const aggregationSelect = document.getElementById('aggregationSelect');
     const timeSelect = document.getElementById('timeSelect');
-    const minInput = document.getElementById('minInput');
-    const maxInput = document.getElementById('maxInput');
-    const minCustomValue = document.getElementById('minCustomValue');
-    const maxCustomValue = document.getElementById('maxCustomValue');
+
+    const minMinText = document.getElementById('minMinValueText')
+    const minMiddleText = document.getElementById('minMiddleValueText')
+    const minMaxText = document.getElementById('minMaxValueText')
+
+    const maxMinText = document.getElementById('maxMinValueText')
+    const maxMiddleText = document.getElementById('maxMiddleValueText')
+    const maxMaxText = document.getElementById('maxMaxValueText')
+
+    const minCustomInput = document.getElementById('minCustomValue');
+    const maxCustomInput = document.getElementById('maxCustomValue');
     const saveBtn = document.getElementById('saveBtn');
 
-    // 라디오 버튼 아래에 값 표시할 텍스트 요소
-    const minValueText = document.getElementById('minValueText');  // 최소값 텍스트
-    const maxValueText = document.getElementById('maxValueText');  // 최대값 텍스트
-
-    // 타입, 집계 방식, 시간 옵션
     const typeList = ['timeseries', 'table', 'gauge', 'piechart', 'histogram'];
     const aggregationList = ['avg', 'sum', 'min', 'max'];
     const timeList = ['1h', '6h', '12h', '1d', '7d', '30d'];
 
-    // 임의의 min, max 값 설정 (테스트용)
-    const defaultMin = 10;  // 임의의 최소값
-    const defaultMax = 100; // 임의의 최대값
-
-    // Gateway, Sensor, Field 데이터
-    let sensorBound = [];
-
-    // 게이트웨이 목록 불러오기
     const gateways = await getAllGateways();
+    const sensorInfos = await getSensorDataAndField(gateways[0].gateway_id)
+    await getThreshold(gateways[0].gateway_id, sensorInfos[0].sensor_id, sensorInfos[0].type_en_name, minInput, maxInput)
+
     if (!Array.isArray(gateways) || gateways.length === 0) {
         throw new Error('게이트웨이 정보가 없습니다.');
+    }
+    if (!Array.isArray(sensorInfos) || sensorInfos.length === 0) {
+        throw new Error('센서 정보가 없습니다.');
     }
 
     const gatewayOptions = gateways.map(gw => ({
         value: gw.gateway_id, text: gw.gateway_name
     }));
 
+    const sensorOptions = sensorInfos.map(ss => ({
+        value: ss.sensor_id, text: `${ss.location}-${ss.type_en_name}-${ss.spot}`
+    }))
+
     populateSelect(typeSelect, typeList);
     populateSelect(aggregationSelect, aggregationList);
     populateSelect(timeSelect, timeList);
     populateSelect(gatewaySelect, gatewayOptions);
+    populateSelect(sensorSelect, sensorOptions)
 
-    // 게이트웨이 선택 시 센서 데이터 불러오기
-    gatewaySelect.addEventListener('change', handleGatewayChange);
+    let sensorBound = [];
 
-    // 저장 버튼 클릭 시 데이터 처리
-    saveBtn.addEventListener('click', handleSaveBtnClick);
+    gatewaySelect.addEventListener('change', async (event) => {
+        const selectedGatewayId = event.target.value;
+
+        if (selectedGatewayId) {
+            await getSensorDataAndField(selectedGatewayId);
+        }
+    });
+
+    sensorSelect.addEventListener('change', async (event) => {
+        const selectedSensorId = event.target.value;
+        const selectedGatewayId = gatewaySelect.value;
+        const selectedField = event.target.options[event.target.selectedIndex].textContent.split('-')[1];
+
+        if (selectedGatewayId && selectedSensorId && selectedField) {
+            await getThreshold(selectedGatewayId, selectedSensorId, selectedField, minMinText, maxMaxText);
+        }
+    });
+
+    saveBtn.addEventListener('click', async (e) => {
+        e.preventDefault();
+
+        try {
+            const formData = gatherFormData();
+            const typeInfo = await fetchTypeInfo(formData.field);
+
+            const panelWithRuleRequest = createPanelRequest(formData, typeInfo);
+            const response = await submitPanelRequest(panelWithRuleRequest);
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                alert(`생성 실패: ${response.status} - ${errorText}`);
+            } else {
+                alert('패널이 성공적으로 생성되었습니다!');
+                window.location.href = `/panel/${formData.dashboardUid}/${formData.panelTitle}`;
+            }
+        } catch (error) {
+            console.error('패널 저장 오류:', error);
+            alert('패널 저장 중 오류가 발생했습니다.');
+        }
+    });
 
     // 기본값으로 'AI 추천' 라디오 버튼 선택
     document.querySelector('input[name="minThreshold"][value="middle"]').checked = true;
@@ -63,12 +104,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     // 임의의 값을 min, max input에 설정
-    minInput.value = defaultMin;
-    maxInput.value = defaultMax;
+    minInput.value = 10;
+    maxInput.value = 100;
 
     // 첫 로드 시 'AI 추천' 값 텍스트로 표시
-    minValueText.textContent = defaultMin;  // 첫 로드 시 AI 추천값 표시
-    maxValueText.textContent = defaultMax;  // 첫 로드 시 AI 추천값 표시
+    minValueText.textContent = 10;  // 첫 로드 시 AI 추천값 표시
+    maxValueText.textContent = 100;  // 첫 로드 시 AI 추천값 표시
 });
 
 // 라디오 버튼 클릭 시 텍스트 박스 표시/숨기기 처리
@@ -82,7 +123,6 @@ function handleRadioButtonChange() {
 
     // 'AI 추천'을 선택했을 때는 텍스트 박스를 숨기고 기본값을 설정
     if (minRadio.value === 'middle') {
-        // AI 추천처럼 보이도록 설정 (임의 값)
         const randomMin = generateRandomValue(minInput.value, maxInput.value);
         minValueText.textContent = randomMin;  // AI 추천 값으로 보여짐
         minInput.disabled = true;  // 입력 불가
@@ -111,42 +151,7 @@ function generateRandomValue(minValue, maxValue) {
     return (min + (max - min) * random).toFixed(2);  // 소수점 2자리로 값 표시
 }
 
-// 게이트웨이 변경 시 센서 데이터 불러오기
-async function handleGatewayChange(event) {
-    const selectedValue = event.target.value;
-
-    if (selectedValue) {
-        const sensorData = await getSensorData(selectedValue);
-        await getThreshold(selectedValue);
-        console.log(sensorData);  // 센서 데이터 처리 로직
-    }
-}
-
-// 저장 버튼 클릭 시 처리
-async function handleSaveBtnClick(e) {
-    e.preventDefault();
-
-    try {
-        const formData = gatherFormData();
-        const typeInfo = await fetchTypeInfo(formData.field);
-
-        const panelWithRuleRequest = createPanelRequest(formData, typeInfo);
-        const response = await submitPanelRequest(panelWithRuleRequest);
-
-        if (!response.ok) {
-            const errorText = await response.text();
-            alert(`생성 실패: ${response.status} - ${errorText}`);
-        } else {
-            alert('패널이 성공적으로 생성되었습니다!');
-            window.location.href = `/panel/${formData.dashboardUid}/${formData.panelTitle}`;
-        }
-    } catch (error) {
-        console.error('패널 저장 오류:', error);
-        alert('패널 저장 중 오류가 발생했습니다.');
-    }
-}
-
-// 폼 데이터 수집
+// 패널 요청 데이터 생성
 function gatherFormData() {
     const dashboardUid = document.getElementById('dashboardUid').value;
     const panelTitle = document.getElementById('name').value;
@@ -224,15 +229,15 @@ async function submitPanelRequest(panelWithRuleRequest) {
 }
 
 // 임계치 정보 불러오기
-async function getThreshold(selectedGatewayId) {
+async function getThreshold(selectedGatewayId, selectedSensorId, selectedField, minMinText, maxMaxText) {
     try {
-        const thresholdRes = await fetch(`https://luckyseven.live/api/threshold-histories/gateway-id/${selectedGatewayId}`);
+        const thresholdRes = await fetch(`https://luckyseven.live/api/threshold-histories/gateway-id/${selectedGatewayId}/sensor-id/${selectedSensorId}/type-en-name/${selectedField}`);
         if (!thresholdRes.ok) throw new Error("임계치 정보 조회 실패");
 
         const threshold = await thresholdRes.json();
-        // 임계치 값을 minInput과 maxInput에 표시
-        minInput.value = threshold.minRangeMin || 10; // 기본 임의 값
-        maxInput.value = threshold.maxRangeMax || 100; // 기본 임의 값
+        console.log(threshold)
+        minMinText.value = threshold.min_range_min || 10; // 기본 임의 값
+        maxMaxText.value = threshold.max_range_max || 100; // 기본 임의 값
 
         attachThresholdHandlers(threshold);
     } catch (err) {
@@ -242,12 +247,14 @@ async function getThreshold(selectedGatewayId) {
 }
 
 // 센서 데이터 요청
-async function getSensorData(gatewayId) {
+async function getSensorDataAndField(gatewayId) {
     try {
         const res = await fetch(`https://luckyseven.live/api/sensor-data-mappings/gateway-id/${gatewayId}/sensors`);
         if (!res.ok) throw new Error('센서 매핑 정보 실패');
 
-        return await res.json();
+        const sensorData = await res.json();
+
+        return sensorData;
     } catch (err) {
         console.error(err);
         alert('센서 매핑 정보 로딩 오류');
@@ -272,11 +279,11 @@ function applyThreshold(threshold, type, value) {
 
     if (type === 'min') {
         val = value === 'min' ? threshold.minRangeMin :
-            value === 'middle' ? generateRandomValue(threshold.minRangeMin, threshold.minRangeMax) :
+            value === 'middle' ? (threshold.minRangeMin * 3 + threshold.minRangeMax * 7) / 10 :
                 threshold.minRangeMax;
     } else {
         val = value === 'min' ? threshold.maxRangeMin :
-            value === 'middle' ? generateRandomValue(threshold.maxRangeMin, threshold.maxRangeMax) :
+            value === 'middle' ? (threshold.maxRangeMin * 3 + threshold.maxRangeMax * 7) / 10 :
                 threshold.maxRangeMax;
     }
 
@@ -289,8 +296,25 @@ function populateSelect(selectElement, options) {
     selectElement.innerHTML = ''; // 기존 내용 초기화
     options.forEach(item => {
         const option = document.createElement('option');
-        option.value = item;
-        option.textContent = item;
+        option.value = item.value || item; // item.value가 있을 경우 사용, 없으면 그대로 사용
+        option.textContent = item.text || item; // item.text가 있을 경우 사용, 없으면 그대로 사용
         selectElement.appendChild(option);
     });
+}
+
+// 모든 게이트웨이 목록을 가져오는 함수
+async function getAllGateways() {
+    try {
+        // const departmentId = window.currentUser?.department?.departmentId;
+        // if (!departmentId) {
+        //     throw new Error("Department ID가 없습니다.");
+        // }
+        const res = await fetch(`https://luckyseven.live/api/gateways/department/1`);
+        if (!res.ok) throw new Error('게이트웨이 목록 불러오기 실패');
+        return await res.json();
+    } catch (err) {
+        console.error(err);
+        alert('게이트웨이 목록 로딩 오류');
+        return [];
+    }
 }

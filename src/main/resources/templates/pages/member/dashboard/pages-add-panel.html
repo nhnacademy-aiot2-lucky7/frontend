@@ -86,32 +86,36 @@
 
             <!-- 임계치 설정 (2열 전체 사용) -->
             <div class="add-dashboard-form-row add-dashboard-description">
-                    <div class="add-dashboard-form-row add-dashboard-description">
-                        <label>임계값 설정 (AI 추천)</label>
-                        <div style="display: flex; flex-wrap: wrap; gap: 4rem;">
+                <label>임계값 설정</label>
+                <div class="threshold-group">
 
-                            <!-- 최소값 선택 -->
-                            <div style="display: flex; flex-direction: column; gap: 10px;">
-                                <span>최소값</span>
-                                <div id="minSuggestionGroup" style="display: flex; gap: 10px;">
-                                    <label><input type="radio" name="minThreshold" value="min" /></label>
-                                    <label><input type="radio" name="minThreshold" value="middle" /></label>
-                                    <label><input type="radio" name="minThreshold" value="max" /></label>
-                                </div>
-                            </div>
+                    <!-- 최소값 설정 (같은 행에 나란히 배치) -->
+                    <div class="threshold-option">
+                        <span>최소 임계값 설정</span>
+                        <div id="minSuggestionGroup" class="radio-group">
+                            <label><input type="radio" name="minThreshold" value="min" /> 기본 최소값 (Ai추천)</label>
+                            <label><input type="radio" name="minThreshold" value="middle" checked /> AI 추천값 (자동 설정)</label>
+                            <label><input type="radio" name="minThreshold" value="max" /> 기본 최대값으로 설정</label>
+                            <label><input type="radio" name="minThreshold" value="custom" id="minCustomRadio" /> 사용자 설정</label>
+                            <input type="text" id="minCustomValue" name="minCustomValue" class="custom-input" placeholder="최소값 입력" />
+                            <span id="minValueText"></span> <!-- AI 추천값 표시 -->
+                        </div>
+                    </div>
 
-                            <!-- 최대값 선택 -->
-                            <div style="display: flex; flex-direction: column; gap: 10px;">
-                                <span>최대값</span>
-                                <div id="maxSuggestionGroup" style="display: flex; gap: 10px;">
-                                    <label><input type="radio" name="maxThreshold" value="min" /></label>
-                                    <label><input type="radio" name="maxThreshold" value="middle" /></label>
-                                    <label><input type="radio" name="maxThreshold" value="max" /></label>
-                                </div>
-                            </div>
+                    <!-- 최대값 설정 (같은 행에 나란히 배치) -->
+                    <div class="threshold-option">
+                        <span>최대 임계값 설정</span>
+                        <div id="maxSuggestionGroup" class="radio-group">
+                            <label><input type="radio" name="maxThreshold" value="min" /> 기본 최소값 (Ai추천)</label>
+                            <label><input type="radio" name="maxThreshold" value="middle" checked /> AI 추천값 (자동 설정)</label>
+                            <label><input type="radio" name="maxThreshold" value="max" /> 기본 최대값으로 설정</label>
+                            <label><input type="radio" name="maxThreshold" value="custom" id="maxCustomRadio" /> 사용자 설정</label>
+                            <input type="text" id="maxCustomValue" name="maxCustomValue" class="custom-input" placeholder="최대값 입력" />
+                            <span id="maxValueText"></span> <!-- AI 추천값 표시 -->
                         </div>
                     </div>
                 </div>
+            </div>
         </form>
     </div>
 </section>

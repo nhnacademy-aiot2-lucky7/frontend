@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const gateways = await getAllGateways();
     const sensorInfos = await getSensorDataAndField(gateways[0].gateway_id)
-    await getThreshold(gateways[0].gateway_id, sensorInfos[0].sensor_id, sensorInfos[0].type_en_name, minInput, maxInput)
+    await getThreshold(gateways[0].gateway_id, sensorInfos[0].sensor_id, sensorInfos[0].type_en_name, minMinText, maxMaxText)
 
     if (!Array.isArray(gateways) || gateways.length === 0) {
         throw new Error('게이트웨이 정보가 없습니다.');
@@ -102,14 +102,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.querySelectorAll('input[name="maxThreshold"]').forEach(radio => {
         radio.addEventListener('change', handleRadioButtonChange);
     });
-
-    // 임의의 값을 min, max input에 설정
-    minInput.value = 10;
-    maxInput.value = 100;
-
-    // 첫 로드 시 'AI 추천' 값 텍스트로 표시
-    minValueText.textContent = 10;  // 첫 로드 시 AI 추천값 표시
-    maxValueText.textContent = 100;  // 첫 로드 시 AI 추천값 표시
 });
 
 // 라디오 버튼 클릭 시 텍스트 박스 표시/숨기기 처리
@@ -121,22 +113,22 @@ function handleRadioButtonChange() {
     document.getElementById('minCustomValue').style.display = minRadio.value === 'custom' ? 'inline-block' : 'none';
     document.getElementById('maxCustomValue').style.display = maxRadio.value === 'custom' ? 'inline-block' : 'none';
 
-    // 'AI 추천'을 선택했을 때는 텍스트 박스를 숨기고 기본값을 설정
-    if (minRadio.value === 'middle') {
-        const randomMin = generateRandomValue(minInput.value, maxInput.value);
-        minValueText.textContent = randomMin;  // AI 추천 값으로 보여짐
-        minInput.disabled = true;  // 입력 불가
-    } else {
-        minInput.disabled = false;
-    }
-
-    if (maxRadio.value === 'middle') {
-        const randomMax = generateRandomValue(minInput.value, maxInput.value);
-        maxValueText.textContent = randomMax;  // AI 추천 값으로 보여짐
-        maxInput.disabled = true;  // 입력 불가
-    } else {
-        maxInput.disabled = false;
-    }
+    // // 'AI 추천'을 선택했을 때는 텍스트 박스를 숨기고 기본값을 설정
+    // if (minRadio.value === 'middle') {
+    //     const randomMin = generateRandomValue(minInput.value, maxInput.value);
+    //     minValueText.textContent = randomMin;  // AI 추천 값으로 보여짐
+    //     minInput.disabled = true;  // 입력 불가
+    // } else {
+    //     minInput.disabled = false;
+    // }
+    //
+    // if (maxRadio.value === 'middle') {
+    //     const randomMax = generateRandomValue(minInput.value, maxInput.value);
+    //     maxValueText.textContent = randomMax;  // AI 추천 값으로 보여짐
+    //     maxInput.disabled = true;  // 입력 불가
+    // } else {
+    //     maxInput.disabled = false;
+    // }
 }
 
 // 임계치 값에 비례하는 난수 생성 (min, max 값을 기준으로)
@@ -166,8 +158,8 @@ function gatherFormData() {
     const aggregation = document.getElementById('aggregationSelect').value;
     const time = document.getElementById('timeSelect').value;
 
-    const min = !minInput.disabled ? parseFloat(minInput.value) : null;
-    const max = !maxInput.disabled ? parseFloat(maxInput.value) : null;
+    // const min = !minInput.disabled ? parseFloat(minInput.value) : null;
+    // const max = !maxInput.disabled ? parseFloat(maxInput.value) : null;
 
     return { dashboardUid, panelTitle, gatewayId, sensorId, field, width, height, type, aggregation, time, min, max };
 }
@@ -273,23 +265,23 @@ function attachThresholdHandlers(threshold) {
 }
 
 // 임계치 값 적용
-function applyThreshold(threshold, type, value) {
-    const input = type === 'min' ? minInput : maxInput;
-    let val = '';
-
-    if (type === 'min') {
-        val = value === 'min' ? threshold.minRangeMin :
-            value === 'middle' ? (threshold.minRangeMin * 3 + threshold.minRangeMax * 7) / 10 :
-                threshold.minRangeMax;
-    } else {
-        val = value === 'min' ? threshold.maxRangeMin :
-            value === 'middle' ? (threshold.maxRangeMin * 3 + threshold.maxRangeMax * 7) / 10 :
-                threshold.maxRangeMax;
-    }
-
-    input.disabled = false;
-    input.value = val ?? '';
-}
+// function applyThreshold(threshold, type, value) {
+//     const input = type === 'min' ? minInput : maxInput;
+//     let val = '';
+//
+//     if (type === 'min') {
+//         val = value === 'min' ? threshold.minRangeMin :
+//             value === 'middle' ? (threshold.minRangeMin * 3 + threshold.minRangeMax * 7) / 10 :
+//                 threshold.minRangeMax;
+//     } else {
+//         val = value === 'min' ? threshold.maxRangeMin :
+//             value === 'middle' ? (threshold.maxRangeMin * 3 + threshold.maxRangeMax * 7) / 10 :
+//                 threshold.maxRangeMax;
+//     }
+//
+//     input.disabled = false;
+//     input.value = val ?? '';
+// }
 
 // 선택 사항 드롭다운 채우기
 function populateSelect(selectElement, options) {
@@ -305,10 +297,10 @@ function populateSelect(selectElement, options) {
 // 모든 게이트웨이 목록을 가져오는 함수
 async function getAllGateways() {
     try {
-        // const departmentId = window.currentUser?.department?.departmentId;
-        // if (!departmentId) {
-        //     throw new Error("Department ID가 없습니다.");
-        // }
+        const departmentId = window.currentUser?.department?.departmentId;
+        if (!departmentId) {
+            throw new Error("Department ID가 없습니다.");
+        }
         const res = await fetch(`https://luckyseven.live/api/gateways/department/1`);
         if (!res.ok) throw new Error('게이트웨이 목록 불러오기 실패');
         return await res.json();

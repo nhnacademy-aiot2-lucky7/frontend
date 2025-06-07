@@ -72,6 +72,16 @@ public class DashboardController {
         return "pages/member/dashboard/pages-panel-list";
     }
 
+    @GetMapping("/panel/edit")
+    public String editPanel(@RequestParam("dashboardUid") String dashboardUid,
+                            @RequestParam("panelId") int panelId, Model model) {
+        model.addAttribute("dashboardUid", dashboardUid);
+        model.addAttribute("panelId", panelId);
+
+        // "editPanel"은 수정할 페이지의 뷰 이름
+        return "pages/member/dashboard/pages-edit-panel";
+    }
+
     // 5. 필터링된 패널 조회
     @PostMapping("/panels/filtered")
     public List<IframePanelResponse> getFilteredPanels(

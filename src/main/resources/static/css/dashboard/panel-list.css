@@ -69,3 +69,22 @@
 .delete-button:hover {
     background-color: #b91c1c;
 }
+
+.edit-button {
+    align-self: flex-end;
+    padding: 0.4rem 0.8rem;
+    background-color: #3b82f6;  /* 파란색 배경 */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    text-decoration: none;  /* 링크 스타일 제거 */
+    display: inline-block;  /* 버튼처럼 보이게 */
+    text-align: center;     /* 텍스트 중앙 정렬 */
+}
+
+.edit-button:hover {
+    background-color: #2563eb;  /* 호버 시 어두운 파란색 */
+}

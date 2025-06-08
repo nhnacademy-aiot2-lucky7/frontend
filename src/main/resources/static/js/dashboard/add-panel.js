@@ -6,16 +6,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     const aggregationSelect = document.getElementById('aggregationSelect');
     const timeSelect = document.getElementById('timeSelect');
 
-    const minMinText = document.getElementById('minMinValueText')
-    const minMiddleText = document.getElementById('minMiddleValueText')
-    const minMaxText = document.getElementById('minMaxValueText')
+    const minMinValue = document.getElementById('minMinValueText').textContent;
+    const minMiddleValue = document.getElementById('minMiddleValueText').textContent;
+    const minMaxValue = document.getElementById('minMaxValueText').textContent;
 
-    const maxMinText = document.getElementById('maxMinValueText')
-    const maxMiddleText = document.getElementById('maxMiddleValueText')
-    const maxMaxText = document.getElementById('maxMaxValueText')
+    const maxMinValue = document.getElementById('maxMinValueText').textContent;
+    const maxMiddleValue = document.getElementById('maxMiddleValueText').textContent;
+    const maxMaxValue = document.getElementById('maxMaxValueText').textContent;
+
 
     const minCustomInput = document.getElementById('minCustomValue');
     const maxCustomInput = document.getElementById('maxCustomValue');
+
     const saveBtn = document.getElementById('saveBtn');
 
     const typeList = ['timeseries', 'table', 'gauge', 'piechart', 'histogram'];
@@ -24,7 +26,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const gateways = await getAllGateways();
     const sensorInfos = await getSensorDataAndField(gateways[0].gateway_id)
-    await getThreshold(gateways[0].gateway_id, sensorInfos[0].sensor_id, sensorInfos[0].type_en_name, minMinText, maxMaxText)
+    await getThreshold(gateways[0].gateway_id, sensorInfos[0].sensor_id, sensorInfos[0].type_en_name)
 
     if (!Array.isArray(gateways) || gateways.length === 0) {
         throw new Error('게이트웨이 정보가 없습니다.');
@@ -57,16 +59,24 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
+    // 처음엔 숨김
+    minCustomInput.style.display = 'none';
+    maxCustomInput.style.display = 'none';
+
+    handleThresholdRadioChange('minThreshold', minCustomInput, minValueText);
+    handleThresholdRadioChange('maxThreshold', maxCustomInput, maxValueText);
+
     sensorSelect.addEventListener('change', async (event) => {
         const selectedSensorId = event.target.value;
         const selectedGatewayId = gatewaySelect.value;
         const selectedField = event.target.options[event.target.selectedIndex].textContent.split('-')[1];
 
         if (selectedGatewayId && selectedSensorId && selectedField) {
-            await getThreshold(selectedGatewayId, selectedSensorId, selectedField, minMinText, maxMaxText);
+            await getThreshold(selectedGatewayId, selectedSensorId, selectedField);
         }
     });
 
+    console.log("선택된 라디오값 :", minRadio.value)
     saveBtn.addEventListener('click', async (e) => {
         e.preventDefault();
 
@@ -113,34 +123,50 @@ function handleRadioButtonChange() {
     document.getElementById('minCustomValue').style.display = minRadio.value === 'custom' ? 'inline-block' : 'none';
     document.getElementById('maxCustomValue').style.display = maxRadio.value === 'custom' ? 'inline-block' : 'none';
 
-    // // 'AI 추천'을 선택했을 때는 텍스트 박스를 숨기고 기본값을 설정
-    // if (minRadio.value === 'middle') {
-    //     const randomMin = generateRandomValue(minInput.value, maxInput.value);
-    //     minValueText.textContent = randomMin;  // AI 추천 값으로 보여짐
-    //     minInput.disabled = true;  // 입력 불가
-    // } else {
-    //     minInput.disabled = false;
-    // }
-    //
-    // if (maxRadio.value === 'middle') {
-    //     const randomMax = generateRandomValue(minInput.value, maxInput.value);
-    //     maxValueText.textContent = randomMax;  // AI 추천 값으로 보여짐
-    //     maxInput.disabled = true;  // 입력 불가
-    // } else {
-    //     maxInput.disabled = false;
-    // }
+    // 'AI 추천'을 선택했을 때는 텍스트 박스를 숨기고 기본값을 설정
+    if (minRadio.value === 'middle') {
+        const minMin = parseInt(document.getElementById('minMinValueText').textContent, 10);
+        const minMax = parseInt(document.getElementById('minMaxValueText').textContent, 10);
+        const randomMin = generateRandomValue(minMin, minMax);
+
+        minValueText.textContent = randomMin;  // AI 추천 값으로 보여짐
+        minInput.disabled = true;  // 입력 불가
+        checkRange(randomMin);
+    } else {
+        minInput.disabled = false;
+
+        minInput.addEventListener('input', () => {
+            checkRange(minInput.value);
+        });
+    }
+
+    if (maxRadio.value === 'middle') {
+        const minMin = parseInt(document.getElementById('maxMinValueText').textContent, 10);
+        const minMax = parseInt(document.getElementById('maxMaxValueText').textContent, 10);
+        maxValueText.textContent = randomMax;  // AI 추천 값으로 보여짐
+        maxInput.disabled = true;  // 입력 불가
+    } else {
+        maxInput.disabled = false;
+    }
 }
 
-// 임계치 값에 비례하는 난수 생성 (min, max 값을 기준으로)
-function generateRandomValue(minValue, maxValue) {
-    const min = parseFloat(minValue);
-    const max = parseFloat(maxValue);
+function checkRange(value, type){
+    if(type == 'min'){
+        const min = parseInt(document.getElementById('minMinValueText').textContent, 10);
+        const max = parseInt(document.getElementById('minMaxValueText').textContent, 10);
+    }else{
+        const min = parseInt(document.getElementById('maxMinValueText').textContent, 10);
+        const max = parseInt(document.getElementById('maxMaxValueText').textContent, 10);
+    }
+    const val = parseInt(value, 10);
 
-    if (isNaN(min) || isNaN(max)) return '';
-
-    // min과 max 비율로 난수 생성
-    const random = Math.random();
-    return (min + (max - min) * random).toFixed(2);  // 소수점 2자리로 값 표시
+    if (isNaN(val) || val < min || val > max) {
+        // 범위를 벗어났을 때 처리 (예: 경고, 입력 초기화 등)
+        alert(`값은 ${min} 이상 ${max} 이하이어야 합니다.`);
+        // 입력값을 범위 안으로 강제 조정할 수도 있음
+        if (val < min) minInput.value = min;
+        else if (val > max) minInput.value = max;
+    }
 }
 
 // 패널 요청 데이터 생성
@@ -157,9 +183,6 @@ function gatherFormData() {
     const type = document.getElementById('typeSelect').value;
     const aggregation = document.getElementById('aggregationSelect').value;
     const time = document.getElementById('timeSelect').value;
-
-    // const min = !minInput.disabled ? parseFloat(minInput.value) : null;
-    // const max = !maxInput.disabled ? parseFloat(maxInput.value) : null;
 
     return { dashboardUid, panelTitle, gatewayId, sensorId, field, width, height, type, aggregation, time, min, max };
 }
@@ -221,17 +244,28 @@ async function submitPanelRequest(panelWithRuleRequest) {
 }
 
 // 임계치 정보 불러오기
-async function getThreshold(selectedGatewayId, selectedSensorId, selectedField, minMinText, maxMaxText) {
+async function getThreshold(selectedGatewayId, selectedSensorId, selectedField) {
     try {
         const thresholdRes = await fetch(`https://luckyseven.live/api/threshold-histories/gateway-id/${selectedGatewayId}/sensor-id/${selectedSensorId}/type-en-name/${selectedField}`);
         if (!thresholdRes.ok) throw new Error("임계치 정보 조회 실패");
 
         const threshold = await thresholdRes.json();
-        console.log(threshold)
-        minMinText.value = threshold.min_range_min || 10; // 기본 임의 값
-        maxMaxText.value = threshold.max_range_max || 100; // 기본 임의 값
+        console.log("threshold: " + JSON.stringify(threshold, null, 2));
 
-        attachThresholdHandlers(threshold);
+        // 음수값을 0으로 보정
+        if (threshold.min_range_min < 0) threshold.min_range_min = 0;
+        if (threshold.min_range_max < 0) threshold.min_range_max = 0;
+        if (threshold.max_range_min < 0) threshold.max_range_min = 0;
+        if (threshold.max_range_max < 0) threshold.max_range_max = 0;
+
+        document.getElementById('minMinValueText').textContent = threshold.min_range_min || 10;
+        document.getElementById('minMiddleValueText').textContent = (threshold.min_range_min * 3 + threshold.min_range_max * 7) / 10;
+        document.getElementById('minMaxValueText').textContent = threshold.min_range_max || 20;
+
+        document.getElementById('maxMinValueText').textContent = threshold.max_range_min || 90;
+        document.getElementById('maxMiddleValueText').textContent = (threshold.max_range_min * 3 + threshold.max_range_max * 7) / 10;
+        document.getElementById("maxMaxValueText").textContent = threshold.max_range_max || 100;
+
     } catch (err) {
         console.error(err);
         alert(err.message);
@@ -253,43 +287,13 @@ async function getSensorDataAndField(gatewayId) {
     }
 }
 
-// 임계치 이벤트 핸들러 부착
-function attachThresholdHandlers(threshold) {
-    document.querySelectorAll('input[name="minThreshold"]').forEach(radio => {
-        radio.addEventListener('change', () => applyThreshold(threshold, 'min', radio.value));
-    });
-
-    document.querySelectorAll('input[name="maxThreshold"]').forEach(radio => {
-        radio.addEventListener('change', () => applyThreshold(threshold, 'max', radio.value));
-    });
-}
-
-// 임계치 값 적용
-// function applyThreshold(threshold, type, value) {
-//     const input = type === 'min' ? minInput : maxInput;
-//     let val = '';
-//
-//     if (type === 'min') {
-//         val = value === 'min' ? threshold.minRangeMin :
-//             value === 'middle' ? (threshold.minRangeMin * 3 + threshold.minRangeMax * 7) / 10 :
-//                 threshold.minRangeMax;
-//     } else {
-//         val = value === 'min' ? threshold.maxRangeMin :
-//             value === 'middle' ? (threshold.maxRangeMin * 3 + threshold.maxRangeMax * 7) / 10 :
-//                 threshold.maxRangeMax;
-//     }
-//
-//     input.disabled = false;
-//     input.value = val ?? '';
-// }
-
 // 선택 사항 드롭다운 채우기
 function populateSelect(selectElement, options) {
     selectElement.innerHTML = ''; // 기존 내용 초기화
     options.forEach(item => {
         const option = document.createElement('option');
-        option.value = item.value || item; // item.value가 있을 경우 사용, 없으면 그대로 사용
-        option.textContent = item.text || item; // item.text가 있을 경우 사용, 없으면 그대로 사용
+        option.value = item.value || item;
+        option.textContent = item.text || item;
         selectElement.appendChild(option);
     });
 }
@@ -297,10 +301,10 @@ function populateSelect(selectElement, options) {
 // 모든 게이트웨이 목록을 가져오는 함수
 async function getAllGateways() {
     try {
-        const departmentId = window.currentUser?.department?.departmentId;
-        if (!departmentId) {
-            throw new Error("Department ID가 없습니다.");
-        }
+        // const departmentId = window.currentUser?.department?.departmentId;
+        // if (!departmentId) {
+        //     throw new Error("Department ID가 없습니다.");
+        // }
         const res = await fetch(`https://luckyseven.live/api/gateways/department/1`);
         if (!res.ok) throw new Error('게이트웨이 목록 불러오기 실패');
         return await res.json();
@@ -309,4 +313,30 @@ async function getAllGateways() {
         alert('게이트웨이 목록 로딩 오류');
         return [];
     }
+}
+
+function handleThresholdRadioChange(thresholdName, inputElement, valueTextElement) {
+    // 라디오 버튼 변경 시 처리
+    document.querySelectorAll(`input[name="${thresholdName}"]`).forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            if (e.target.value === 'custom') {
+                inputElement.style.display = 'inline-block';
+                inputElement.focus();
+                valueTextElement.textContent = '';
+            } else {
+                inputElement.style.display = 'none';
+                valueTextElement.textContent = '';
+            }
+        });
+    });
+
+    // 사용자 입력 시 실시간 표시
+    inputElement.addEventListener('input', () => {
+        const value = inputElement.value.trim();
+        if (!isNaN(value) && value !== '') {
+            valueTextElement.textContent = `사용자 입력 값: ${value}`;
+        } else {
+            valueTextElement.textContent = '';
+        }
+    });
 }

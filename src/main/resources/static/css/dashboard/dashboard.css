@@ -40,7 +40,7 @@ a {
 
 /* 저장 버튼을 오른쪽 위에 배치 */
 .add-dashboard-save-btn {
-    background-color: #a5a0f2;
+    background-color: #6d65f4;
     color: #fff;
     padding: 12px 28px;
     border: none;
@@ -51,6 +51,14 @@ a {
     position: relative;
     top: 6px; /* 버튼 높이 맞추기 */
     height: 45px; /* 버튼 높이 */
+}
+
+/* 버튼 컨테이너 */
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: 20px;
 }
 
 .add-dashboard-save-btn:hover {

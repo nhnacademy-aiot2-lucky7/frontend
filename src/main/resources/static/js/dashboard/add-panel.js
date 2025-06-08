@@ -82,6 +82,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         try {
             const formData = gatherFormData();
+            try {
+                checkRange(formData.min, 'min');
+                checkRange(formData.max, 'max')
+            } catch(error) {
+                alert(error);
+            }
+
             const typeInfo = await fetchTypeInfo(formData.field);
 
             const panelWithRuleRequest = createPanelRequest(formData, typeInfo);
@@ -158,6 +165,7 @@ function checkRange(value, type){
     if (isNaN(val) || val < min || val > max) {
         // 범위를 벗어났을 때 처리 (예: 경고, 입력 초기화 등)
         alert(`값은 ${min} 이상 ${max} 이하이어야 합니다.`);
+        throw new Error(`임계치 값은 ${min} 이상 ${max} 이하이어야 합니다.`);
         // 입력값을 범위 안으로 강제 조정할 수도 있음
         if (val < min) minInput.value = min;
         else if (val > max) minInput.value = max;
@@ -178,6 +186,31 @@ function gatherFormData() {
     const type = document.getElementById('typeSelect').value;
     const aggregation = document.getElementById('aggregationSelect').value;
     const time = document.getElementById('timeSelect').value;
+
+
+    let min = document.querySelector('input[name="minThreshold"]:checked');
+    const minCustomValue = document.getElementById("minCustomValue").value;
+
+    let max = document.querySelector('input[name="maxThreshold"]:checked');
+    const maxCustomValue = document.getElementById("maxCustomValue").value;
+
+    if((min || minCustomValue) && (max || maxCustomValue)) {
+        if(min.value !== "") {
+            console.log("선택한 min값:", min.value);
+        }else {
+            min = minCustomValue;
+            console.log("사용자 min입력 값:", min);
+        }
+
+        if(max.value !== "") {
+            console.log("선택한 max값:", max.value);
+        }else {
+            max = maxCustomValue;
+            console.log("사용자 max입력 값:", max);
+        }
+    }else {
+        throw new Error('임계치는 필수 사항입니다!');
+    }
 
     return { dashboardUid, panelTitle, gatewayId, sensorId, field, width, height, type, aggregation, time, min, max };
 }

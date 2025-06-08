@@ -243,11 +243,11 @@ function createPanelRequest(formData, typeInfo) {
             dashboardUid: formData.dashboardUid,
             panelId: null,
             panelTitle: formData.panelTitle,
-            sensorFieldRequestDto: [{
+            sensorFieldRequestDto: {
                 field: formData.field,
                 gatewayId: formData.gatewayId,
                 sensorId: formData.sensorId
-            }],
+            },
             gridPos: { w: formData.width, h: formData.height },
             type: formData.type,
             aggregation: formData.aggregation,

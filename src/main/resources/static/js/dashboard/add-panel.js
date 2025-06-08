@@ -76,7 +76,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    console.log("선택된 라디오값 :", minRadio.value)
     saveBtn.addEventListener('click', async (e) => {
         e.preventDefault();
 

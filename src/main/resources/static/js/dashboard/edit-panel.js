@@ -315,7 +315,7 @@ async function getThreshold(selectedGatewayId, selectedSensorId, selectedField, 
 // 센서 데이터 요청
 async function getSensorDataAndField(gatewayId) {
     try {
-        const res = await fetch(`https://luckyseven.live/api/sensor-data-mappings/gateway-id/${gatewayId}/sensors`);
+        const res = await fetch(`https://luckyseven.live/api/sensor-data-mappings/gateway-id/${gatewayId}/search-status?status=COMPLETED`);
         if (!res.ok) throw new Error('센서 매핑 정보 실패');
 
         const sensorData = await res.json();

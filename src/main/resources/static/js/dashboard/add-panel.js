@@ -131,13 +131,8 @@ function handleRadioButtonChange() {
 
         minValueText.textContent = randomMin;  // AI 추천 값으로 보여짐
         minInput.disabled = true;  // 입력 불가
-        checkRange(randomMin);
     } else {
         minInput.disabled = false;
-
-        minInput.addEventListener('input', () => {
-            checkRange(minInput.value);
-        });
     }
 
     if (maxRadio.value === 'middle') {

@@ -186,7 +186,7 @@ function gatherFormData() {
     } else if (minText === 'max') {
         minText = 'minMaxValueText';
     }
-    let min = document.getElementById(minText).textContent;
+    let min = document.getElementById(minText).textContent.split(" ")[0];
     const minCustomValue = document.getElementById("minCustomValue").value;
 
     let maxText = document.querySelector('input[name="maxThreshold"]:checked').value;
@@ -197,7 +197,7 @@ function gatherFormData() {
     } else if (maxText === 'max') {
         maxText = 'maxMaxValueText';
     }
-    let max = document.getElementById(maxText).textContent;
+    let max = document.getElementById(maxText).textContent.split(" ")[0];
     const maxCustomValue = document.getElementById("maxCustomValue").value;
 
     if((min || minCustomValue) && (max || maxCustomValue)) {

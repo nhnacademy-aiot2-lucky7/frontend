@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }));
 
     const sensorOptions = sensorInfos.map(ss => ({
-        value: ss.sensor_id, text: `${ss.location}-${ss.type_en_name}-${ss.spot}`
+        value: `${ss.sensor_id}-${ss.type_en_name}`, text: `${ss.location}-${ss.type_en_name}-${ss.spot}`
     }))
 
     populateSelect(typeSelect, typeList);
@@ -133,21 +133,12 @@ function handleRadioButtonChange() {
     if (minRadio.value === 'middle') {
         const minMin = parseInt(document.getElementById('minMinValueText').textContent, 10);
         const minMax = parseInt(document.getElementById('minMaxValueText').textContent, 10);
-        const randomMin = generateRandomValue(minMin, minMax);
 
-        minValueText.textContent = randomMin;  // AI 추천 값으로 보여짐
-        minInput.disabled = true;  // 입력 불가
-    } else {
-        minInput.disabled = false;
     }
 
     if (maxRadio.value === 'middle') {
         const minMin = parseInt(document.getElementById('maxMinValueText').textContent, 10);
         const minMax = parseInt(document.getElementById('maxMaxValueText').textContent, 10);
-        maxValueText.textContent = randomMax;  // AI 추천 값으로 보여짐
-        maxInput.disabled = true;  // 입력 불가
-    } else {
-        maxInput.disabled = false;
     }
 }
 
@@ -176,8 +167,8 @@ function gatherFormData() {
     const dashboardUid = document.getElementById('dashboardUid').value;
     const panelTitle = document.getElementById('name').value;
     const gatewayId = parseInt(document.getElementById('gatewaySelect').value);
-    const sensorId = document.getElementById('sensorSelect').value;
-    const field = document.getElementById('fieldSelect').value;
+    const sensorId = document.getElementById('sensorSelect').value.split('-')[0];
+    const field = document.getElementById('sensorSelect').value.split('-')[1];
 
     const width = parseInt(document.getElementById('width').value, 10);
     const height = parseInt(document.getElementById('height').value, 10);
@@ -187,22 +178,38 @@ function gatherFormData() {
     const time = document.getElementById('timeSelect').value;
 
 
-    let min = document.querySelector('input[name="minThreshold"]:checked');
+    let minText = document.querySelector('input[name="minThreshold"]:checked').value;
+    if (minText === 'min') {
+        minText = 'mainMinValueText';
+    } else if (minText === 'middle') {
+        minText = 'minMiddleValueText';
+    } else if (minText === 'max') {
+        minText = 'minMaxValueText';
+    }
+    let min = document.getElementById(minText).textContent;
     const minCustomValue = document.getElementById("minCustomValue").value;
 
-    let max = document.querySelector('input[name="maxThreshold"]:checked');
+    let maxText = document.querySelector('input[name="maxThreshold"]:checked').value;
+    if (maxText === 'min') {
+        maxText = 'maxMinValueText';
+    } else if (maxText === 'middle') {
+        maxText = 'maxMiddleValueText';
+    } else if (maxText === 'max') {
+        maxText = 'maxMaxValueText';
+    }
+    let max = document.getElementById(maxText).textContent;
     const maxCustomValue = document.getElementById("maxCustomValue").value;
 
     if((min || minCustomValue) && (max || maxCustomValue)) {
         if(min.value !== "") {
-            console.log("선택한 min값:", min.value);
+            console.log("선택한 min값:", min);
         }else {
             min = minCustomValue;
             console.log("사용자 min입력 값:", min);
         }
 
         if(max.value !== "") {
-            console.log("선택한 max값:", max.value);
+            console.log("선택한 max값:", max);
         }else {
             max = maxCustomValue;
             console.log("사용자 max입력 값:", max);
@@ -306,6 +313,7 @@ async function getSensorDataAndField(gatewayId) {
         if (!res.ok) throw new Error('센서 매핑 정보 실패');
 
         const sensorData = await res.json();
+        console.log(sensorData);
 
         return sensorData;
     } catch (err) {

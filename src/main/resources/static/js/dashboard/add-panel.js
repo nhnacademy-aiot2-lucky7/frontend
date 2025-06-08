@@ -91,6 +91,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             const typeInfo = await fetchTypeInfo(formData.field);
 
             const panelWithRuleRequest = createPanelRequest(formData, typeInfo);
+            console.log(panelWithRuleRequest);
+
             const response = await submitPanelRequest(panelWithRuleRequest);
 
             if (!response.ok) {
@@ -143,12 +145,14 @@ function handleRadioButtonChange() {
 }
 
 function checkRange(value, type){
+    let min;
+    let max;
     if(type == 'min'){
-        const min = parseInt(document.getElementById('minMinValueText').textContent, 10);
-        const max = parseInt(document.getElementById('minMaxValueText').textContent, 10);
+        min = parseInt(document.getElementById('minMinValueText').textContent, 10);
+        max = parseInt(document.getElementById('minMaxValueText').textContent, 10);
     }else{
-        const min = parseInt(document.getElementById('maxMinValueText').textContent, 10);
-        const max = parseInt(document.getElementById('maxMaxValueText').textContent, 10);
+        min = parseInt(document.getElementById('maxMinValueText').textContent, 10);
+        max = parseInt(document.getElementById('maxMaxValueText').textContent, 10);
     }
     const val = parseInt(value, 10);
 
@@ -240,9 +244,9 @@ function createPanelRequest(formData, typeInfo) {
             panelId: null,
             panelTitle: formData.panelTitle,
             sensorFieldRequestDto: [{
-                type_en_name: formData.field,
-                gateway_id: formData.gatewayId,
-                sensor_id: formData.sensorId
+                field: formData.field,
+                gatewayId: formData.gatewayId,
+                sensorId: formData.sensorId
             }],
             gridPos: { w: formData.width, h: formData.height },
             type: formData.type,

@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const gateways = await getAllGateways();
     const sensorInfos = await getSensorDataAndField(gateways[0].gateway_id)
-    await getThreshold(gateways[0].gateway_id, sensorInfos[0].sensor_id, sensorInfos[0].type_en_name)
+    await getThreshold(gateways[0].gateway_id, sensorInfos[0].sensor_id, sensorInfos[0].type_en_name, sensorInfos[0].type_unit)
 
     if (!Array.isArray(gateways) || gateways.length === 0) {
         throw new Error('게이트웨이 정보가 없습니다.');
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }));
 
     const sensorOptions = sensorInfos.map(ss => ({
-        value: `${ss.sensor_id}-${ss.type_en_name}`, text: `${ss.location}-${ss.type_en_name}-${ss.spot}`
+        value: `${ss.sensor_id}-${ss.type_en_name}-${ss.type_unit}`, text: `${ss.location}-${ss.type_en_name}-${ss.spot}`
     }))
 
     populateSelect(typeSelect, typeList);
@@ -73,12 +73,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     sensorSelect.addEventListener('change', async (event) => {
-        const selectedSensorId = event.target.value;
         const selectedGatewayId = gatewaySelect.value;
-        const selectedField = event.target.options[event.target.selectedIndex].textContent.split('-')[1];
+        const [selectedSensorId, selectedField, typeUnit] = event.target.options[event.target.selectedIndex].value.split('-');
 
-        if (selectedGatewayId && selectedSensorId && selectedField) {
-            await getThreshold(selectedGatewayId, selectedSensorId, selectedField);
+        if (selectedGatewayId && selectedSensorId && selectedField && typeUnit) {
+            await getThreshold(selectedGatewayId, selectedSensorId, selectedField, typeUnit);
         }
     });
 
@@ -285,7 +284,7 @@ async function submitPanelRequest(panelWithRuleRequest) {
 }
 
 // 임계치 정보 불러오기
-async function getThreshold(selectedGatewayId, selectedSensorId, selectedField) {
+async function getThreshold(selectedGatewayId, selectedSensorId, selectedField, unit) {
     try {
         const thresholdRes = await fetch(`https://luckyseven.live/api/threshold-histories/gateway-id/${selectedGatewayId}/sensor-id/${selectedSensorId}/type-en-name/${selectedField}`);
         if (!thresholdRes.ok) throw new Error("임계치 정보 조회 실패");
@@ -299,13 +298,13 @@ async function getThreshold(selectedGatewayId, selectedSensorId, selectedField) 
         if (threshold.max_range_min < 0) threshold.max_range_min = 0;
         if (threshold.max_range_max < 0) threshold.max_range_max = 0;
 
-        document.getElementById('minMinValueText').textContent = threshold.min_range_min || 10;
-        document.getElementById('minMiddleValueText').textContent = (threshold.min_range_min * 3 + threshold.min_range_max * 7) / 10;
-        document.getElementById('minMaxValueText').textContent = threshold.min_range_max || 20;
+        document.getElementById('minMinValueText').textContent = `${threshold.min_range_min} ${unit}`;
+        document.getElementById('minMiddleValueText').textContent = parseFloat(((threshold.min_range_min * 3 + threshold.min_range_max * 7) / 10).toFixed(2)) + ` ${unit}`;
+        document.getElementById('minMaxValueText').textContent = threshold.min_range_max + ` ${unit}`;
 
-        document.getElementById('maxMinValueText').textContent = threshold.max_range_min || 90;
-        document.getElementById('maxMiddleValueText').textContent = (threshold.max_range_min * 3 + threshold.max_range_max * 7) / 10;
-        document.getElementById("maxMaxValueText").textContent = threshold.max_range_max || 100;
+        document.getElementById('maxMinValueText').textContent = threshold.max_range_min + ` ${unit}`;
+        document.getElementById('maxMiddleValueText').textContent = parseFloat(((threshold.max_range_min * 3 + threshold.max_range_max * 7) / 10).toFixed(2)) + ` ${unit}`;
+        document.getElementById("maxMaxValueText").textContent = threshold.max_range_max + ` ${unit}`;
 
     } catch (err) {
         console.error(err);
@@ -444,7 +443,15 @@ const setPanelDefaults = async (dashboardUid, panelId) => {
         gatewaySelect.value = gatewayId;
 
         const sensorSelect = document.getElementById("sensorSelect");
-        sensorSelect.value = sensorId + '-' + field;
+        const targetPrefix = `${sensorId}-${field}`;
+
+        for (const option of sensorSelect.options) {
+            if (option.value.startsWith(targetPrefix)) {
+                sensorSelect.value = option.value;
+                break;
+            }
+        }
+
 
         const typeSelect = document.getElementById("typeSelect");
         typeSelect.value = panelData.panelType;

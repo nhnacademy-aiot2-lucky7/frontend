@@ -91,31 +91,46 @@
                     <div class="threshold-option">
                         <span>MIN</span>
                         <div id="minSuggestionGroup" class="radio-group">
-                            <label><input type="radio" name="minThreshold" value="min" /> 기본 최소값 (Ai추천)</label>
-                            <span id="minMinValueText"></span>
-                            <label><input type="radio" name="minThreshold" value="middle" checked /> AI 추천값 (자동 설정)</label>
-                            <span id="minMiddleValueText"></span>
-                            <label><input type="radio" name="minThreshold" value="max" /> 기본 최대값으로 설정</label>
-                            <span id="minMaxValueText"></span>
-                            <label><input type="radio" name="minThreshold" value="custom" id="minCustomRadio" /> 사용자 설정</label>
-                            <input type="text" id="minCustomValue" name="minCustomValue" class="custom-input" placeholder="최소값 입력" />
-                            <span id="minValueText"></span> <!-- AI 추천값 표시 -->
+                            <div class="radio-item">
+                                <label><input type="radio" name="minThreshold" value="min" /> 기본 최소값</label>
+                                <span id="minMinValueText"></span>
+                            </div>
+                            <div class="radio-item">
+                                <label><input type="radio" name="minThreshold" value="middle" checked /> AI 추천값</label>
+                                <span id="minMiddleValueText"></span>
+                            </div>
+                            <div class="radio-item">
+                                <label><input type="radio" name="minThreshold" value="max" /> 기본 최대값</label>
+                                <span id="minMaxValueText"></span>
+                            </div>
+                            <div class="radio-item">
+                                <label><input type="radio" name="minThreshold" value="custom" id="minCustomRadio" /> 사용자 설정</label>
+                                <input type="text" id="minCustomValue" name="minCustomValue" class="custom-input" placeholder="최소값 입력" />
+                                <span id="minValueText"></span>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- 최대값 설정 (같은 행에 나란히 배치) -->
                     <div class="threshold-option">
                         <span>MAX</span>
                         <div id="maxSuggestionGroup" class="radio-group">
-                            <label><input type="radio" name="maxThreshold" value="min" /> 기본 최소값 (Ai추천)</label>
-                            <span id="maxMinValueText"></span>
-                            <label><input type="radio" name="maxThreshold" value="middle" checked /> AI 추천값 (자동 설정)</label>
-                            <span id="maxMiddleValueText"></span>
-                            <label><input type="radio" name="maxThreshold" value="max" /> 기본 최대값으로 설정</label>
-                            <span id="maxMaxValueText"></span>
-                            <label><input type="radio" name="maxThreshold" value="custom" id="maxCustomRadio" /> 사용자 설정</label>
-                            <input type="text" id="maxCustomValue" name="maxCustomValue" class="custom-input" placeholder="최대값 입력" />
-                            <span id="maxValueText"></span> <!-- AI 추천값 표시 -->
+                            <div class="radio-item">
+                                <label><input type="radio" name="maxThreshold" value="min" /> 기본 최소값</label>
+                                <span id="maxMinValueText"></span>
+                            </div>
+                            <div class="radio-item">
+                                <label><input type="radio" name="maxThreshold" value="middle" checked /> AI 추천값</label>
+                                <span id="maxMiddleValueText"></span>
+                            </div>
+                            <div class="radio-item">
+                                <label><input type="radio" name="maxThreshold" value="max" /> 기본 최대값</label>
+                                <span id="maxMaxValueText"></span>
+                            </div>
+                            <div class="radio-item">
+                                <label><input type="radio" name="maxThreshold" value="custom" id="maxCustomRadio" /> 사용자 설정</label>
+                                <input type="text" id="maxCustomValue" name="maxCustomValue" class="custom-input" placeholder="최대값 입력" />
+                                <span id="maxValueText"></span>
+                            </div>
                         </div>
                     </div>
                 </div>

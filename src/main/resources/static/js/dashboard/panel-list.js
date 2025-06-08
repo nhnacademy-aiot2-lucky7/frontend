@@ -46,7 +46,7 @@ async function loadIframes(dashboardUid) {
 
             // iframe 생성
             const iframe = document.createElement('iframe');
-            iframe.src = `https://grafana.luckyseven.live/d-solo/${panel.dashboardUid}?orgId=1&from=${panel.from}&to=${panel.now}&panelId=${panel.panelId}`;
+            iframe.src = `https://grafana.luckyseven.live/d-solo/${panel.dashboardUid}?orgId=1&from=${panel.from}&to=${panel.now}&panelId=${panel.panelId}&theme=light&refresh=10s`;
             iframe.style.width = '100%';
             iframe.style.height = '100%';
             iframe.frameBorder = '0';

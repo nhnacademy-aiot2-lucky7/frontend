@@ -255,7 +255,7 @@ function createPanelRequest(formData, typeInfo) {
             thresholdMin: formData.min,
             thresholdMax: formData.max,
             bucket: "team1-sensor-data",
-            measurement: "sensor-data"
+            measurement: "sensor_data"
         },
         ruleRequest: {
             gateway_id: formData.gatewayId,

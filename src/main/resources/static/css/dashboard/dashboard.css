@@ -234,3 +234,25 @@ select:disabled {
     font-size: 14px;
     color: #444;
 }
+
+ .threshold-option {
+     font-size: 14px;
+ }
+
+.radio-group label {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 8px;
+    gap: 4px;
+}
+
+.radio-group span {
+    margin-right: 12px;
+    font-weight: bold;
+}
+
+.custom-input {
+    width: 80px;
+    padding: 2px 4px;
+    margin-left: 4px;
+}

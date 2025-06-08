@@ -40,15 +40,20 @@ async function loadIframes(dashboardUid) {
             deleteBtn.addEventListener('click', async () => await handleDelete(panel, wrapper));
             wrapper.appendChild(deleteBtn);
 
+            // ✅ 비율 유지용 div 생성 (16:9 비율 유지)
+            const aspectBox = document.createElement('div');
+            aspectBox.className = 'aspect-ratio-box';
+
             // iframe 생성
             const iframe = document.createElement('iframe');
             iframe.src = `https://grafana.luckyseven.live/d-solo/${panel.dashboardUid}?orgId=1&from=${panel.from}&to=${panel.now}&panelId=${panel.panelId}`;
-            iframe.width = '450';
-            iframe.height = '200';
+            iframe.style.width = '100%';
+            iframe.style.height = '100%';
             iframe.frameBorder = '0';
             iframe.className = 'grafana-iframe';
 
             wrapper.appendChild(iframe);
+            makeResizableAndDraggable(wrapper, iframe);
             container.appendChild(wrapper);
         });
     } catch (error) {
@@ -90,3 +95,74 @@ async function handleDelete(panel, wrapper) {
         alert('서버 오류로 삭제에 실패했습니다.');
     }
 }
+
+function makeResizableAndDraggable(wrapper, iframe) {
+    const resizer = document.createElement('div');
+    resizer.className = 'resizer';
+    wrapper.appendChild(resizer);
+
+    const dragHandle = document.createElement('div');
+    dragHandle.className = 'drag-handle';
+    dragHandle.textContent = '☰ 이동';
+    wrapper.prepend(dragHandle);
+
+    // 크기 조절
+    resizer.addEventListener('mousedown', initResize);
+
+    function initResize(e) {
+        e.preventDefault();
+        window.addEventListener('mousemove', resize);
+        window.addEventListener('mouseup', stopResize);
+    }
+
+    function resize(e) {
+        const rect = wrapper.getBoundingClientRect();
+        wrapper.style.width = `${e.clientX - rect.left}px`;
+        wrapper.style.height = `${e.clientY - rect.top}px`;
+        iframe.style.width = '100%';
+        iframe.style.height = '100%';
+    }
+
+    function stopResize() {
+        window.removeEventListener('mousemove', resize);
+        window.removeEventListener('mouseup', stopResize);
+    }
+
+    // 드래그
+    let offsetX = 0, offsetY = 0;
+    const container = document.getElementById('panelList');
+
+    dragHandle.addEventListener('mousedown', e => {
+        const rect = wrapper.getBoundingClientRect();
+        offsetX = e.clientX - rect.left;
+        offsetY = e.clientY - rect.top;
+
+        document.addEventListener('mousemove', drag);
+        document.addEventListener('mouseup', stopDrag);
+    });
+
+    function drag(e) {
+        const containerRect = container.getBoundingClientRect();
+
+        let newLeft = e.clientX - containerRect.left - offsetX;
+        let newTop = e.clientY - containerRect.top - offsetY;
+
+        // 이동 제한 (0 ~ 최대값)
+        const maxLeft = container.clientWidth - wrapper.offsetWidth;
+        const maxTop = container.clientHeight - wrapper.offsetHeight;
+
+        // maxLeft, maxTop가 음수가 될 경우 대비
+        const boundedLeft = Math.min(Math.max(0, newLeft), Math.max(0, maxLeft));
+        const boundedTop = Math.min(Math.max(0, newTop), Math.max(0, maxTop));
+
+        wrapper.style.left = `${boundedLeft}px`;
+        wrapper.style.top = `${boundedTop}px`;
+    }
+
+    function stopDrag() {
+        document.removeEventListener('mousemove', drag);
+        document.removeEventListener('mouseup', stopDrag);
+    }
+}
+
+

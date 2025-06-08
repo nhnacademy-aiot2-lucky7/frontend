@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const saveBtn = document.getElementById('saveBtn');
 
     const typeList = ['timeseries', 'table', 'gauge', 'piechart', 'histogram'];
-    const aggregationList = ['avg', 'sum', 'min', 'max'];
+    const aggregationList = ['mean', 'sum', 'min', 'max'];
     const timeList = ['1h', '6h', '12h', '1d', '7d', '30d'];
 
     const gateways = await getAllGateways();
@@ -252,8 +252,8 @@ function createPanelRequest(formData, typeInfo) {
             type: formData.type,
             aggregation: formData.aggregation,
             time: formData.time,
-            thresholdMin: formData.min,
-            thresholdMax: formData.max,
+            min: formData.min,
+            max: formData.max,
             bucket: "team1-sensor-data",
             measurement: "sensor_data"
         },

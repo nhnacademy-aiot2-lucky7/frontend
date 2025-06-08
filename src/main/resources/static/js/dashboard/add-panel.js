@@ -148,21 +148,18 @@ function checkRange(value, type){
     let min;
     let max;
     if(type == 'min'){
-        min = parseInt(document.getElementById('minMinValueText').textContent, 10);
-        max = parseInt(document.getElementById('minMaxValueText').textContent, 10);
+        min = parseFloat(document.getElementById('minMinValueText').textContent);
+        max = parseFloat(document.getElementById('minMaxValueText').textContent);
     }else{
-        min = parseInt(document.getElementById('maxMinValueText').textContent, 10);
-        max = parseInt(document.getElementById('maxMaxValueText').textContent, 10);
+        min = parseFloat(document.getElementById('maxMinValueText').textContent);
+        max = parseFloat(document.getElementById('maxMaxValueText').textContent);
     }
-    const val = parseInt(value, 10);
+    const val = parseFloat(value);
 
     if (isNaN(val) || val < min || val > max) {
         // 범위를 벗어났을 때 처리 (예: 경고, 입력 초기화 등)
         alert(`값은 ${min} 이상 ${max} 이하이어야 합니다.`);
         throw new Error(`임계치 값은 ${min} 이상 ${max} 이하이어야 합니다.`);
-        // 입력값을 범위 안으로 강제 조정할 수도 있음
-        if (val < min) minInput.value = min;
-        else if (val > max) minInput.value = max;
     }
 }
 

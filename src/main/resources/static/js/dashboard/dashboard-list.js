@@ -124,12 +124,16 @@ document.addEventListener('DOMContentLoaded', async () => {
             const mainToggleInput = document.createElement('input');
             mainToggleInput.type = 'checkbox';
             mainToggleInput.className = 'main-toggle-input';
-            mainToggleInput.checked = (mainDashboardUid == dashboardUid); // 활성화 여부
-            mainToggleInput.disabled = (mainDashboardUid == dashboardUid); // 다른 대시보드면 비활성화
+            mainToggleInput.checked = (mainDashboardUid == dashboardUid);
+            mainToggleInput.disabled = (mainDashboardUid == dashboardUid);
 
-            // span
-            const mainToggleSlider = document.createElement('span');
-            mainToggleSlider.className = 'slider';
+            // ✅ 반드시 slider 추가
+            const slider = document.createElement('span');
+            slider.className = 'slider';
+
+            // ✅ 조립
+            mainToggleWrapper.appendChild(mainToggleInput);
+            mainToggleWrapper.appendChild(slider);
 
             // 수정 버튼 클릭 시 페이지 이동
             updateBtn.addEventListener('click', function (e) {
@@ -301,7 +305,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
 
             mainToggleWrapper.appendChild(mainToggleInput);
-            mainToggleWrapper.appendChild(mainToggleSlider);
+            mainToggleWrapper.appendChild(slider);
 
             // 버튼 컨테이너에 버튼 추가
             buttonContainer.appendChild(updateBtn);

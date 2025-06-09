@@ -41,7 +41,7 @@ a {
 /* 저장 버튼을 오른쪽 위에 배치 */
 .dashboard-add-btn {
     position: absolute;
-    top: 30px;
+    top: 70px;
     right: 100px;
     padding: 10px 20px;
     background-color: #8d89e8;

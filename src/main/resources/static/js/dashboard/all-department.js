@@ -64,8 +64,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 banner.style.transform = 'scale(1)';
             });
 
+            console.log("dashboardTitle:{}", dashboardTitle);
             banner.addEventListener('click', () => {
-                window.location.href = `/admin/dashboard-list?${dashboardUid}`;
+                const encodedTitle = encodeURIComponent(dashboardTitle);
+                window.location.href = `/admin/dashboard-list?title=${encodedTitle}`;
             });
 
             container.appendChild(banner);

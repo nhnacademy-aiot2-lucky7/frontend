@@ -11,42 +11,40 @@
     <link href="/css/dashboard/panel-list.css" rel="stylesheet"/>
 
     <script>
-        // window 에 유저 저장
-        try {
-            let userResponse = await fetch("https://luckyseven.live/api/users/me", {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                credentials: 'include'
-            });
-            let user = await userResponse.json();
+        (async () => {
+            try {
+                const userResponse = await fetch("https://luckyseven.live/api/users/me", {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include'
+                });
+                const user = await userResponse.json();
 
-            let imageResponse = await fetch(`https://luckyseven.live/api/images/${user.userEmail}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                credentials: 'include'
-            });
-            let image = await imageResponse.json();
+                const imageResponse = await fetch(`https://luckyseven.live/api/images/${user.userEmail}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include'
+                });
+                const image = await imageResponse.json();
 
-            document.currentUser = {
-                userRole: user.userRole,
-                userNo: user.userNo,
-                userName: user.userName,
-                userEmail: user.userEmail,
-                userPhone: user.userPhone,
-                department: user.department,
-                eventLevelResponse: user.eventLevelResponse,
-                image: image
-            };
-        } catch (error) {
-            console.error("유저 데이터 가져오기 실패:", error);
-        }
-
-        // JSP에서 전달된 dashboardTitle을 JS 변수로 전달
-        var dashboardTitle = "${dashboardTitle}";
+                document.currentUser = {
+                    userRole: user.userRole,
+                    userNo: user.userNo,
+                    userName: user.userName,
+                    userEmail: user.userEmail,
+                    userPhone: user.userPhone,
+                    department: user.department,
+                    eventLevelResponse: user.eventLevelResponse,
+                    image: image
+                };
+            } catch (error) {
+                console.error("유저 데이터 가져오기 실패:", error);
+            }
+        })();
     </script>
 
     <script src="/js/chart.js"></script>

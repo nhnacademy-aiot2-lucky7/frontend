@@ -10,8 +10,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         }).then(res => res.json());
 
         // 제목 표시
-        const titleElement = document.querySelector('h1');  // 적절한 선택자 사용
-        if (titleElement) titleElement.textContent = mainDashboard.dashboardTitle || '대시보드';
+        const titleElement = document.getElementById('dashboardTitle');
+        if (titleElement) titleElement.textContent = `차트 내역: ${mainDashboard.dashboardTitle}` || '';
 
         // panelList 데이터-dashboard-uid 속성 세팅
         const panelList = document.getElementById('panelList');

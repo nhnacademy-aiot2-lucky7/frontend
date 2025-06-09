@@ -44,8 +44,19 @@ public class DashboardController {
 
     // admin 대시보드 정보 조회
     @GetMapping("/pages/admin/dashboard-info")
-    public String getAdminDashboards() {
+    public String getAdminDepartment() {
         return "pages/admin/dashboard/pages-dashboard-info";
+    }
+
+    @GetMapping("/all-dashboard")
+    public String getAllDashboards() {
+        return "pages/admin/dashboard/pages-dashboard-all-list";
+    }
+
+    @GetMapping("/admin/dashboard-list")
+    public String getAdminDashboards(@RequestParam("dashboardUid") String dashboardUid, Model model) {
+        model.addAttribute("dashboardUid", dashboardUid);
+        return "pages/member/dashboard/pages-dashboard-info";
     }
 
     // 패널 추가

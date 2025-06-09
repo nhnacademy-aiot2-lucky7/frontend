@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const dashboardSelect = document.getElementById('dashboardSelect');
     const dashboardGroups = document.getElementById('dashboardList');
     const keywordInput = document.getElementById('keywordInput');
+    const dashboardUid = dashboardList.dataset.dashboardUid;
 
     let dashboardsData = JSON.parse(localStorage.getItem('dashboards') || '[]');
     const departmentsMap = new Map();

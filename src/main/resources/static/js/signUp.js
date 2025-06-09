@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                         localStorage.setItem('isLoggedIn', 'true');
                         loadUserToLocalStorage().then(()=>{
-                            window.location.replace('/dashboard');
+                            window.location.replace('/dashboard-info');
                         })
                     });
             })

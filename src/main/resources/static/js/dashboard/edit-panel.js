@@ -102,14 +102,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             if (!response.ok) {
                 const errorText = await response.text();
-                alert(`생성 실패: ${response.status} - ${errorText}`);
+                alert(`수정 실패: ${response.status} - ${errorText}`);
             } else {
-                alert('패널이 성공적으로 생성되었습니다!');
+                alert('패널 수정이 완료되었습니다!');
                 window.location.href = `/panel/${formData.dashboardUid}/${formData.panelTitle}`;
             }
         } catch (error) {
-            console.error('패널 저장 오류:', error);
-            alert('패널 저장 중 오류가 발생했습니다.');
+            console.error('패널 수정 오류:', error);
+            alert('패널 수정 중 오류가 발생했습니다.');
         }
     });
 

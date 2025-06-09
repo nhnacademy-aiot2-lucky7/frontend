@@ -275,9 +275,9 @@ document.addEventListener('DOMContentLoaded', function() {
     `;
         } else if (isSingle && Array.isArray(result.predictedData)) {
             html += `
-        <div style="width:600px; height:auto; display:block; text-align:center;">
+        <div style="width:1300px; height:auto; display:block; text-align:center;">
             <div style="height:320px;">
-                <canvas id="line-${id}" width="600" height="320"></canvas>
+                <canvas id="line-${id}" width="1300" height="320"></canvas>
             </div>
             <div style="margin-top:1.5rem; min-height:2.5rem;">예측값 추이</div>
         </div>
@@ -310,6 +310,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (isCorrelation && Array.isArray(result.predictedData)) {
                 const sensors = result.predictedData.map(d => d.sensorInfo.sensorType);
+                const singleRisk = result.predictedData.map(d => d.singleRiskModel);
                 const corrRisk = result.predictedData.map(d => d.correlationRiskModel);
 
                 chartInstances[`bar-${id}`] = new Chart(document.getElementById(`bar-${id}`), {
@@ -318,14 +319,26 @@ document.addEventListener('DOMContentLoaded', function() {
                         labels: sensors,
                         datasets: [{
                             label: 'Correlation Risk',
-                            data: corrRisk,
+                            data: singleRisk,
                             backgroundColor: 'rgba(255, 99, 132, 0.5)'
                         }]
                     },
                     options: {
+                        plugins: {
+                            datalabels: {
+                                anchor: 'end',
+                                align: 'end',
+                                color: '#333',
+                                font: { weight: 'bold', size: 14 },
+                                formatter: function(value) {
+                                    return value.toFixed(2); // 소수점 2자리
+                                }
+                            }
+                        },
                         responsive: true,
                         maintainAspectRatio: false
-                    }
+                    },
+                    plugins: [ChartDataLabels]
                 });
 
                 chartInstances[`pie-${id}`] = new Chart(document.getElementById(`pie-${id}`), {
@@ -338,9 +351,19 @@ document.addEventListener('DOMContentLoaded', function() {
                         }]
                     },
                     options: {
+                        plugins: {
+                            datalabels: {
+                                color: '#fff',
+                                font: { weight: 'bold', size: 14 },
+                                formatter: function(value) {
+                                    return value.toFixed(2);
+                                }
+                            }
+                        },
                         responsive: true,
                         maintainAspectRatio: false
-                    }
+                    },
+                    plugins: [ChartDataLabels]
                 });
             } else if (isSingle && Array.isArray(result.predictedData)) {
                 const labels = result.predictedData.map(d => formatDateOnly(d.predictedDate));
@@ -353,12 +376,29 @@ document.addEventListener('DOMContentLoaded', function() {
                         datasets: [{
                             label: 'Predicted Value',
                             data: data,
+                            borderWidth: 2,
+                            pointRadius: 2,
                             borderColor: '#4BC0C0'
                         }]
                     },
                     options: {
                         responsive: true,
-                        maintainAspectRatio: false
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                ticks: {
+                                    autoSkip: true,
+                                    maxTicksLimit: 10
+                                }
+                            }
+                        },
+                        plugins: {
+                            decimation: {
+                                enabled: true,
+                                algorithm: 'min-max',
+                                samples: 100
+                            }
+                        }
                     }
                 });
             } else if (isThreshold && typeof result.healthScore === 'number') {

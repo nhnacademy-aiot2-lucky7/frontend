@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             row.querySelector('.btn-save').addEventListener('click', function () {
                 const newRole = row.querySelector('.edit-role').value;
-                fetch('https://luckyseven.live/api/admin/admin/users/roles', {
+                fetch('https://luckyseven.live/api/admin/users/roles', {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     credentials: 'include',

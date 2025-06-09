@@ -241,10 +241,12 @@ async function fetchTypeInfo(field) {
 
 // 패널 요청 데이터 생성
 function createPanelRequest(formData, typeInfo) {
+    const panelId = document.getElementById('panelId').value;
+
     return {
         createPanelRequest: {
             dashboardUid: formData.dashboardUid,
-            panelId: null,
+            panelId: panelId,
             panelTitle: formData.panelTitle,
             sensorFieldRequestDto: {
                 field: formData.field,

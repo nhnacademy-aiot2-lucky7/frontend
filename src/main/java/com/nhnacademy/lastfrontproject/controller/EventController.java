@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class EventController {
-    @GetMapping("/admin/event")
+    @GetMapping("/pages/admin/event")
     public String showAdminEvent() {
         return "pages/admin/pages-event";
     }

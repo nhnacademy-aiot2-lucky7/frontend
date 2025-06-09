@@ -34,7 +34,7 @@ public class GatewayController {
         return "pages/member/gateway/pages-add-gateway";
     }
 
-    @GetMapping("/admin/gateway")
+    @GetMapping("/pages/admin/gateway")
     public String showAdminGateway(Model model) {
         List<AdminGatewayResponse> gateways =
                 gatewayService.getAdminGatewaySummaryList();

@@ -285,14 +285,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                     document.querySelectorAll('.main-toggle-input').forEach(input => {
                         input.checked = false;
                         input.disabled = false;
-                        const label = input.closest('label');
-                        if (label) {
-                            const span = label.querySelector('span');
-                            if (span) {
-                                span.textContent = '메인으로 설정';
-                                span.style.color = '#6b7280';
-                            }
-                        }
                     });
 
                     // 현재 토글만 업데이트

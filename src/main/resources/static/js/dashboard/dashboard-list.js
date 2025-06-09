@@ -32,8 +32,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             method: 'GET',
             credentials: 'include'
         })
-            .then(response => response.json())
-            .then(json => json.dashboardUid());
+            .then(response =>
+                response.json())
+            .then(json => {
+                console.log(json.dashboardUid);
+                return json.dashboardUid;
+            });
 
         dashboards.forEach(d => {
             const dashboardTitle = d.title || '이름 없음';

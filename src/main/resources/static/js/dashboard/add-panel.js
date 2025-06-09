@@ -180,12 +180,13 @@ function gatherFormData() {
 
     let minText = document.querySelector('input[name="minThreshold"]:checked').value;
     if (minText === 'min') {
-        minText = 'mainMinValueText';
+        minText = 'minMinValueText';
     } else if (minText === 'middle') {
         minText = 'minMiddleValueText';
     } else if (minText === 'max') {
         minText = 'minMaxValueText';
     }
+    console.log(minText);
     let min = document.getElementById(minText).textContent.split(" ")[0];
     const minCustomValue = document.getElementById("minCustomValue").value;
 

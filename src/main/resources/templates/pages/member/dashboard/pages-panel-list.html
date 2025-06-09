@@ -19,22 +19,13 @@
 <section layout:fragment="content">
     <main class="panel-info-container">
         <section class="panel-info-header">
-            <h1 th:text="${dashboardTitle}">차트 내역</h1>
+            <h1 th:text="${dashboardTitle}"> 차트 내역</h1>
             <a th:href="@{/panels(dashboardUid=${dashboardUid})}" class="panel-add-btn">차트 추가</a>
         </section>
 
         <div id="panelList" th:attr="data-dashboard-uid=${dashboardUid}" class="panel-grid">
             <div th:each="panel : ${panels}" class="panel-card">
                 <h3 th:text="${panelTitle} ?: '제목 없음'" class="panel-title"></h3>
-                <iframe th:src="'https://grafana.luckyseven.live/d-solo/' + ${panel.dashboardUid}
-                                + '?orgId=1&from=' + ${panel.from}
-                                + '&to=' + ${panel.now}
-                                + '&panelId=' + ${panel.panelId}"
-                        width="100%"
-                        height="200"
-                        frameborder="0"
-                        class="grafana-iframe">
-                </iframe>
                 <a th:href="@{/panel/edit(dashboardUid=${panel.dashboardUid}, panelId=${panel.panelId})}" class="edit-button">차트 수정</a>
                 <button class="delete-button"
                         th:attr="data-dashboard-uid=${panel.dashboardUid},

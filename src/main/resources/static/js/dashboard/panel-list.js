@@ -22,7 +22,7 @@ async function loadIframes(dashboardUid) {
 
             // 제목
             const title = document.createElement('h3');
-            title.textContent = panel.dashboardTitle || '제목 없음';
+            title.textContent = panel.panelTitle || '제목 없음';
             title.className = 'panel-title';
             wrapper.appendChild(title);
 
@@ -40,10 +40,15 @@ async function loadIframes(dashboardUid) {
             deleteBtn.addEventListener('click', async () => await handleDelete(panel, wrapper));
             wrapper.appendChild(deleteBtn);
 
+            // start 값 추출 (-12h)
+            const startMatch = panel.query.match(/range\(start:\s*([^)]+)\)/);
+            let start = startMatch ? startMatch[1].trim() : null;
+
             // iframe 생성
             const iframe = document.createElement('iframe');
-            iframe.src = `https://grafana.luckyseven.live/d-solo/${panel.dashboardUid}?orgId=1&from=${panel.from}&to=${panel.now}&panelId=${panel.panelId}`;
-            iframe.width = '450';
+            iframe.src = `https://grafana.luckyseven.live/d-solo/${panel.dashboardUid}?orgId=1&from=now${start}&to=${panel.now}&panelId=${panel.panelId}`;
+            console.log(start)
+            iframe.width = '500';
             iframe.height = '200';
             iframe.frameBorder = '0';
             iframe.className = 'grafana-iframe';

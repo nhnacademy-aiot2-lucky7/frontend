@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}">
 <head>
@@ -15,6 +16,9 @@
 </head>
 <body>
 <h1>최신 AI 분석 결과</h1>
-<div id="latest-ai-chart-container"></div>
+<section layout:fragment="content">
+    <h1>최신 AI 분석 결과</h1>
+    <div id="latest-ai-chart-container"></div>
+</section>
 </body>
 </html>

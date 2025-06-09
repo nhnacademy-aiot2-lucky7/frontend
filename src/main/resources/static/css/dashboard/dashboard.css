@@ -256,3 +256,56 @@ select:disabled {
     padding: 2px 4px;
     margin-left: 4px;
 }
+
+/*토글*/
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 26px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    background-color: #ccc;
+    border-radius: 34px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transition: 0.4s;
+}
+
+.slider::before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.4s;
+}
+
+/* ✅ 토글 켜졌을 때 */
+.toggle-switch input:checked + .slider {
+    background-color: #10b981;
+}
+
+.toggle-switch input:checked + .slider::before {
+    transform: translateX(24px);
+}
+
+/* ✅ 비활성화 상태일 때 스타일 */
+.toggle-switch input:disabled + .slider {
+    background-color: #aaa;
+    cursor: not-allowed;
+}

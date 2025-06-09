@@ -127,6 +127,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             // 메인 토글 스위치 생성
             const mainToggleWrapper = document.createElement('label');
+            mainToggleWrapper.className = 'toggle-switch';
             mainToggleWrapper.style.display = 'inline-flex';
             mainToggleWrapper.style.alignItems = 'center';
             mainToggleWrapper.style.gap = '8px';
@@ -135,13 +136,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             // input[type=checkbox]
             const mainToggleInput = document.createElement('input');
             mainToggleInput.type = 'checkbox';
+            mainToggleInput.className = 'main-toggle-input';
             mainToggleInput.checked = (mainDashboardUid === dashboardUid); // 활성화 여부
-            mainToggleInput.disabled = (mainDashboardUid !== dashboardUid); // 다른 대시보드면 비활성화
+            mainToggleInput.disabled = (mainDashboardUid === dashboardUid); // 다른 대시보드면 비활성화
 
-            // span: 토글 텍스트
-            const mainToggleText = document.createElement('span');
-            mainToggleText.textContent = mainToggleInput.checked ? '메인 설정됨' : '메인으로 설정';
-            mainToggleText.style.color = mainToggleInput.checked ? '#10b981' : '#6b7280';
+            // span
+            const mainToggleSlider = document.createElement('span');
+            mainToggleSlider.className = 'slider';
 
             // 수정 버튼 클릭 시 페이지 이동
             updateBtn.addEventListener('click', function (e) {
@@ -281,8 +282,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                             "Content-Type": "application/json"
                         },
                         body: JSON.stringify({
-                            mainDashboardUid: dashboardUid,
-                            mainDashboardTitle: dashboardTitle
+                            departmentId: departmentId,
+                            dashboardUid: dashboardUid,
+                            dashboardTitle: dashboardTitle
                         })
                     });
 
@@ -315,11 +317,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                     }
                 } catch (err) {
                     alert('메인 설정 중 오류 발생: ' + err.message);
+                    mainToggleInput.checked = false;
                 }
             });
 
             mainToggleWrapper.appendChild(mainToggleInput);
-            mainToggleWrapper.appendChild(mainToggleText);
+            mainToggleWrapper.appendChild(mainToggleSlider);
 
             // 버튼 컨테이너에 버튼 추가
             buttonContainer.appendChild(updateBtn);

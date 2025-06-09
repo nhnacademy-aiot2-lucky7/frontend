@@ -31,91 +31,104 @@ document.addEventListener('DOMContentLoaded', () => {
         return res.json();
     }
 
-    // 3) 차트 그리기
+    // 3) 센서 테이블 + 차트 렌더링
     function renderCharts(detail) {
         let result;
         try {
             result = detail.resultJson ? JSON.parse(detail.resultJson) : detail;
         } catch {
-            return container.innerText = '파싱 오류';
+            container.innerText = '파싱 오류';
+            return;
+        }
+        const isCorrelation = /CORRELATION[-_]RISK[-_]PREDICT/i.test(result.type);
+        if (!isCorrelation || !Array.isArray(result.predictedData)) {
+            container.innerText = '지원하지 않는 분석 타입';
+            return;
         }
 
-        // CORRELATION_RISK_PREDICT만 처리
-        if (!Array.isArray(result.predictedData)
-            || !/CORRELATION[-_]RISK[-_]PREDICT/i.test(result.type)) {
-            return container.innerText = '지원하지 않는 분석 타입';
-        }
-
-        // 컨테이너 초기화
+        // 초기화
         container.innerHTML = '';
 
-        // 1) 센서 정보 테이블 생성
-        const table = document.createElement('table');
-        table.style.borderCollapse = 'collapse';
-        table.style.marginBottom = '1rem';
-        table.innerHTML = `
-    <thead>
-      <tr>
-        <th style="border:1px solid #ccc; padding:4px 8px;">센서명</th>
-        <th style="border:1px solid #ccc; padding:4px 8px;">게이트웨이 ID</th>
-        <th style="border:1px solid #ccc; padding:4px 8px;">센서 UUID</th>
-        <th style="border:1px solid #ccc; padding:4px 8px;">센서타입</th>
-      </tr>
-    </thead>
-  `;
-        const body = document.createElement('tbody');
-        result.sensorInfo.forEach((info, idx) => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-      <td style="border:1px solid #ccc; padding:4px 8px;">센서${idx+1}</td>
-      <td style="border:1px solid #ccc; padding:4px 8px;">${info.gatewayId}</td>
-      <td style="border:1px solid #ccc; padding:4px 8px;">${info.sensorId}</td>
-      <td style="border:1px solid #ccc; padding:4px 8px;">${info.sensorType}</td>
+        // — 센서 정보 테이블
+        const tableHtml = `
+      <table style="
+          margin:0 auto 1rem auto;
+          border-collapse:collapse;
+          min-width:400px;
+          font-size:1rem;
+      ">
+        <thead>
+          <tr style="background:#f3f4f6;">
+            <th style="padding:8px 16px; border:1px solid #e5e7eb;">센서명</th>
+            <th style="padding:8px 16px; border:1px solid #e5e7eb;">게이트웨이 ID</th>
+            <th style="padding:8px 16px; border:1px solid #e5e7eb;">센서 UUID</th>
+            <th style="padding:8px 16px; border:1px solid #e5e7eb;">센서타입</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${result.sensorInfo.map((info, i) => `
+            <tr>
+              <td style="padding:8px 16px; border:1px solid #e5e7eb;">센서${i+1}</td>
+              <td style="padding:8px 16px; border:1px solid #e5e7eb;">${info.gatewayId}</td>
+              <td style="padding:8px 16px; border:1px solid #e5e7eb;">${info.sensorId}</td>
+              <td style="padding:8px 16px; border:1px solid #e5e7eb;">${info.sensorType}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
     `;
-            body.appendChild(tr);
-        });
-        table.appendChild(body);
-        container.appendChild(table);
+        container.insertAdjacentHTML('beforeend', tableHtml);
 
-        // 2) 데이터 준비
+        // — 차트 래퍼
+        const wrapper = document.createElement('div');
+        wrapper.style.display = 'flex';
+        wrapper.style.gap = '2.5rem';
+        wrapper.style.alignItems = 'center';
+        wrapper.style.justifyContent = 'center';
+        wrapper.style.flexWrap = 'wrap';
+        container.appendChild(wrapper);
+
+        // 데이터
         const labels = result.predictedData.map(d => d.sensorInfo.sensorType);
         const values = result.predictedData.map(d => d.correlationRiskModel);
 
-        // 3) 캔버스 생성 및 차트 그리기
-        // 막대
+        // — 막대차트
+        const barDiv = document.createElement('div');
+        barDiv.style.width = '600px';
+        barDiv.style.height = '320px';
         const barCanvas = document.createElement('canvas');
-        barCanvas.style.flex = '1';
-        container.appendChild(barCanvas);
+        barCanvas.id = 'bar-latest';
+        barDiv.appendChild(barCanvas);
+        wrapper.appendChild(barDiv);
 
         new Chart(barCanvas, {
             type: 'bar',
-            data: { labels, datasets: [{ label: '위험도', data: values }] },
+            data: { labels, datasets: [{ label: 'Correlation Risk', data: values }] },
             options: {
                 responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    datalabels: { anchor:'end', align:'end', formatter:v=>v.toFixed(2) }
-                }
-            },
-            plugins: [ChartDataLabels]
+                maintainAspectRatio: false
+            }
         });
 
-        // 원형
+        // — 원형차트
+        const pieDiv = document.createElement('div');
+        pieDiv.style.width = '320px';
+        pieDiv.style.height = '320px';
         const pieCanvas = document.createElement('canvas');
-        pieCanvas.style.width = '200px';
-        container.appendChild(pieCanvas);
+        pieCanvas.id = 'pie-latest';
+        pieDiv.appendChild(pieCanvas);
+        wrapper.appendChild(pieDiv);
 
         new Chart(pieCanvas, {
             type: 'pie',
-            data: { labels, datasets:[{ data: values }] },
+            data: { labels, datasets: [{ data: values }] },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                    datalabels: { formatter:v=>v.toFixed(2) }
+                    legend: { position: 'top' }
                 }
-            },
-            plugins: [ChartDataLabels]
+            }
         });
     }
 

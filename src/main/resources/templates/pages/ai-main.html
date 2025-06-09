@@ -15,20 +15,9 @@
 </head>
 <body>
 <h1>최신 AI 분석 결과</h1>
-<section layout:fragment="content">
-    <main class="ai-container" style="flex: 1; padding:2rem;">
-        <section class="ai-header" style="display: flex; align-items: center; gap:1rem;">
-            <h1>최신 AI 분석 결과</h1>
-            <!-- 필요하면 상세 페이지로 이동하는 버튼도 -->
-            <a href="/ai-results" class="ai-analyze-btn">전체 결과 보기</a>
-        </section>
-
-        <!-- 여기 컨테이너에 JS가 캔버스를 추가합니다 -->
-        <div id="latest-ai-chart-container"
-             style="display:flex; gap:2rem; margin-top:2rem; height:320px;">
-            <!-- 로딩 중 텍스트가 잠시 보일 수 있습니다 -->
-        </div>
-    </main>
-</section>
+<div id="latest-ai-chart-container"
+     style="padding:2rem; width:100%;">
+    <!-- 테이블 + 두 개 차트가 이 안에 들어갑니다 -->
+</div>
 </body>
 </html>

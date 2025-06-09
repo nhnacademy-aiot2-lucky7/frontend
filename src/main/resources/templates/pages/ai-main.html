@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
 <head>
-    <meta charset="utf-8" />
-    <title>최신 AI 분석 결과 테스트</title>
+    <meta charset="utf-8"/>
+    <title>AI 분석 | Lucky Seven</title>
 
     <!-- Chart.js + datalabels 플러그인 CDN -->
     <script src="/js/chart.js"></script>
@@ -13,8 +15,20 @@
 </head>
 <body>
 <h1>최신 AI 분석 결과</h1>
-<div id="latest-ai-chart-container" style="display:flex; gap:2rem; padding:1rem; height:400px;">
-    <!-- JS가 여기에 <canvas>를 동적으로 추가합니다 -->
-</div>
+<section layout:fragment="content">
+    <main class="ai-container" style="flex: 1; padding:2rem;">
+        <section class="ai-header" style="display: flex; align-items: center; gap:1rem;">
+            <h1>최신 AI 분석 결과</h1>
+            <!-- 필요하면 상세 페이지로 이동하는 버튼도 -->
+            <a href="/ai-results" class="ai-analyze-btn">전체 결과 보기</a>
+        </section>
+
+        <!-- 여기 컨테이너에 JS가 캔버스를 추가합니다 -->
+        <div id="latest-ai-chart-container"
+             style="display:flex; gap:2rem; margin-top:2rem; height:320px;">
+            <!-- 로딩 중 텍스트가 잠시 보일 수 있습니다 -->
+        </div>
+    </main>
+</section>
 </body>
 </html>

@@ -1,3 +1,6 @@
+// datalabels 플러그인 등록
+Chart.register(ChartDataLabels);
+
 document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('latest-ai-chart-container');
 
@@ -28,19 +31,21 @@ document.addEventListener('DOMContentLoaded', () => {
         return res.json();
     }
 
-    // 3) 실제 차트 그리기
+    // 3) 차트 그리기
     function renderCharts(detail) {
         let result;
         try {
             result = detail.resultJson ? JSON.parse(detail.resultJson) : detail;
         } catch {
-            return container.innerText = '파싱 오류';
+            container.innerText = '파싱 오류';
+            return;
         }
 
-        // 예시: CORRELATION_RISK_PREDICT 타입만
-        if (!Array.isArray(result.predictedData)
-            || !/CORRELATION[-_]RISK[-_]PREDICT/i.test(result.type)) {
-            return container.innerText = '지원하지 않는 분석 타입';
+        // CORRELATION_RISK_PREDICT 타입 처리
+        if (!Array.isArray(result.predictedData) ||
+            !/CORRELATION[-_]RISK[-_]PREDICT/i.test(result.type)) {
+            container.innerText = '지원하지 않는 분석 타입';
+            return;
         }
 
         // 컨테이너 초기화
@@ -49,17 +54,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const labels = result.predictedData.map(d => d.sensorInfo.sensorType);
         const values = result.predictedData.map(d => d.correlationRiskModel);
 
-        // Bar 캔버스
+        // 막대차트 캔버스
         const barCanvas = document.createElement('canvas');
         barCanvas.style.flex = '1';
         container.appendChild(barCanvas);
 
-        // Pie 캔버스
+        // 원형차트 캔버스
         const pieCanvas = document.createElement('canvas');
         pieCanvas.style.width = '200px';
         container.appendChild(pieCanvas);
 
-        // Bar 차트
+        // Bar Chart
         new Chart(barCanvas, {
             type: 'bar',
             data: { labels, datasets: [{ label: '위험도', data: values }] },
@@ -71,13 +76,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         anchor: 'end',
                         align: 'end',
                         formatter: v => v.toFixed(2),
+                        font: { weight: 'bold', size: 12 }
                     }
                 }
             },
             plugins: [ChartDataLabels]
         });
 
-        // Pie 차트
+        // Pie Chart
         new Chart(pieCanvas, {
             type: 'pie',
             data: { labels, datasets: [{ data: values }] },
@@ -87,6 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 plugins: {
                     datalabels: {
                         formatter: v => v.toFixed(2),
+                        font: { weight: 'bold', size: 12 }
                     }
                 }
             },
@@ -94,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 4) 실행 순서
+    // 4) 초기 실행
     (async () => {
         container.innerText = '로딩 중…';
         const latest = await fetchLatestItem();

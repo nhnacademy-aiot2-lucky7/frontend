@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const analyzeButton = document.getElementById("analyzeButton");
 
     // 1. 게이트웨이 목록 채우기
-    fetch(`/gateway-list/${departmentId}/search-status`)
+    fetch(`/gateway-list/${departmentId}`)
         .then(res => res.json())
         .then(gateways => {
             console.log("게이트웨이 목록 받아옴:", gateways);
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
             sensorSelect.innerHTML = "<option value=''>-- 선택하세요 --</option>";
             if (!gatewayId) return;
 
-            fetch(`/sensor-list/${gatewayId}`)
+            fetch(`/sensor-list/${gatewayId}/search-status`)
                 .then(res => res.json())
                 .then(sensors => {
                     sensors.forEach(sensor => {

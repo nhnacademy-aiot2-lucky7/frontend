@@ -305,7 +305,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
 
             mainToggleWrapper.appendChild(mainToggleInput);
-            mainToggleWrapper.appendChild(mainToggleSlider);
+            mainToggleWrapper.appendChild(slider);
 
             // 버튼 컨테이너에 버튼 추가
             buttonContainer.appendChild(updateBtn);

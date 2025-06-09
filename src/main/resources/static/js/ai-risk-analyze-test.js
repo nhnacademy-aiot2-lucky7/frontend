@@ -2,8 +2,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const departmentId = window.currentUser && window.currentUser.department && window.currentUser.department.departmentId;
     if (!departmentId) return console.error("부서 ID 없음");
 
-    const gateSelects = [document.getElementById("gatewaySelect1"), document.getElementById("gatewaySelect2")];
-    const sensorSelects = [document.getElementById("sensorSelect1"), document.getElementById("sensorSelect2")];
+    const gateSelects = [
+        document.getElementById("gatewaySelect1"),
+        document.getElementById("gatewaySelect2")
+    ];
+    const sensorSelects = [
+        document.getElementById("sensorSelect1"),
+        document.getElementById("sensorSelect2")
+    ];
     const analyzeButton = document.getElementById("analyzeButton");
 
     // 1. 게이트웨이 목록 채우기
@@ -22,22 +28,29 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .catch(err => console.error("게이트웨이 로딩 오류:", err));
 
-    // 2. 게이트웨이 선택 시 센서 목록 불러오기
+    // 2. 게이트웨이 선택 시 센서 목록 불러오기 (COMPLETED 상태만)
     gateSelects.forEach((gateSelect, index) => {
         gateSelect.addEventListener("change", () => {
             const gatewayId = gateSelect.value;
             const sensorSelect = sensorSelects[index];
 
+            // 초기화
             sensorSelect.innerHTML = "<option value=''>-- 선택하세요 --</option>";
             if (!gatewayId) return;
 
-            fetch(`/sensor-list/${gatewayId}/sensors`)
-                .then(res => res.json())
+            // 상태가 COMPLETED인 센서만 조회
+            const url = `/sensor-data-mappings/gateway-id/${gatewayId}/search-status?status=COMPLETED`;
+
+            fetch(url, { credentials: 'include' })
+                .then(res => {
+                    if (!res.ok) throw new Error(`센서 로딩 실패 (${res.status})`);
+                    return res.json();
+                })
                 .then(sensors => {
                     sensors.forEach(sensor => {
                         const option = document.createElement("option");
                         option.value = JSON.stringify(sensor); // 전체 객체 저장
-                        option.text = `${sensor.location} - ${sensor.spot} - ${sensor.type_en_name}`;
+                        option.text = `${sensor.location} - ${sensor.spot} - ${sensor.typeEnName}`;
                         sensorSelect.appendChild(option);
                     });
                 })
@@ -50,13 +63,11 @@ document.addEventListener("DOMContentLoaded", () => {
         const sensorObjs = sensorSelects.map(select => {
             const selected = select.value;
             if (!selected) return null;
-
             const parsed = JSON.parse(selected);
-
             return {
                 gatewayId: parsed.gateway_id.toString(),
                 sensorId: parsed.sensor_id,
-                sensorType: parsed.type_en_name
+                sensorType: parsed.typeEnName
             };
         });
 
@@ -86,13 +97,13 @@ document.addEventListener("DOMContentLoaded", () => {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "X-User-Id": window.currentUser?.id || "test-user" // 필요 시 수정
+                "X-User-Id": window.currentUser?.id || "test-user"
             },
             body: JSON.stringify(requestBody)
         })
             .then(res => {
                 if (!res.ok) throw new Error("분석 요청 실패");
-                return res.text(); // 필요시 .json()
+                return res.text();
             })
             .then(result => {
                 alert("분석 요청이 성공적으로 전송되었습니다.");

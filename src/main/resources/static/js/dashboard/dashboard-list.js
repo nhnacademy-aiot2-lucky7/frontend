@@ -280,6 +280,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                     });
 
                     if (!res.ok) throw new Error('메인 설정 실패');
+                    console.log(res);
+                    alert("메인페이지 설정이 완료되었습니다.");
 
                     // 모든 토글 초기화
                     document.querySelectorAll('.main-toggle-input').forEach(input => {

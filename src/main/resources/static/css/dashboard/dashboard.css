@@ -311,6 +311,7 @@ select:disabled {
     cursor: not-allowed;
 }
 
+/* ✅ 수정된 토글 스위치 스타일 */
 .toggle-switch {
     position: relative;
     display: inline-block;
@@ -348,10 +349,16 @@ select:disabled {
     border-radius: 50%;
 }
 
-/* On 상태일 때 색상 적용 */
+/* 체크 시 위치 조정 */
+input:checked + .slider::before {
+    transform: translateX(16px); /* ✅ 기존 24px → 수정 16px */
+}
+
+/* 체크 시 배경색 */
 input:checked + .slider {
     background-color: #10b981;
 }
+
 
 /* Disabled 상태일 때는 연한 회색 */
 input:disabled + .slider {

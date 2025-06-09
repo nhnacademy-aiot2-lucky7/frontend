@@ -1,0 +1,44 @@
+@keyframes spin {
+    0% { transform: rotate(0deg);}
+    100% { transform: rotate(360deg);}
+}
+
+/* 반응형 테이블 */
+.ai-table-wrapper {
+    overflow-x: auto;
+    width: 100%;
+    min-width: 320px;
+}
+
+/* 페이지네이션 한 줄 고정 및 버튼 스타일 */
+.pagination-bar {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    margin: 1rem 0 0 0;
+    gap: 0.5rem;
+    white-space: nowrap;
+    min-width: 220px;
+}
+
+.pagination-bar button,
+.pagination-bar span {
+    display: inline-block;
+    vertical-align: middle;
+    white-space: nowrap;
+    font-size: 1rem;
+    padding: 0.3em 1em;
+    margin: 0;
+    border: 1px solid #ddd;
+    background: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.pagination-bar button[disabled] {
+    color: #aaa;
+    border-color: #eee;
+    cursor: not-allowed;
+    background: #f9f9f9;
+}

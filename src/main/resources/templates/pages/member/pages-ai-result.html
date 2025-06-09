@@ -8,9 +8,9 @@
 	<meta charset="utf-8"/>
 	<title>AI 분석 | Lucky Seven</title>
 	<link href="/css/ai-analyze.css" rel="stylesheet"/>
-	<!--	<script src="/js/ai-analyze.js"></script>-->
 	<script src="/js/chart.js"></script>
-	<script src="/js/ai-dummy.js"></script>
+	<script src="/js/ai-result.js"></script>
+<!--	<script src="/js/ai-dummy.js"></script>-->
 </head>
 
 <body>
@@ -22,8 +22,14 @@
 			<a href="/correlation-analysis" class="ai-analyze-btn">AI 분석 요청</a>
 		</section>
 		<section class="ai-filter">
-			<form id="ai-search-form">
-				<input class="input-text" name="sensor" placeholder="센서 이름 또는 분석 결과" type="text"/>
+			<form id="ai-search-form" style="display:flex; gap:1rem; align-items:center;">
+				<input class="input-text" name="sensor" placeholder="센서타입(예: temperature, humidity 등)" type="text"/>
+				<select name="type" id="type-select" style="height:2.2rem;">
+					<option value="">전체 분석타입</option>
+					<option value="CORRELATION_RISK_PREDICT">상관관계 위험예측</option>
+					<option value="SINGLE_SENSOR_PREDICT">단일센서 예측</option>
+					<option value="THRESHOLD_DIFF_ANALYSIS">임계치 변화분석</option>
+				</select>
 				<div class="date-picker">
 					<label for="start-date">시작일</label>
 					<input id="start-date" name="start-date" type="date"/>

@@ -107,12 +107,6 @@ public class DashboardController {
         return dashboardService.getFilterPanel(readPanelRequest, offPanelId);
     }
 
-    // 9. 패널 수정
-    @PutMapping("/panels")
-    public void updatePanel(@RequestBody UpdatePanelRequest request) {
-        dashboardService.updatePanel(request);
-    }
-
     // 10. 패널 우선순위 수정
     @PutMapping("/panels/priority")
     public void updatePriority(@RequestBody UpdatePanelPriorityRequest request) {

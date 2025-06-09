@@ -37,34 +37,56 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             result = detail.resultJson ? JSON.parse(detail.resultJson) : detail;
         } catch {
-            container.innerText = '파싱 오류';
-            return;
+            return container.innerText = '파싱 오류';
         }
 
-        // CORRELATION_RISK_PREDICT 타입 처리
-        if (!Array.isArray(result.predictedData) ||
-            !/CORRELATION[-_]RISK[-_]PREDICT/i.test(result.type)) {
-            container.innerText = '지원하지 않는 분석 타입';
-            return;
+        // CORRELATION_RISK_PREDICT만 처리
+        if (!Array.isArray(result.predictedData)
+            || !/CORRELATION[-_]RISK[-_]PREDICT/i.test(result.type)) {
+            return container.innerText = '지원하지 않는 분석 타입';
         }
 
         // 컨테이너 초기화
         container.innerHTML = '';
 
+        // 1) 센서 정보 테이블 생성
+        const table = document.createElement('table');
+        table.style.borderCollapse = 'collapse';
+        table.style.marginBottom = '1rem';
+        table.innerHTML = `
+    <thead>
+      <tr>
+        <th style="border:1px solid #ccc; padding:4px 8px;">센서명</th>
+        <th style="border:1px solid #ccc; padding:4px 8px;">게이트웨이 ID</th>
+        <th style="border:1px solid #ccc; padding:4px 8px;">센서 UUID</th>
+        <th style="border:1px solid #ccc; padding:4px 8px;">센서타입</th>
+      </tr>
+    </thead>
+  `;
+        const body = document.createElement('tbody');
+        result.sensorInfo.forEach((info, idx) => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+      <td style="border:1px solid #ccc; padding:4px 8px;">센서${idx+1}</td>
+      <td style="border:1px solid #ccc; padding:4px 8px;">${info.gatewayId}</td>
+      <td style="border:1px solid #ccc; padding:4px 8px;">${info.sensorId}</td>
+      <td style="border:1px solid #ccc; padding:4px 8px;">${info.sensorType}</td>
+    `;
+            body.appendChild(tr);
+        });
+        table.appendChild(body);
+        container.appendChild(table);
+
+        // 2) 데이터 준비
         const labels = result.predictedData.map(d => d.sensorInfo.sensorType);
         const values = result.predictedData.map(d => d.correlationRiskModel);
 
-        // 막대차트 캔버스
+        // 3) 캔버스 생성 및 차트 그리기
+        // 막대
         const barCanvas = document.createElement('canvas');
         barCanvas.style.flex = '1';
         container.appendChild(barCanvas);
 
-        // 원형차트 캔버스
-        const pieCanvas = document.createElement('canvas');
-        pieCanvas.style.width = '200px';
-        container.appendChild(pieCanvas);
-
-        // Bar Chart
         new Chart(barCanvas, {
             type: 'bar',
             data: { labels, datasets: [{ label: '위험도', data: values }] },
@@ -72,29 +94,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        formatter: v => v.toFixed(2),
-                        font: { weight: 'bold', size: 12 }
-                    }
+                    datalabels: { anchor:'end', align:'end', formatter:v=>v.toFixed(2) }
                 }
             },
             plugins: [ChartDataLabels]
         });
 
-        // Pie Chart
+        // 원형
+        const pieCanvas = document.createElement('canvas');
+        pieCanvas.style.width = '200px';
+        container.appendChild(pieCanvas);
+
         new Chart(pieCanvas, {
             type: 'pie',
-            data: { labels, datasets: [{ data: values }] },
+            data: { labels, datasets:[{ data: values }] },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                    datalabels: {
-                        formatter: v => v.toFixed(2),
-                        font: { weight: 'bold', size: 12 }
-                    }
+                    datalabels: { formatter:v=>v.toFixed(2) }
                 }
             },
             plugins: [ChartDataLabels]

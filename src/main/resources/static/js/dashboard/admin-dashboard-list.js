@@ -1,151 +1,248 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const departmentSelect = document.getElementById('departmentSelect');
-    const dashboardSelect = document.getElementById('dashboardSelect');
-    const dashboardGroups = document.getElementById('dashboardList');
-    const keywordInput = document.getElementById('keywordInput');
-    const dashboardUid = dashboardList.dataset.dashboardUid;
+function getBannerImage(title) {
+    if (title.includes('서버')) return '/img/equipment/banner_server_room.jpg';
+    if (title.includes('출입')) return '/img/equipment/banner_access_control.png';
+    if (title.includes('재난') || title.includes('재해')) return '/img/equipment/banner_calamity.jpg';
+    if (title.includes('장비')) return '/img/equipment/banner_equipment.jpg';
+    if (title.includes('전력')) return '/img/equipment/banner_power_usage.jpg';
+    return '/img/equipment/banner_default.png';
+}
 
-    let dashboardsData = JSON.parse(localStorage.getItem('dashboards') || '[]');
-    const departmentsMap = new Map();
+document.addEventListener('DOMContentLoaded', async () => {
+    const dashboardList = document.getElementById('dashboardList');
+    const folderTitle = dashboardList.dataset.title;
+    console.log("가져온 folderTitle: ", folderTitle);
 
-    dashboardsData.forEach(d => {
-        if (!departmentsMap.has(d.departmentId)) {
-            departmentsMap.set(d.departmentId, {
-                departmentName: d.departmentName || getFolderNameFromUid(d.folderUid) || '알 수 없는 부서',
-                dashboards: []
-            });
-        }
-        departmentsMap.get(d.departmentId).dashboards.push(d);
-    });
+    try {
+        const response = await fetch(`https://luckyseven.live/api/dashboards/admin?folderTitle=${folderTitle}`, {
+            method: 'GET',
+            credentials: 'include',
+            headers: {'Content-Type': 'application/json'}
+        });
 
-    function populateDepartmentSelect() {
-        departmentSelect.innerHTML = '<option value="">모든 부서</option>';
-        for (const [deptId, { departmentName }] of departmentsMap.entries()) {
-            const option = document.createElement('option');
-            option.value = deptId;
-            option.textContent = departmentName;
-            departmentSelect.appendChild(option);
-        }
-    }
+        if (!response.ok) throw new Error('대시보드 조회 실패');
 
-    function populateDashboardSelect(departmentId) {
-        dashboardSelect.innerHTML = '<option value="">모든 대시보드</option>';
-        const dashboards = departmentId && departmentsMap.has(departmentId)
-            ? departmentsMap.get(departmentId).dashboards
-            : dashboardsData;
+        const dashboards = await response.json();
+        console.log("response:{}", dashboards);
+
+        const department = dashboards[0];
+        console.log(department);
+
+        const departmentTitle = department.title;
+        const departmentId = department.id;
+        console.log("departmentId: ", departmentId);
+
+        const container = document.createElement('div');
+        container.style.display = 'flex';
+        container.style.flexWrap = 'wrap';
+        container.style.gap = '16px';
+
+        const dashboardUid = department.uid;
 
         dashboards.forEach(d => {
-            const option = document.createElement('option');
-            option.value = d.dashboardUid || d.uid || d.dashboardId;
-            option.textContent = d.dashboardTitle || d.name;
-            dashboardSelect.appendChild(option);
-        });
-    }
+            const dashboardTitle = d.title || '이름 없음';
+            const dashboardUid = d.uid;
 
-    function deleteDashboard(dashboardId) {
-        dashboardsData = dashboardsData.filter(d => d.dashboardId !== dashboardId && d.id !== dashboardId);
-        localStorage.setItem('dashboards', JSON.stringify(dashboardsData));
-        filterAndDisplayDashboards();
-        populateDashboardSelect(departmentSelect.value);
-    }
+            const bannerSrc = getBannerImage(dashboardTitle);
 
-    function filterAndDisplayDashboards() {
-        const selectedDepartmentId = departmentSelect.value;
-        const keyword = keywordInput?.value.toLowerCase() || '';
+            const bannerWrapper = document.createElement('div');
+            bannerWrapper.style.position = 'relative';
+            bannerWrapper.style.width = '1800px';
+            bannerWrapper.style.height = '150px';
 
-        let filteredDashboards = dashboardsData;
+            const banner = document.createElement('div');
+            banner.style.backgroundImage = `url(${bannerSrc})`;
+            banner.style.backgroundSize = 'cover';
+            banner.style.backgroundPosition = 'center';
+            banner.style.width = '1800px';
+            banner.style.height = '150px';
+            banner.style.borderRadius = '12px';
+            banner.style.boxShadow = '0 4px 10px rgba(0,0,0,0.2)';
+            banner.style.display = 'flex';
+            banner.style.alignItems = 'center';
+            banner.style.justifyContent = 'center';
+            banner.style.color = 'white';
+            banner.style.fontSize = '1.1rem';
+            banner.style.fontWeight = 'bold';
+            banner.style.textShadow = '1px 1px 4px rgba(0,0,0,0.6)';
+            banner.style.cursor = 'pointer';
+            banner.style.transition = 'transform 0.2s';
 
-        if (selectedDepartmentId) {
-            filteredDashboards = filteredDashboards.filter(d => String(d.departmentId) === selectedDepartmentId);
-        }
+            banner.textContent = dashboardTitle;
 
-        if (keyword) {
-            filteredDashboards = filteredDashboards.filter(d => (d.dashboardTitle || d.name || '').toLowerCase().includes(keyword));
-        }
+            banner.addEventListener('mouseenter', () => {
+                banner.style.transform = 'scale(1.02)';
+            });
+            banner.addEventListener('mouseleave', () => {
+                banner.style.transform = 'scale(1)';
+            });
 
-        filteredDashboards = filteredDashboards.filter(d => d.active !== false);
+            banner.addEventListener('click', () => {
+                window.location.href = `/panel/${dashboardUid}`;
+            });
 
-        const groupedDashboards = {};
-        filteredDashboards.forEach(d => {
-            const deptId = d.departmentId;
-            if (!groupedDashboards[deptId]) groupedDashboards[deptId] = [];
-            groupedDashboards[deptId].push(d);
-        });
+            // 버튼 컨테이너 생성
+            const buttonContainer = document.createElement('div');
+            buttonContainer.style.position = 'absolute';
+            buttonContainer.style.top = '10px';
+            buttonContainer.style.right = '10px';
+            buttonContainer.style.display = 'flex';
+            buttonContainer.style.gap = '8px'; // 버튼 간격
+            buttonContainer.style.zIndex = '2';
 
-        dashboardGroups.innerHTML = '';
+            // 삭제 버튼
+            const deleteBtn = document.createElement('button');
+            deleteBtn.textContent = '삭제';
+            deleteBtn.style.backgroundColor = '#e74c3c';
+            deleteBtn.style.border = 'none';
+            deleteBtn.style.color = 'white';
+            deleteBtn.style.padding = '6px 10px';
+            deleteBtn.style.borderRadius = '6px';
+            deleteBtn.style.cursor = 'pointer';
+            deleteBtn.style.boxShadow = '0 2px 6px rgba(0,0,0,0.2)';
 
-        Object.keys(groupedDashboards).forEach(deptId => {
-            const dashboards = groupedDashboards[deptId];
-            const departmentGroup = document.createElement('div');
-            departmentGroup.className = 'department-group';
+            // 수정 버튼
+            const updateBtn = document.createElement('button');
+            updateBtn.textContent = '수정';
+            updateBtn.style.backgroundColor = '#1e3a8a';
+            updateBtn.style.border = 'none';
+            updateBtn.style.color = 'white';
+            updateBtn.style.padding = '6px 10px';
+            updateBtn.style.borderRadius = '6px';
+            updateBtn.style.cursor = 'pointer';
+            updateBtn.style.boxShadow = '0 2px 6px rgba(0,0,0,0.2)';
 
-            const departmentTitle = document.createElement('h2');
-            departmentTitle.className = 'department-title';
-            departmentTitle.textContent = dashboards[0]?.departmentName || '알 수 없는 부서';
+            // 수정 버튼 클릭 시 페이지 이동
+            updateBtn.addEventListener('click', function (e) {
+                e.stopPropagation(); // 배너 클릭 방지
 
-            const bannersContainer = document.createElement('div');
-            bannersContainer.className = 'banners-container';
+                // 이미 입력창이 존재하는지 체크
+                if (banner.querySelector('input')) return;
 
-            dashboards.forEach(dashboard => {
-                const dashboardElement = document.createElement('div');
-                dashboardElement.className = 'banner-container';
+                const originalTitle = dashboardTitle;
 
-                const link = document.createElement('a');
-                link.href = `/dashboard-preview?id=${dashboard.dashboardId || dashboard.id}`;
-                link.className = 'banner-link';
+                // 입력창 생성
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.value = dashboardTitle;
+                input.style.padding = '4px 8px';
+                input.style.fontSize = '1rem';
+                input.style.borderRadius = '4px';
+                input.style.border = '1px solid #ccc';
+                input.style.marginRight = '8px';
 
-                const image = document.createElement('img');
-                image.src = dashboard.bannerImage || '/img/equipment/banner_default.png';
-                image.alt = dashboard.dashboardTitle || dashboard.name;
-                image.className = 'banner-image';
+                // 확인 버튼 생성
+                const confirmBtn = document.createElement('button');
+                confirmBtn.textContent = '확인';
+                confirmBtn.style.padding = '4px 10px';
+                confirmBtn.style.backgroundColor = '#10b981'; // green
+                confirmBtn.style.color = 'white';
+                confirmBtn.style.border = 'none';
+                confirmBtn.style.borderRadius = '4px';
+                confirmBtn.style.cursor = 'pointer';
 
-                const overlay = document.createElement('div');
-                overlay.className = 'banner-overlay';
+                // 이벤트 전파 방지
+                input.addEventListener('click', e => e.stopPropagation());
+                confirmBtn.addEventListener('click', e => e.stopPropagation());
 
-                const title = document.createElement('span');
-                title.className = 'banner-title';
-                title.textContent = dashboard.dashboardTitle || dashboard.name;
+                // 기존 텍스트 제거
+                banner.textContent = '';
+                banner.style.justifyContent = 'flex-start';
+                banner.style.paddingLeft = '24px';
+                banner.appendChild(input);
+                banner.appendChild(confirmBtn);
 
-                overlay.appendChild(title);
-                link.appendChild(image);
-                link.appendChild(overlay);
+                // 저장 로직 함수
+                async function saveNewTitle() {
+                    const dashboardNewTitle = input.value.trim();
 
-                const deleteButton = document.createElement('button');
-                deleteButton.textContent = '삭제';
-                deleteButton.className = 'dashboard-delete-btn';
-                deleteButton.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    if (confirm('정말 삭제하시겠습니까?')) {
-                        deleteDashboard(dashboard.dashboardId || dashboard.id);
+                    if (!dashboardNewTitle) {
+                        alert('제목을 입력해주세요.');
+                        return;
+                    }
+
+                    try {
+                        const res = await fetch("https://luckyseven.live/api/dashboards", {
+                            method: 'PUT',
+                            credentials: 'include',
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                "dashboardUid": `${dashboardUid}`,
+                                "dashboardNewTitle": `${dashboardNewTitle}`
+                            })
+                        });
+
+                        if (!res.ok) throw new Error('업데이트 실패');
+
+                        // 성공 시 UI 업데이트
+                        banner.textContent = dashboardNewTitle;
+                        banner.style.justifyContent = 'center';
+                        banner.style.paddingLeft = '0';
+                    } catch (err) {
+                        alert('업데이트 중 오류 발생: ' + err.message);
+                        // 실패 시 원래 제목 복원
+                        banner.textContent = originalTitle;
+                        banner.style.justifyContent = 'center';
+                        banner.style.paddingLeft = '0';
+                    }
+                }
+
+                // 확인 버튼 이벤트
+                confirmBtn.addEventListener('click', async (event) => {
+                    event.stopPropagation();
+                    await saveNewTitle();
+                });
+
+                // Enter 키로 저장
+                input.addEventListener('keydown', async (event) => {
+                    if (event.key === 'Enter') {
+                        event.stopPropagation();
+                        await saveNewTitle();
                     }
                 });
 
-                dashboardElement.appendChild(link);
-                dashboardElement.appendChild(deleteButton);
-                bannersContainer.appendChild(dashboardElement);
+                input.focus();
             });
 
-            departmentGroup.appendChild(departmentTitle);
-            departmentGroup.appendChild(bannersContainer);
-            dashboardGroups.appendChild(departmentGroup);
+            // 삭제 버튼 클릭 이벤트
+            deleteBtn.addEventListener('click', async (e) => {
+                e.stopPropagation();
+                if (!confirm(`정말 "${dashboardTitle}" 대시보드를 삭제하시겠습니까?`)) return;
+
+                try {
+                    const res = await fetch("https://luckyseven.live/api/dashboards", {
+                        method: 'DELETE',
+                        credentials: 'include',
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            dashboardUid: dashboardUid
+                        })
+                    });
+
+                    if (!res.ok) throw new Error('삭제 실패');
+
+                    bannerWrapper.remove(); // UI에서 제거
+                } catch (err) {
+                    alert('삭제 중 오류 발생: ' + err.message);
+                }
+            });
+
+            // 버튼 컨테이너에 버튼 추가
+            buttonContainer.appendChild(updateBtn);
+            buttonContainer.appendChild(deleteBtn);
+
+            bannerWrapper.appendChild(banner);
+            bannerWrapper.appendChild(buttonContainer);
+            container.appendChild(bannerWrapper);
         });
+
+        dashboardList.appendChild(container);
+
+    } catch (error) {
+        console.error('대시보드 로딩 실패:', error);
+        dashboardList.textContent = '대시보드 목록을 불러오는 데 실패했습니다.';
     }
-
-    departmentSelect.addEventListener('change', () => {
-        populateDashboardSelect(departmentSelect.value);
-        filterAndDisplayDashboards();
-    });
-
-    dashboardSelect.addEventListener('change', () => {
-        const selectedValue = dashboardSelect.value;
-        if (selectedValue) {
-            window.location.href = `/add-panel.html?dashboardId=${selectedValue}`;
-        }
-    });
-
-    keywordInput?.addEventListener('input', filterAndDisplayDashboards);
-
-    populateDepartmentSelect();
-    populateDashboardSelect();
-    filterAndDisplayDashboards();
 });

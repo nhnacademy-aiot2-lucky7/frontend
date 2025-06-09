@@ -50,13 +50,13 @@ public class DashboardController {
 
     @GetMapping("/all-dashboard")
     public String getAllDashboards() {
-        return "pages/admin/dashboard/pages-dashboard-all-list";
+        return "pages/admin/dashboard/pages-admin-all-dashboard";
     }
 
     @GetMapping("/admin/dashboard-list")
-    public String getAdminDashboards(@RequestParam("dashboardUid") String dashboardUid, Model model) {
-        model.addAttribute("dashboardUid", dashboardUid);
-        return "pages/member/dashboard/pages-dashboard-info";
+    public String getAdminDashboards(@RequestParam("title") String dashboardTitle, Model model) {
+        model.addAttribute("title", dashboardTitle);
+        return "pages/admin/dashboard/pages-admin-dashboard-list";
     }
 
     // 패널 추가

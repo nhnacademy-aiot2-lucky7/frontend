@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+
+<head>
+  <meta charset="utf-8"/>
+  <title>대시보드 내역 | Lucky Seven</title>
+  <link href="/css/dashboard/dashboard.css" rel="stylesheet"/>
+  <script src="/js/dashboard/dashboard-utils.js"></script>
+  <script src="/js/dashboard/all-dashboard.js"></script>
+</head>
+
+<body>
+<section layout:fragment="content">
+  <main class="dashboard-info-container" style="flex: 1; position: relative;">
+    <section class="dashboard-info-header" style="position: relative;">
+      <h1>대시보드 내역</h1>
+    </section>
+
+    <div id="dashboardList" style="margin-top: 20px;"></div>
+  </main>
+</section>
+</body>
+</html>

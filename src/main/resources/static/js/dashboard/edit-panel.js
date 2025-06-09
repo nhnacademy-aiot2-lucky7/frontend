@@ -247,7 +247,7 @@ function createPanelRequest(formData, typeInfo) {
         createPanelRequest: {
             dashboardUid: formData.dashboardUid,
             panelId: panelId,
-            panelTitle: formData.panelTitle,
+            panelNewTitle: formData.panelTitle,
             sensorFieldRequestDto: {
                 field: formData.field,
                 gatewayId: formData.gatewayId,

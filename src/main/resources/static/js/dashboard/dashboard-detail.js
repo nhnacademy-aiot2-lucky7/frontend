@@ -224,7 +224,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // 뒤로 가기 버튼 클릭 이벤트
     backBtn.addEventListener('click', function () {
         if (typeof currentUser !== 'undefined' && currentUser && currentUser.userRole === 'ROLE_ADMIN') {
-            window.location.href = '/admin/dashboard-info';
+            window.location.href = '/dashboard/admin/dashboard-info';
         } else {
             window.location.href = '/dashboard-info';
         }

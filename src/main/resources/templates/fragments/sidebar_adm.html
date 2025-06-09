@@ -43,13 +43,13 @@
                 </a>
             </li>
             <li class="sidebar-item" th:classappend="${currentPath == '/user/admin/member_management'} ? 'active'">
-                <a class="sidebar-link" href="/pages/admin/member_management">
+                <a class="sidebar-link" href="/user/admin/member_management">
                     <i class="align-middle" data-feather="users"></i>
                     <span class="align-middle">멤버 관리</span>
                 </a>
             </li>
             <li class="sidebar-item" th:classappend="${currentPath == '/ai/admin/ai-analyze' or currentPath == '/pages/admin/ai-result'} ? 'active'">
-                <a class="sidebar-link" href="/pages/admin/ai-result">
+                <a class="sidebar-link" href="/ai/admin/ai-result">
                     <i class="align-middle" data-feather="activity"></i>
                     <span class="align-middle">AI 분석</span>
                 </a>

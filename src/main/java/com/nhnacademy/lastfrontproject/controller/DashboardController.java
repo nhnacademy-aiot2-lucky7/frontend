@@ -53,7 +53,7 @@ public class DashboardController {
         return "pages/admin/dashboard/pages-admin-all-dashboard";
     }
 
-    @GetMapping("/admin/dashboard-list")
+    @GetMapping("/dashboard/admin/dashboard-list")
     public String getAdminDashboards(@RequestParam("title") String dashboardTitle, Model model) {
         model.addAttribute("title", dashboardTitle);
         return "pages/admin/dashboard/pages-admin-dashboard-list";

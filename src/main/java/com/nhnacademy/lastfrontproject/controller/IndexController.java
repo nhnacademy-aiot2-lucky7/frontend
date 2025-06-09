@@ -19,8 +19,7 @@ public class IndexController {
 
     @GetMapping("/dashboard")
     public String dashboard(){
-//        return "index";
-        return "redirect:/dashboard-info";
+        return "index";
     }
 
     @GetMapping("/helpdesk")

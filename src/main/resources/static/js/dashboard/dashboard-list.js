@@ -17,27 +17,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             headers: {'Content-Type': 'application/json'}
         });
 
-        console.log("sdlafasf", response);
         if (!response.ok) throw new Error('대시보드 조회 실패');
 
         const dashboards = await response.json();
-        const userDepartment = window.currentUser.department;
-
-        if (!userDepartment) {
-            dashboardList.textContent = '사용자 부서 정보를 찾을 수 없습니다.';
-            return;
-        }
-
-        const userDepartmentId = userDepartment.id;
-        const filteredDashboards = dashboards.filter(d => d.departmentId === userDepartmentId);
-
-        console.log("userDepartmentId: ", userDepartment.id);
-
-        console.log("filter:", filteredDashboards);
-        if (filteredDashboards.length === 0) {
-            dashboardList.textContent = '부서에 맞는 대시보드가 없습니다.';
-            return;
-        }
+        console.log("사용자의 대시보드 리스트 조회: ", dashboards);
 
         const container = document.createElement('div');
         container.style.display = 'flex';
@@ -49,11 +32,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             method: 'GET',
             credentials: 'include'
         })
-            .then(response => {
-                return response.json().dashBoardUid;
-            });
+            .then(response => response.json())
+            .then(json => json.dashboardUid());
 
-        filteredDashboards.forEach(d => {
+        dashboards.forEach(d => {
             const dashboardTitle = d.title || '이름 없음';
             const dashboardUid = d.uid;
 

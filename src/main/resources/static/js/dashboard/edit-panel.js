@@ -275,7 +275,7 @@ function createPanelRequest(formData, typeInfo) {
 // 패널 생성 요청 보내기
 async function submitPanelRequest(panelWithRuleRequest) {
     return await fetch("https://luckyseven.live/api/panels", {
-        method: "POST",
+        method: "PUT",
         credentials: 'include',
         headers: {
             "Content-Type": "application/json"

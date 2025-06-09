@@ -6,14 +6,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const deleteReadBtn = document.getElementById("deleteReadBtn");
 
     let isRead = false;
+    let page = 0;
+    let totalPages = 1;
 
     async function fetchNotifications() {
         const endpoint = isRead ? 'read' : 'unread';
-        const response = await fetch(`https://luckyseven.live/api/notifications/${endpoint}?size=10`, {
+        const response = await fetch(`https://luckyseven.live/api/notifications/${endpoint}?size=10&page=${page}`, {
             method: 'GET',
             credentials: 'include'
         });
         const data = await response.json();
+        totalPages = data.totalPages || 1;
         return data.content || [];
     }
 
@@ -40,6 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
             credentials: 'include'
         });
         if (isRead) {
+            page = 0;
             renderList();
         }
         fetchUnreadCount();
@@ -48,6 +52,38 @@ document.addEventListener('DOMContentLoaded', () => {
     function formatDateTime(dateTimeStr) {
         const dt = new Date(dateTimeStr);
         return dt.toLocaleString('ko-KR');
+    }
+
+    function renderPagination() {
+        const paginationContainer = document.getElementById("pagination");
+        paginationContainer.innerHTML = "";
+
+        const prevBtn = document.createElement("button");
+        prevBtn.textContent = "이전";
+        prevBtn.disabled = page === 0;
+        prevBtn.onclick = () => {
+            if (page > 0) {
+                page--;
+                renderList();
+            }
+        };
+
+        const nextBtn = document.createElement("button");
+        nextBtn.textContent = "다음";
+        nextBtn.disabled = page >= totalPages - 1;
+        nextBtn.onclick = () => {
+            if (page < totalPages - 1) {
+                page++;
+                renderList();
+            }
+        };
+
+        const pageInfo = document.createElement("span");
+        pageInfo.textContent = ` ${page + 1} / ${totalPages} 페이지 `;
+
+        paginationContainer.appendChild(prevBtn);
+        paginationContainer.appendChild(pageInfo);
+        paginationContainer.appendChild(nextBtn);
     }
 
     async function renderList() {
@@ -73,11 +109,13 @@ document.addEventListener('DOMContentLoaded', () => {
             notificationList.appendChild(li);
         });
 
+        renderPagination();
         fetchUnreadCount();
     }
 
     unreadTab.onclick = () => {
         isRead = false;
+        page = 0;
         unreadTab.classList.add("active");
         readTab.classList.remove("active");
         renderList();
@@ -85,6 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     readTab.onclick = () => {
         isRead = true;
+        page = 0;
         readTab.classList.add("active");
         unreadTab.classList.remove("active");
         renderList();

@@ -34,7 +34,7 @@ body {
 .notification-list {
     list-style: none;
     padding: 0;
-    max-width: 100%; /* 필요 시 조절 가능 */
+    max-width: 100%;
 }
 
 .notification {
@@ -46,7 +46,7 @@ body {
     cursor: pointer;
     box-sizing: border-box;
     max-width: 80%;
-    word-break: break-word; /* 긴 텍스트 줄바꿈 처리 */
+    word-break: break-word;
 }
 
 .notification:hover {
@@ -63,21 +63,20 @@ body {
     justify-content: space-between;
     align-items: center;
     gap: 10px;
-    /* 가로 공간 제한 없이 줄바꿈 허용 */
 }
 
 .notification .header > div:first-child {
     flex: 1 1 auto;
     max-width: 70%;
-    white-space: normal; /* 줄바꿈 허용 */
-    overflow-wrap: break-word; /* 긴 단어도 줄바꿈 */
+    white-space: normal;
+    overflow-wrap: break-word;
     word-break: break-word;
-    text-overflow: unset; /* 말줄임 제거 */
+    text-overflow: unset;
 }
 
 .notification .header > div:last-child {
     flex-shrink: 0;
-    white-space: nowrap; /* 오른쪽 정보는 한 줄 유지 */
+    white-space: nowrap;
 }
 
 .notification .meta {
@@ -93,4 +92,26 @@ body {
     border-radius: 4px;
     float: right;
     margin-bottom: 20px;
+}
+
+/* ✅ Pagination styles */
+.pagination {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.pagination button {
+    padding: 6px 12px;
+    border: none;
+    background: #007bff;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.pagination button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
 }

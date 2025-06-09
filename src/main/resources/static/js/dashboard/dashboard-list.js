@@ -20,8 +20,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!response.ok) throw new Error('대시보드 조회 실패');
 
         const dashboards = await response.json();
-
-        console.log("결과", dashboards);
         const userDepartment = window.currentUser.department;
 
         if (!userDepartment) {
@@ -44,6 +42,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         container.style.display = 'flex';
         container.style.flexWrap = 'wrap';
         container.style.gap = '16px';
+
+        const departmentId = window.currentUser.department.departmentId;
+        const mainDashboardUid = await fetch(`https://luckyseven.live/api/main/dashboard/${departmentId}`, {
+            method: 'GET',
+            credentials: 'include'
+        })
+            .then(response => {
+                return response.json().dashBoardUid;
+            });
 
         filteredDashboards.forEach(d => {
             const dashboardTitle = d.title || '이름 없음';
@@ -117,6 +124,24 @@ document.addEventListener('DOMContentLoaded', async () => {
             updateBtn.style.borderRadius = '6px';
             updateBtn.style.cursor = 'pointer';
             updateBtn.style.boxShadow = '0 2px 6px rgba(0,0,0,0.2)';
+
+            // 메인 토글 스위치 생성
+            const mainToggleWrapper = document.createElement('label');
+            mainToggleWrapper.style.display = 'inline-flex';
+            mainToggleWrapper.style.alignItems = 'center';
+            mainToggleWrapper.style.gap = '8px';
+            mainToggleWrapper.style.cursor = 'pointer';
+
+            // input[type=checkbox]
+            const mainToggleInput = document.createElement('input');
+            mainToggleInput.type = 'checkbox';
+            mainToggleInput.checked = (mainDashboardUid === dashboardUid); // 활성화 여부
+            mainToggleInput.disabled = (mainDashboardUid !== dashboardUid); // 다른 대시보드면 비활성화
+
+            // span: 토글 텍스트
+            const mainToggleText = document.createElement('span');
+            mainToggleText.textContent = mainToggleInput.checked ? '메인 설정됨' : '메인으로 설정';
+            mainToggleText.style.color = mainToggleInput.checked ? '#10b981' : '#6b7280';
 
             // 수정 버튼 클릭 시 페이지 이동
             updateBtn.addEventListener('click', function (e) {
@@ -237,9 +262,69 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             });
 
+            // 메인 설정 클릭 이벤트
+            mainToggleInput.addEventListener('click', async (e) => {
+                e.stopPropagation();
+
+                // 이미 메인 설정된 경우
+                if (mainDashboardUid === dashboardUid) {
+                    alert('이미 메인으로 설정된 대시보드입니다.');
+                    e.preventDefault(); // 토글 상태 안 바뀌도록 막음
+                    return;
+                }
+
+                try {
+                    const res = await fetch("https://luckyseven.live/api/main/dashboard", {
+                        method: 'POST',
+                        credentials: 'include',
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            mainDashboardUid: dashboardUid,
+                            mainDashboardTitle: dashboardTitle
+                        })
+                    });
+
+                    if (!res.ok) throw new Error('메인 설정 실패');
+
+                    // 모든 토글 초기화
+                    document.querySelectorAll('.main-toggle-input').forEach(input => {
+                        input.checked = false;
+                        input.disabled = false;
+                        const label = input.closest('label');
+                        if (label) {
+                            const span = label.querySelector('span');
+                            if (span) {
+                                span.textContent = '메인으로 설정';
+                                span.style.color = '#6b7280';
+                            }
+                        }
+                    });
+
+                    // 현재 토글만 업데이트
+                    mainToggleInput.checked = true;
+                    mainToggleInput.disabled = true;
+                    const label = mainToggleInput.closest('label');
+                    if (label) {
+                        const span = label.querySelector('span');
+                        if (span) {
+                            span.textContent = '메인 설정됨';
+                            span.style.color = '#10b981';
+                        }
+                    }
+                } catch (err) {
+                    alert('메인 설정 중 오류 발생: ' + err.message);
+                }
+            });
+
+            mainToggleWrapper.appendChild(mainToggleInput);
+            mainToggleWrapper.appendChild(mainToggleText);
+
             // 버튼 컨테이너에 버튼 추가
             buttonContainer.appendChild(updateBtn);
             buttonContainer.appendChild(deleteBtn);
+            buttonContainer.appendChild(mainToggleWrapper);
 
             bannerWrapper.appendChild(banner);
             bannerWrapper.appendChild(buttonContainer);

@@ -244,7 +244,7 @@ function createPanelRequest(formData, typeInfo) {
     const panelId = document.getElementById('panelId').value;
 
     return {
-        createPanelRequest: {
+        updatePanelRequest: {
             dashboardUid: formData.dashboardUid,
             panelId: panelId,
             panelNewTitle: formData.panelTitle,

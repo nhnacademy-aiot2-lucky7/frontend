@@ -5,6 +5,29 @@
 
 <head>
     <meta charset="utf-8"/>
+    <style>
+        #latest-ai-chart-container {
+            border: 3px solid #000000;
+            padding: 10px;
+        }
+        .chart-box {
+            border: 2px solid #d1d5db;
+            border-radius: 8px;
+            padding: 12px;
+            box-sizing: border-box;
+            background-color: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            width: 600px;
+            height: 320px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .chart-box canvas {
+            max-width: 100%;
+            max-height: 100%;
+        }
+    </style>
     <title>Lucky Seven MainPage | Lucky Seven</title>
     <link href="/css/index.css" rel="stylesheet"/>
     <link href="/css/common.css" rel="stylesheet"/>
@@ -57,7 +80,7 @@
 <section layout:fragment="content">
 
     <!-- 기존 콘텐츠 -->
-    <h1>최신 AI 분석 결과111111111111111111</h1>
+    <h1>최신 AI 분석 결과</h1>
     <div id="latest-ai-chart-container"></div>
 
     <!-- panel-list 콘텐츠 삽입 -->

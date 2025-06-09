@@ -15,6 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
             return null;
         }
         const data = await res.json();
+        console.log("hihihihiihihihii");
+        console.log("data: ",data.content);
         return data.content?.[0] || null;
     }
 

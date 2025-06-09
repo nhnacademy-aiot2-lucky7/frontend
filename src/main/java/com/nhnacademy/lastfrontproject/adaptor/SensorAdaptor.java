@@ -8,6 +8,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Set;
@@ -28,7 +29,7 @@ public interface SensorAdaptor {
     @GetMapping("/api/data-types/{typeEnName}")
     ResponseEntity<DataTypeInfoResponse> getDataTypeKrName(@PathVariable("typeEnName") String typeEnName) ;
 
-    @GetMapping("/api/sensor-data-mappings/gateway-id/{gateway-id}/sensors")
+    @GetMapping("/api/sensor-data-mappings/gateway-id/{gateway-id}/search-status?status=COMPLETED")
     ResponseEntity<List<SensorDataDetailResponse>> getSensorDataByGatewayId(
             @PathVariable("gateway-id") Long gatewayId);
     }

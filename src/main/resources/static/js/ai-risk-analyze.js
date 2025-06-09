@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
             sensorSelect.innerHTML = "<option value=''>-- 선택하세요 --</option>";
             if (!gatewayId) return;
 
-            fetch(`/sensor-list/${gatewayId}/sensors`)
+            fetch(`/sensor-list/${gatewayId}`)
                 .then(res => res.json())
                 .then(sensors => {
                     sensors.forEach(sensor => {

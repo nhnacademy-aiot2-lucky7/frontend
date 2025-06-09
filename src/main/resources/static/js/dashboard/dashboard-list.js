@@ -124,8 +124,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             const mainToggleInput = document.createElement('input');
             mainToggleInput.type = 'checkbox';
             mainToggleInput.className = 'main-toggle-input';
-            mainToggleInput.checked = (mainDashboardUid === dashboardUid); // 활성화 여부
-            mainToggleInput.disabled = (mainDashboardUid === dashboardUid); // 다른 대시보드면 비활성화
+            mainToggleInput.checked = (mainDashboardUid == dashboardUid); // 활성화 여부
+            mainToggleInput.disabled = (mainDashboardUid == dashboardUid); // 다른 대시보드면 비활성화
 
             // span
             const mainToggleSlider = document.createElement('span');
@@ -294,14 +294,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                     // 현재 토글만 업데이트
                     mainToggleInput.checked = true;
                     mainToggleInput.disabled = true;
-                    const label = mainToggleInput.closest('label');
-                    if (label) {
-                        const span = label.querySelector('span');
-                        if (span) {
-                            span.textContent = '메인 설정됨';
-                            span.style.color = '#10b981';
-                        }
-                    }
                 } catch (err) {
                     alert('메인 설정 중 오류 발생: ' + err.message);
                     mainToggleInput.checked = false;

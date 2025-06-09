@@ -33,7 +33,14 @@
         </div>
 
         <!-- 센서 목록 -->
-        <h3>센서 목록</h3>
+        <h3 style="display: flex; justify-content: space-between; align-items: center;">
+            센서 목록
+            <span class="sensor-legend">
+                <span class="legend-item"><span class="legend-dot status-pending"></span> PENDING</span>
+                <span class="legend-item"><span class="legend-dot status-completed"></span> COMPLETED</span>
+                <span class="legend-item"><span class="legend-dot status-abandoned"></span> ABANDONED</span>
+            </span>
+        </h3>
         <div id="sensor-section"></div>
     </div>
 

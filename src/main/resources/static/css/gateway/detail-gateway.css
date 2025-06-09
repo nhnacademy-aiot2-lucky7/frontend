@@ -178,6 +178,7 @@ h4::after {
 }
 
 .sensor-card {
+    position: relative;
     background-color: #fdfdfd;
     padding: 20px 24px;
     border-radius: 12px;
@@ -222,6 +223,31 @@ h4::after {
 
 .sensor-btn:hover {
     background-color: #c7d2fe;
+}
+
+.sensor-status-indicator {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.status-pending {
+    background-color: #f2f219;
+}
+
+.status-completed {
+    background-color: #3ce423;
+}
+
+.status-abandoned {
+    background-color: #6b7280;
+}
+
+.status-unknown {
+    background-color: #6b7280;
 }
 
 .info-item .value.active {
@@ -305,3 +331,37 @@ h4::after {
 .btn-cancel:hover {
     background-color: #e5e7eb;
 }
+
+.sensor-legend {
+    display: flex;
+    gap: 16px;
+    font-size: 14px;
+    color: #374151;
+    align-items: center;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.legend-dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.legend-dot.status-pending {
+    background-color: #f2f219;
+}
+
+.legend-dot.status-completed {
+    background-color: #3ce423;
+}
+
+.legend-dot.status-abandoned {
+    background-color: #6b7280;
+}
+

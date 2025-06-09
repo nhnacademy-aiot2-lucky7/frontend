@@ -91,15 +91,33 @@ document.addEventListener("DOMContentLoaded", async () => {
         sensorSection.appendChild(sensorList);
 
         sensorGroups[location].forEach(sensor => {
-            const shortSensorId = sensor.sensor_id.substring(0, 6);
             const sensorName = sensor.sensor_name
                 ? sensor.sensor_name
                 : `${location}-${sensor.type_en_name}-${sensor.sensor_spot}`;
+
+            const status = sensor.status; // 예: "NORMAL", "WARNING", "ERROR"
+            console.log(sensor)
+            // 상태 클래스를 결정
+            let statusClass;
+            switch (status) {
+                case 'PENDING':
+                    statusClass = 'status-pending';
+                    break;
+                case 'COMPLETED':
+                    statusClass = 'status-completed';
+                    break;
+                case 'ABANDONED':
+                    statusClass = 'status-abandoned';
+                    break;
+                default:
+                    statusClass = 'status-unknown';
+            }
 
             const card = document.createElement('div');
             card.className = 'sensor-card';
 
             card.innerHTML = `
+                <div class="sensor-status-indicator ${statusClass}"></div>
                 <div class="sensor-field">
                     <span class="label">이름</span>
                     <span class="value">${sensorName}</span>

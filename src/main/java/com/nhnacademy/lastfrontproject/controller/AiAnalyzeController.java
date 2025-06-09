@@ -23,6 +23,6 @@ public class AiAnalyzeController {
 
     @GetMapping("/ai-main")
     public String aiMain() {
-        return "pages/ai-main";
+        return "index";
     }
 }

@@ -10,12 +10,6 @@
                     <span class="align-middle">메인페이지</span>
                 </a>
             </li>
-            <li class="sidebar-item" id="login-menu">
-                <a class="sidebar-link" href="/sign-in">
-                    <i class="align-middle" data-feather="log-in"></i>
-                    <span class="align-middle">로그인</span>
-                </a>
-            </li>
             <li class="sidebar-item" id="mypage-menu"
                 th:classappend="${currentPath == '/profile' or currentPath == '/edit-profile'} ? 'active'">
                 <a class="sidebar-link" href="/profile">
@@ -34,9 +28,9 @@
                     currentPath.startsWith('/dashboard-info')
                     or currentPath.startsWith('/add-dashboard')
                     or currentPath.startsWith('/dashboard-detail')
-                    or currentPath.startsWith('/pages/admin/dashboard-info')
+                    or currentPath.startsWith('/admin/dashboard-info')
                 } ? 'active'">
-                <a class="sidebar-link" href="/pages/admin/dashboard-info">
+                <a class="sidebar-link" href="/admin/dashboard-info">
                     <i class="align-middle" data-feather="trending-up"></i>
                     <span class="align-middle">대시보드 내역</span>
                 </a>

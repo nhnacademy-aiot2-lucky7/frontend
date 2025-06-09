@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
             currentUser.userRole !== 'ROLE_ADMIN'
         ) {
             alert('관리자만 접근할 수 있습니다.');
-            window.location.href = '/dashboard';
+            // window.location.href = '/dashboard';
         }
     }
 });

@@ -39,18 +39,23 @@ a {
 }
 
 /* 저장 버튼을 오른쪽 위에 배치 */
-.add-dashboard-save-btn {
-    background-color: #6d65f4;
-    color: #fff;
-    padding: 12px 28px;
+.dashboard-add-btn {
+    position: absolute;
+    top: 30px;
+    right: 100px;
+    padding: 10px 20px;
+    background-color: #8d89e8;
+    color: white;
     border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background 0.2s ease;
-    position: relative;
-    top: 6px; /* 버튼 높이 맞추기 */
-    height: 45px; /* 버튼 높이 */
+    border-radius: 6px;
+    font-weight: bold;
+    text-decoration: none;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: background-color 0.3s ease;
+}
+
+.dashboard-add-btn:hover {
+    background-color: #4e46ee; /* hover 시 더 진한 보라색 */
 }
 
 /* 버튼 컨테이너 */
@@ -59,10 +64,6 @@ a {
     justify-content: flex-end;
     gap: 16px;
     margin-top: 20px;
-}
-
-.add-dashboard-save-btn:hover {
-    background-color: #8d89e8;
 }
 
 /* ===== 3. 폼 요소 스타일 ===== */

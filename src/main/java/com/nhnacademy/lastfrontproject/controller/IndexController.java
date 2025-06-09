@@ -28,11 +28,6 @@ public class IndexController {
         return "pages/member/pages-helpdesk";
     }
 
-//    @GetMapping("/settings")
-//    public String settings(){
-//        return "pages/member/pages-settings";
-//    }
-
     @GetMapping("/privacy")
     public String privacy(){
         return "pages/member/pages-privacy";

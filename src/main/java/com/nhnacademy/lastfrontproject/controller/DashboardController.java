@@ -43,7 +43,7 @@ public class DashboardController {
     }
 
     // admin 대시보드 정보 조회
-    @GetMapping("/pages/admin/dashboard-info")
+    @GetMapping("/admin/dashboard-info")
     public String getAdminDepartment() {
         return "pages/admin/dashboard/pages-dashboard-info";
     }

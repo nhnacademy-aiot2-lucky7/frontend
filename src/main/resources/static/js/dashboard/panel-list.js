@@ -34,7 +34,7 @@ function createPanelCard(panel) {
     let start = startMatch ? startMatch[1].trim() : '-12h';
 
     const iframe = document.createElement('iframe');
-    iframe.src = `https://grafana.luckyseven.live/d-solo/${panel.dashboardUid}?orgId=1&from=now${start}&to=${panel.now}&panelId=${panel.panelId}&transparent=1`;
+    iframe.src = `https://grafana.luckyseven.live/d-solo/${panel.dashboardUid}?orgId=1&from=now${start}&to=${panel.now}&panelId=${panel.panelId}&transparent=1&refresh=1m`;
     iframe.className = 'grafana-iframe';
     wrapper.appendChild(iframe);
 

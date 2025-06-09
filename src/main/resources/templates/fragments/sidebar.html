@@ -4,9 +4,21 @@
             <img src="/img/logo/luckyseven_logo_fixed_bg.png" alt="Lucky Seven Logo">
         </a>
         <ul class="sidebar-nav">
-            <li class="sidebar-item" th:classappend="${currentPath == '/dashboard'} ? 'active'">
-                <a class="sidebar-link" href="/dashboard">
-                    <i class="align-middle" data-feather="sliders"></i>
+<!--            <li class="sidebar-item" th:classappend="${currentPath == '/dashboard'} ? 'active'">-->
+<!--                <a class="sidebar-link" href="/dashboard">-->
+<!--                    <i class="align-middle" data-feather="sliders"></i>-->
+<!--                    <span class="align-middle">메인페이지</span>-->
+<!--                </a>-->
+<!--            </li>-->
+            <li class="sidebar-item"
+                th:classappend="${
+                    currentPath.startsWith('/dashboard-list')
+                    or currentPath.startsWith('/add-dashboard')
+                    or currentPath.startsWith('/dashboard-detail')
+                    or currentPath.startsWith('/dashboard-logs')
+                } ? 'active'">
+                <a class="sidebar-link" href="/dashboard-info">
+                    <i class="align-middle" data-feather="trending-up"></i>
                     <span class="align-middle">메인페이지</span>
                 </a>
             </li>

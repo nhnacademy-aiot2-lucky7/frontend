@@ -4,7 +4,7 @@ Chart.register(ChartDataLabels);
 document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('latest-ai-chart-container');
 
-    // 1) 최신 1건만 리스트 조회
+    // 1) 최신 1건 조회
     async function fetchLatestItem() {
         const res = await fetch(
             'https://luckyseven.live/api/analysis-results/search?page=0&size=1',
@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return data.content?.[0] || null;
     }
 
-    // 2) 상세 데이터 조회
+    // 2) 상세 조회
     async function fetchDetail(id) {
         const res = await fetch(
             `https://luckyseven.live/api/analysis-results/${id}`,
@@ -31,31 +31,34 @@ document.addEventListener('DOMContentLoaded', () => {
         return res.json();
     }
 
-    // 3) 센서 테이블 + 차트 렌더링
-    function renderCharts(detail) {
+    // 3) 렌더링
+    (async () => {
+        container.innerText = '로딩 중…';
+        const latest = await fetchLatestItem();
+        if (!latest) return;
+        const detail = await fetchDetail(latest.id);
+        if (!detail) return;
+
         let result;
-        try {
-            result = detail.resultJson ? JSON.parse(detail.resultJson) : detail;
-        } catch {
-            container.innerText = '파싱 오류';
-            return;
-        }
+        try { result = detail.resultJson ? JSON.parse(detail.resultJson) : detail; }
+        catch { container.innerText = '파싱 오류'; return; }
+
         const isCorrelation = /CORRELATION[-_]RISK[-_]PREDICT/i.test(result.type);
         if (!isCorrelation || !Array.isArray(result.predictedData)) {
             container.innerText = '지원하지 않는 분석 타입';
             return;
         }
 
-        // 초기화
+        // --- 컨테이너 초기화
         container.innerHTML = '';
 
-        // — 센서 정보 테이블
-        const tableHtml = `
+        // --- 1) 센서 정보 테이블 (원본 showDetail 인라인 스타일 그대로)
+        const tableHTML = `
       <table style="
-          margin:0 auto 1rem auto;
-          border-collapse:collapse;
-          min-width:400px;
-          font-size:1rem;
+        margin:0 auto 1rem auto;
+        border-collapse:collapse;
+        min-width:400px;
+        font-size:1rem;
       ">
         <thead>
           <tr style="background:#f3f4f6;">
@@ -66,9 +69,9 @@ document.addEventListener('DOMContentLoaded', () => {
           </tr>
         </thead>
         <tbody>
-          ${result.sensorInfo.map((info, i) => `
+          ${result.sensorInfo.map((info, idx) => `
             <tr>
-              <td style="padding:8px 16px; border:1px solid #e5e7eb;">센서${i+1}</td>
+              <td style="padding:8px 16px; border:1px solid #e5e7eb;">센서${idx+1}</td>
               <td style="padding:8px 16px; border:1px solid #e5e7eb;">${info.gatewayId}</td>
               <td style="padding:8px 16px; border:1px solid #e5e7eb;">${info.sensorId}</td>
               <td style="padding:8px 16px; border:1px solid #e5e7eb;">${info.sensorType}</td>
@@ -76,69 +79,53 @@ document.addEventListener('DOMContentLoaded', () => {
           `).join('')}
         </tbody>
       </table>
+      <br><br>
     `;
-        container.insertAdjacentHTML('beforeend', tableHtml);
+        container.insertAdjacentHTML('beforeend', tableHTML);
 
-        // — 차트 래퍼
+        // --- 2) 차트 래퍼 (원본 showDetail 스타일)
         const wrapper = document.createElement('div');
-        wrapper.style.display = 'flex';
-        wrapper.style.gap = '2.5rem';
-        wrapper.style.alignItems = 'center';
-        wrapper.style.justifyContent = 'center';
-        wrapper.style.flexWrap = 'wrap';
+        wrapper.style.cssText = `
+      display:flex;
+      gap:2.5rem;
+      align-items:center;
+      justify-content:center;
+      flex-wrap:wrap;
+    `;
         container.appendChild(wrapper);
 
         // 데이터
         const labels = result.predictedData.map(d => d.sensorInfo.sensorType);
         const values = result.predictedData.map(d => d.correlationRiskModel);
 
-        // — 막대차트
+        // --- 3) 막대 차트
         const barDiv = document.createElement('div');
-        barDiv.style.width = '600px';
-        barDiv.style.height = '320px';
-        const barCanvas = document.createElement('canvas');
-        barCanvas.id = 'bar-latest';
-        barDiv.appendChild(barCanvas);
+        barDiv.style.cssText = 'width:600px; height:auto; display:block; text-align:center;';
+        barDiv.innerHTML = `
+      <div style="height:320px;">
+        <canvas id="bar-latest"></canvas>
+      </div>
+      <div style="margin-top:1.5rem; min-height:2.5rem;">상관관계 위험도</div>
+    `;
         wrapper.appendChild(barDiv);
+        new Chart(
+            document.getElementById('bar-latest'),
+            { type:'bar', data:{labels,datasets:[{label:'Correlation Risk',data:values}]}, options:{responsive:true,maintainAspectRatio:false} }
+        );
 
-        new Chart(barCanvas, {
-            type: 'bar',
-            data: { labels, datasets: [{ label: 'Correlation Risk', data: values }] },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false
-            }
-        });
-
-        // — 원형차트
+        // --- 4) 원형 차트
         const pieDiv = document.createElement('div');
-        pieDiv.style.width = '320px';
-        pieDiv.style.height = '320px';
-        const pieCanvas = document.createElement('canvas');
-        pieCanvas.id = 'pie-latest';
-        pieDiv.appendChild(pieCanvas);
+        pieDiv.style.cssText = 'width:320px; height:auto; display:block; text-align:center;';
+        pieDiv.innerHTML = `
+      <div style="height:320px;">
+        <canvas id="pie-latest"></canvas>
+      </div>
+      <div style="margin-top:1.5rem; min-height:2.5rem;">센서별 위험 비율</div>
+    `;
         wrapper.appendChild(pieDiv);
-
-        new Chart(pieCanvas, {
-            type: 'pie',
-            data: { labels, datasets: [{ data: values }] },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { position: 'top' }
-                }
-            }
-        });
-    }
-
-    // 4) 초기 실행
-    (async () => {
-        container.innerText = '로딩 중…';
-        const latest = await fetchLatestItem();
-        if (!latest) return;
-        const detail = await fetchDetail(latest.id);
-        if (!detail) return;
-        renderCharts(detail);
+        new Chart(
+            document.getElementById('pie-latest'),
+            { type:'pie', data:{labels,datasets:[{data:values}]}, options:{responsive:true,maintainAspectRatio:false} }
+        );
     })();
 });

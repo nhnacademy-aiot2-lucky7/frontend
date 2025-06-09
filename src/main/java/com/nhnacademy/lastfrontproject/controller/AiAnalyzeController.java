@@ -20,4 +20,9 @@ public class AiAnalyzeController {
     public String correlationAnalysis() {
         return "pages/ai-risk-analyze";
     }
+
+    @GetMapping("/ai-main")
+    public String aiMain() {
+        return "pages/ai-main";
+    }
 }

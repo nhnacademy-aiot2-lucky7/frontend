@@ -1,68 +1,73 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     const dashboardUid = document.getElementById('panelList').dataset.dashboardUid;
-    loadIframes(dashboardUid);
+    await loadIframes(dashboardUid);
 });
 
 async function loadIframes(dashboardUid) {
     try {
         const endpoint = `https://luckyseven.live/api/panels/${dashboardUid}`;
-
         const res = await fetch(endpoint);
         if (!res.ok) throw new Error('패널 정보를 불러오지 못했습니다.');
 
         const panels = await res.json();
         const container = document.getElementById('panelList');
-        container.innerHTML = ''; // 초기화
+        container.innerHTML = '';
 
         console.log('패널 목록:', panels);
 
         panels.forEach(panel => {
-            const wrapper = document.createElement('div');
-            wrapper.className = 'panel-card';
-
-            // 제목
-            const title = document.createElement('h3');
-            title.textContent = panel.panelTitle || '제목 없음';
-            title.className = 'panel-title';
-            wrapper.appendChild(title);
-
-            // 수정 버튼 (a 태그)
-            const editBtn = document.createElement('a');
-            editBtn.textContent = '차트 수정';
-            editBtn.className = 'edit-button';
-            editBtn.href = `/panel/edit?dashboardUid=${panel.dashboardUid}&panelId=${panel.panelId}`;
-            wrapper.appendChild(editBtn);
-
-            // 삭제 버튼
-            const deleteBtn = document.createElement('button');
-            deleteBtn.textContent = '삭제';
-            deleteBtn.className = 'delete-button';
-            deleteBtn.addEventListener('click', async () => await handleDelete(panel, wrapper));
-            wrapper.appendChild(deleteBtn);
-
-            // start 값 추출 (-12h)
-            const startMatch = panel.query.match(/range\(start:\s*([^)]+)\)/);
-            let start = startMatch ? startMatch[1].trim() : null;
-
-            // iframe 생성
-            const iframe = document.createElement('iframe');
-            iframe.src = `https://grafana.luckyseven.live/d-solo/${panel.dashboardUid}?orgId=1&from=now${start}&to=${panel.now}&panelId=${panel.panelId}`;
-            console.log(start)
-            iframe.width = '500';
-            iframe.height = '200';
-            iframe.frameBorder = '0';
-            iframe.className = 'grafana-iframe';
-
-            wrapper.appendChild(iframe);
-            container.appendChild(wrapper);
+            const card = createPanelCard(panel);
+            container.appendChild(card);
         });
+
     } catch (error) {
         console.error('iframe 로딩 오류:', error);
         alert('패널을 불러오는 중 오류가 발생했습니다.');
     }
 }
 
-// ✅ 삭제 기능만 따로 분리
+function createPanelCard(panel) {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'panel-card';
+
+    const startMatch = panel.query.match(/range\(start:\s*([^)]+)\)/);
+    let start = startMatch ? startMatch[1].trim() : '-12h';
+
+    const iframe = document.createElement('iframe');
+    iframe.src = `https://grafana.luckyseven.live/d-solo/${panel.dashboardUid}?orgId=1&from=now${start}&to=${panel.now}&panelId=${panel.panelId}&transparent=1`;
+    iframe.className = 'grafana-iframe';
+    wrapper.appendChild(iframe);
+
+    const buttonContainer = document.createElement('div');
+    buttonContainer.className = 'iframe-button-container';
+
+    // 수정 버튼
+    const editBtn = document.createElement('a');
+    editBtn.href = `/panel/edit?dashboardUid=${panel.dashboardUid}&panelId=${panel.panelId}`;
+    const editImg = document.createElement('img');
+    editImg.src = '/img/icons/icon-edit-button.png';
+    editImg.alt = '수정';
+    editImg.classList.add('icon-img', 'icon-edit-img');  // 공통 + 수정용 클래스 적용
+    editBtn.appendChild(editImg);
+    buttonContainer.appendChild(editBtn);
+
+    // 삭제 버튼
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'delete-btn';
+    const deleteImg = document.createElement('img');
+    deleteImg.src = '/img/icons/icon-cancel.png';
+    deleteImg.alt = '삭제';
+    deleteImg.classList.add('icon-img', 'icon-delete-img'); // 공통 + 삭제용 클래스 적용
+    deleteBtn.appendChild(deleteImg);
+
+    deleteBtn.addEventListener('click', async () => await handleDelete(panel, wrapper));
+    buttonContainer.appendChild(deleteBtn);
+
+    wrapper.appendChild(buttonContainer);
+
+    return wrapper;
+}
+
 async function handleDelete(panel, wrapper) {
     console.log('삭제 시도 panel:', panel);
 

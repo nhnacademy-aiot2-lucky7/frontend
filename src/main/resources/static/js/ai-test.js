@@ -27,9 +27,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const wrapper = document.createElement('div');
     Object.assign(wrapper.style, {
         display: 'flex',
+        flexWrap: 'wrap',
         gap: '2rem',
-        justifyContent: 'space-around',
-        flexWrap: 'wrap'
+        justifyContent: 'space-between',  // 카드가 양 끝에 붙도록
     });
     container.appendChild(wrapper);
 
@@ -49,14 +49,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         const card = document.createElement('div');
         card.className = 'chart-box';
         Object.assign(card.style, {
-            width: '100%',
-            maxWidth: '1000px',
+            flex: '1 1 48%',  // 카드가 가로 48% 차지 (2개 한 줄 배치 가능)
+            display: 'flex',
+            flexDirection: 'column',
             padding: '1rem',
             boxSizing: 'border-box',
             border: '1px solid #ddd',
             borderRadius: '8px',
             background: '#fff',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
+            boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+            minWidth: '300px', // 너무 작아지지 않도록 최소 너비 지정
+            maxWidth: '600px',
+            marginBottom: '1rem'
         });
         wrapper.appendChild(card);
 
@@ -134,7 +138,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             display: 'flex',
             flexDirection: 'column',
             gap: '1.5rem',
-            alignItems: 'center'
+            alignItems: 'center',
+            width: '100%'
         });
         card.appendChild(chartWrapper);
 
@@ -142,10 +147,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             const labels = result.predictedData.map(d => d.sensorInfo.sensorType);
             const data   = result.predictedData.map(d => d.correlationRiskModel);
 
+            // 바 차트
             const barDiv = document.createElement('div');
-            barDiv.style.width = '100%';
-            barDiv.style.maxWidth = '600px';
-            barDiv.style.height = '320px';
+            Object.assign(barDiv.style, {
+                width: '100%',
+                maxWidth: '600px',
+                height: '320px'
+            });
             const barCan = document.createElement('canvas');
             barDiv.appendChild(barCan);
             chartWrapper.appendChild(barDiv);
@@ -169,10 +177,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                 plugins: [ChartDataLabels]
             });
 
+            // 파이 차트
             const pieDiv = document.createElement('div');
-            pieDiv.style.width = '100%';
-            pieDiv.style.maxWidth = '400px';
-            pieDiv.style.height = '320px';
+            Object.assign(pieDiv.style, {
+                width: '100%',
+                maxWidth: '400px',
+                height: '320px'
+            });
             const pieCan = document.createElement('canvas');
             pieDiv.appendChild(pieCan);
             chartWrapper.appendChild(pieDiv);
@@ -203,8 +214,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             const data = result.predictedData.map(d => d.predictedValue);
 
             const lineDiv = document.createElement('div');
-            lineDiv.style.width = '100%';
-            lineDiv.style.height = '320px';
+            Object.assign(lineDiv.style, {
+                width: '100%',
+                height: '320px'
+            });
             const lineCan = document.createElement('canvas');
             lineDiv.appendChild(lineCan);
             chartWrapper.appendChild(lineDiv);

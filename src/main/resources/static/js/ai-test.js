@@ -1,105 +1,157 @@
-// latest-multi-charts.js
+// latest-department-charts.js
 Chart.register(ChartDataLabels);
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     const container = document.getElementById('latest-ai-chart-container');
-    if (!container) return;  // 없으면 실행 안 함
+    if (!container) return;
 
-    // 공통: 최신 1건만 조회 (타입별)
-    async function fetchLatestByType(type) {
-        const res = await fetch(
-            `https://luckyseven.live/api/analysis-results/search?page=0&size=1&type=${encodeURIComponent(type)}`,
-            { credentials: 'include' }
-        );
-        if (!res.ok) return null;
-        const json = await res.json();
-        return json.content?.[0] || null;
+    // 1) departmentId 가져오기
+    const departmentId = window.currentUser && window.currentUser.department && window.currentUser.department.departmentId;
+    if (!departmentId) {
+        container.innerText = '부서 정보가 없습니다.';
+        return;
     }
 
-    // 공통: id로 상세 조회
-    async function fetchDetail(id) {
-        const res = await fetch(
-            `https://luckyseven.live/api/analysis-results/${id}`,
-            { credentials: 'include' }
-        );
-        if (!res.ok) return null;
-        return res.json();
+    // 2) 최신 두 타입 결과 가져오기
+    let results;
+    try {
+        const res = await fetch(`https://luckyseven.live/api/analysis-results/main/${departmentId}`, {
+            credentials: 'include'
+        });
+        if (!res.ok) throw new Error(res.statusText);
+        results = await res.json();  // [ AnalysisResultResponse, ... ]
+    } catch (e) {
+        container.innerText = '최신 결과를 가져오는데 실패했습니다.';
+        console.error(e);
+        return;
     }
 
-    // 상관관계 렌더러 (막대+원형)
-    function renderCorrelation(parent, detail) {
-        const result = detail.resultJson ? JSON.parse(detail.resultJson) : detail;
-        const labels = result.predictedData.map(d => d.sensorInfo.sensorType);
-        const values = result.predictedData.map(d => d.correlationRiskModel);
+    container.innerHTML = ''; // 초기화
 
-        const box = document.createElement('div');
-        box.style.display = 'flex';
-        box.style.gap = '2rem';
-        box.style.flexWrap = 'wrap';
-        box.innerHTML = `<h4 style="width:100%; text-align:center;">상관관계 위험도 (최신)</h4>`;
-        parent.appendChild(box);
-
-        // Bar
-        const barCan = document.createElement('canvas');
-        barCan.style.width = '600px'; barCan.style.height = '320px';
-        box.appendChild(barCan);
-        new Chart(barCan.getContext('2d'), {
-            type: 'bar',
-            data: { labels, datasets:[{ label:'Risk', data:values }]},
-            options:{ responsive:true, maintainAspectRatio:false }
-        });
-
-        // Pie
-        const pieCan = document.createElement('canvas');
-        pieCan.style.width = '320px'; pieCan.style.height = '320px';
-        box.appendChild(pieCan);
-        new Chart(pieCan.getContext('2d'), {
-            type: 'pie',
-            data: { labels, datasets:[{ data:values }]},
-            options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'top' } } }
-        });
-    }
-
-    // 단일 예측 렌더러 (꺾은선)
-    function renderSingle(parent, detail) {
-        const result = detail.resultJson ? JSON.parse(detail.resultJson) : detail;
-        const labels = result.predictedData.map(d => {
-            const dt = new Date(d.predictedDate);
-            return `${dt.getFullYear()}-${dt.getMonth()+1}-${dt.getDate()}`;
-        });
-        const values = result.predictedData.map(d => d.predictedValue);
-
-        const box = document.createElement('div');
-        box.style.marginTop = '2rem';
-        box.innerHTML = `<h4 style="text-align:center;">예측값 추이 (최신)</h4>`;
-        parent.appendChild(box);
-
-        const can = document.createElement('canvas');
-        can.style.width = '100%'; can.style.height = '320px';
-        box.appendChild(can);
-        new Chart(can.getContext('2d'), {
-            type: 'line',
-            data: { labels, datasets:[{ label:'Predicted', data:values, tension:0.3 }]},
-            options:{ responsive:true, maintainAspectRatio:false }
-        });
-    }
-
-    // 실제 실행
-    (async () => {
-        container.innerHTML = '';  // 완전 초기화
-
-        // 1) 상관관계 최신 1건
-        const corr = await fetchLatestByType('CORRELATION_RISK_PREDICT');
-        if (corr) {
-            const d = await fetchDetail(corr.id);
-            if (d) renderCorrelation(container, d);
+    // 3) 각 결과별로 렌더링
+    results.forEach((detail, idx) => {
+        // 3-1) parse resultJson
+        let result;
+        try {
+            result = detail.resultJson ? JSON.parse(detail.resultJson) : detail;
+        } catch {
+            console.error('resultJson 파싱 오류', detail);
+            return;
         }
 
-        // 2) 단일 예측 최신 1건
-        const single = await fetchLatestByType('SINGLE_SENSOR_PREDICT');
-        if (single) {
-            const d = await fetchDetail(single.id);
-            if (d) renderSingle(container, d);
+        // 3-2) 분석 타입 판별
+        const type = result.type || result.analysisType;
+        const isCorrelation = /CORRELATION[-_]RISK[-_]PREDICT/i.test(type);
+        const isSingle      = /SINGLE[-_]SENSOR[-_]PREDICT/i.test(type);
+        const isThreshold   = /THRESHOLD[-_]DIFF[-_]ANALYSIS/i.test(type);
+
+        // 3-3) 섹션 틀 만들기
+        const section = document.createElement('section');
+        section.style.margin = '2rem 0';
+        section.innerHTML = `<h3 style="text-align:center;">${isCorrelation ? '상관관계 위험도' : isSingle ? '예측값 추이' : 'Threshold 분석'} (최신)</h3>`;
+        container.appendChild(section);
+
+        // 3-4) 센서 정보 테이블 (필요 시)
+        let tableHtml = '';
+        if (isCorrelation && Array.isArray(result.sensorInfo)) {
+            tableHtml = `
+        <table style="margin:0 auto 1rem; border-collapse:collapse; font-size:0.9rem;">
+          <thead>
+            <tr style="background:#f3f4f6;">
+              <th style="padding:4px 8px;border:1px solid #ddd;">센서명</th>
+              <th style="padding:4px 8px;border:1px solid #ddd;">게이트웨이 ID</th>
+              <th style="padding:4px 8px;border:1px solid #ddd;">센서 UUID</th>
+              <th style="padding:4px 8px;border:1px solid #ddd;">센서타입</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${result.sensorInfo.map((info,i) => `
+              <tr>
+                <td style="padding:4px 8px;border:1px solid #ddd;">센서${i+1}</td>
+                <td style="padding:4px 8px;border:1px solid #ddd;">${info.gatewayId}</td>
+                <td style="padding:4px 8px;border:1px solid #ddd;">${info.sensorId}</td>
+                <td style="padding:4px 8px;border:1px solid #ddd;">${info.sensorType}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
+        } else if ((isSingle || isThreshold) && result.sensorInfo) {
+            const info = result.sensorInfo;
+            tableHtml = `
+        <table style="margin:0 auto 1rem; border-collapse:collapse; font-size:0.9rem;">
+          <thead>
+            <tr style="background:#f3f4f6;">
+              <th style="padding:4px 8px;border:1px solid #ddd;">게이트웨이 ID</th>
+              <th style="padding:4px 8px;border:1px solid #ddd;">센서 UUID</th>
+              <th style="padding:4px 8px;border:1px solid #ddd;">센서타입</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding:4px 8px;border:1px solid #ddd;">${info.gatewayId}</td>
+              <td style="padding:4px 8px;border:1px solid #ddd;">${info.sensorId}</td>
+              <td style="padding:4px 8px;border:1px solid #ddd;">${info.sensorType}</td>
+            </tr>
+          </tbody>
+        </table>
+      `;
         }
-    })();
+        if (tableHtml) section.insertAdjacentHTML('beforeend', tableHtml);
+
+        // 3-5) 차트 컨테이너 생성
+        const wrapper = document.createElement('div');
+        wrapper.style.display = 'flex';
+        wrapper.style.gap = '2rem';
+        wrapper.style.justifyContent = 'center';
+        wrapper.style.flexWrap = 'wrap';
+        section.appendChild(wrapper);
+
+        // 3-6) 차트 그리기
+        if (isCorrelation && Array.isArray(result.predictedData)) {
+            const labels = result.predictedData.map(d => d.sensorInfo.sensorType);
+            const values = result.predictedData.map(d => d.correlationRiskModel);
+
+            // Bar
+            const barCan = document.createElement('canvas');
+            barCan.style.width = '600px'; barCan.style.height = '320px';
+            wrapper.appendChild(barCan);
+            new Chart(barCan.getContext('2d'), {
+                type:'bar',
+                data:{ labels, datasets:[{ label:'Risk', data:values }]},
+                options:{ responsive:true, maintainAspectRatio:false }
+            });
+
+            // Pie
+            const pieCan = document.createElement('canvas');
+            pieCan.style.width = '320px'; pieCan.style.height = '320px';
+            wrapper.appendChild(pieCan);
+            new Chart(pieCan.getContext('2d'), {
+                type:'pie',
+                data:{ labels, datasets:[{ data:values }]},
+                options:{
+                    responsive:true,
+                    maintainAspectRatio:false,
+                    plugins:{ legend:{ position:'top' } }
+                }
+            });
+
+        } else if (isSingle && Array.isArray(result.predictedData)) {
+            const labels = result.predictedData.map(d => {
+                const dt = new Date(d.predictedDate);
+                return `${dt.getFullYear()}-${dt.getMonth()+1}-${dt.getDate()}`;
+            });
+            const values = result.predictedData.map(d => d.predictedValue);
+
+            const can = document.createElement('canvas');
+            can.style.width = '100%'; can.style.height = '320px';
+            wrapper.appendChild(can);
+            new Chart(can.getContext('2d'), {
+                type:'line',
+                data:{ labels, datasets:[{ label:'Predicted', data:values, tension:0.3 }]},
+                options:{ responsive:true, maintainAspectRatio:false }
+            });
+        }
+        // (Threshold 타입 렌더링 필요 시 이 자리에 추가)
+    });
 });

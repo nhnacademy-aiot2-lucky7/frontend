@@ -1,4 +1,4 @@
-Chart.register(ChartDataLabels);
+// Chart.register(ChartDataLabels);
 
 document.addEventListener('DOMContentLoaded', async () => {
     const container = document.getElementById('latest-ai-chart-container');

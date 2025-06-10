@@ -1,0 +1,43 @@
+.analysis-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    margin: 1rem 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.card-header {
+    background: #f7fafc;
+    padding: 0.75rem 1rem;
+    font-weight: bold;
+    border-bottom: 1px solid #e2e8f0;
+}
+.card-body {
+    padding: 1rem;
+}
+.sensor-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+}
+.sensor-table th, .sensor-table td {
+    border: 1px solid #cbd5e0;
+    padding: 0.5rem;
+    text-align: center;
+}
+.charts-container {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.chart-wrapper {
+    text-align: center;
+}
+.chart-label {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: #4a5568;
+}
+.loading {
+    text-align: center;
+    color: #3182ce;
+}

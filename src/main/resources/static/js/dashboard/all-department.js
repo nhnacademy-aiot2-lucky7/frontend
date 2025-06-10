@@ -33,7 +33,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         departmentList.forEach(d => {
             const dashboardTitle = d.title || '이름 없음';
-            const dashboardUid = d.uid;
             const bannerSrc = getBannerImage(dashboardTitle);  // 이 함수는 네가 만든 걸로 그대로 사용하면 됨
 
             const banner = document.createElement('div');
@@ -54,6 +53,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             banner.style.cursor = 'pointer';
             banner.style.transition = 'transform 0.2s';
             banner.style.flex = '1 1 400px'; // 추가: 반응형 배너 사이즈
+            banner.style.margin = '20px'
+            banner.style.border = '2px solid #ccc';
 
             banner.textContent = dashboardTitle;
 

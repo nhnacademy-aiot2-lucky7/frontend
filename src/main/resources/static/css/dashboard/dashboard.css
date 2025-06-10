@@ -54,7 +54,28 @@ a {
     transition: background-color 0.3s ease;
 }
 
+/* 저장 버튼을 오른쪽 위에 배치 */
+.add-dashboard-save-btn {
+    position: absolute;
+    top: 70px;
+    right: 100px;
+    padding: 10px 20px;
+    background-color: #8d89e8;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    text-decoration: none;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: background-color 0.3s ease;
+}
+
+
 .dashboard-add-btn:hover {
+    background-color: #4e46ee; /* hover 시 더 진한 보라색 */
+}
+
+.add-dashboard-save-btn:hover {
     background-color: #4e46ee; /* hover 시 더 진한 보라색 */
 }
 
@@ -225,6 +246,7 @@ select:disabled {
 
     .dashboard-add-btn {
         padding: 0.4rem 1rem;
+        font-size: 14px;
     }
 }
 

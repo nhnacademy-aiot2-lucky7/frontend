@@ -33,6 +33,7 @@ async function loadIframes(dashboardUid) {
         if (!res.ok) throw new Error('패널 정보를 불러오지 못했습니다.');
 
         const panels = await res.json();
+        console.info("panels",panels);
         const container = document.getElementById('panelList');
         container.innerHTML = '';
 

@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // 2) 최신 두 타입 결과 가져오기
     let results;
     try {
-        const res = await fetch(`https://luckyseven.live/api/analysis-results/main/${departmentId}`, {
+        const res = await fetch(`https://luckyseven.live/api/analysis-results/${departmentId}/latest`, {
             credentials: 'include'
         });
         if (!res.ok) throw new Error(res.statusText);

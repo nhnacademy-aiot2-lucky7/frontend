@@ -10,31 +10,25 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     let list;
     try {
+        // 백틱으로 감싸기
         const res = await fetch(`https://luckyseven.live/api/analysis-results/${departmentId}/latest`, {
             credentials: 'include'
         });
         if (!res.ok) throw new Error(res.statusText);
-        list = await res.json(); // [{…}, {…}, …]
+        list = await res.json();
     } catch (err) {
         console.error(err);
         container.innerText = '최신 결과 조회에 실패했습니다.';
         return;
     }
 
-    // 분석타입별로 분리
     const single = list.find(item => item.analysisType === "SINGLE_SENSOR_PREDICT");
     const correlation = list.find(item => item.analysisType === "CORRELATION_RISK_PREDICT");
 
-    // single, correlation 각각 렌더
-    if (single) {
-        showDetail(single, 'single');
-    }
-    if (correlation) {
-        showDetail(correlation, 'corr');
-    }
+    if (single) showDetail(single, 'single');
+    if (correlation) showDetail(correlation, 'corr');
 
     function showDetail(detail, prefix) {
-        // 1) JSON 문자열 파싱
         let result;
         try {
             result = detail.resultJson ? JSON.parse(detail.resultJson) : detail;
@@ -47,38 +41,43 @@ document.addEventListener('DOMContentLoaded', async () => {
         let sensorInfoHtml = '';
         if (Array.isArray(result.sensorInfo)) {
             sensorInfoHtml = `
-                <table class="sensor-table">
-                    <thead>
-                        <tr><th>센서명</th><th>게이트웨이 ID</th><th>센서 UUID</th><th>타입</th></tr>
-                    </thead>
-                    <tbody>
-                        ${result.sensorInfo.map((info, i) => `
-                            <tr>
-                                <td>센서${i+1}</td>
-                                <td>${info.gatewayId}</td>
-                                <td>${info.sensorId}</td>
-                                <td>${info.sensorType}</td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-            `;
+        <table class="sensor-table">
+          <thead>
+            <tr>
+              <th>센서명</th><th>게이트웨이 ID</th>
+              <th>센서 UUID</th><th>타입</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${result.sensorInfo.map((info,i) => `
+              <tr>
+                <td>센서${i+1}</td>
+                <td>${info.gatewayId}</td>
+                <td>${info.sensorId}</td>
+                <td>${info.sensorType}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
         } else if (result.sensorInfo) {
             const info = result.sensorInfo;
             sensorInfoHtml = `
-                <table class="sensor-table">
-                    <thead>
-                        <tr><th>게이트웨이 ID</th><th>센서 UUID</th><th>타입</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>${info.gatewayId}</td>
-                            <td>${info.sensorId}</td>
-                            <td>${info.sensorType}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            `;
+        <table class="sensor-table">
+          <thead>
+            <tr>
+              <th>게이트웨이 ID</th><th>센서 UUID</th><th>타입</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>${info.gatewayId}</td>
+              <td>${info.sensorId}</td>
+              <td>${info.sensorType}</td>
+            </tr>
+          </tbody>
+        </table>
+      `;
         }
 
         // 3) 차트 캔버스 영역 추가
@@ -113,13 +112,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // 4) container에 한번에 붙이기
         container.insertAdjacentHTML('beforeend', `
-            <section class="analysis-block">
-                ${sensorInfoHtml}
-                <div class="charts-container">
-                    ${chartsHtml}
-                </div>
-            </section>
-        `);
+          <section class="analysis-block">
+            ${sensorInfoHtml}
+            <div class="charts-container">
+              ${chartsHtml}
+            </div>
+      </section>
+    `);
 
         // 5) 차트 생성
         setTimeout(() => {

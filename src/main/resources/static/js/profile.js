@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
         deleteButton.addEventListener('click', async function () {
             if (!confirm('회원 탈퇴하시겠습니까?')) return;
             try {
-                const response = await fetch('https://luckyseven.live/users/me', {
+                const response = await fetch('https://luckyseven.live/api/users/me', {
                     method: 'DELETE',
                     credentials: 'include'
                 });

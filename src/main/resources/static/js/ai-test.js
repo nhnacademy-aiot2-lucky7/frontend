@@ -1,67 +1,79 @@
-// datalabels 플러그인 등록
+// latest-two-charts.js
 Chart.register(ChartDataLabels);
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 1) 타입별로 최신 1건만 조회
+    const root = document.getElementById('latest-ai-chart-container');
+    if (!root) return;                // container가 없으면 바로 종료
+
+    // 1) 최신 1건만 조회 (타입별)
     async function fetchLatestByType(analysisType) {
         const res = await fetch(
             `https://luckyseven.live/api/analysis-results/search?page=0&size=1&type=${encodeURIComponent(analysisType)}`,
             { credentials: 'include' }
         );
         if (!res.ok) {
-            console.warn(`${analysisType} 리스트 조회 실패`);
+            console.warn(`${analysisType} 조회 실패: ${res.status}`);
             return null;
         }
         const data = await res.json();
         return data.content?.[0] || null;
     }
 
-    // 2) 상세 데이터 조회 (변경 없음)
+    // 2) 상세 데이터 조회
     async function fetchDetail(id) {
         const res = await fetch(
             `https://luckyseven.live/api/analysis-results/${id}`,
             { credentials: 'include' }
         );
         if (!res.ok) {
-            console.warn(`상세 조회 실패 for id=${id}`);
+            console.warn(`detail 조회 실패(id=${id}): ${res.status}`);
             return null;
         }
         return res.json();
     }
 
-    // 3) 각 타입별 렌더러
-    function renderCorrelationChart(container, detail) {
-        let result = JSON.parse(detail.resultJson || '{}');
+    // 3a) 상관관계 차트 렌더링 (막대 + 원형)
+    function renderCorrelation(section, detail) {
+        let result = detail.resultJson ? JSON.parse(detail.resultJson) : detail;
         const labels = result.predictedData.map(d => d.sensorInfo.sensorType);
         const values = result.predictedData.map(d => d.correlationRiskModel);
 
-        // 차트 래퍼 생성
+        // 센서 테이블 (필요 시)
+        // ...
+
+        // 차트 컨테이너
         const wrapper = document.createElement('div');
         wrapper.style.display = 'flex';
-        wrapper.style.gap = '2.5rem';
-        container.appendChild(wrapper);
+        wrapper.style.gap     = '2.5rem';
+        wrapper.style.flexWrap= 'wrap';
+        section.appendChild(wrapper);
 
-        // Bar
+        // — Bar
         const barCanvas = document.createElement('canvas');
         wrapper.appendChild(barCanvas);
         new Chart(barCanvas.getContext('2d'), {
             type: 'bar',
-            data: { labels, datasets:[{ label:'Corr Risk', data:values }]},
-            options:{ responsive:true, maintainAspectRatio:false }
+            data: { labels, datasets: [{ label:'Corr Risk', data:values }] },
+            options: { responsive:true, maintainAspectRatio:false }
         });
 
-        // Pie
+        // — Pie
         const pieCanvas = document.createElement('canvas');
         wrapper.appendChild(pieCanvas);
         new Chart(pieCanvas.getContext('2d'), {
-            type:'pie',
-            data:{ labels, datasets:[{ data:values }]},
-            options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'top' } } }
+            type: 'pie',
+            data: { labels, datasets: [{ data:values }] },
+            options: {
+                responsive:true,
+                maintainAspectRatio:false,
+                plugins: { legend:{ position:'top' } }
+            }
         });
     }
 
-    function renderLineChart(container, detail) {
-        let result = JSON.parse(detail.resultJson || '{}');
+    // 3b) 단일 예측 차트 렌더링 (꺾은선)
+    function renderSingle(section, detail) {
+        let result = detail.resultJson ? JSON.parse(detail.resultJson) : detail;
         const labels = result.predictedData.map(d => {
             const dt = new Date(d.predictedDate);
             return `${dt.getFullYear()}-${dt.getMonth()+1}-${dt.getDate()}`;
@@ -69,44 +81,45 @@ document.addEventListener('DOMContentLoaded', () => {
         const values = result.predictedData.map(d => d.predictedValue);
 
         const canvas = document.createElement('canvas');
-        container.appendChild(canvas);
+        section.appendChild(canvas);
         new Chart(canvas.getContext('2d'), {
-            type:'line',
-            data:{ labels, datasets:[{ label:'Predicted', data:values, tension:0.3 }] },
-            options:{ responsive:true, maintainAspectRatio:false }
+            type: 'line',
+            data: { labels, datasets: [{ label:'Predicted', data:values, tension:0.3 }] },
+            options: { responsive:true, maintainAspectRatio:false }
         });
     }
 
-    // 4) 초기 실행: correlation + single
+    // 4) 실제 실행
     (async () => {
-        // 컨테이너 미리 만들어두기 (HTML에 두 개의 div를 둬도 되고, JS에서 생성해도 됩니다)
-        const root = document.getElementById('latest-ai-chart-container');
-        root.innerHTML = ''; // 초기화
+        root.innerHTML = '';  // 초기화
 
-        const types = [
-            { key:'CORRELATION_RISK_PREDICT', title:'상관관계 위험도', renderer: renderCorrelationChart },
-            { key:'SINGLE_SENSOR_PREDICT',  title:'예측값 추이',    renderer: renderLineChart }
-        ];
+        // 차트를 담을 두 개의 섹션을 미리 생성
+        const corrSection   = document.createElement('section');
+        corrSection.innerHTML = `<h3 style="text-align:center;">상관관계 위험도 (최신)</h3>`;
+        root.appendChild(corrSection);
 
-        for (const {key, title, renderer} of types) {
-            // 제목
-            const section = document.createElement('section');
-            section.style.marginBottom = '2rem';
-            section.innerHTML = `<h3 style="text-align:center;">${title} (최신)</h3>`;
-            root.appendChild(section);
+        const singleSection = document.createElement('section');
+        singleSection.innerHTML = `<h3 style="text-align:center;">예측값 추이 (최신)</h3>`;
+        root.appendChild(singleSection);
 
-            // fetch & render
-            const latest = await fetchLatestByType(key);
-            if (!latest) {
-                section.append('데이터 없음');
-                continue;
-            }
-            const detail = await fetchDetail(latest.id);
-            if (!detail) {
-                section.append('상세 조회 실패');
-                continue;
-            }
-            renderer(section, detail);
+        // — 상관관계
+        const corrLatest = await fetchLatestByType('CORRELATION_RISK_PREDICT');
+        if (corrLatest) {
+            const corrDetail = await fetchDetail(corrLatest.id);
+            if (corrDetail) renderCorrelation(corrSection, corrDetail);
+            else corrSection.append('상세 조회 실패');
+        } else {
+            corrSection.append('데이터 없음');
+        }
+
+        // — 단일 예측
+        const singleLatest = await fetchLatestByType('SINGLE_SENSOR_PREDICT');
+        if (singleLatest) {
+            const singleDetail = await fetchDetail(singleLatest.id);
+            if (singleDetail) renderSingle(singleSection, singleDetail);
+            else singleSection.append('상세 조회 실패');
+        } else {
+            singleSection.append('데이터 없음');
         }
     })();
 });

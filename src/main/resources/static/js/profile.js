@@ -1,23 +1,21 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.querySelector('.profile-card');
+document.getElementById('btn-delete-account').addEventListener('click', async function() {
+    // 알림창 띄우기
+    if (!confirm('정말 탈퇴하시겠습니까?')) return;
 
-    form.addEventListener('submit', function(event) {
-        const currentPassword = document.querySelector('input[name="current_password"]').value;
-        const newPassword = document.querySelector('input[name="password"]').value;
-        const confirmPassword = document.querySelector('input[name="password_confirm"]').value;
+    try {
+        const response = await fetch('https://luckyseven.live/users/me', {
+            method: 'DELETE',
+            credentials: 'include'
+        });
 
-        // 현재 비밀번호가 비어있는지 확인
-        if (!currentPassword) {
-            event.preventDefault();
-            alert('현재 비밀번호를 입력해주세요.');
-            return;
+        if (response.ok) {
+            alert('탈퇴가 완료되었습니다.');
+            window.location.href = '/sign-in'; // 로그인 페이지로 이동
+        } else {
+            alert('탈퇴 처리 중 오류가 발생했습니다.');
         }
-
-        // 새 비밀번호를 입력한 경우, 확인 비밀번호와 일치하는지 확인
-        if (newPassword && newPassword !== confirmPassword) {
-            event.preventDefault();
-            alert('새 비밀번호와 확인 비밀번호가 일치하지 않습니다.');
-            return;
-        }
-    });
+    } catch (error) {
+        console.error('회원 탈퇴 요청 오류:', error);
+        alert('회원 탈퇴 요청 중 오류가 발생했습니다.');
+    }
 });

@@ -366,8 +366,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     plugins: [ChartDataLabels]
                 });
             } else if (isSingle && Array.isArray(result.predictedData)) {
-                const labels = result.predictedData.map(d => formatDateOnly(d.predictedDate));
-                const data = result.predictedData.map(d => d.predictedValue);
+                // 기존: 모든 데이터 사용
+                // const labels = result.predictedData.map(d => formatDateOnly(d.predictedDate));
+                // const data = result.predictedData.map(d => d.predictedValue);
+
+                const weekData = result.predictedData.slice(0, 210);
+                const labels = weekData.map(d => formatDateOnly(d.predictedDate));
+                const data = weekData.map(d => d.predictedValue);
 
                 chartInstances[`line-${id}`] = new Chart(document.getElementById(`line-${id}`), {
                     type: 'line',

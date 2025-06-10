@@ -7,7 +7,7 @@
     <meta charset="UTF-8" />
     <title>패널 추가 | Lucky Seven</title>
     <link href="/css/dashboard/dashboard.css" rel="stylesheet" />
-    <script src="/js/dashboard/add-panel.js"></script>
+    <script src="/js/dashboard/add-panel.js" defer></script>
 </head>
 
 <body>
@@ -21,7 +21,6 @@
         </div>
 
         <form id="filterForm" class="add-dashboard-form">
-
             <input type="hidden" id="dashboardUid" name="dashboardUid" th:value="${dashboardUid}" />
 
             <div class="add-dashboard-form-row">
@@ -74,15 +73,11 @@
                 </select>
             </div>
 
-            <!-- 빈 칸 채워서 정렬 유지 -->
             <div class="add-dashboard-form-row"></div>
 
-            <!-- 임계치 설정 (2열 전체 사용) -->
             <div class="add-dashboard-form-row add-dashboard-description">
                 <label>임계값 설정</label>
                 <div class="threshold-group">
-
-                    <!-- 최소값 설정 (같은 행에 나란히 배치) -->
                     <div class="threshold-option">
                         <span>MIN</span>
                         <div id="minSuggestionGroup" class="radio-group">
@@ -105,7 +100,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="threshold-option">
                         <span>MAX</span>
                         <div id="maxSuggestionGroup" class="radio-group">

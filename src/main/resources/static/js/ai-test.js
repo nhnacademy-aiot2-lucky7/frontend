@@ -49,8 +49,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         const card = document.createElement('div');
         card.className = 'chart-box';
         Object.assign(card.style, {
-            width: '48%',
-            maxWidth: '600px',
+            width: '100%',
+            maxWidth: '1000px',
             padding: '1rem',
             boxSizing: 'border-box',
             border: '1px solid #ddd',

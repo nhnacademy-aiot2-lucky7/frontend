@@ -49,7 +49,8 @@
 </div>
 
 <script>
-    // ✅ fragment html 가져오기 (공통 util)
+
+    // fragment html 가져오기 (공통 util)
     async function loadFragment(path, containerId) {
         try {
             const response = await fetch(path);
@@ -64,6 +65,22 @@
         }
     }
 
+    // ✅ fragment html 가져오기 (공통 util)
+    function highlightSidebarMenu() {
+        const path = window.location.pathname;
+        document.querySelectorAll('.sidebar-nav .sidebar-item').forEach(item => {
+            const link = item.querySelector('a.sidebar-link');
+            if (!link) return;
+            // 정확히 일치하거나, 현재 경로가 메뉴 href로 시작하면 active
+            if (link.getAttribute('href') === path || path.startsWith(link.getAttribute('href'))) {
+                item.classList.add('active');
+            } else {
+                item.classList.remove('active');
+            }
+        });
+    }
+
+
     // ✅ 사이드바 렌더링
     async function renderSidebar() {
         let fragmentPath = '/fragments/sidebar_guest';
@@ -75,7 +92,9 @@
             }
         }
         await loadFragment(fragmentPath, 'sidebar-container');
+        highlightSidebarMenu(); // ← fragment 삽입 후 활성화 처리
     }
+
 
     // ✅ 헤더, 푸터 렌더링 (고정)
     async function renderNavbar() {

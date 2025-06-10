@@ -275,9 +275,9 @@ document.addEventListener('DOMContentLoaded', function() {
     `;
         } else if (isSingle && Array.isArray(result.predictedData)) {
             html += `
-        <div style="width:600px; height:auto; display:block; text-align:center;">
+        <div style="width:1300px; height:auto; display:block; text-align:center;">
             <div style="height:320px;">
-                <canvas id="line-${id}" width="600" height="320"></canvas>
+                <canvas id="line-${id}" width="1300" height="320"></canvas>
             </div>
             <div style="margin-top:1.5rem; min-height:2.5rem;">예측값 추이</div>
         </div>
@@ -366,42 +366,47 @@ document.addEventListener('DOMContentLoaded', function() {
                     plugins: [ChartDataLabels]
                 });
             } else if (isSingle && Array.isArray(result.predictedData)) {
-            const labels = result.predictedData.map(d => formatDateOnly(d.predictedDate));
-            const data = result.predictedData.map(d => d.predictedValue);
+                // 기존: 모든 데이터 사용
+                // const labels = result.predictedData.map(d => formatDateOnly(d.predictedDate));
+                // const data = result.predictedData.map(d => d.predictedValue);
 
-            chartInstances[`line-${id}`] = new Chart(document.getElementById(`line-${id}`), {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Predicted Value',
-                        data: data,
-                        borderWidth: 2,
-                        pointRadius: 2,
-                        borderColor: '#4BC0C0'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        x: {
-                            ticks: {
-                                autoSkip: true,
-                                maxTicksLimit: 10
+                const weekData = result.predictedData.slice(0, 210);
+                const labels = weekData.map(d => formatDateOnly(d.predictedDate));
+                const data = weekData.map(d => d.predictedValue);
+
+                chartInstances[`line-${id}`] = new Chart(document.getElementById(`line-${id}`), {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Predicted Value',
+                            data: data,
+                            borderWidth: 2,
+                            pointRadius: 2,
+                            borderColor: '#4BC0C0'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                ticks: {
+                                    autoSkip: true,
+                                    maxTicksLimit: 10
+                                }
+                            }
+                        },
+                        plugins: {
+                            decimation: {
+                                enabled: true,
+                                algorithm: 'min-max',
+                                samples: 100
                             }
                         }
-                    },
-                    plugins: {
-                        decimation: {
-                            enabled: true,
-                            algorithm: 'min-max',
-                            samples: 100
-                        }
                     }
-                }
-            });
-        } else if (isThreshold && typeof result.healthScore === 'number') {
+                });
+            } else if (isThreshold && typeof result.healthScore === 'number') {
                 const score = Math.round(result.healthScore * 100); // 0~100
 
                 chartInstances[`gauge-${id}`] = new Chart(document.getElementById(`gauge-${id}`), {

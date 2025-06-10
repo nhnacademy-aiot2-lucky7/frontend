@@ -1,5 +1,3 @@
-// Chart.register(ChartDataLabels);
-
 document.addEventListener('DOMContentLoaded', async () => {
     const container = document.getElementById('latest-ai-chart-container');
     if (!container) return;
@@ -28,8 +26,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     Object.assign(wrapper.style, {
         display: 'flex',
         flexWrap: 'wrap',
+        justifyContent: 'center',         // 👉 가운데 정렬
         gap: '2rem',
-        justifyContent: 'space-between',  // 카드가 양 끝에 붙도록
+        minHeight: '800px'                // 👉 wrapper 높이 확장
     });
     container.appendChild(wrapper);
 
@@ -49,7 +48,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const card = document.createElement('div');
         card.className = 'chart-box';
         Object.assign(card.style, {
-            flex: '1 1 48%',  // 카드가 가로 48% 차지 (2개 한 줄 배치 가능)
+            flex: '1 1 90%',
             display: 'flex',
             flexDirection: 'column',
             padding: '1rem',
@@ -58,8 +57,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             borderRadius: '8px',
             background: '#fff',
             boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
-            minWidth: '300px', // 너무 작아지지 않도록 최소 너비 지정
-            maxWidth: '600px',
+            minWidth: '600px',
+            maxWidth: '1200px',
             marginBottom: '1rem'
         });
         wrapper.appendChild(card);
@@ -74,15 +73,18 @@ document.addEventListener('DOMContentLoaded', async () => {
                 : '지원되지 않는 분석 타입';
         card.appendChild(h4);
 
-        // 센서 정보 테이블
+        // 테이블 공통 스타일
+        const tableStyle = {
+            margin: '0 auto 1rem',
+            borderCollapse: 'collapse',
+            fontSize: '0.9rem',
+            width: '100%'
+        };
+
+        // 센서 테이블 생성
         if (isCorr && Array.isArray(result.sensorInfo)) {
             const table = document.createElement('table');
-            Object.assign(table.style, {
-                margin: '0 auto 1rem',
-                borderCollapse: 'collapse',
-                fontSize: '0.9rem',
-                width: '100%'
-            });
+            Object.assign(table.style, tableStyle);
             table.innerHTML = `
                 <thead>
                   <tr style="background:#f3f4f6;">
@@ -107,12 +109,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         } else if (isSingle && result.sensorInfo) {
             const info = result.sensorInfo;
             const table = document.createElement('table');
-            Object.assign(table.style, {
-                margin: '0 auto 1rem',
-                borderCollapse: 'collapse',
-                fontSize: '0.9rem',
-                width: '100%'
-            });
+            Object.assign(table.style, tableStyle);
             table.innerHTML = `
                 <thead>
                   <tr style="background:#f3f4f6;">
@@ -132,26 +129,28 @@ document.addEventListener('DOMContentLoaded', async () => {
             card.appendChild(table);
         }
 
-        // 차트 영역
+        // 차트 wrapper
         const chartWrapper = document.createElement('div');
         Object.assign(chartWrapper.style, {
             display: 'flex',
-            flexDirection: 'column',
+            flexDirection: isCorr ? 'row' : 'column',   // 👉 Corr: row / Single: column
             gap: '1.5rem',
             alignItems: 'center',
-            width: '100%'
+            justifyContent: 'center',
+            width: '100%',
+            flexWrap: 'wrap'
         });
         card.appendChild(chartWrapper);
 
+        // Corr 차트 (bar + pie 좌우 배치)
         if (isCorr && Array.isArray(result.predictedData)) {
             const labels = result.predictedData.map(d => d.sensorInfo.sensorType);
             const data   = result.predictedData.map(d => d.correlationRiskModel);
 
-            // 바 차트
             const barDiv = document.createElement('div');
             Object.assign(barDiv.style, {
                 width: '100%',
-                maxWidth: '600px',
+                maxWidth: '500px',
                 height: '320px'
             });
             const barCan = document.createElement('canvas');
@@ -177,7 +176,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 plugins: [ChartDataLabels]
             });
 
-            // 파이 차트
             const pieDiv = document.createElement('div');
             Object.assign(pieDiv.style, {
                 width: '100%',
@@ -206,6 +204,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 plugins: [ChartDataLabels]
             });
 
+            // Single 차트 (line 하나만 위아래 배치)
         } else if (isSingle && Array.isArray(result.predictedData)) {
             const labels = result.predictedData.map(d => {
                 const dt = new Date(d.predictedDate);

@@ -481,6 +481,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 .dropdown-menu.dropdown-menu-lg {
+    margin-top: 377px;
     max-height: 300px;
     overflow-y: auto;
 }
@@ -708,4 +709,8 @@ input:focus, select:focus, textarea:focus {
     .d-md-table-cell {
         display: none !important;
     }
+}
+
+#dashboardTitle {
+    font-size: x-large;
 }

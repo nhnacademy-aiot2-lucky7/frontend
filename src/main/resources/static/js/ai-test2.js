@@ -2,6 +2,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     const container = document.getElementById('latest-ai-chart-container');
     if (!container) return;
 
+    // — 컨테이너를 좌우 2열로 분할
+    Object.assign(container.style, {
+        display: 'flex',
+        gap: '1rem',
+        alignItems: 'flex-start'
+    });
+
     const departmentId = window.currentUser?.department?.departmentId;
     if (!departmentId) {
         container.innerText = '부서 정보가 없습니다.';
@@ -57,17 +64,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     function renderCard(detail, prefix, title) {
         // 카드 뼈대 만들기
         const card = document.createElement('div');
-        card.className = 'analysis-card';
+        // — 카드 폭을 48%씩 주고, 싱글/코릴레이션 구분용 클래스 추가
+        card.className = `analysis-card card-${prefix}`;
         card.innerHTML = `
       <div class="card-header">${title}</div>
       <div class="card-body" id="card-body-${prefix}">
-        <!-- loading 표시 -->
-        <div class="loading">데이터 로딩 중...</div>
+        <div class="loading">데이터 로딩 중…</div>
       </div>
     `;
         container.appendChild(card);
-
-        // 실제 내용 렌더
         showDetail(detail, prefix, document.getElementById(`card-body-${prefix}`));
     }
 

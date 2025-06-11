@@ -1,16 +1,18 @@
 .custom-clock {
     position: fixed;
-    top: 20px;
+    top: 50px; /* 20px → 50px로 내려서 헤더 가림 방지 */
     right: 20px;
-    font-family: 'Courier New', monospace; /* 원래 폰트 유지 */
-    color: #000; /* 글자 검정색 */
-    background-color: transparent; /* 배경 없음 */
-    padding: 20px; /* 충분한 여백 유지 */
-    border-radius: 10px; /* 원래 둥근 테두리 유지 */
+    font-family: 'Courier New', monospace;
+    color: #000; /* 글자색 검정 */
+    background-color: transparent;
+    padding: 15px 20px; /* 패딩은 약간 줄여서 공간 감축 */
+    border-radius: 10px;
+    border: 2px solid #000; /* 검정색 테두리 추가 */
     width: fit-content;
+    box-sizing: border-box; /* 테두리 포함 크기 계산 */
 }
 
 .custom-clock .clock-time {
-    font-size: 2rem; /* 크게 유지 */
-    letter-spacing: 2px; /* 간격 유지 */
+    font-size: 1.5rem; /* 2rem → 1.5rem으로 작게 */
+    letter-spacing: 2px;
 }

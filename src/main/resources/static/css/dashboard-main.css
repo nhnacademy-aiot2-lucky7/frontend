@@ -1,0 +1,126 @@
+/* 전체 패널 컨테이너 */
+.panel-info-container {
+    padding: 2rem;
+    background-color: #f9f9f9;
+}
+
+.panel-info-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+/* 패널 추가 버튼 */
+.panel-add-btn {
+    padding: 0.5rem 1rem;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+}
+
+.panel-add-btn:hover {
+    background-color: #1e40af;
+}
+
+/* 패널 리스트 그리드 */
+.panel-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+/* 패널 카드 박스 */
+.panel-card {
+    background-color: transparent;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+/* 패널 제목 */
+.panel-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #111827;
+    margin: 0 0 0.5rem 0;
+}
+
+/* iframe (차트) */
+.grafana-iframe {
+    width: 100%;
+    height: 300px;
+    border: none;
+    border-radius: 4px;
+    display: block;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 오버레이 버튼 컨테이너 */
+.iframe-button-container {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    display: flex;
+    gap: 0;
+    z-index: 10;
+}
+
+/* 수정/삭제 공통 버튼 스타일 */
+.iframe-button-container a,
+.iframe-button-container button {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+    width: 24px;
+    height: 24px;
+}
+
+/* 공통 아이콘 이미지 기본 크기 */
+.icon-img {
+    object-fit: contain;
+    display: block;
+}
+
+/* 수정 아이콘 개별 크기 */
+.icon-edit-img {
+    width: 21px;
+    height: 21px;
+    margin-top: 20px;
+    margin-right: 15px;
+}
+
+/* 삭제 아이콘 개별 크기 */
+.icon-delete-img {
+    width: 24px;
+    height: 24px;
+    margin-top: 20px;
+    margin-right: 10px;
+}
+
+/* 기존 edit/delete 버튼 숨김 */
+.edit-button,
+.delete-button {
+    display: none;
+}
+
+#dashboardTitle {
+    font-size: 1.7rem; /* 예: 28px */
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #111827; /* 선택 */
+}

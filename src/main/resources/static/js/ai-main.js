@@ -2,6 +2,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const container = document.getElementById('latest-ai-chart-container');
     if (!container) return;
 
+    const title = document.createElement('h1');
+    title.textContent = '최신 AI 분석 결과';
+
     // — 컨테이너를 좌우 2열로 분할
     Object.assign(container.style, {
         display: 'flex',

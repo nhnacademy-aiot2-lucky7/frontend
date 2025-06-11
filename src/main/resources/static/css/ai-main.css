@@ -11,11 +11,13 @@
     max-width: 48%;
     border: 1px solid #e2e8f0;
     border-radius: 8px;
-    margin: 1rem 0;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     height: auto;
     display: flex;
     flex-direction: column;
+    font-size: 1.5rem; /* 기본 대비 1.5배 */
+    font-weight: 600;  /* 강조 */
+    margin-bottom: 0.75rem; /* 아래 여백 추가 */
 }
 
 /* 카드 헤더 */
@@ -24,6 +26,8 @@
     padding: 0.75rem 1rem;
     font-weight: bold;
     border-bottom: 1px solid #e2e8f0;
+    font-size: 1.5rem; /* 기본 대비 1.5배 */
+    margin-bottom: 0.75rem; /* 아래 여백 추가 */
 }
 
 /* 카드 바디 */
@@ -59,6 +63,11 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    font-size: 1.25rem;
+    padding: 0.5rem 1rem; /* 상하 0.5rem, 좌우 1rem 여백 */
+    margin-top: 0.5rem; /* 차트와 라벨 사이 공간 확보 */
+    background-color: #f9f9f9; /* 필요하면 연한 배경 추가 가능 */
+    border-radius: 4px; /* 모서리 둥글게 (선택사항) */
 }
 
 /* 차트 라벨 */
@@ -69,6 +78,9 @@
     text-align: center;
     width: 100%;
     writing-mode: horizontal-tb;
+    padding: 0.5rem 1rem; /* 상하 0.5rem, 좌우 1rem 여백 */
+    background-color: #f9f9f9; /* 필요하면 연한 배경 추가 가능 */
+    border-radius: 4px; /* 모서리 둥글게 (선택사항) */
 }
 
 /* 로딩 텍스트 */

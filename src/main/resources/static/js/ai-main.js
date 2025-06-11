@@ -127,13 +127,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (/SINGLE_SENSOR_PREDICT/i.test(result.type) && Array.isArray(result.predictedData)) {
             chartsHtml = `
         <div class="chart-wrapper">
-          <canvas id="${prefix}-line" width="800" height="250"></canvas>
+          <canvas id="${prefix}-line" width="1100" height="250"></canvas>
+<!--          <canvas id="${prefix}-line" style="width: 100%; height: 250px;"></canvas>-->
           <div class="chart-label">예측값 추이</div>
         </div>`;
         } else if (/CORRELATION_RISK_PREDICT/i.test(result.type) && Array.isArray(result.predictedData)) {
             chartsHtml = `
         <div class="chart-wrapper">
-          <canvas id="${prefix}-bar" width="500" height="200"></canvas>
+          <canvas id="${prefix}-bar" width="300" height="200"></canvas>
           <div class="chart-label">상관관계 위험도</div>
         </div>
         <div class="chart-wrapper">

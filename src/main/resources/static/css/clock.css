@@ -1,13 +1,16 @@
 .custom-clock {
-    font-family: 'Courier New', monospace;
-    background-color: #000;
-    color: #0f0;
-    padding: 20px;
-    border-radius: 10px;
-    width: fit-content;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    font-family: 'Arial', sans-serif;
+    color: #000; /* 검정 텍스트 */
+    font-size: 1.2rem;
+    background: none; /* 배경 없음 */
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
 }
 
 .custom-clock .clock-time {
-    font-size: 2rem;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
 }

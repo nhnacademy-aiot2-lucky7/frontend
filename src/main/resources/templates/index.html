@@ -29,6 +29,7 @@
         }
     </style>
     <title>Lucky Seven MainPage | Lucky Seven</title>
+    <link href="/css/clock.css" rel="stylesheet"/>
     <link href="/css/index.css" rel="stylesheet"/>
     <link href="/css/common.css" rel="stylesheet"/>
     <link href="/css/ai-main.css" rel="stylesheet">
@@ -71,6 +72,7 @@
         })();
     </script>
 
+    <script src="/js/clock.js"></script>
     <script src="/js/chart.js"></script>
     <script src="/js/chartjs-plugin-datalabels.js"></script>
     <script src="/js/ai-main.js" defer></script>
@@ -79,6 +81,9 @@
 
 <body>
 <section layout:fragment="content">
+
+    <!-- 시계 표시 -->
+    <div id="clock"></div>
 
     <!-- 기존 콘텐츠 -->
     <h1>최신 AI 분석 결과</h1>

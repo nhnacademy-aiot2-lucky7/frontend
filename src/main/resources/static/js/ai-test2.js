@@ -25,8 +25,28 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // single·correlation 분리
     const items = [
-        { key: 'single', title: 'Single Sensor 예측', data: list.find(i => i.analysisType === 'SINGLE_SENSOR_PREDICT') },
-        { key: 'corr',   title: 'Correlation Risk 예측', data: list.find(i => i.analysisType === 'CORRELATION_RISK_PREDICT') }
+        {
+            key: 'single',
+            title: 'Single Sensor 예측',
+            data: list.find(i => {
+                try {
+                    return JSON.parse(i.resultJson).type === 'SINGLE_SENSOR_PREDICT';
+                } catch {
+                    return false;
+                }
+            })
+        },
+        {
+            key: 'corr',
+            title: 'Correlation Risk 예측',
+            data: list.find(i => {
+                try {
+                    return JSON.parse(i.resultJson).type === 'CORRELATION_RISK_PREDICT';
+                } catch {
+                    return false;
+                }
+            })
+        }
     ];
 
     items.forEach(({ key, title, data }) => {
@@ -99,13 +119,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // 2) 차트 캔버스 HTML
         let chartsHtml = '';
-        if (/SINGLE_SENSOR_PREDICT/i.test(result.analysisType) && Array.isArray(result.predictedData)) {
+        if (/SINGLE_SENSOR_PREDICT/i.test(result.type) && Array.isArray(result.predictedData)) {
             chartsHtml = `
         <div class="chart-wrapper">
           <canvas id="${prefix}-line" width="800" height="250"></canvas>
           <div class="chart-label">예측값 추이</div>
         </div>`;
-        } else if (/CORRELATION_RISK_PREDICT/i.test(result.analysisType) && Array.isArray(result.predictedData)) {
+        } else if (/CORRELATION_RISK_PREDICT/i.test(result.type) && Array.isArray(result.predictedData)) {
             chartsHtml = `
         <div class="chart-wrapper">
           <canvas id="${prefix}-bar" width="500" height="200"></canvas>

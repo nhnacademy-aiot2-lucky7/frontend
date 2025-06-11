@@ -1,24 +1,99 @@
 <!DOCTYPE html>
-<html lang="ko"
-      xmlns:th="http://www.thymeleaf.org"
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}">
+
 <head>
     <meta charset="utf-8"/>
-    <title>AI 분석 | Lucky Seven</title>
+    <style>
+        #latest-ai-chart-container {
+            border: 3px solid #000000;
+            padding: 10px;
+        }
+        .chart-box {
+            border: 2px solid #d1d5db;
+            border-radius: 8px;
+            padding: 12px;
+            box-sizing: border-box;
+            background-color: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            width: 600px;
+            height: 320px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .chart-box canvas {
+            max-width: 100%;
+            max-height: 100%;
+        }
+    </style>
+    <title>Lucky Seven MainPage | Lucky Seven</title>
+    <link href="/css/index.css" rel="stylesheet"/>
+    <link href="/css/common.css" rel="stylesheet"/>
+    <!--    <link href="/css/ai-main.css" rel="stylesheet">-->
+    <link href="/css/dashboard/panel-list.css" rel="stylesheet"/>
 
-    <!-- Chart.js + datalabels 플러그인 CDN -->
+    <script>
+        (async () => {
+            try {
+                const userResponse = await fetch("https://luckyseven.live/api/users/me", {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include'
+                });
+                const user = await userResponse.json();
+
+                const imageResponse = await fetch(`https://luckyseven.live/api/images/${user.userEmail}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include'
+                });
+                const image = await imageResponse.json();
+
+                document.currentUser = {
+                    userRole: user.userRole,
+                    userNo: user.userNo,
+                    userName: user.userName,
+                    userEmail: user.userEmail,
+                    userPhone: user.userPhone,
+                    department: user.department,
+                    eventLevelResponse: user.eventLevelResponse,
+                    image: image
+                };
+            } catch (error) {
+                console.error("유저 데이터 가져오기 실패:", error);
+            }
+        })();
+    </script>
+
     <script src="/js/chart.js"></script>
     <script src="/js/chartjs-plugin-datalabels.js"></script>
-
-    <!-- 메인 로직 -->
-    <script src="/js/ai-main.js" defer></script>
+    <script src="/js/ai-test2.js" defer></script>
+    <script src="/js/dashboard/panel-list-main.js"></script>
 </head>
+
 <body>
-<h1>최신 AI 분석 결과</h1>
 <section layout:fragment="content">
+
+    <!-- 기존 콘텐츠 -->
     <h1>최신 AI 분석 결과</h1>
     <div id="latest-ai-chart-container"></div>
+
+    <!-- panel-list 콘텐츠 삽입 -->
+    <main class="panel-info-container">
+        <section class="panel-info-header">
+            <h1 id="dashboardTitle">차트 내역</h1>
+        </section>
+
+        <div id="panelList" class="panel-grid">
+        </div>
+    </main>
+
 </section>
 </body>
 </html>

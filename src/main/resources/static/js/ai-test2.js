@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         );
         if (!res.ok) throw new Error(res.statusText);
         list = await res.json();
+        console.log("list : ", list);
     } catch (err) {
         console.error(err);
         container.innerText = '최신 결과 조회에 실패했습니다.';

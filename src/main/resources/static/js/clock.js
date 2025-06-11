@@ -14,5 +14,6 @@ function updateClock() {
         clockElement.textContent = formatted;
     }
 }
+
 setInterval(updateClock, 1000);
 updateClock();

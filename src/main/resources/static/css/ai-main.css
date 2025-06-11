@@ -73,11 +73,11 @@
 /* 차트 라벨 */
 .chart-label {
     margin-top: 0.5rem;
-    font-size: 0.9rem;
     color: #4a5568;
     text-align: center;
     width: 100%;
     writing-mode: horizontal-tb;
+    font-size: 1.25rem;
     padding: 0.5rem 1rem; /* 상하 0.5rem, 좌우 1rem 여백 */
     background-color: #f9f9f9; /* 필요하면 연한 배경 추가 가능 */
     border-radius: 4px; /* 모서리 둥글게 (선택사항) */

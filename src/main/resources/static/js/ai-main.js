@@ -157,24 +157,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 new Chart(document.getElementById(`${prefix}-line`), {
                     type: 'line',
                     data: {
-                        labels: data.map(d => formatDate(d.predictedDate)),
-                        datasets: [{
-                            label: 'Predicted',
-                            data: data.map(d => d.predictedValue),
-                            borderWidth: 2,
-                            pointRadius: 2
-                        }]
+                        labels: data.map(d=>formatDate(d.predictedDate)),
+                        datasets: [{ label:'Predicted', data: data.map(d=>d.predictedValue), borderWidth:2, pointRadius:2 }]
                     },
-                    options: {
-                        scales: {
-                            x: { ticks: { autoSkip: true, maxTicksLimit: 10 } }
-                        },
-                        plugins: {
-                            legend: {
-                                position: 'bottom' // ← 여기가 핵심
-                            }
-                        }
-                    }
+                    options: { scales:{ x:{ ticks:{ autoSkip:true, maxTicksLimit:10 } } } }
                 });
             }
             if (chartsHtml.includes(`${prefix}-bar`)) {
@@ -182,34 +168,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const labels = pd.map(d=>d.sensorInfo.sensorType);
                 const values = pd.map(d=>d.singleRiskModel);
                 new Chart(document.getElementById(`${prefix}-bar`), {
-                    type: 'bar',
-                    data: {
-                        labels,
-                        datasets: [{ label: 'Risk', data: values }]
-                    },
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: {
-                                position: 'bottom'
-                            }
-                        }
-                    }
+                    type:'bar',
+                    data:{ labels, datasets:[{ label:'Risk', data:values }] },
+                    options:{ responsive:true }
                 });
                 new Chart(document.getElementById(`${prefix}-pie`), {
-                    type: 'pie',
-                    data: {
-                        labels,
-                        datasets: [{ data: pd.map(d => d.correlationRiskModel) }]
-                    },
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: {
-                                position: 'bottom'
-                            }
-                        }
-                    }
+                    type:'pie',
+                    data:{ labels, datasets:[{ data: pd.map(d=>d.correlationRiskModel) }] },
+                    options:{ responsive:true }
                 });
             }
         }, 0);

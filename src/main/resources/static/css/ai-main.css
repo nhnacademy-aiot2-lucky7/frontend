@@ -55,7 +55,9 @@
 
 /* 차트 개별 래퍼(크기 조정은 아래에서 추가) */
 .chart-wrapper {
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* 차트 라벨 */
